@@ -206,9 +206,14 @@ class MooshCommand
 
     public function printOptions()
     {
-        echo $this->getName() . "\n";
+        echo '*** ' . $this->getName() . " ***\n";
+        echo "OPTIONS:\n";
         $this->spec->printOptions();
-        echo "\n\t";
+        if(count($this->argumentNames)) {
+            echo "\n\nARGUMENTS:";
+            echo "\n\t";
+        }
+
         echo implode(' ', $this->argumentNames);
         if(count($this->argumentNames) < $this->maxArguments) {
             echo " ...\n";

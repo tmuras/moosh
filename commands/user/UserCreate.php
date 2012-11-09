@@ -10,12 +10,12 @@ class UserCreate extends MooshCommand
     public function __construct()
     {
         parent::__construct('create', 'user');
-        $this->addOption('p|password:');
-        $this->addOption('e|email:');
-        $this->addOption('c|city:');
-        $this->addOption('C|country:');
-        $this->addOption('f|firstname:');
-        $this->addOption('l|lastname:');
+        $this->addOption('p|password:', 'password');
+        $this->addOption('e|email:','email address');
+        $this->addOption('c|city:','city');
+        $this->addOption('C|country:','country');
+        $this->addOption('f|firstname:','first name');
+        $this->addOption('l|lastname:','last name');
 
         $this->addRequiredArgument('username');
         $this->maxArguments = 255;

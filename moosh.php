@@ -1,21 +1,20 @@
 #!/usr/bin/env php
-
 <?php
-require __DIR__ . '/lib/GetOptionKit/Init.php';
-require 'includes/MooshCommand.php';
-require 'commands/user/UserCreate.php';
-require 'commands/course/CourseCreate.php';
-require 'commands/course/CourseEnrol.php';
-require 'commands/role/RoleCreate.php';
-require 'commands/role/RoleDelete.php';
-require 'includes/functions.php';
+require_once 'lib/GetOptionKit/Init.php';
+require_once 'includes/MooshCommand.php';
+require_once 'commands/user/UserCreate.php';
+require_once 'commands/course/CourseCreate.php';
+require_once 'commands/course/CourseEnrol.php';
+require_once 'commands/role/RoleCreate.php';
+require_once 'commands/role/RoleDelete.php';
+require_once 'includes/functions.php';
+require_once 'includes/default_options.php';
 
 use GetOptionKit\GetOptionKit;
 use GetOptionKit\ContinuousOptionParser;
 use GetOptionKit\OptionSpecCollection;
 
 error_reporting(E_ALL);
-
 
 $appspecs = new OptionSpecCollection;
 $spec_verbose = $appspecs->add('v|verbose');
@@ -52,6 +51,7 @@ $arguments = array();
 
 $parser = new ContinuousOptionParser($appspecs);
 $app_options = $parser->parse($argv);
+$subcommand = NULL;
 while (!$parser->isEnd()) {
     if (isset($subcommand_specs[$parser->getCurrentArgument()])) {
         $subcommand = $parser->advance();
@@ -64,7 +64,7 @@ while (!$parser->isEnd()) {
 
 if (!$subcommand) {
     echo "No command provided, possible commands:\n\t";
-    echo implode("\n\t", $subcommands);
+    echo implode("\n\t", array_keys($subcommands));
     echo "\n";
     die(1);
 }
@@ -87,31 +87,12 @@ if ($moodlerc) {
     if (isset($app_options['verbose'])) {
         echo "Using '$moodlerc' as moosh runtime configuration file\n'";
     }
-    //require($moodlerc);
-    //for dev always use default_options.php
-    require_once('includes/default_options.php');
-
+    require($moodlerc);
+    $options = array_merge($defaultOptions, $options);
+} else {
+    $options = $defaultOptions;
 }
 
-
-/*
-echo "RC options:\n";
-print_r($options);
-
-echo "Global options:\n";
-print_r(array_keys($app_options->keys));
-
-echo "Command: $subcommand\n";
-
-echo "Command options:\n";
-//var_dump($subcommand_options[$subcommand]);
-//var_dump($subcommand_options[$subcommand]['password']->value);
-//die();
-print_r(array_keys($subcommand_options[$subcommand]->keys));
-
-echo "Arguments:\n";
-print_r($arguments);
-*/
 /**
  * @var MooshCommand $subcommand
  *
@@ -120,11 +101,6 @@ $subcommand = $subcommands[$subcommand];
 $subcommand->setParsedOptions($subcommand_options[$subcommand->getName()]);
 $subcommand->setArguments($arguments);
 
-
-//echo "User home dir: " . home_dir() . "\n";
-
-
-
 if ($subcommand->isBootstraped()) {
     define('CLI_SCRIPT', true);
     if ($app_options->has('moodle-path')) {
@@ -132,6 +108,10 @@ if ($subcommand->isBootstraped()) {
     } else {
         require_once('config.php');
     }
+    @error_reporting(E_ALL | E_STRICT);
+    @ini_set('display_errors', '1');
+    $CFG->debug = (E_ALL | E_STRICT);
+    $CFG->debugdisplay = 1;
 }
 
 if ($app_options->has('verbose')) {
