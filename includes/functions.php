@@ -15,3 +15,26 @@ function home_dir()
     }
     return empty($home) ? NULL : $home;
 }
+
+
+/**
+ * Write error notification
+ * @param $text
+ * @return void
+ */
+function cli_problem($text) {
+    fwrite(STDERR, $text."\n");
+}
+
+/**
+ * Write to standard out and error with exit in error.
+ *
+ * @param string $text
+ * @param int $errorcode
+ * @return void (does not return)
+ */
+function cli_error($text, $errorcode=1) {
+    fwrite(STDERR, $text);
+    fwrite(STDERR, "\n");
+    die($errorcode);
+}

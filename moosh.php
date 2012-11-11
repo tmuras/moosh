@@ -3,6 +3,8 @@
 require_once 'lib/GetOptionKit/Init.php';
 require_once 'includes/MooshCommand.php';
 require_once 'commands/user/UserCreate.php';
+require_once 'commands/user/UserMod.php';
+require_once 'commands/sql/SqlRun.php';
 require_once 'commands/course/CourseCreate.php';
 require_once 'commands/course/CourseEnrol.php';
 require_once 'commands/role/RoleCreate.php';
@@ -31,11 +33,14 @@ $course_create = new \CourseCreate();
 $course_enrol = new \CourseEnrol();
 $role_create = new \RoleCreate();
 $role_delete = new \RoleDelete();
+$user_mod = new \UserMod();
+$sql_run = new \SqlRun();
 
 // subcommand stack
-$subcommands = array('user-create' => $user_create,
+$subcommands = array('user-create' => $user_create,'user-mod' => $user_mod,
     'role-create' => $role_create, 'role-delete' => $role_delete,
     'course-create' => $course_create,'course-enrol' => $course_enrol,
+    'sql-run' => $sql_run,
 );
 
 $subcommand_specs = array();
