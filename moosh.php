@@ -12,23 +12,18 @@ require_once 'commands/role/RoleDelete.php';
 require_once 'includes/functions.php';
 require_once 'includes/default_options.php';
 
-use GetOptionKit\GetOptionKit;
 use GetOptionKit\ContinuousOptionParser;
 use GetOptionKit\OptionSpecCollection;
 
 error_reporting(E_ALL);
 
+define('MOOSH_VERSION','0.1');
+
 $appspecs = new OptionSpecCollection;
-$spec_verbose = $appspecs->add('v|verbose');
-$spec_moodle_path = $appspecs->add('p|moodle-path:');
-$spec_moodle_path->setDescription("Path to Moodle installation directory.");
-
-$cmdspecs = new OptionSpecCollection;
-$cmdspecs->add('s', 'short option name only.');
-
+$spec_verbose = $appspecs->add('v|verbose', "be verbose");
+$spec_moodle_path = $appspecs->add('p|moodle-path:', "Moodle directory.");
 
 $user_create = new \UserCreate();
-
 $course_create = new \CourseCreate();
 $course_enrol = new \CourseEnrol();
 $role_create = new \RoleCreate();
@@ -68,10 +63,14 @@ while (!$parser->isEnd()) {
 }
 
 if (!$subcommand) {
+    echo "moosh version " . MOOSH_VERSION . "\n";
     echo "No command provided, possible commands:\n\t";
     echo implode("\n\t", array_keys($subcommands));
     echo "\n";
-    die(1);
+    echo "Global options:\n";
+    $appspecs->printOptions();
+    echo "\n";
+    exit(1);
 }
 
 //read config file if available

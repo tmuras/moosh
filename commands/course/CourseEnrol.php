@@ -71,6 +71,10 @@ class CourseEnrol extends MooshCommand
             } else {
                 $user = $DB->get_record('user', array('username' => $argument), '*', MUST_EXIST);
             }
+            if(!$user) {
+                cli_problem("User '$user' not found");
+                continue;
+            }
             $plugin->enrol_user($instance, $user->id, $role->id, $today, 0);
         }
     }

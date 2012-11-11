@@ -85,3 +85,24 @@ Example 1: Set the country of all the users to Poland
 Example 2: Count the number of rows is log table
 
     moosh sql-run "select count(*) from {log}"
+
+
+course-create
+-------------
+
+Create a new course(s).
+
+Example 1: Create 10 new courses using bash/zim expansion
+
+    moosh course-create newcourse{1..10}
+
+Example 2: Create new course
+    moosh course-create --category 1 --fullname "full course name" --description "course description"
+
+
+course-enrol
+-------------
+
+Enrol user(s) into a course id provided. First argument is a course ID, then put one or more user names. Use -i
+
+    moosh course-enrol 21 username1 username2

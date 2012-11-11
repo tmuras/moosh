@@ -28,9 +28,9 @@ class UserCreate extends MooshCommand
         require_once $CFG->dirroot . '/user/lib.php';
         unset($CFG->passwordpolicy);
 
-        $options = $this->expandedOptions;
         foreach ($this->arguments as $argument) {
             $this->expandOptionsManually(array($argument));
+            $options = $this->expandedOptions;
             $user = new stdClass();
             $user->password = $options['password'];
             $user->email = $options['email'];

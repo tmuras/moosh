@@ -218,6 +218,7 @@ class MooshCommand
         if(count($this->argumentNames) < $this->maxArguments) {
             echo " ...\n";
         }
+        echo "\n";
     }
 
     /**
