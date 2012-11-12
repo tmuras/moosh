@@ -9,10 +9,7 @@ class RoleDelete extends MooshCommand
         parent::__construct('delete', 'role');
 
         $this->addOption('i|id', 'use numerical id instead of short name');
-        $this->addOption('n|name:');
-        $this->addOption('d|description:');
-        $this->addOption('a|archetype:');
-        $this->addRequiredArgument('shortname');
+        $this->addRequiredArgument('role');
     }
 
     public function execute()
@@ -26,7 +23,7 @@ class RoleDelete extends MooshCommand
 
         //execute method
         //delete by id?
-        if (isset($options['id'])) {
+        if ($options['id']) {
             $role = $DB->get_record('role', array('id' => $arguments[0]));
             if (!$role) {
                 echo "Role with id '" . $arguments[0] . "' does not exist\n";

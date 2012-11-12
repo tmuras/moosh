@@ -97,12 +97,44 @@ Example 1: Create 10 new courses using bash/zim expansion
     moosh course-create newcourse{1..10}
 
 Example 2: Create new course
+
     moosh course-create --category 1 --fullname "full course name" --description "course description"
 
 
 course-enrol
--------------
+------------
 
-Enrol user(s) into a course id provided. First argument is a course ID, then put one or more user names. Use -i
+Enrol user(s) into a course id provided. First argument is a course ID, then put one or more user names.
+Use -i for providing username IDs.
+
+Example 1: Enroll username1 and username2 into course ID 21 as students.
 
     moosh course-enrol 21 username1 username2
+
+Example 2: Enroll user with id 21 into the course with id 31 as a non-editing teacher.
+
+    moosh course-enrol -r teacher -i 31 21
+
+
+role-create
+-----------
+
+Create new role, optionally provide description, archetype and name. Role id is returned.
+
+Example 1: Create role with short name "newstudentrole" a description, name an archetype
+
+    moosh role-create -d "Role description" -a student -n "Role name" newstudentrole
+
+
+role-delete
+-----------
+
+Delete role by ID or shortname.
+
+Example 1: Delete role "newstudentrole"
+
+    moosh role-delete newstudentrole
+
+Example 2: Delete role id 10.
+
+    moosh role-delete -i 10
