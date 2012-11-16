@@ -23,7 +23,7 @@ class UserList extends MooshCommand
 
     public function execute()
     {
-        global $CFG, $DB, $USER;
+        global $CFG, $USER;
 
         $USER->country = "PL";
         require_once($CFG->libdir.'/adminlib.php');

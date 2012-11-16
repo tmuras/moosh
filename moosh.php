@@ -25,7 +25,7 @@ use GetOptionKit\OptionSpecCollection;
 
 error_reporting(E_ALL);
 
-define('MOOSH_VERSION','0.1');
+define('MOOSH_VERSION', '0.2');
 
 $appspecs = new OptionSpecCollection;
 $spec_verbose = $appspecs->add('v|verbose', "be verbose");
@@ -42,14 +42,14 @@ $role_delete = new \RoleDelete();
 $sql_run = new \SqlRun();
 
 // subcommand stack
-$subcommands = array('user-create' => $user_create,'user-mod' => $user_mod,'user-list' => $user_list,
+$subcommands = array('user-create' => $user_create, 'user-mod' => $user_mod, 'user-list' => $user_list,
     'role-create' => $role_create, 'role-delete' => $role_delete,
-    'course-create' => $course_create,'course-enrol' => $course_enrol,
+    'course-create' => $course_create, 'course-enrol' => $course_enrol,
     'sql-run' => $sql_run,
 );
 
 $subcommand_specs = array();
-foreach($subcommands as $k=>$v) {
+foreach ($subcommands as $k => $v) {
     $subcommand_specs[$k] = $v->spec;
 }
 
@@ -120,7 +120,16 @@ if ($subcommand->isBootstraped()) {
     if ($app_options->has('moodle-path')) {
         require_once($app_options['moodle-path']->value . DIRECTORY_SEPARATOR . 'config.php');
     } else {
-        require_once('config.php');
+        //find config.php in current or higher level directories
+        if (file_exists('config.php')) {
+            require_once('config.php');
+        } elseif (file_exists('../config.php')) {
+            require_once('../config.php');
+        } elseif (file_exists('../../config.php')) {
+            require_once('../../config.php');
+        } elseif (file_exists('../../../config.php')) {
+            require_once('../../../config.php');
+        }
     }
     @error_reporting(E_ALL | E_STRICT);
     @ini_set('display_errors', '1');
