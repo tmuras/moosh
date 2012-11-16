@@ -5,6 +5,9 @@
  *      -i --id
  *      -r --role
  *      courseid username1 [<username2> ...]
+ *
+ * @copyright  2012 onwards Tomasz Muras
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class CourseEnrol extends MooshCommand
 {

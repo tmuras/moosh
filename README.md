@@ -2,6 +2,7 @@ Introduction
 ============
 
 Moosh stands for MOOdle SHell. It is a commandline tool that will allow you to perform most common Moodle tasks. It's inspired by Drush - a similar tool for Drupal.
+moosh is licenced under GNU GPL v3 or any later.
 
 I've created it when I realized how much time I waste each time I debug/test some Moodle issue and need to setup my environment.
 Here is for example how you can create 5 Moodle user accounts with moosh:

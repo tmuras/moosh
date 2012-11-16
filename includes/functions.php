@@ -1,7 +1,12 @@
 <?php
 /**
- * @license GPL v3
+ * moosh - Moodle Shell
+ *
+ * @copyright  2012 onwards Tomasz Muras
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+
 
 function home_dir()
 {

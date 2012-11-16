@@ -4,6 +4,8 @@
  *                   --city=<city> --country=<CN>
  *                   --firstname=<firstname> --lastname=<lastname>]
  *                   <username1> [<username2> ...]
+ * @copyright  2012 onwards Tomasz Muras
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class UserCreate extends MooshCommand
 {

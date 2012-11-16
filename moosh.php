@@ -1,9 +1,17 @@
 #!/usr/bin/env php
 <?php
+/**
+ * moosh - Moodle Shell
+ *
+ * @copyright  2012 onwards Tomasz Muras
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
 require_once 'lib/GetOptionKit/Init.php';
 require_once 'includes/MooshCommand.php';
 require_once 'commands/user/UserCreate.php';
 require_once 'commands/user/UserMod.php';
+require_once 'commands/user/UserList.php';
 require_once 'commands/sql/SqlRun.php';
 require_once 'commands/course/CourseCreate.php';
 require_once 'commands/course/CourseEnrol.php';
@@ -24,15 +32,17 @@ $spec_verbose = $appspecs->add('v|verbose', "be verbose");
 $spec_moodle_path = $appspecs->add('p|moodle-path:', "Moodle directory.");
 
 $user_create = new \UserCreate();
+$user_mod = new \UserMod();
+$user_list = new \UserList();
+
 $course_create = new \CourseCreate();
 $course_enrol = new \CourseEnrol();
 $role_create = new \RoleCreate();
 $role_delete = new \RoleDelete();
-$user_mod = new \UserMod();
 $sql_run = new \SqlRun();
 
 // subcommand stack
-$subcommands = array('user-create' => $user_create,'user-mod' => $user_mod,
+$subcommands = array('user-create' => $user_create,'user-mod' => $user_mod,'user-list' => $user_list,
     'role-create' => $role_create, 'role-delete' => $role_delete,
     'course-create' => $course_create,'course-enrol' => $course_enrol,
     'sql-run' => $sql_run,
