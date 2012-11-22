@@ -187,7 +187,7 @@ class MooshCommand
         $this->parsedOptions = $parsedOptions;
 
         //early detect if -h is given, display help and finish processing
-        if($this->parsedOptions->has('help')) {
+        if ($this->parsedOptions->has('help')) {
             $this->printOptions();
             die();
         }
@@ -214,16 +214,29 @@ class MooshCommand
         echo '*** ' . $this->getName() . " ***\n";
         echo "OPTIONS:\n";
         $this->spec->printOptions();
-        if(count($this->argumentNames)) {
-            echo "\n\nARGUMENTS:";
-            echo "\n\t";
+
+        echo $this->getArgumentsHelp();
+
+        echo "\n";
+    }
+
+    /**
+     * Can be overwritten by child classes to provide custom description.
+     */
+    protected function getArgumentsHelp()
+    {
+        if (!count($this->argumentNames)) {
+            return '';
         }
 
-        echo implode(' ', $this->argumentNames);
-        if(count($this->argumentNames) < $this->maxArguments) {
-            echo " ...\n";
+        $ret = "\n\nARGUMENTS:";
+        $ret .= "\n\t";
+
+        $ret .= implode(' ', $this->argumentNames);
+        if (count($this->argumentNames) < $this->maxArguments) {
+            $ret .= " ...\n";
         }
-        echo "\n";
+        return $ret;
     }
 
     /**

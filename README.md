@@ -73,6 +73,16 @@ Example 4: update all users
     moosh user-mod --email my@email.com --password newpwd --auth manual --all
 
 
+user-list
+--------
+
+List user accounts.
+
+Example 1: list 10 user accounts
+
+    moosh user-list -n 10
+
+
 sql-run
 -------
 
@@ -139,3 +149,53 @@ Example 1: Delete role "newstudentrole"
 Example 2: Delete role id 10.
 
     moosh role-delete -i 10
+
+
+config-plugins
+--------------
+
+Shows all plugins that have at least one entry in the config_plugins table. Optionally provide an argument to match plugin name.
+
+Example 1: Show all plugins from config_plugins table.
+
+    moosh config-plugins
+
+Example 2: Show all themes that have some settings.
+
+    moosh config-plugins theme_
+
+
+config-get
+----------
+
+Get config variable from config or config_plugins table. The syntax is based on get_config($plugin,$name) API function. Both arguments are optional.
+
+Example 1: Show all core config variables.
+
+    moosh config-get
+
+Example 2: Show all config variables for "user"
+
+    moosh config-get user
+
+Example 3: Show core setting "dirroot"
+
+    moosh config-get core dirroot
+
+
+config-set
+----------
+
+Set config variable. The syntax of the command is based on the set_config() Moodle API:
+
+    moosh config-set name value <plugin>
+
+If third argument (plugin) is not provided then the variable is set in the core Moodle configuration table.
+
+Example 1: Enable debug.
+
+    moosh config-set debug 32767
+
+Example 2: Set URL to logo for Sky High theme.
+
+    moosh config-set logo http://example.com/logo.png theme_sky_high

@@ -17,6 +17,10 @@ require_once 'commands/course/CourseCreate.php';
 require_once 'commands/course/CourseEnrol.php';
 require_once 'commands/role/RoleCreate.php';
 require_once 'commands/role/RoleDelete.php';
+require_once 'commands/config/ConfigGet.php';
+require_once 'commands/config/ConfigSet.php';
+require_once 'commands/config/ConfigPlugins.php';
+
 require_once 'includes/functions.php';
 require_once 'includes/default_options.php';
 
@@ -37,15 +41,23 @@ $user_list = new \UserList();
 
 $course_create = new \CourseCreate();
 $course_enrol = new \CourseEnrol();
+
 $role_create = new \RoleCreate();
 $role_delete = new \RoleDelete();
+
 $sql_run = new \SqlRun();
+
+$config_get = new \ConfigGet();
+$config_set = new \ConfigSet();
+$config_plugins = new \ConfigPlugins();
+
 
 // subcommand stack
 $subcommands = array('user-create' => $user_create, 'user-mod' => $user_mod, 'user-list' => $user_list,
     'role-create' => $role_create, 'role-delete' => $role_delete,
     'course-create' => $course_create, 'course-enrol' => $course_enrol,
     'sql-run' => $sql_run,
+    'config-get' => $config_get,'config-set' => $config_set,'config-plugins' => $config_plugins
 );
 
 $subcommand_specs = array();
