@@ -11,7 +11,9 @@ class ConfigSet extends MooshCommand
     public function __construct()
     {
         parent::__construct('set', 'config');
-        $this->addOption('d|delete', 'delete instead of setting');
+
+        //@TODO implement
+        $this->addOption('d|delete', 'delete instead of setting (not implemented yet)');
 
         $this->addRequiredArgument('name');
         $this->addRequiredArgument('value');

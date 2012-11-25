@@ -199,3 +199,20 @@ Example 1: Enable debug.
 Example 2: Set URL to logo for Sky High theme.
 
     moosh config-set logo http://example.com/logo.png theme_sky_high
+
+
+file-list
+---------
+
+Search and list files from mdl_files table. The argument should be a valid SQL WHERE statement. Interesting columns of possible search criterias are:
+contextid, component, filearea, itemid, filepath, filename, userid, filesize, mimetype, status, timecreated, timemodified.
+
+The output will contain some defaults or nearly all possible file information if "-a|--all" flag is provided. The meaning of the flags column is (in order):
+
+ * mdl_files.status
+ * lowercase letter "d" if entry is a dicrectory
+ * "e" if external file
+ * "i" if a valid image
+ * "m" if time created and time modified differ
+
+With "-i" option only IDs are returned. This can be used when pipe-ing into other file-related commands.
