@@ -13,7 +13,7 @@ class RoleDelete extends MooshCommand
         parent::__construct('delete', 'role');
 
         $this->addOption('i|id', 'use numerical id instead of short name');
-        $this->addRequiredArgument('role');
+        $this->addArgument('role');
     }
 
     public function execute()

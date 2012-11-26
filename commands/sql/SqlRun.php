@@ -12,7 +12,7 @@ class SqlRun extends MooshCommand
     {
         parent::__construct('run', 'sql');
 
-        $this->addRequiredArgument('sql');
+        $this->addArgument('sql');
 
     }
 

@@ -15,7 +15,7 @@ class RoleCreate extends MooshCommand
         $this->addOption('n|name:');
         $this->addOption('d|description:');
         $this->addOption('a|archetype:');
-        $this->addRequiredArgument('shortname');
+        $this->addArgument('shortname');
     }
 
     public function execute()

@@ -30,7 +30,7 @@ timecreated
 timemodified
 */
 
-        $this->addRequiredArgument('expression');
+        $this->addArgument('expression');
   //      $this->maxArguments = 3;
     }
 

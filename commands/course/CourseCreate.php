@@ -18,7 +18,7 @@ class CourseCreate extends MooshCommand
         $this->addOption('F|format:', 'format');
         $this->addOption('v|visible:', 'visible');
 
-        $this->addRequiredArgument('shortname');
+        $this->addArgument('shortname');
 
         $this->maxArguments = 255;
     }

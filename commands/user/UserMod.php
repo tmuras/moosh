@@ -20,7 +20,7 @@ class UserMod extends MooshCommand
         $this->addOption('p|password:', 'password');
         $this->addOption('e|email:','email address');
 
-        $this->addRequiredArgument('user');
+        $this->addArgument('user');
         $this->minArguments = 0;
         $this->maxArguments = 255;
     }

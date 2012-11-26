@@ -74,7 +74,7 @@ class MooshCommand
      * Define required argument. Call function again to add another argument.
      * @param string $name
      */
-    public function addRequiredArgument($name)
+    public function addArgument($name)
     {
         $this->argumentNames[] = $name;
         $this->minArguments++;

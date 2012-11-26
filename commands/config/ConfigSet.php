@@ -15,8 +15,8 @@ class ConfigSet extends MooshCommand
         //@TODO implement
         $this->addOption('d|delete', 'delete instead of setting (not implemented yet)');
 
-        $this->addRequiredArgument('name');
-        $this->addRequiredArgument('value');
+        $this->addArgument('name');
+        $this->addArgument('value');
         //$this->minArguments = 1;
         $this->maxArguments = 3;
     }

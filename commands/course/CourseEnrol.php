@@ -22,8 +22,8 @@ class CourseEnrol extends MooshCommand
         //startdate
         //recovergrades
 
-        $this->addRequiredArgument('courseid');
-        $this->addRequiredArgument('username');
+        $this->addArgument('courseid');
+        $this->addArgument('username');
         $this->maxArguments = 255;
     }
 

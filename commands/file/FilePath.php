@@ -12,7 +12,7 @@ class FilePath extends MooshCommand
     {
         parent::__construct('path', 'file');
 
-        $this->addRequiredArgument('id_or_hash');
+        $this->addArgument('id_or_hash');
         $this->minArguments = 0;
         $this->maxArguments = 255;
         $this->addOption('s|stdin', 'read list of file IDs from standard input');
