@@ -22,6 +22,7 @@ require_once 'commands/config/ConfigSet.php';
 require_once 'commands/config/ConfigPlugins.php';
 require_once 'commands/file/FileList.php';
 require_once 'commands/file/FileDelete.php';
+require_once 'commands/file/FilePath.php';
 
 require_once 'includes/functions.php';
 require_once 'includes/default_options.php';
@@ -55,6 +56,7 @@ $config_plugins = new \ConfigPlugins();
 
 $file_list = new \FileList();
 $file_delete = new \FileDelete();
+$file_path = new \FilePath();
 
 
 // subcommand stack
@@ -63,7 +65,7 @@ $subcommands = array('user-create' => $user_create, 'user-mod' => $user_mod, 'us
     'course-create' => $course_create, 'course-enrol' => $course_enrol,
     'sql-run' => $sql_run,
     'config-get' => $config_get,'config-set' => $config_set,'config-plugins' => $config_plugins,
-    'file-list' => $file_list, 'file-delete' => $file_delete,
+    'file-list' => $file_list, 'file-delete' => $file_delete, 'file-path' => $file_path,
 );
 
 $subcommand_specs = array();

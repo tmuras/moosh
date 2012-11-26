@@ -216,3 +216,7 @@ The output will contain some defaults or nearly all possible file information if
  * "m" if time created and time modified differ
 
 With "-i" option only IDs are returned. This can be used when pipe-ing into other file-related commands.
+
+
+file-delete
+-----------

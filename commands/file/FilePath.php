@@ -13,6 +13,9 @@ class FilePath extends MooshCommand
         parent::__construct('path', 'file');
 
         $this->addRequiredArgument('id_or_hash');
+        $this->minArguments = 0;
+        $this->maxArguments = 255;
+        $this->addOption('s|stdin', 'read list of file IDs from standard input');
 
     }
 
@@ -20,15 +23,35 @@ class FilePath extends MooshCommand
     {
         global $CFG, $DB;
 
-        $id = trim($this->arguments[0]);
+        if ($this->expandedOptions['stdin']) {
+            while ($line = fgets(STDIN)) {
+                $this->printFile($line);
+            }
+        } else {
+            foreach ($this->arguments as $argument) {
+                $this->printFile($argument);
+            }
+        }
+
+    }
+
+    private function printFile($arg) {
+        global $CFG;
+
+        $id = trim($arg);
         if (strlen($id) == 40) {
             //this is file hash
             $hash = $id;
         } else {
             $fs = get_file_storage();
             $file = $fs->get_file_by_id($id);
+            if(!$file) {
+                echo "File '$id' not found\n";
+                return;
+            }
+            $hash = $file->get_contenthash();
         }
-        
+
         if (isset($CFG->filedir)) {
             $filedir = $CFG->filedir;
         } else {
@@ -36,8 +59,8 @@ class FilePath extends MooshCommand
         }
         $l1 = $hash[0].$hash[1];
         $l2 = $hash[2].$hash[3];
-        return "$this->filedir/$l1/$l2";
-    }
 
+        echo "$filedir/$l1/$l2/$hash\n";
+    }
 }
 

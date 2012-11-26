@@ -18,7 +18,8 @@ class FileDelete extends MooshCommand
         $this->addOption('s|stdin', 'read list of file IDs from standard input');
         $this->addOption('f|flush', 'delete trashdir directory');
 
-//        $this->addRequiredArgument('name');
+        $this->addRequiredArgument('name');
+        $this->minArguments = 255;
         $this->maxArguments = 255;
     }
 
@@ -44,7 +45,6 @@ class FileDelete extends MooshCommand
             foreach ($this->arguments as $argument) {
                 $this->fileDelete($argument);
             }
-
         }
     }
 
