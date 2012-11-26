@@ -18,8 +18,8 @@ class FileDelete extends MooshCommand
         $this->addOption('s|stdin', 'read list of file IDs from standard input');
         $this->addOption('f|flush', 'delete trashdir directory');
 
-        $this->addArgument('name');
-        $this->minArguments = 255;
+        $this->addArgument('file_id');
+        $this->minArguments = 0;
         $this->maxArguments = 255;
     }
 
@@ -33,6 +33,7 @@ class FileDelete extends MooshCommand
             } else {
                 $trashdir = $CFG->dataroot.'/trashdir';
             }
+            require_once ($CFG->libdir . '/filelib.php');
             fulldelete($trashdir);
             exit(0);
         }

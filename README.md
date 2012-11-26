@@ -218,5 +218,47 @@ The output will contain some defaults or nearly all possible file information if
 With "-i" option only IDs are returned. This can be used when pipe-ing into other file-related commands.
 
 
+Example 1: Show all legacy files for a course, which context id is 15
+
+    moosh file-list "contextid=15 AND component='course' AND filearea='legacy'"
+
+Example 2: Display full information on file with ID 17
+
+    moosh file-list -a id=162
+
+
 file-delete
 -----------
+
+Delete Moodle files from DB and possibly move them to trash. File IDs can be provided as arguments or on the standard input (with moosh file-delete -s).
+--flush option will remove the trashcan directory.
+
+Example 1: Remove files with IDs 10,20 and 30.
+
+    moosh file-delete 10 20 30
+
+Example 2: Remove all files with size greater than 100 bytes
+
+    moosh file-list -i 'filesize>1000' | moosh file-delete -s
+
+Example 3: Flush trashcan
+
+    moosh file-delete --flush
+
+
+file-path
+---------
+
+Show full path in the filesystem to a Moodle file. Files can be identified by ID or hash (auto-detected) as arguments or on stdin (-s option).
+
+Example 1: Show path to a file with contenthash da39a3ee5e6b4b0d3255bfef95601890afd80709
+
+    moosh file-path da39a3ee5e6b4b0d3255bfef95601890afd80709
+
+Example 2: Show paths to files with ID bewteen 100 and 200
+
+    moosh file-list -i 'id>100 AND id<200' | moosh file-path -s
+
+Example 3: Like above but with no duplicates
+
+    moosh file-list -i 'id>100 AND id<200' | moosh file-path -s | sort | uniq
