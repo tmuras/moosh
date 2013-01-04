@@ -1,0 +1,5 @@
+{
+  "require": {
+    "c9s/GetOptionKit": "dev-master"
+  }
+}
