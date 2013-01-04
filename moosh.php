@@ -7,7 +7,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once 'vendor/c9s/GetOptionKit/src/GetOptionKit/Init.php';
+require 'vendor/autoload.php';
 require_once 'includes/MooshCommand.php';
 require_once 'commands/user/UserCreate.php';
 require_once 'commands/user/UserMod.php';
