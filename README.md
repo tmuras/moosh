@@ -14,9 +14,7 @@ Here is for example how you can create 5 Moodle user accounts with moosh:
 Installation
 ============
 
-Clone moosh github repository:
-
-    git clone git@github.com:tmuras/moosh.git
+Download moosh package from Moodle: https://moodle.org/plugins/view.php?id=522 and unpack.
 
 Link to a location that is set in your $PATH, eg:
 
