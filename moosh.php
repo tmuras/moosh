@@ -9,20 +9,15 @@
 
 require 'vendor/autoload.php';
 require_once 'includes/MooshCommand.php';
-require_once 'commands/user/UserCreate.php';
-require_once 'commands/user/UserMod.php';
-require_once 'commands/user/UserList.php';
-require_once 'commands/sql/SqlRun.php';
-require_once 'commands/course/CourseCreate.php';
-require_once 'commands/course/CourseEnrol.php';
-require_once 'commands/role/RoleCreate.php';
-require_once 'commands/role/RoleDelete.php';
-require_once 'commands/config/ConfigGet.php';
-require_once 'commands/config/ConfigSet.php';
-require_once 'commands/config/ConfigPlugins.php';
-require_once 'commands/file/FileList.php';
-require_once 'commands/file/FileDelete.php';
-require_once 'commands/file/FilePath.php';
+
+//load all commands
+$all_commands = array();
+foreach (glob(__DIR__ . '/commands/*', GLOB_ONLYDIR) as $dir) {
+    foreach (glob("$dir/*php") as $file) {
+        $all_commands[] = substr(basename($file), 0, -4);
+        require_once($file);
+    }
+}
 
 require_once 'includes/functions.php';
 require_once 'includes/default_options.php';
@@ -32,41 +27,18 @@ use GetOptionKit\OptionSpecCollection;
 
 error_reporting(E_ALL);
 
-define('MOOSH_VERSION', '0.3');
+define('MOOSH_VERSION', '0.4');
 
 $appspecs = new OptionSpecCollection;
 $spec_verbose = $appspecs->add('v|verbose', "be verbose");
 $spec_moodle_path = $appspecs->add('p|moodle-path:', "Moodle directory.");
 
-$user_create = new \UserCreate();
-$user_mod = new \UserMod();
-$user_list = new \UserList();
-
-$course_create = new \CourseCreate();
-$course_enrol = new \CourseEnrol();
-
-$role_create = new \RoleCreate();
-$role_delete = new \RoleDelete();
-
-$sql_run = new \SqlRun();
-
-$config_get = new \ConfigGet();
-$config_set = new \ConfigSet();
-$config_plugins = new \ConfigPlugins();
-
-$file_list = new \FileList();
-$file_delete = new \FileDelete();
-$file_path = new \FilePath();
-
-
-// subcommand stack
-$subcommands = array('user-create' => $user_create, 'user-mod' => $user_mod, 'user-list' => $user_list,
-    'role-create' => $role_create, 'role-delete' => $role_delete,
-    'course-create' => $course_create, 'course-enrol' => $course_enrol,
-    'sql-run' => $sql_run,
-    'config-get' => $config_get,'config-set' => $config_set,'config-plugins' => $config_plugins,
-    'file-list' => $file_list, 'file-delete' => $file_delete, 'file-path' => $file_path,
-);
+$all_objects = array();
+$subcommands = array();
+foreach($all_commands as $command) {
+    $object = new $command();
+    $subcommands[$object->getName()] = $object;
+}
 
 $subcommand_specs = array();
 foreach ($subcommands as $k => $v) {

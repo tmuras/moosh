@@ -38,7 +38,7 @@ Link to a location that is set in your $PATH, eg:
 
 Or system-wide:
 
-    sudo ln -s $PWD/moosh/moosh.php /usr/local/bin/moosh
+    sudo ln -s $PWD/moosh.php /usr/local/bin/moosh
 
 
 Commands
