@@ -11,6 +11,11 @@ Here is for example how you can create 5 Moodle user accounts with moosh:
     moosh user-create user_{1..5}
 
 
+Requirements
+============
+
+PHP 5.3+, Moodle 2.3 or 2.4.
+
 Installation
 ============
 
@@ -276,3 +281,27 @@ Example 2: Show paths to files with ID bewteen 100 and 200
 Example 3: Like above but with no duplicates
 
     moosh file-list -i 'id>100 AND id<200' | moosh file-path -s | sort | uniq
+
+
+clear-cache
+-----------
+
+The same as "purge all caches" page.
+
+    moosh clear-cache
+
+
+debug-on
+--------
+
+Turns on full debug - all the options in debugging section of the settings plus enables theme designer mode.
+
+    moosh debug-on
+
+
+debug-off
+--------
+
+Turns off full debug and disables theme designer mode.
+
+    moosh debug-off
