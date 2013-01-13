@@ -7,7 +7,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+$cwd = getcwd();
+
 require 'vendor/autoload.php';
+
+$options = array('debug' => true, 'optimizations' => 0);
+
 require_once 'includes/MooshCommand.php';
 
 //load all commands
@@ -35,7 +40,7 @@ $spec_moodle_path = $appspecs->add('p|moodle-path:', "Moodle directory.");
 
 $all_objects = array();
 $subcommands = array();
-foreach($all_commands as $command) {
+foreach ($all_commands as $command) {
     $object = new $command();
     $subcommands[$object->getName()] = $object;
 }
@@ -111,18 +116,26 @@ if ($subcommand->isBootstraped()) {
     define('CLI_SCRIPT', true);
     if ($app_options->has('moodle-path')) {
         require_once($app_options['moodle-path']->value . DIRECTORY_SEPARATOR . 'config.php');
+        $top_dir = $app_options['moodle-path']->value;
     } else {
         //find config.php in current or higher level directories
-        if (file_exists('config.php')) {
-            require_once('config.php');
-        } elseif (file_exists('../config.php')) {
-            require_once('../config.php');
-        } elseif (file_exists('../../config.php')) {
-            require_once('../../config.php');
-        } elseif (file_exists('../../../config.php')) {
-            require_once('../../../config.php');
+        $top_dir = find_top_moodle_dir($cwd);
+        if (!$top_dir) {
+            echo "Could not find Moodle installation!\n";
+            exit(1);
         }
+        require_once($top_dir . '/config.php');
     }
+    //gather more info based on the directory where moosh was run
+    $relativ_dir = substr($cwd, strlen($top_dir));
+    $relativ_dir = trim($relativ_dir, '/');
+    if ($app_options->has('verbose')) {
+        echo "Top Moodle dir: $top_dir\n";
+        echo "Current working dir: " . $cwd . "\n";
+        echo "Relative Moodle dir: $relativ_dir\n";
+    }
+    $plugin_info = detect_plugin($relativ_dir);
+
     @error_reporting(E_ALL | E_STRICT);
     @ini_set('display_errors', '1');
     $CFG->debug = (E_ALL | E_STRICT);
@@ -132,6 +145,9 @@ if ($subcommand->isBootstraped()) {
 if ($app_options->has('verbose')) {
     $subcommand->verbose = true;
 }
+
+$subcommand->setPluginInfo($plugin_info);
+$subcommand->cwd = $cwd;
 
 //process the arguments
 $subcommand->processOptions($options);

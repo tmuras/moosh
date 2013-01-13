@@ -50,12 +50,20 @@ class MooshCommand
     public $finalOptions = array();
 
     /**
+     * Possible information on plugin in a current directory.
+     * @var array
+     */
+    protected $pluginInfo;
+
+    /**
      * After expanding
      * @var array
      */
     public $expandedOptions = array();
 
     public $verbose = false;
+
+    public $cwd;
 
     public function __construct($name, $group = NULL)
     {
@@ -65,9 +73,18 @@ class MooshCommand
         $this->group = $group;
     }
 
+    public function setPluginInfo($pluginInfo)
+    {
+        $this->pluginInfo = $pluginInfo;
+    }
+
     public function getName()
     {
-        return $this->group . '-' . $this->name;
+        if ($this->group) {
+            return $this->group . '-' . $this->name;
+        } else {
+            return $this->name;
+        }
     }
 
     /**

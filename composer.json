@@ -1,5 +1,6 @@
 {
   "require": {
-    "c9s/GetOptionKit": "dev-master"
+    "c9s/GetOptionKit": "dev-master",
+    "twig/twig": "dev-master"
   }
 }

@@ -1,0 +1,30 @@
+<?php
+
+{% include "global_header.twig" %}
+
+/**
+ * Moodle form
+ *
+ * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
+ * @copyright
+ * @package
+ * @subpackage
+ * @author
+ */
+
+defined('MOODLE_INTERNAL') || die();
+
+require_once($CFG->libdir . '/formslib.php');
+
+class {{ formName }}_form extends moodleform {
+
+  // Define the form
+  function definition() {
+    global $USER, $CFG, $COURSE;
+
+    $mform = $this->_form;
+    $userid = $USER->id;
+
+    $this->add_action_buttons();
+  }
+}
