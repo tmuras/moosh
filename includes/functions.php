@@ -13,56 +13,60 @@
  */
 function detect_plugin($dir) {
     $templates = array(
-        'qtype' => '|question/type/([^/]+)|',
-        'qbehaviour' => '|question/behaviour/([^/]+)|',
-        'qformat' => '|question/format/([^/]+)|',
-        'filter' => '|filter/([^/]+)|',
-        'enrol' => '|enrol/([^/]+)|',
-        'auth' => '|auth/([^/]+)|',
-        'message' => '|message/output/([^/]+)|',
-        'editor' => '|lib/editor/([^/]+)|',
-        'format' => '|course/format/([^/]+)|',
-        'profilefield' => '|user/profile/field/([^/]+)|',
-        'report' => '|report/([^/]+)|',
-        'coursereport' => '|course/report/([^/]+)|',
-        'gradeexport' => '|grade/export/([^/]+)|',
-        'gradeimport' => '|grade/import/([^/]+)|',
-        'gradereport' => '|grade/report/([^/]+)|',
-        'gradingform' => '|grade/grading/form/([^/]+)|',
-        'mnetservice' => '|mnet/service/([^/]+)|',
-        'webservice' => '|webservice/([^/]+)|',
-        'repository' => '|repository/([^/]+)|',
-        'portfolio' => '|portfolio/([^/]+)|',
-        'plagiarism' => '|plagiarism/([^/]+)|',
-        'tool' => '|admin/tool/([^/]+)|',
-        'cachestore' => '|cache/stores/([^/]+)|',
-        'cachelock' => '|cache/locks/([^/]+)|',
-        'theme' => '|theme/([^/]+)|',
-        'assignsubmission' => '|mod/assign/submission/([^/]+)|',
-        'assignfeedback' => '|mod/assign/feedback/([^/]+)|',
-        'assignment' => '|mod/assignment/type/([^/]+)|',
-        'booktool' => '|mod/book/tool/([^/]+)|',
-        'datafield' => '|mod/data/field/([^/]+)|',
-        'datapreset' => '|mod/data/preset/([^/]+)|',
-        'quiz' => '|mod/quiz/report/([^/]+)|',
-        'quizaccess' => '|mod/quiz/accessrule/([^/]+)|',
-        'scormreport' => '|mod/scorm/report/([^/]+)|',
-        'workshopform' => '|mod/workshop/form/([^/]+)|',
-        'workshopallocation' => '|mod/workshop/allocation/([^/]+)|',
-        'workshopeval' => '|mod/workshop/eval/([^/]+)|',
-        'tinymce' => '|lib/editor/tinymce/plugins/moodlemedia/([^/]+)|',
-        'mod' => '|mod/([^/]+)|',
-        'block' => '|blocks/([^/]+)|',
+        'qtype' => array('dir'=>'question/type'),
+        'qbehaviour' => array('dir'=>'question/behaviour'),
+        'qformat' => array('dir'=>'question/format'),
+        'filter' => array('dir'=>'filter'),
+        'enrol' => array('dir'=>'enrol'),
+        'auth' => array('dir'=>'auth'),
+        'message' => array('dir'=>'message/output'),
+        'editor' => array('dir'=>'lib/editor'),
+        'format' => array('dir'=>'course/format'),
+        'profilefield' => array('dir'=>'user/profile/field'),
+        'report' => array('dir'=>'report'),
+        'coursereport' => array('dir'=>'course/report'),
+        'gradeexport' => array('dir'=>'grade/export'),
+        'gradeimport' => array('dir'=>'grade/import'),
+        'gradereport' => array('dir'=>'grade/report'),
+        'gradingform' => array('dir'=>'grade/grading/form'),
+        'mnetservice' => array('dir'=>'mnet/service'),
+        'webservice' => array('dir'=>'webservice'),
+        'repository' => array('dir'=>'repository'),
+        'portfolio' => array('dir'=>'portfolio'),
+        'plagiarism' => array('dir'=>'plagiarism'),
+        'tool' => array('dir'=>'admin/tool'),
+        'cachestore' => array('dir'=>'cache/stores'),
+        'cachelock' => array('dir'=>'cache/locks'),
+        'theme' => array('dir'=>'theme'),
+        'assignsubmission' => array('dir'=>'mod/assign/submission'),
+        'assignfeedback' => array('dir'=>'mod/assign/feedback'),
+        'assignment' => array('dir'=>'mod/assignment/type'),
+        'booktool' => array('dir'=>'mod/book/tool'),
+        'datafield' => array('dir'=>'mod/data/field'),
+        'datapreset' => array('dir'=>'mod/data/preset'),
+        'quiz' => array('dir'=>'mod/quiz/report'),
+        'quizaccess' => array('dir'=>'mod/quiz/accessrule'),
+        'scormreport' => array('dir'=>'mod/scorm/report'),
+        'workshopform' => array('dir'=>'mod/workshop/form'),
+        'workshopallocation' => array('dir'=>'mod/workshop/allocation'),
+        'workshopeval' => array('dir'=>'mod/workshop/eval'),
+        'tinymce' => array('dir'=>'lib/editor/tinymce/plugins/moodlemedia'),
+        'mod' => array('dir'=>'mod'),
+        'block' => array('dir'=>'blocks'),
     );
+
+    foreach($templates as $key => $value) {
+        $templates[$key]['regex'] = '|' .$templates[$key]['dir'].'/([^/]+)|';
+    }
 
     foreach($templates as $name => $template) {
         $matches = null;
-        if(preg_match($template,$dir,$matches)) {
-            return array ('type'=>$name, 'name'=>$matches[1]);
+        if(preg_match($template['regex'],$dir,$matches)) {
+            return array ('dir'=>$template['dir'],'type'=>$name, 'name'=>$matches[1]);
         }
     }
 
-    return array ('type'=>'unknown', 'name'=>'unknown');
+    return array ('dir'=>'unknown', 'type'=>'unknown', 'name'=>'unknown');
 }
 
 /**
@@ -133,4 +137,23 @@ function cli_error($text, $errorcode=1) {
     fwrite(STDERR, $text);
     fwrite(STDERR, "\n");
     die($errorcode);
+}
+
+function array_merge_recursive_distinct ( array &$array1, array &$array2 )
+{
+    $merged = $array1;
+
+    foreach ( $array2 as $key => &$value )
+    {
+        if ( is_array ( $value ) && isset ( $merged [$key] ) && is_array ( $merged [$key] ) )
+        {
+            $merged [$key] = array_merge_recursive_distinct ( $merged [$key], $value );
+        }
+        else
+        {
+            $merged [$key] = $value;
+        }
+    }
+
+    return $merged;
 }

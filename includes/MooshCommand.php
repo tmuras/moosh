@@ -56,6 +56,12 @@ class MooshCommand
     protected $pluginInfo;
 
     /**
+     * Temporary session information.
+     * @var array
+     */
+    protected $session;
+
+    /**
      * After expanding
      * @var array
      */
@@ -63,7 +69,35 @@ class MooshCommand
 
     public $verbose = false;
 
+    /**
+     * Current working directory
+     * @var string
+     */
     public $cwd;
+
+    /**
+     * Directory relative to the current Moodle root dir.
+     * @var string
+     */
+    public $relativeDir;
+
+    /**
+     * Top Moodle installation directory.
+     * @var string
+     */
+    public $topDir;
+
+    /**
+     * moosh installation directory.
+     * @var string
+     */
+    public $mooshDir;
+
+    /**
+     * Default global options
+     * @var array
+     */
+    public $defaults;
 
     public function __construct($name, $group = NULL)
     {
@@ -111,7 +145,7 @@ class MooshCommand
     {
         foreach ($this->options as $k => $default) {
             if ($this->verbose) {
-                echo "Processing option '$k''\n";
+                echo "Processing command option '$k''\n";
             }
 
             $compiled_options[$k] = $default;
@@ -265,4 +299,26 @@ class MooshCommand
         return true;
     }
 
+    /**
+     * Loads temporary session information from the temp file.
+     */
+    protected function loadSession()
+    {
+        $tmpFile = $this->defaults['global']['tmpfile'];
+        if(!file_exists($tmpFile)) {
+            $this->session =  array();
+        } else {
+            $this->session = unserialize(file_get_contents($tmpFile));
+        }
+        return $this->session;
+    }
+
+    /**
+     * Saves session information to the temp file.
+     */
+    protected function saveSession()
+    {
+        $tmpFile = $this->defaults['global']['tmpfile'];
+        file_put_contents($tmpFile,serialize($this->session));
+    }
 }

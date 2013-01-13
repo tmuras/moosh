@@ -19,6 +19,9 @@ class GenerateForm extends MooshCommand
 
     public function execute()
     {
+        //command may need to store some information in-between runs
+        $this->loadSession();
+
         $loader = new Twig_Loader_Filesystem(__DIR__ . '/../../templates');
         $twig = new Twig_Environment($loader);
 
@@ -31,15 +34,24 @@ class GenerateForm extends MooshCommand
         $fileName = $this->arguments[0] . '_form.php';
         $filePath = $this->cwd . '/' .$fileName;
 
+        //save the information for the next code generation run
+        if(!isset($this->session['generator.last-file'])) {
+            $this->session['generator.last-file'] = array();
+        }
+        $this->session['generator.last-file'][$this->cwd] = $fileName;
+
         $content = $twig->render('form.twig', array('formName' => $formName));
         if (file_exists($filePath)) {
             cli_problem("File $fileName exists");
             echo $content;
-            exit(0);
+            echo "\n---------------------\n";
         } else {
             file_put_contents($filePath, $content);
         }
 
         //also generate a client code
+        echo $twig->render('form_client.twig', array('formName' => $formName,'formRelativePath'=> $this->relativeDir));
+
+        $this->saveSession();
     }
 }

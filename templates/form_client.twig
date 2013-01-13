@@ -1,7 +1,7 @@
-require_once($CFG->dirroot . '/{{ $formRelativePath }}');
+require_once($CFG->dirroot . '/{{ formRelativePath }}');
 
 /** */
-$mform = new {{ $formName }}_form();
+$mform = new {{ formName }}_form();
 
 if ($mform->is_cancelled()) {
   // form cancelled, redirect

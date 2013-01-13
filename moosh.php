@@ -8,6 +8,7 @@
  */
 
 $cwd = getcwd();
+$moosh_dir = __DIR__;
 
 require 'vendor/autoload.php';
 
@@ -32,7 +33,7 @@ use GetOptionKit\OptionSpecCollection;
 
 error_reporting(E_ALL);
 
-define('MOOSH_VERSION', '0.4');
+define('MOOSH_VERSION', '0.5');
 
 $appspecs = new OptionSpecCollection;
 $spec_verbose = $appspecs->add('v|verbose', "be verbose");
@@ -89,17 +90,16 @@ if (file_exists(home_dir() . DIRECTORY_SEPARATOR . ".mooshrc.php")) {
     $moodlerc = "/etc/moosh/mooshrc.php";
 } elseif (file_exists(home_dir() . DIRECTORY_SEPARATOR . "mooshrc.php")) {
     $moodlerc = home_dir() . DIRECTORY_SEPARATOR . "mooshrc.php";
-} else {
-    require_once('includes/default_options.php');
 }
 
 $options = NULL;
 if ($moodlerc) {
     if (isset($app_options['verbose'])) {
-        echo "Using '$moodlerc' as moosh runtime configuration file\n'";
+        echo "Using '$moodlerc' as moosh runtime configuration file\n";
     }
+    $options = array();
     require($moodlerc);
-    $options = array_merge($defaultOptions, $options);
+    $options = array_merge_recursive_distinct($defaultOptions, $options);
 } else {
     $options = $defaultOptions;
 }
@@ -127,14 +127,14 @@ if ($subcommand->isBootstraped()) {
         require_once($top_dir . '/config.php');
     }
     //gather more info based on the directory where moosh was run
-    $relativ_dir = substr($cwd, strlen($top_dir));
-    $relativ_dir = trim($relativ_dir, '/');
+    $relative_dir = substr($cwd, strlen($top_dir));
+    $relative_dir = trim($relative_dir, '/');
     if ($app_options->has('verbose')) {
         echo "Top Moodle dir: $top_dir\n";
         echo "Current working dir: " . $cwd . "\n";
-        echo "Relative Moodle dir: $relativ_dir\n";
+        echo "Relative Moodle dir: $relative_dir\n";
     }
-    $plugin_info = detect_plugin($relativ_dir);
+    $plugin_info = detect_plugin($relative_dir);
 
     @error_reporting(E_ALL | E_STRICT);
     @ini_set('display_errors', '1');
@@ -148,6 +148,10 @@ if ($app_options->has('verbose')) {
 
 $subcommand->setPluginInfo($plugin_info);
 $subcommand->cwd = $cwd;
+$subcommand->topDir = $top_dir;
+$subcommand->mooshDir = $moosh_dir;
+$subcommand->relativeDir = $relative_dir;
+$subcommand->defaults = $options;
 
 //process the arguments
 $subcommand->processOptions($options);
