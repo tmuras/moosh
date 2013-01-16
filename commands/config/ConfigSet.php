@@ -40,4 +40,9 @@ class ConfigSet extends MooshCommand
         }
         echo "New value: " . get_config($plugin,$name) . "\n";
     }
+
+    protected function getArgumentsHelp()
+    {
+      return "\n\nARGUMENTS:\n\tname value [plugin]\n";
+    }
 }

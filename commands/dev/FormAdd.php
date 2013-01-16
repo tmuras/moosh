@@ -16,15 +16,11 @@ class FormAdd extends MooshCommand
 
         $this->addArgument('type');
         $this->addArgument('name');
-        $this->maxArguments = 255;
+        //$this->maxArguments = 255;
     }
 
     public function execute()
     {
-        //command may need to store some information in-between runs
-        $this->loadSession();
-
-        //replace /** MOOSH AUTO-GENERATED */ with new code
 
         $loader = new Twig_Loader_Filesystem(__DIR__ . '/../../templates');
         $twig = new Twig_Environment($loader,array('debug' => true));
@@ -42,25 +38,20 @@ class FormAdd extends MooshCommand
             $langCategory = $this->pluginInfo['type'] .'_'. $this->pluginInfo['name'];
         }
 
-        $content = $twig->render($template, array('id' => $this->arguments[1], 'langKey' => $this->arguments[2], 'langCategory' => $langCategory));
-        echo $content;
+        $content = $twig->render($template, array('id' => $this->arguments[1], 'langCategory' => $langCategory));
 
-        //add string to a lang file: discovered or found in lang/en/*.php
-        $langFile = $this->topDir . '/' . $this->relativeDir . "/lang/en/$langCategory.php";
-        var_dump($this->pluginInfo);
-        var_dump($this->relativeDir);
-        var_dump($this->topDir);
-        var_dump($langFile);
-/*
-        if (file_exists($filePath)) {
-            cli_problem("File $fileName exists");
-            echo $content;
-            echo "\n---------------------\n";
+        //do I know where to add the new code?
+        $this->loadSession();
+
+        if(isset($this->session['generator.last-file'][$this->cwd]) && file_exists($this->cwd . '/' .$this->session['generator.last-file'][$this->cwd])) {
+            $fileName = $this->cwd . '/' . $this->session['generator.last-file'][$this->cwd];
+            $fileContent = file_get_contents($fileName);
+            //replace /** MOOSH AUTO-GENERATED */ with new code
+            $fileContent = str_replace(MOOSH_CODE_MARKER,$content . "\n".MOOSH_CODE_MARKER."\n",$fileContent);
+            file_put_contents($fileName,$fileContent);
         } else {
-            file_put_contents($filePath, $content);
+            echo $content;
         }
 
-
-        $this->saveSession();*/
     }
 }
