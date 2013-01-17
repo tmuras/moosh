@@ -1,0 +1,5 @@
+    $mform->addElement('checkbox', '{{ id }}', get_string('langkey', '{{ langCategory }}'), $text, $attributes, $values);
+    $mform->setType('{{ id }}', PARAM_BOOL);
+    $mform->addHelpButton('{{ id }}', 'langkey', '{{ langCategory }}');
+    //$mform->disabledIf('id', 'value1', 'eq|noteq', 'value2');
+    //$mform->addRule('{{ id }}', $strrequired, 'required', null, 'client');
