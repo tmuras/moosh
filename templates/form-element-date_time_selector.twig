@@ -1,6 +1,6 @@
-    $mform->addElement('advcheckbox', '{{ id }}', get_string('langkey', '{{ langCategory }}'), $text, $attributes, $values);
-    $mform->setType('{{ id }}', PARAM_BOOL);
+    $mform->addElement('date_time_selector', '{{ id }}', get_string('langkey', '{{ langCategory }}'), array('optional'=>true));
     $mform->addHelpButton('{{ id }}', 'langkey_help', '{{ langCategory }}');
+    $mform->setDefault('{{ id }}', time()+3*DAYSECS); //3 days
     //$mform->disabledIf('{{ id }}', 'value1', 'eq|noteq', 'value2');
     //$mform->addRule('{{ id }}', $strrequired, 'required', null, 'client');
     //$mform->setAdvanced('{{ id }}');

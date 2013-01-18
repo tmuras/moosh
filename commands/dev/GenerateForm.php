@@ -50,7 +50,7 @@ class GenerateForm extends MooshCommand
         }
 
         //also generate a client code
-        echo $twig->render('form_client.twig', array('formName' => $formName,'formRelativePath'=> $this->relativeDir));
+        echo $twig->render('form_client.twig', array('formName' => $formName,'formRelativePath'=> $this->relativeDir, 'fileName'=>$fileName));
 
         $this->saveSession();
     }
