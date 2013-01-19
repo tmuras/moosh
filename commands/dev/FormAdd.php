@@ -52,6 +52,20 @@ class FormAdd extends MooshCommand
         } else {
             echo $content;
         }
+    }
 
+    protected function onErrorHelp()
+    {
+        $help = $this->mooshDir . "/templates/";
+        return $help;
+    }
+
+    protected function getArgumentsHelp()
+    {
+        $help = parent::getArgumentsHelp();
+        $help .= "\n\n";
+        $help .= $this->onErrorHelp();
+
+        return $help;
     }
 }

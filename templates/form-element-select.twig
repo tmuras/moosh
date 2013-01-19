@@ -3,4 +3,4 @@
     $mform->addElement('select', '{{ id }}', get_string('langkey', '{{ langCategory }}'), $choices);
     $mform->setDefault('{{ id }}', $default);
     $mform->setType('{{ id }}', PARAM_ALPHA);
-    $mform->addHelpButton('{{ id }}', 'langkey_help', '{{ langCategory }}');
+{% include 'form-common-element.twig' %}

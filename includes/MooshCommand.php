@@ -225,13 +225,24 @@ class MooshCommand
             echo "Not enough arguments provided. Please specify:\n";
             echo implode(' ', $this->argumentNames);
             echo "\n";
+            echo $this->onErrorHelp();
             exit(1);
         }
         if (count($arguments) > $this->maxArguments) {
             echo "Too many argument provided (" . count($arguments) . "), the maximum is: {$this->maxArguments}\n";
+            echo $this->onErrorHelp();
             exit(1);
         }
         $this->arguments = $arguments;
+    }
+
+    /**
+     * Overwrite to display extra information (e.g. help) when error occured (e.g. wrong arguments were given)
+     * @return string
+     */
+    protected function onErrorHelp()
+    {
+        return '';
     }
 
     public function setParsedOptions($parsedOptions)

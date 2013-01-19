@@ -1,4 +1,4 @@
     $form->addElement('selectyesno', '{{ id }}', get_string('langkey', '{{ langCategory }}'));
-    $form->addHelpButton('{{ id }}', 'langkey', '{{ langCategory }}');
     $form->setDefault('{{ id }}', 1);
     $form->setType('{{ id }}', PARAM_BOOL);
+{% include 'form-common-element.twig' %}

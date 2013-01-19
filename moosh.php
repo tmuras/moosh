@@ -109,8 +109,7 @@ if ($moodlerc) {
  *
  */
 $subcommand = $subcommands[$subcommand];
-$subcommand->setParsedOptions($subcommand_options[$subcommand->getName()]);
-$subcommand->setArguments($arguments);
+
 
 if ($subcommand->isBootstraped()) {
     define('CLI_SCRIPT', true);
@@ -154,6 +153,8 @@ $subcommand->relativeDir = $relative_dir;
 $subcommand->defaults = $options;
 
 //process the arguments
+$subcommand->setParsedOptions($subcommand_options[$subcommand->getName()]);
+$subcommand->setArguments($arguments);
 $subcommand->processOptions($options);
 $subcommand->expandOptions();
 

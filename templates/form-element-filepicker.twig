@@ -1,4 +1,3 @@
     $filepickeroptions = array('maxbytes'=>0, 'accepted_types'=>'*', 'return_types'=>null);
     $mform->addElement('filepicker', '{{ id }}', get_string('langkey', '{{ langCategory }}'), null, $filepickeroptions);
-    $mform->addRule(''{{ id }}', $strrequired, 'required', null, 'client');
-    $mform->addHelpButton(''{{ id }}', 'langkey', '{{ langCategory }}');
+{% include 'form-common-element.twig' %}
