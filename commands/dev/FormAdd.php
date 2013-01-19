@@ -22,11 +22,11 @@ class FormAdd extends MooshCommand
     public function execute()
     {
 
-        $loader = new Twig_Loader_Filesystem(__DIR__ . '/../../templates');
+        $loader = new Twig_Loader_Filesystem($this->mooshDir.'/templates');
         $twig = new Twig_Environment($loader,array('debug' => true));
         $twig->addExtension(new Twig_Extension_Debug());
 
-        $template = 'form-element-' . $this->arguments[0] . '.twig';
+        $template = 'form/form-element-' . $this->arguments[0] . '.twig';
         if (!$loader->exists($template)) {
             cli_problem("Template $template does not exist");
             exit(1);
@@ -47,7 +47,7 @@ class FormAdd extends MooshCommand
             $fileName = $this->cwd . '/' . $this->session['generator.last-file'][$this->cwd];
             $fileContent = file_get_contents($fileName);
             //replace /** MOOSH AUTO-GENERATED */ with new code
-            $fileContent = str_replace(MOOSH_CODE_MARKER,$content . "\n".MOOSH_CODE_MARKER."\n",$fileContent);
+            $fileContent = str_replace(MOOSH_CODE_MARKER,$content . "\n".MOOSH_CODE_MARKER,$fileContent);
             file_put_contents($fileName,$fileContent);
         } else {
             echo $content;
@@ -56,7 +56,19 @@ class FormAdd extends MooshCommand
 
     protected function onErrorHelp()
     {
-        $help = $this->mooshDir . "/templates/";
+        $elements = array();
+        foreach(glob($this->mooshDir . "/templates/form/form-element-*.twig") as $file) {
+            $base = basename($file);
+            $matches = null;
+            if(preg_match('/form-element-(.*).twig/',$file,$matches)) {
+                $elements[] = $matches[1];
+            }
+        }
+
+        $help = "\nAvailable element templates:\n";
+        foreach($elements as $element) {
+            $help .= "\t".$element . "\n";
+        }
         return $help;
     }
 
