@@ -300,8 +300,68 @@ Turns on full debug - all the options in debugging section of the settings plus 
 
 
 debug-off
---------
+---------
 
 Turns off full debug and disables theme designer mode.
 
     moosh debug-off
+
+
+generate-module
+---------------
+
+Creates new module based on the NEWMODULE template from Moodle HQ.
+
+    moosh generate-module module_name
+
+Example: Create new module under mod/flashcard
+
+    moosh generate-module flashcard
+
+
+generate-form
+-------------
+
+Creates a new file with the form class code. Will display on the screen a boilerplate code to use the form. If the form
+file already exists, both form & form usage code will only be displayed on the standard output.
+moosh will try to figure out what plugin are you currently working on, based on your current working directory, and prefix
+the form accordingly.
+
+    moosh generate-form form_name
+
+Example: Assuming you are in mod/flashcard directory, the command will create edit_form.php containing mod_flashcard_edit_form
+class. It will also display a boilerplate code on how can you use the form.
+
+    moosh generate-form edit
+
+
+form-add
+--------
+
+Adds an element to the form. If there is a form in your current working directory, that you have recently worked on with
+moosh (e.g. you have generated it with moosh generate-form), moosh will inject the code into that file. If moosh is not
+ able to figure out where you would like the code added, it will display it on the standard output.
+
+    moosh form-add type name
+
+Example 1: Display list of all available element templates.
+
+    moosh form-add
+
+Example 2: Add (or display) the code for advanced checkbox element for Moodle form.
+
+    moosh form-add advcheckbox checkboxid
+
+
+generate-lang
+-------------
+
+
+Contributing to moosh
+=====================
+
+1. Fork the project on github.
+2. Follow "installation from Moodle git" section.
+3. Look at existing plugins to see how they are done.
+4. Create new plugin/update existing one.
+5. Send me pull request.

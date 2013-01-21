@@ -333,4 +333,14 @@ class MooshCommand
         $tmpFile = $this->defaults['global']['tmpfile'];
         file_put_contents($tmpFile,serialize($this->session));
     }
+
+    protected function getLangCategory() {
+        if($this->pluginInfo['type'] == 'mod' || $this->pluginInfo['type'] == 'unknown') {
+            $langCategory = $this->pluginInfo['name'];
+        }  else {
+            $langCategory = $this->pluginInfo['type'] .'_'. $this->pluginInfo['name'];
+        }
+
+        return $langCategory;
+    }
 }

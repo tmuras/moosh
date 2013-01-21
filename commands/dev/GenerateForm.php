@@ -12,8 +12,6 @@ class GenerateForm extends MooshCommand
     {
         parent::__construct('form', 'generate');
 
-        $this->addOption('f|full:', 'full example');
-
         $this->addArgument('form_name');
     }
 

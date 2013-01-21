@@ -12,8 +12,6 @@ class FormAdd extends MooshCommand
     {
         parent::__construct('add', 'form');
 
-        $this->addOption('f|full:', 'full example');
-
         $this->addArgument('type');
         $this->addArgument('name');
         //$this->maxArguments = 255;
@@ -32,13 +30,7 @@ class FormAdd extends MooshCommand
             exit(1);
         }
 
-        if($this->pluginInfo['type'] == 'mod' || $this->pluginInfo['type'] == 'unknown') {
-            $langCategory = $this->pluginInfo['name'];
-        }  else {
-            $langCategory = $this->pluginInfo['type'] .'_'. $this->pluginInfo['name'];
-        }
-
-        $content = $twig->render($template, array('id' => $this->arguments[1], 'langCategory' => $langCategory));
+        $content = $twig->render($template, array('id' => $this->arguments[1], 'langCategory' => $this->getLangCategory()));
 
         //do I know where to add the new code?
         $this->loadSession();
