@@ -5,7 +5,7 @@ $mform = new {{ formName }}_form();
 
 if ($mform->is_cancelled()) {
   // form cancelled, redirect
-  redirect(new moodle_url('view.php',array());
+  redirect(new moodle_url('view.php',array()));
   return;
 } else if (($data = $mform->get_data())) {
   // form has been submitted
