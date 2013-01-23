@@ -15,11 +15,28 @@
                     "type":"zip"
                 }
             }
+        },
+        {
+            "type":"package",
+            "package":{
+                "version":"dev-master",
+                "name":"danielneis/moodle-block_newblock",
+                "source":{
+                    "url":"https://github.com/danielneis/moodle-block_newblock.git",
+                    "type":"git",
+                    "reference":"master"
+                },
+                "dist":{
+                    "url":"https://github.com/danielneis/moodle-block_newblock/archive/master.zip",
+                    "type":"zip"
+                }
+            }
         }
     ],
     "require":{
         "c9s/GetOptionKit":"dev-master",
         "twig/twig":"dev-master",
-        "moodlehq/moodle-mod_newmodule":"dev-master"
+        "moodlehq/moodle-mod_newmodule":"dev-master",
+        "danielneis/moodle-block_newblock":"dev-master"
     }
 }
