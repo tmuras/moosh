@@ -356,6 +356,41 @@ Example 2: Add (or display) the code for advanced checkbox element for Moodle fo
 generate-lang
 -------------
 
+Scan files given as arguments or currently remembered file, extract language strings and add them to the lang file if
+necessary.
+
+    moosh generate-lang [file1] [file2] [file3]...
+
+Example 1: Extract lang strings from edit_form.php.
+
+    moosh generate-lang edit_form.php
+
+
+generate-qtype
+--------------
+
+Creates new question type based on the NEWMODULE template from https://github.com/jamiepratt/moodle-qtype_TEMPLATE.
+
+    moosh generate-qtype qtype_name
+
+Example: Create new module under question/type/myqtype
+
+    moosh generate-qtype myqtype
+
+
+download-moodle
+---------------
+
+Download latest Moodle version from the latest branch (default) or previous one if -v given.
+
+Example 1: Download latest Moodle.
+
+    moosh download-moodle
+
+Example 2: Download latest Moodle 2.3.
+
+        moosh download-moodle -v 23
+
 
 Contributing to moosh
 =====================
