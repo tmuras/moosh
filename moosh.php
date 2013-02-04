@@ -134,22 +134,23 @@ if ($subcommand->isBootstraped()) {
         echo "Relative Moodle dir: $relative_dir\n";
     }
     $plugin_info = detect_plugin($relative_dir);
+    $subcommand->setPluginInfo($plugin_info);
+    $subcommand->topDir = $top_dir;
+    $subcommand->relativeDir = $relative_dir;
 
     @error_reporting(E_ALL | E_STRICT);
     @ini_set('display_errors', '1');
     $CFG->debug = (E_ALL | E_STRICT);
     $CFG->debugdisplay = 1;
+
 }
 
 if ($app_options->has('verbose')) {
     $subcommand->verbose = true;
 }
 
-$subcommand->setPluginInfo($plugin_info);
 $subcommand->cwd = $cwd;
-$subcommand->topDir = $top_dir;
 $subcommand->mooshDir = $moosh_dir;
-$subcommand->relativeDir = $relative_dir;
 $subcommand->defaults = $options;
 
 //process the arguments
