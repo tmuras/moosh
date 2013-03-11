@@ -2,7 +2,7 @@
 /**
  * Swap user role from student to waitlist in all courses in one category.
  * moosh course-swapuserrole
- *      -i --id
+ *      -i --cat-id
  *      -r --enrole
  *      coid
  *
@@ -25,6 +25,48 @@ class CourseSwapUserRole extends MooshCommand
         //$this->addArgument('courseid');
         //$this->addArgument('enrol');
         $this->maxArguments = 255;
+    }
+
+    /**
+     * Send welcome email to specified user
+     *
+     * @param object $instance
+     * @param object $user user record
+     * @return void
+     */
+    protected function email_waitlist_message($instance, $user) {
+        global $CFG, $DB;
+
+        $course = $DB->get_record('course', array('id'=>$instance->courseid), '*', MUST_EXIST);
+
+        $a = new stdClass();
+        $a->coursename = format_string($course->fullname);
+        $a->profileurl = "$CFG->wwwroot/user/view.php?id=$user->id&course=$course->id";
+
+        if (trim($instance->customtext2) !== '') {
+            $message = $instance->customtext2;
+            $message = str_replace('{$a->coursename}', $a->coursename, $message);
+            $message = str_replace('{$a->profileurl}', $a->profileurl, $message);
+        } else {
+            $message = get_string('welcometowaitlisttext', 'enrol_waitlist', $a);
+        }
+
+        $subject = get_string('welcometowaitlist', 'enrol_waitlist', format_string($course->fullname));
+
+        $context = get_context_instance(CONTEXT_COURSE, $course->id);
+        $rusers = array();
+        if (!empty($CFG->coursecontact)) {
+            $croles = explode(',', $CFG->coursecontact);
+            $rusers = get_role_users($croles, $context, true, '', 'r.sortorder ASC, u.lastname ASC');
+        }
+        if ($rusers) {
+            $contact = reset($rusers);
+        } else {
+            $contact = get_admin();
+        }
+
+        //directly emailing welcome message rather than using messaging
+        email_to_user($user, $contact, $subject, $message);
     }
 
     public function execute()
@@ -84,8 +126,12 @@ class CourseSwapUserRole extends MooshCommand
 
                             foreach($waitlist_enrolments as $en) {
                                 echo "userid: " . $en->userid . " , contextid: " . $context->id . "\n";
-                                role_unassign($instance->roleid, $en->userid, $context->id);
-                                role_assign($instance->customchar1, $en->userid, $context->id);
+                                //role_unassign($instance->roleid, $en->userid, $context->id);
+                                //role_assign($instance->customchar1, $en->userid, $context->id);
+                                
+                                if ($instance->customint4) {
+                                    //$this->email_waitlist_message($instance, $DB->get_record('user', array('id' => $en->userid)));
+                                }
                             }
                         }
                     }

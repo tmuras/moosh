@@ -63,17 +63,18 @@ class CourseEnrolmethod extends MooshCommand
 //$maninstance1 = $DB->get_record('enrol', array('courseid'=>$course1->id, 'enrol'=>'manual'), '*', MUST_EXIST);
         //$instance1 = $DB->get_record('enrol', array('courseid'=>$course->id, 'enrol'=>'waitlist'), '*', MUST_EXIST);
         $instance1 = $DB->get_record('enrol', array('courseid'=>$arguments[0], 'enrol'=>(string)$arguments[1]), '*', MUST_EXIST);
-        //$instance1->expirythreshold = 60*60*24*4;
-        //$instance1->expirynotify    = 1;
-        //$instance1->notifyall       = 1;
-        $curTZ     = new DateTimeZone('Europe/Berlin');
-        $startTime = date_create('2013-03-11 10:00:00', $curTZ);
-        $instance1->enrolstartdate = strtotime(date_format($startTime, 'Y-m-d H:i:s'));
-        //$instance1->enrolenddate   = strtotime("2013-03-22");
-        $endTime = date_create('2013-04-15 12:00:00', $curTZ);
-        $instance1->enrolenddate = strtotime(date_format($endTime, 'Y-m-d H:i:s'));
-	//maxenrolled
-//        $instance1->customint3     = $arguments[2];
+        ////$instance1->expirythreshold = 60*60*24*4;
+        ////$instance1->expirynotify    = 1;
+        ////$instance1->notifyall       = 1;
+        //$curTZ     = new DateTimeZone('Europe/Berlin');
+        //$startTime = date_create('2013-03-11 10:00:00', $curTZ);
+        //$instance1->enrolstartdate = strtotime(date_format($startTime, 'Y-m-d H:i:s'));
+        /////$instance1->enrolenddate   = strtotime("2013-03-22");
+        //$endTime = date_create('2013-04-15 12:00:00', $curTZ);
+        //$instance1->enrolenddate = strtotime(date_format($endTime, 'Y-m-d H:i:s'));
+        
+        //maxenrolled
+        $instance1->customint3     = $arguments[2];
 //        $instance1->status         = ENROL_INSTANCE_ENABLED;
         $DB->update_record('enrol', $instance1);
 
