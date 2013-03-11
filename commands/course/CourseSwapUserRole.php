@@ -1,10 +1,10 @@
 <?php
 /**
- * Enable erol method(s) in a course.
- * moosh course-enrol-method-enable
+ * Swap user role from student to waitlist in all courses in one category.
+ * moosh course-swapuserrole
  *      -i --id
- *      -r --role
- *      courseid enrolmethod1 [<enrolmethod2> ...]
+ *      -r --enrole
+ *      coid
  *
  * @copyright  2013 onwards Mirko Otto
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -14,83 +14,83 @@ class CourseSwapUserRole extends MooshCommand
     public function __construct()
     {
         parent::__construct('swapuserrole', 'course');
-        $this->addOption('i|id', 'use numeric IDs instead of user name(s)');
-        $this->addOption('r|enrole:', 'enrole method name');
-        $this->addOption('m|maxenrol:', 'max enrolled user');
+        $this->addOption('i|cat-id', 'use numeric category-ID instead of category name');
+        $this->addOption('r|enrole', 'enrole method name');
 
         //possible other options
         //duration
         //startdate
         //recovergrades
 
-        $this->addArgument('courseid');
-        $this->addArgument('enrolmethod');
-        $this->addArgument('maxenrol');
+        //$this->addArgument('courseid');
+        //$this->addArgument('enrol');
         $this->maxArguments = 255;
     }
 
     public function execute()
     {
 
-        echo "asdf" . "\n";
+        //echo "asdf" . "\n";
         global $CFG, $DB, $PAGE, $USER;
 
         require_once($CFG->dirroot . '/enrol/externallib.php');
         require_once($CFG->dirroot . '/enrol/locallib.php');
         //require_once($CFG->dirroot . '/group/lib.php');
 
-
-        $instances = $DB->get_records('enrol', array('enrol' => 'waitlist', 'courseid' => 24));
-        //$instances = $DB->get_records('enrol', array('enrol' => 'waitlist'));
-        if($instances) {
-            foreach($instances as $instance) {
-                echo "asdf" . "\n";
-            }
-        }
-
-        
-        $courses = $DB->get_records('course', array('category' => 5));
-        if($courses) {
-            foreach($courses as $cour) {
-                echo $cour->category . " " . $cour->id . "\n";
-            }
-        }
-
-
-
-        return;
-
         $options = $this->expandedOptions;
         $arguments = $this->arguments;
 
 
-        $course = $DB->get_record('course', array('id' => $arguments[0]), '*', MUST_EXIST);
-        $context = get_context_instance(CONTEXT_COURSE, $course->id, MUST_EXIST);
-        $students = get_role_users(5, $context);
-        //$students = get_enrolled_users($context);
-        print_r($students);
+        $courses = $DB->get_records('course', array('category' => $arguments[0]));
+        if($courses) {
+            foreach($courses as $cour) {
+                echo "category: " . $cour->category . " , courseid: " . $cour->id . "\n";
 
-        return ;
+                $instances = $DB->get_records('enrol', array('enrol' => 'waitlist', 'courseid' => $cour->id));
+                //$instances = $DB->get_records('enrol', array('enrol' => 'waitlist'));
+                if($instances) {
+                    foreach($instances as $instance) {
+                        
+                        $context = context_course::instance($instance->courseid);
 
-        //$enrolledusers = core_enrol_external::get_enrolled_users(2);
-        //$enrolledusers = core_enrol_external::get_enrolled_users($course->id);
+                        // get all waitlist role assignments
+                        $role = new stdClass;
+                        //$role->id = $instance->customchar1;
+                        $role->id = $instance->roleid;
+                        $role_assigns = get_users_from_role_on_context($role, $context);
+                        
+                        $count = count($role_assigns);
+                        echo "count role_assigns: " . $count . "\n";
+                        
+                        if($role_assigns) {
+                            $uids = array();
+                            foreach($role_assigns as $ra) {
+                                $uids[] = $ra->userid;                        
+                            }
+                            //get those waitlist enrolments and order them by timecreated (first come, first served)
+                            list($qrypart, $params) = $DB->get_in_or_equal($uids);
+                            $sql = 'SELECT
+                                        *
+                                    FROM
+                                        {user_enrolments} ue
+                                    WHERE
+                                        userid '.$qrypart.'
+                                    AND
+                                        enrolid = ?
+                                    ORDER BY
+                                        timecreated ASC';
+                            $params[] = $instance->id;
+                            $waitlist_enrolments = $DB->get_records_sql($sql, $params);
 
-        // Set the required capabilities by the external function.
-        //$context = context_course::instance($course->id);
-        //$roleid = $this->assignUserCapability('moodle/course:viewparticipants', $context->id);
-        //$this->assignUserCapability('moodle/user:viewdetails', $context->id, $roleid);
-        // Enrol the users in the course.
-        // We use the manual plugin.
-
-        $enrolinstances = enrol_get_instances($course->id, true);
-        foreach ($enrolinstances as $courseenrolinstance) {
-            //if ($courseenrolinstance->enrol == "manual") {
-            //    $instance = $courseenrolinstance;
-            //    break;
-            print_r($courseenrolinstance->enrol);
-            echo("ddd");
-            //}
+                            foreach($waitlist_enrolments as $en) {
+                                echo "userid: " . $en->userid . " , contextid: " . $context->id . "\n";
+                                role_unassign($instance->roleid, $en->userid, $context->id);
+                                role_assign($instance->customchar1, $en->userid, $context->id);
+                            }
+                        }
+                    }
+                }
+            }
         }
-
     }
 } 
