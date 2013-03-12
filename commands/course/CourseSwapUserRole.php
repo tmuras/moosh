@@ -126,11 +126,11 @@ class CourseSwapUserRole extends MooshCommand
 
                             foreach($waitlist_enrolments as $en) {
                                 echo "userid: " . $en->userid . " , contextid: " . $context->id . "\n";
-                                //role_unassign($instance->roleid, $en->userid, $context->id);
-                                //role_assign($instance->customchar1, $en->userid, $context->id);
+                                role_unassign($instance->roleid, $en->userid, $context->id);
+                                role_assign($instance->customchar1, $en->userid, $context->id);
                                 
                                 if ($instance->customint4) {
-                                    //$this->email_waitlist_message($instance, $DB->get_record('user', array('id' => $en->userid)));
+                                    $this->email_waitlist_message($instance, $DB->get_record('user', array('id' => $en->userid)));
                                 }
                             }
                         }
