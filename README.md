@@ -145,6 +145,12 @@ Example 2: Enroll user with id 21 into the course with id 31 as a non-editing te
 
     moosh course-enrol -r teacher -i 31 21
 
+course-enrolbyname
+------------------
+
+Example 1: Enroll user with firstname test42 and lastname user42 into the course with shortname T12345 as an editing teacher.
+
+    course-enrolbyname -r editingteacher -f test42 -l user42 -c T12345
 
 role-create
 -----------

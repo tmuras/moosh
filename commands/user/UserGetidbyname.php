@@ -26,7 +26,7 @@ class UserGetidbyname extends MooshCommand
         global $CFG, $DB;
 
         require_once $CFG->dirroot . '/user/lib.php';
-        unset($CFG->passwordpolicy);
+        //unset($CFG->passwordpolicy);
 
         $arguments = $this->arguments;
         $options = $this->expandedOptions;
@@ -34,7 +34,7 @@ class UserGetidbyname extends MooshCommand
         //echo $options['firstname'], $options['lastname'];
 
         if($options['firstname'] and $options['lastname']){
-            $user = $DB->get_record('user', array('firstname'=>$options['firstname'], 'lastname'=>$options['lastname'])); 
+            $user = $DB->get_record('user', array('firstname'=>$options['firstname'], 'lastname'=>$options['lastname']),'*', MUST_EXIST); 
         }
         
         if(!$user) {
