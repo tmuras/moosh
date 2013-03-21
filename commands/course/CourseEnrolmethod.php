@@ -32,7 +32,7 @@ class CourseEnrolmethod extends MooshCommand
     public function execute()
     {
 
-        echo "asdf" . "\n";
+        //echo "asdf" . "\n";
         global $CFG, $DB, $PAGE;
 
         require_once($CFG->dirroot . '/enrol/locallib.php');
@@ -62,20 +62,25 @@ class CourseEnrolmethod extends MooshCommand
         
 //$maninstance1 = $DB->get_record('enrol', array('courseid'=>$course1->id, 'enrol'=>'manual'), '*', MUST_EXIST);
         //$instance1 = $DB->get_record('enrol', array('courseid'=>$course->id, 'enrol'=>'waitlist'), '*', MUST_EXIST);
-        $instance1 = $DB->get_record('enrol', array('courseid'=>$arguments[0], 'enrol'=>(string)$arguments[1]), '*', MUST_EXIST);
+        $course = $DB->get_record("course", array("shortname"=>$arguments[0]), '*', MUST_EXIST);
+        $instance1 = $DB->get_record('enrol', array('courseid'=>$course->id, 'enrol'=>(string)$arguments[1]), '*', MUST_EXIST);
+        
+        //echo $course->id;
+        //return(0);
+        
         ////$instance1->expirythreshold = 60*60*24*4;
         ////$instance1->expirynotify    = 1;
         ////$instance1->notifyall       = 1;
-        //$curTZ     = new DateTimeZone('Europe/Berlin');
-        //$startTime = date_create('2013-03-11 10:00:00', $curTZ);
-        //$instance1->enrolstartdate = strtotime(date_format($startTime, 'Y-m-d H:i:s'));
+        $curTZ     = new DateTimeZone('Europe/Berlin');
+        $startTime = date_create('2013-03-27 08:00:00', $curTZ);
+        $instance1->enrolstartdate = strtotime(date_format($startTime, 'Y-m-d H:i:s'));
         /////$instance1->enrolenddate   = strtotime("2013-03-22");
-        //$endTime = date_create('2013-04-15 12:00:00', $curTZ);
-        //$instance1->enrolenddate = strtotime(date_format($endTime, 'Y-m-d H:i:s'));
+        $endTime = date_create('2013-04-04 00:00:00', $curTZ);
+        $instance1->enrolenddate = strtotime(date_format($endTime, 'Y-m-d H:i:s'));
         
         //maxenrolled
         $instance1->customint3     = $arguments[2];
-//        $instance1->status         = ENROL_INSTANCE_ENABLED;
+        $instance1->status         = ENROL_INSTANCE_ENABLED;
         $DB->update_record('enrol', $instance1);
 
 

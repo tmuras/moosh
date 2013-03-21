@@ -33,21 +33,24 @@ class UserGetidbyname extends MooshCommand
 
         //echo $options['firstname'], $options['lastname'];
 
-        if($options['firstname'] and $options['lastname']){
-            $user = $DB->get_record('user', array('firstname'=>$options['firstname'], 'lastname'=>$options['lastname']),'*', MUST_EXIST); 
-        }
+        try {
+
+            if($options['firstname'] and $options['lastname']){
+                $user = $DB->get_record('user', array('firstname'=>$options['firstname'], 'lastname'=>$options['lastname']),'*', MUST_EXIST); 
+            }
         
-        if(!$user) {
-            return(-1);
+            if(!$user) {
+                return(-1);
+            }
+
+            echo $user->id;
+            //print_r($user);
+            //print_r($arguments);
+            //print_r($options);
+            //return($user->id);
+        } catch (Exception $e) {
+            print get_class($e)." thrown within the exception handler. Message: ".$e->getMessage()." on line ".$e->getLine();
         }
-
-        //print_r($user);
-
-        //print_r($arguments);
-        //print_r($options);
-
-        echo $user->id;
-        //return($user->id);
         
         return(0);
 
