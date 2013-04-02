@@ -1,0 +1,40 @@
+
+// Code template for _pluginfile function - put into lib.php
+// ---------------------------------------------------------
+
+function {{ id }}_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
+    global $DB;
+
+    if ($context->contextlevel != CONTEXT_SYSTEM) {
+        return false;
+    }
+
+    require_login();
+
+    if ($filearea != 'attachment') {
+        return false;
+    }
+
+    $itemid = (int)array_shift($args);
+
+    if ($itemid != 0) {
+        return false;
+    }
+
+    $fs = get_file_storage();
+
+    $filename = array_pop($args);
+    if (empty($args)) {
+        $filepath = '/';
+    } else {
+        $filepath = '/'.implode('/', $args).'/';
+    }
+
+    $file = $fs->get_file($context->id, '{{ id }}', $filearea, $itemid, $filepath, $filename);
+    if (!$file) {
+        return false;
+    }
+
+    // finally send the file
+    send_stored_file($file, 0, 0, true, $options); // download MUST be forced - security!
+}

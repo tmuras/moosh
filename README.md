@@ -390,6 +390,14 @@ Example: Create new module under grade/report/beststudents
     moosh generate-gradereport beststudents
 
 
+generate-filepicker
+-------------------
+
+Shows how to code filepicker, based on https://github.com/AndyNormore/filemanager. Takes no arguments.
+
+    moosh generate-filepicker
+
+
 download-moodle
 ---------------
 
