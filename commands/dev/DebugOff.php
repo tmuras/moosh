@@ -23,5 +23,8 @@ class DebugOff extends MooshCommand
         set_config('debugvalidators','0');
         set_config('debugpageinfo','0');
         set_config('themedesignermode','0');
+        set_config('allowthemechangeonurl', 0);
+        set_config('cachejs', 1);
+        set_config('yuicomboloading', 1);
     }
 }
