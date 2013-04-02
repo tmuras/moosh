@@ -378,6 +378,18 @@ Example: Create new module under question/type/myqtype
     moosh generate-qtype myqtype
 
 
+generate-gradereport
+--------------
+
+Creates new grade report under grade/report based on the template from https://github.com/danielneis/moodle-gradereport_newgradereport.
+
+    moosh generate-gradereport report_name
+
+Example: Create new module under grade/report/beststudents
+
+    moosh generate-gradereport beststudents
+
+
 download-moodle
 ---------------
 
