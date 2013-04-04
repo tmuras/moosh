@@ -128,7 +128,7 @@ Example 1: Create 10 new courses using bash/zim expansion
 
 Example 2: Create new course
 
-    moosh course-create --category 1 --fullname "full course name" --description "course description"
+    moosh course-create --category 1 --fullname "full course name" --description "course description" shortname
 
 
 course-enrol
