@@ -17,8 +17,14 @@ class GenerateMoosh extends MooshCommand
 
     public function execute()
     {
+        //some variables you may want to use
         //$this->cwd - the directory where moosh command was executed
         //$this->mooshDir - moosh installation directory
         //$this->expandedOptions - commandline provided options, merged with defaults
-    }
+
+        /* if verbose mode was requested, show some more information/debug messages
+        if($this->verbose) {
+            echo "Say what you're doing now";
+        }
+        */
 }
