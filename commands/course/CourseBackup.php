@@ -37,7 +37,7 @@ class CourseBackup extends MooshCommand
         $options = $this->expandedOptions;
         if (!$options['filename']) {
             $options['filename'] = $this->cwd . '/backup_' . $shortname . '_' . date('Y.m.d') . '.mbz';
-        } elseif (!$options['filename'][0] != '/') {
+        } elseif ($options['filename'][0] != '/') {
             $options['filename'] = $this->cwd .'/' .$options['filename'];
         }
 
