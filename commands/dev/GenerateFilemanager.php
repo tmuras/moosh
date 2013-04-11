@@ -6,11 +6,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-class GenerateFilepicker extends MooshCommand
+class GenerateFilemanager extends MooshCommand
 {
     public function __construct()
     {
-        parent::__construct('filepicker', 'generate');
+        parent::__construct('filemanager', 'generate');
     }
 
 
@@ -20,7 +20,7 @@ class GenerateFilepicker extends MooshCommand
         $twig = new Twig_Environment($loader,array('debug' => true));
         $twig->addExtension(new Twig_Extension_Debug());
 
-        foreach(array('filepicker/form-handler.twig','filepicker/display.twig','filepicker/lib.twig') as $template) {
+        foreach(array('filemanager/form-handler.twig','filemanager/display.twig','filemanager/lib.twig') as $template) {
             echo $twig->render($template, array('id' =>  $this->pluginInfo['type'] .'_'. $this->pluginInfo['name']));
         }
     }
