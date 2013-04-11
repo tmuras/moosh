@@ -167,7 +167,7 @@ Restore course from path/to/backup.mbz to category with a given id.
 
 Example 1: Restore backup.mbz into category with id=1
 
-    moosh course-restore backup_file category_id
+    moosh course-restore backup.mbz 1
 
 
 role-create
