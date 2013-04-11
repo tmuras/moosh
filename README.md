@@ -155,7 +155,7 @@ Example 1: Backup course id=3 into default .mbz file in current directory:
 
     moosh course-backup 3
 
-Example 2: Backup course id=3 and save it as /tmp/mybackup..mbz:
+Example 2: Backup course id=3 and save it as /tmp/mybackup.mbz:
 
     moosh course-backup -f /tmp/mybackup.mbz 3
 
