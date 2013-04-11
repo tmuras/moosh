@@ -158,36 +158,3 @@ function array_merge_recursive_distinct ( array &$array1, array &$array2 )
     return $merged;
 }
 
-function restore_course($tempdir, $categoryid, $fullname, $shortname)
-{
-    $admin = get_admin();
-    if (!$admin) {
-        echo "Error: No admin account was found";
-        exit(1);
-    }
-
-    $courseid = restore_dbops::create_new_course($fullname, $shortname, $categoryid);
-    $rc = new restore_controller($tempdir, $courseid, backup::INTERACTIVE_NO,
-        backup::MODE_GENERAL, $admin->id, backup::TARGET_NEW_COURSE);
-    $plan = $rc->get_plan();
-    $tasks = $plan->get_tasks();
-    foreach ($tasks as &$task) {
-        if ($task instanceof restore_root_task || $task instanceof restore_course_task) {
-            /*
-            $settings = $task->get_settings();
-            foreach ($settings as &$setting) {
-                if ($setting->get_ui_name() == 'setting_course_course_fullname') {
-                    $setting->set_value($fullname);
-                } else if ($setting->get_ui_name() == 'setting_course_course_shortname') {
-                    $setting->set_value($shortname);
-                }
-            }
-            */
-        }
-    }
-    $rc->execute_precheck();
-    $rc->execute_plan();
-    $rc->destroy();
-    unset($rc);
-    return $courseid;
-}
