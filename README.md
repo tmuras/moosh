@@ -146,6 +146,30 @@ Example 2: Enroll user with id 21 into the course with id 31 as a non-editing te
     moosh course-enrol -r teacher -i 31 21
 
 
+course-backup
+-------------
+
+Backup course with provided id.
+
+Example 1: Backup course id=3 into default .mbz file in current directory:
+
+    moosh course-backup 3
+
+Example 2: Backup course id=3 and save it as /tmp/mybackup..mbz:
+
+    moosh course-backup -f /tmp/mybackup.mbz 3
+
+
+course-restore
+--------------
+
+Restore course from path/to/backup.mbz to category with a given id.
+
+Example 1: Restore backup.mbz into category with id=1
+
+    moosh course-restore backup_file category_id
+
+
 role-create
 -----------
 
