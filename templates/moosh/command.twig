@@ -1,0 +1,30 @@
+<?php
+/**
+ * moosh - Moodle Shell
+ *
+ * @copyright  2012 onwards Tomasz Muras
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+class GenerateMoosh extends MooshCommand
+{
+    public function __construct()
+    {
+        parent::__construct('moosh', 'generate');
+
+        $this->addArgument('name');
+    }
+
+    public function execute()
+    {
+        //some variables you may want to use
+        //$this->cwd - the directory where moosh command was executed
+        //$this->mooshDir - moosh installation directory
+        //$this->expandedOptions - commandline provided options, merged with defaults
+
+        /* if verbose mode was requested, show some more information/debug messages
+        if($this->verbose) {
+            echo "Say what you're doing now";
+        }
+        */
+}

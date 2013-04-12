@@ -33,7 +33,7 @@ use GetOptionKit\OptionSpecCollection;
 
 error_reporting(E_ALL);
 
-define('MOOSH_VERSION', '0.6');
+define('MOOSH_VERSION', '0.8');
 
 $appspecs = new OptionSpecCollection;
 $spec_verbose = $appspecs->add('v|verbose', "be verbose");

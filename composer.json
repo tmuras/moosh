@@ -47,6 +47,22 @@
                     "type":"zip"
                 }
             }
+        },
+        {
+            "type":"package",
+            "package":{
+                "version":"dev-master",
+                "name":"danielneis/moodle-gradereport_newgradereport",
+                "source":{
+                    "url":"https://github.com/danielneis/moodle-gradereport_newgradereport",
+                    "type":"git",
+                    "reference":"master"
+                },
+                "dist":{
+                    "url":"https://github.com/danielneis/moodle-gradereport_newgradereport/archive/master.zip",
+                    "type":"zip"
+                }
+            }
         }
     ],
     "require":{
@@ -54,6 +70,7 @@
         "twig/twig":"dev-master",
         "moodlehq/moodle-mod_newmodule":"dev-master",
         "danielneis/moodle-block_newblock":"dev-master",
-        "jamiepratt/moodle-qtype_TEMPLATE":"dev-master"
+        "jamiepratt/moodle-qtype_TEMPLATE":"dev-master",
+        "danielneis/moodle-gradereport_newgradereport":"dev-master"
     }
 }

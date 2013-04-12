@@ -1,0 +1,16 @@
+
+// Code template for fetching & displaying the files
+// -------------------------------------------------
+
+$fs = get_file_storage();
+if ($files = $fs->get_area_files($context->id, '{{ id }}', 'attachment', '0', 'sortorder', false)) {
+
+    // Look through each file being managed
+    foreach ($files as $file) {
+        // Build the File URL. Long process! But extremely accurate.
+        $fileurl = moodle_url::make_pluginfile_url($file->get_contextid(), $file->get_component(), $file->get_filearea(), $file->get_itemid(), $file->get_filepath(), $file->get_filename());
+
+        // Display the image
+        echo "<br /><img src='$fileurl' />";
+    }
+}

@@ -15,7 +15,7 @@ class DebugOn extends MooshCommand
 
     public function execute()
     {
-        set_config('debug','32767');
+        set_config('debug',DEBUG_DEVELOPER);
         set_config('debugdisplay','1');
         set_config('debugsmtp','1');
         set_config('perfdebug','15');
@@ -23,5 +23,9 @@ class DebugOn extends MooshCommand
         set_config('debugvalidators','1');
         set_config('debugpageinfo','1');
         set_config('themedesignermode','1');
+        set_config('passwordpolicy', 0);
+        set_config('allowthemechangeonurl', 1);
+        set_config('cachejs', 0);
+        set_config('yuicomboloading', 0);
     }
 }

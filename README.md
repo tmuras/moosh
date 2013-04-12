@@ -128,7 +128,7 @@ Example 1: Create 10 new courses using bash/zim expansion
 
 Example 2: Create new course
 
-    moosh course-create --category 1 --fullname "full course name" --description "course description"
+    moosh course-create --category 1 --fullname "full course name" --description "course description" shortname
 
 
 course-enrol
@@ -151,6 +151,30 @@ course-enrolbyname
 Example 1: Enroll user with firstname test42 and lastname user42 into the course with shortname T12345 as an editing teacher.
 
     course-enrolbyname -r editingteacher -f test42 -l user42 -c T12345
+
+course-backup
+-------------
+
+Backup course with provided id.
+
+Example 1: Backup course id=3 into default .mbz file in current directory:
+
+    moosh course-backup 3
+
+Example 2: Backup course id=3 and save it as /tmp/mybackup.mbz:
+
+    moosh course-backup -f /tmp/mybackup.mbz 3
+
+
+course-restore
+--------------
+
+Restore course from path/to/backup.mbz to category with a given id.
+
+Example 1: Restore backup.mbz into category with id=1
+
+    moosh course-restore backup.mbz 1
+
 
 role-create
 -----------
@@ -382,6 +406,26 @@ Creates new question type based on the NEWMODULE template from https://github.co
 Example: Create new module under question/type/myqtype
 
     moosh generate-qtype myqtype
+
+
+generate-gradereport
+--------------
+
+Creates new grade report under grade/report based on the template from https://github.com/danielneis/moodle-gradereport_newgradereport.
+
+    moosh generate-gradereport report_name
+
+Example: Create new module under grade/report/beststudents
+
+    moosh generate-gradereport beststudents
+
+
+generate-filepicker
+-------------------
+
+Shows how to code filepicker, based on https://github.com/AndyNormore/filemanager. Takes no arguments.
+
+    moosh generate-filepicker
 
 
 download-moodle

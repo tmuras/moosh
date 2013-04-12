@@ -157,3 +157,4 @@ function array_merge_recursive_distinct ( array &$array1, array &$array2 )
 
     return $merged;
 }
+
