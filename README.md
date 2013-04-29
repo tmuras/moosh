@@ -68,6 +68,22 @@ Example 3: use bash/zsh expansion to create 10 users
 
 The users will have unique email addresses based on the user name (testuser1, testuser2, testuser3...).
 
+user-getidbyname
+----------------
+
+Returns the userid of users. The parameter can be the first and last name of a user, or one or more username(s).
+
+Example 1: Returns the userid of the user "test user"
+
+    moosh user-getidbyname --fname test --lname user
+
+Example 2: Returns the userid of the user with username "testuser"
+
+    moosh user-getidbyname test
+
+Example 3: Returns the userid of the users with username testuser{1..10}
+
+    moosh user-getidbyname testuser{1..5}
 
 user-mod
 --------
