@@ -1,18 +1,23 @@
 <?php
 /**
- * moosh - Moodle Shell
+ * Returns the userid of users.
+ * moosh user-getidbyname
+ *      -f --fname
+ *      -l --lname
+ *      [<username1> <username2> ...]
  *
- * @copyright  2012 onwards Tomasz Muras
+ * @copyright  2013 onwards Mirko Otto
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
-
 class UserGetidbyname extends MooshCommand
 {
     public function __construct()
     {
         parent::__construct('getidbyname', 'user');
 
+        // TODO.
+        // How could you not assign default values to variables? 
+        // Then the variables 'firstname' and 'lastname' could be used.
         $this->addOption('f|fname:','first name');
         $this->addOption('l|lname:','last name');
 
