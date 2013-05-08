@@ -79,7 +79,7 @@ Example 1: Returns the userid of the user "test user"
 
 Example 2: Returns the userid of the user with username "testuser"
 
-    moosh user-getidbyname test
+    moosh user-getidbyname testuser
 
 Example 3: Returns the userid of the users with username testuser{1..10}
 
@@ -166,7 +166,16 @@ course-enrolbyname
 
 Example 1: Enroll user with firstname test42 and lastname user42 into the course with shortname T12345 as an editing teacher.
 
-    course-enrolbyname -r editingteacher -f test42 -l user42 -c T12345
+    moosh course-enrolbyname -r editingteacher -f test42 -l user42 -c T12345
+
+course-enrolleduser
+-------------------
+
+Returns all enrolled user in a course, which have a specific role. First argument is the shortname of a role, second argument is a course ID.
+
+Example 1: 
+
+    moosh course-enrolleduser student 4
 
 course-backup
 -------------
