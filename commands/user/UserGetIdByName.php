@@ -16,11 +16,11 @@ class UserGetidbyname extends MooshCommand
         parent::__construct('getidbyname', 'user');
 
         // TODO.
-        // How could you not assign default values to variables? 
+        // How could you not assign default values %s to variables? 
         // Then the variables 'firstname' and 'lastname' could be used.
         $this->addOption('f|fname:','first name');
         $this->addOption('l|lname:','last name');
-
+        
         $this->addArgument('username');
         $this->minArguments = 0;
         $this->maxArguments = 255;
@@ -32,11 +32,11 @@ class UserGetidbyname extends MooshCommand
 
         require_once $CFG->dirroot . '/user/lib.php';
         
-        $arguments = $this->arguments;
         $options = $this->expandedOptions;
+        $arguments = $this->arguments;
        
-        //print_r ($arguments);
         //print_r ($options);
+        //print_r ($arguments);
 
         //get userid from firstname AND lastname
         //check, if fname and lname set

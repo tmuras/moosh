@@ -1,14 +1,16 @@
 <?php
 /**
- * Enrol user(s) in a course. Uses manual enrollment plugin.
- * moosh course-enrol
+ * Enrol user(s) in a course. Uses manual enrollment plugin. 
+ * Is the cshortname option is set, then this option is used.
+ * moosh course-enrolbyname
  *      -i --id
  *      -r --role
- *      -fn --firstname
- *      -ln --lasttname
+ *      -f --firstname
+ *      -l --lasttname
+ *      -c --cshortname
  *      courseid username1 [<username2> ...]
  *
- * @copyright  2012 onwards Tomasz Muras
+ * @copyright  2013 onwards Mirko Otto
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class CourseEnrolByName extends MooshCommand
@@ -40,15 +42,13 @@ class CourseEnrolByName extends MooshCommand
         require_once($CFG->dirroot . '/enrol/locallib.php');
         require_once($CFG->dirroot . '/group/lib.php');
 
-        $arguments = $this->arguments;
         $options = $this->expandedOptions;
-        //$arguments = $this->arguments;
+        $arguments = $this->arguments;
 
-        print_r($options);
-        //echo $options['firstname'];
-        //if($options['cshortname']) {
-        //    echo $options['cshortname'];
-        //}
+        //print_r($options);
+        //print_r($arguments);
+        //array_shift($arguments);
+        //print_r($arguments);
         //return(0);
 
         //find role id for given role
@@ -58,6 +58,7 @@ class CourseEnrolByName extends MooshCommand
             $course = $DB->get_record("course", array("shortname"=>$options['cshortname']), '*', MUST_EXIST);
         } else {
             $course = $DB->get_record('course', array('id' => $arguments[0]), '*', MUST_EXIST);
+            array_shift($arguments);
         }
         $context = get_context_instance(CONTEXT_COURSE, $course->id, MUST_EXIST);
         $manager = new course_enrolment_manager($PAGE, $course);
@@ -85,12 +86,19 @@ class CourseEnrolByName extends MooshCommand
         $today = time();
         $today = make_timestamp(date('Y', $today), date('m', $today), date('d', $today), 0, 0, 0);
 
-        array_shift($arguments);
-//        foreach ($arguments as $argument) {
-            if ($options['firstname'] and $options['lastname']) {
-                //echo 'nnnnaaammmmeeee';
-                $user = $DB->get_record('user', array('firstname'=>$options['firstname'], 'lastname'=>$options['lastname']), '*', MUST_EXIST);
-            } elseif ($options['id']) {
+        //get userid from firstname AND lastname
+        //check, if firstname and lastname set
+        if ($options['firstname'] and $options['lastname']) {
+            $user = $DB->get_record('user', array('firstname'=>$options['firstname'], 'lastname'=>$options['lastname']), '*', MUST_EXIST);
+            if(!$user) {
+                cli_problem("User '$user' not found");
+            } else {
+                $plugin->enrol_user($instance, $user->id, $role->id, $today, 0);
+            }
+        }
+
+        foreach ($arguments as $argument) {
+            if ($options['id']) {
                 $user = $DB->get_record('user', array('id' => $argument), '*', MUST_EXIST);
             } else {
                 $user = $DB->get_record('user', array('username' => $argument), '*', MUST_EXIST);
@@ -100,7 +108,6 @@ class CourseEnrolByName extends MooshCommand
                 continue;
             }
             $plugin->enrol_user($instance, $user->id, $role->id, $today, 0);
-//        }
+        }
     }
-
 }

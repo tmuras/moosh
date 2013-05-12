@@ -164,6 +164,8 @@ Example 2: Enroll user with id 21 into the course with id 31 as a non-editing te
 course-enrolbyname
 ------------------
 
+Is similar to course-enrol function. But it can also be used the first- and lastname of the user and the course shortname.
+ 
 Example 1: Enroll user with firstname test42 and lastname user42 into the course with shortname T12345 as an editing teacher.
 
     moosh course-enrolbyname -r editingteacher -f test42 -l user42 -c T12345
