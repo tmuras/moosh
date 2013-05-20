@@ -100,7 +100,7 @@ function find_top_moodle_dir($dir)
  */
 function is_top_moodle_dir($dir)
 {
-    return file_exists("$dir/config.php") && file_exists("$dir/brokenfile.php") && file_exists("$dir/install.php");
+    return file_exists("$dir/config.php") && file_exists("$dir/version.php") && file_exists("$dir/install.php");
 }
 
 function home_dir()
