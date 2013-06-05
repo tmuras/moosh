@@ -14,6 +14,7 @@ class CategoryList extends MooshCommand
 
         $this->addArgument('search');
 
+        $this->minArguments = 0;
         $this->maxArguments = 255;
     }
 
@@ -22,6 +23,10 @@ class CategoryList extends MooshCommand
         global $CFG, $DB;
 
         require_once $CFG->dirroot . '/course/lib.php';
+
+        if(!count($this->arguments)) {
+            $this->arguments = array('');
+        }
 
         foreach ($this->arguments as $argument) {
             $this->expandOptionsManually(array($argument));
