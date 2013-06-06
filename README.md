@@ -68,6 +68,22 @@ Example 3: use bash/zsh expansion to create 10 users
 
 The users will have unique email addresses based on the user name (testuser1, testuser2, testuser3...).
 
+user-getidbyname
+----------------
+
+Returns the userid of users. The parameter can be the first and last name of a user, or one or more username(s). (When using first and last name may be ambiguous. If more than one user with the same first and last name is found, it returns an error message: Multiple records found, only one record expected.)
+
+Example 1: Returns the userid of the user "test user"
+
+    moosh user-getidbyname --fname test --lname user
+
+Example 2: Returns the userid of the user with username "testuser"
+
+    moosh user-getidbyname testuser
+
+Example 3: Returns the userid of the users with username testuser{1..10}
+
+    moosh user-getidbyname testuser{1..5}
 
 user-mod
 --------
@@ -201,6 +217,23 @@ Example 2: Enroll user with id 21 into the course with id 31 as a non-editing te
 
     moosh course-enrol -r teacher -i 31 21
 
+course-enrolbyname
+------------------
+
+Is similar to course-enrol function. But it can also be used the first- and lastname of the user and the course shortname.
+ 
+Example 1: Enroll user with firstname test42 and lastname user42 into the course with shortname T12345 as an editing teacher.
+
+    moosh course-enrolbyname -r editingteacher -f test42 -l user42 -c T12345
+
+course-enrolleduser
+-------------------
+
+Returns all enrolled user in a course, which have a specific role. First argument is the shortname of a role, second argument is a course ID.
+
+Example 1: 
+
+    moosh course-enrolleduser student 4
 
 course-backup
 -------------
