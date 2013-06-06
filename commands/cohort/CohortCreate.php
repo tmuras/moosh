@@ -55,7 +55,6 @@ class CohortCreate extends MooshCommand
 
             $newcohort = cohort_add_cohort($cohort);
 
-            //either use API create_course
             echo $newcohort . "\n";
         }
     }

@@ -117,6 +117,62 @@ Example 2: Count the number of rows is log table
     moosh sql-run "select count(*) from {log}"
 
 
+category-list
+-------------
+
+List all categories or those that match search string(s).
+
+Example 1: List all categories
+
+    moosh category-list
+
+Example 2: List all categories with name "test" OR "foobar"
+
+    moosh category-list test foobar
+
+
+category-create
+---------------
+
+Create new category.
+
+Example 1: Add new top level category "mycat", invisible with no description.
+
+    moosh category-create mycat
+
+Example 2: Add category "mycat" under category id 6, set to visible and description to "My category".
+
+    moosh category-create -p 6 -v 1 -d "My category" mycat
+
+
+cohort-create
+-------------
+
+Create new cohort.
+
+Example 1: Create two system cohorts "mycohort1" and "mycohort2".
+
+    moosh cohort-create mycohort1 mycohort2
+
+Example 2: Create cohort "my cohort18" with id "cohort18" under category id 2, with description "Long description".
+
+    moosh cohort-create -d "Long description" -i cohort18 -c 2 "my cohort18"
+
+
+cohort-enrol
+------------
+
+Add user to cohort or enroll cohort to a course.
+
+Example 1: Add user id 17 to cohort named "my cohort18"
+
+    moosh cohort-enrol -u 17 "my cohort18"
+
+Example 2: Enroll cohort "my cohort18" to course id 4.
+
+    moosh cohort-enrol -c 4 "my cohort18"
+
+
 course-create
 -------------
 
