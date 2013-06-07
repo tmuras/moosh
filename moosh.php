@@ -10,21 +10,12 @@
 $cwd = getcwd();
 $moosh_dir = __DIR__;
 
-require 'vendor/autoload.php';
+$loader = require 'vendor/autoload.php';
+$loader->add('Moosh\\', __DIR__);
 
 $options = array('debug' => true, 'optimizations' => 0);
 
 require_once 'includes/MooshCommand.php';
-
-//load all commands
-$all_commands = array();
-foreach (glob(__DIR__ . '/commands/*', GLOB_ONLYDIR) as $dir) {
-    foreach (glob("$dir/*php") as $file) {
-        $all_commands[] = substr(basename($file), 0, -4);
-        require_once($file);
-    }
-}
-
 require_once 'includes/functions.php';
 require_once 'includes/default_options.php';
 
@@ -39,9 +30,20 @@ $appspecs = new OptionSpecCollection;
 $spec_verbose = $appspecs->add('v|verbose', "be verbose");
 $spec_moodle_path = $appspecs->add('p|moodle-path:', "Moodle directory.");
 
-$all_objects = array();
+$parser = new ContinuousOptionParser($appspecs);
+$app_options = $parser->parse($argv);
+
+if ($app_options->has('moodle-path')) {
+    $top_dir = $app_options['moodle-path']->value;
+} else {
+    $top_dir = find_top_moodle_dir($cwd);
+}
+
+$viable_versions = moosh_generate_version_list(moosh_moodle_version($top_dir));
+$namespaced_commands = moosh_load_all_commands(__DIR__, $viable_versions);
+
 $subcommands = array();
-foreach ($all_commands as $command) {
+foreach ($namespaced_commands as $command) {
     $object = new $command();
     $subcommands[$object->getName()] = $object;
 }
@@ -57,8 +59,6 @@ $subcommand_options = array();
 // command arguments
 $arguments = array();
 
-$parser = new ContinuousOptionParser($appspecs);
-$app_options = $parser->parse($argv);
 $subcommand = NULL;
 while (!$parser->isEnd()) {
     if (isset($subcommand_specs[$parser->getCurrentArgument()])) {
@@ -113,18 +113,12 @@ $subcommand = $subcommands[$subcommand];
 
 if ($subcommand->isBootstraped()) {
     define('CLI_SCRIPT', true);
-    if ($app_options->has('moodle-path')) {
-        require_once($app_options['moodle-path']->value . DIRECTORY_SEPARATOR . 'config.php');
-        $top_dir = $app_options['moodle-path']->value;
-    } else {
-        //find config.php in current or higher level directories
-        $top_dir = find_top_moodle_dir($cwd);
-        if (!$top_dir) {
-            echo "Could not find Moodle installation!\n";
-            exit(1);
-        }
-        require_once($top_dir . '/config.php');
+    if (!$top_dir) {
+        echo "Could not find Moodle installation!\n";
+        exit(1);
     }
+    require_once($top_dir . '/config.php');
+
     //gather more info based on the directory where moosh was run
     $relative_dir = substr($cwd, strlen($top_dir));
     $relative_dir = trim($relative_dir, '/');
@@ -166,4 +160,3 @@ if ($app_options->has('verbose')) {
 
 //execute the actual logic
 $subcommand->execute();
-
