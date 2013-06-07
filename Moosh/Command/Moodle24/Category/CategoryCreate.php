@@ -5,8 +5,9 @@
  * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace Moosh\Command\Moodle24\Category;
 
-class CategoryCreate extends MooshCommand
+class CategoryCreate extends \MooshCommand
 {
     public function __construct()
     {
@@ -23,24 +24,28 @@ class CategoryCreate extends MooshCommand
 
     public function execute()
     {
-        global $CFG;
-
-        require_once $CFG->dirroot . '/course/lib.php';
-
         foreach ($this->arguments as $argument) {
             $this->expandOptionsManually(array($argument));
             $options = $this->expandedOptions;
 
-            $category = new stdClass();
+            $category = new \stdClass();
             $category->name = $argument;
             $category->description = $options['description'];
             $category->parent = $options['parent'];
             $category->visible = $options['visible'];
-            $newcategory = create_course_category($category);
+            $newcategory = $this->create_category($category);
 
             //either use API create_course
             echo $newcategory->id . "\n";
         }
     }
+
+    protected function create_category($category)
+    {
+        global $CFG;
+        require_once $CFG->dirroot . '/course/lib.php';
+        return create_course_category($category);
+    }
+
 }
 

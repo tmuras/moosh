@@ -5,8 +5,9 @@
  * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+namespace Moosh\Command\Moodle24\Category;
 
-class CategoryList extends MooshCommand
+class CategoryList extends \MooshCommand
 {
     public function __construct()
     {
