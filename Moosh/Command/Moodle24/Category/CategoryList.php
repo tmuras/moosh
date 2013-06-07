@@ -33,9 +33,8 @@ class CategoryList extends \MooshCommand
             $this->expandOptionsManually(array($argument));
             $options = $this->expandedOptions;
 
-            $search = mysql_real_escape_string($argument);
-            $sql = "SELECT id,name,idnumber,description,parent FROM {course_categories} WHERE name LIKE '%$search%'";
-            $categories = $DB->get_records_sql($sql);
+            $sql = "SELECT id,name,idnumber,description,parent FROM {course_categories} WHERE " . $DB->sql_like('name', ':catname', false);
+            $categories = $DB->get_records_sql($sql, array('catname' => "%$argument%"));
 
             $outputheader = $outputcontent = "";
             $doheader = 0;
