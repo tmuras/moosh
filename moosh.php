@@ -15,7 +15,6 @@ $loader->add('Moosh\\', __DIR__);
 
 $options = array('debug' => true, 'optimizations' => 0);
 
-require_once 'includes/MooshCommand.php';
 require_once 'includes/functions.php';
 require_once 'includes/default_options.php';
 
