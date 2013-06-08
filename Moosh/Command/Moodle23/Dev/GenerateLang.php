@@ -96,6 +96,7 @@ class GenerateLang extends MooshCommand
         if ($langFile) {
             require_once($this->mooshDir . '/vendor/moodlehq/moodle-local_amos/mlangparser.php');
             $parser = mlang_parser_factory::get_parser('php');
+            // todo: adapt this to use the appropriate moodle version
             $component = new mlang_component($this->pluginInfo['name'], 'en', mlang_version::by_branch('MOODLE_24_STABLE'));
             $parser->parse(file_get_contents($langFile), $component);
             //check for the new lang strings

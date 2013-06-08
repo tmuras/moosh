@@ -8,6 +8,9 @@
 
 namespace Moosh\Command\Moodle23\Dev;
 use Moosh\MooshCommand;
+use Twig_Loader_Filesystem;
+use Twig_Environment;
+use Twig_Extension_Debug;
 
 class FormAdd extends MooshCommand
 {

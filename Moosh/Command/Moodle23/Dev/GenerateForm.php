@@ -8,6 +8,8 @@
 
 namespace Moosh\Command\Moodle23\Dev;
 use Moosh\MooshCommand;
+use Twig_Loader_Filesystem;
+use Twig_Environment;
 
 class GenerateForm extends MooshCommand
 {
