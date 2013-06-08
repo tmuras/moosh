@@ -10,7 +10,7 @@
 $cwd = getcwd();
 $moosh_dir = __DIR__;
 
-$loader = require 'vendor/autoload.php';
+$loader = require $moosh_dir . '/vendor/autoload.php';
 $loader->add('Moosh\\', __DIR__);
 
 $options = array('debug' => true, 'optimizations' => 0);
