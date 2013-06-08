@@ -8,6 +8,7 @@
 
 namespace Moosh\Command\Moodle23\Cohort;
 use Moosh\MooshCommand;
+use context_coursecat;
 
 class CohortCreate extends MooshCommand
 {
@@ -41,7 +42,7 @@ class CohortCreate extends MooshCommand
 
             if (!empty($options['category'])) {
                 if ($category = $DB->get_record('course_categories',array('id'=>$options['category']))) {
-                    $categorycontext = get_context_instance(CONTEXT_COURSECAT, $category->id);
+                    $categorycontext = context_coursecat::instance($category->id);
                 }
             }
 

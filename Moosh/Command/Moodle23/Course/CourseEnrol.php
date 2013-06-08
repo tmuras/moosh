@@ -12,6 +12,7 @@
 
 namespace Moosh\Command\Moodle23\Course;
 use Moosh\MooshCommand;
+use context_course;
 use course_enrolment_manager;
 
 class CourseEnrol extends MooshCommand
@@ -46,7 +47,7 @@ class CourseEnrol extends MooshCommand
         $role = $DB->get_record('role', array('shortname' => $options['role']), '*', MUST_EXIST);
 
         $course = $DB->get_record('course', array('id' => $arguments[0]), '*', MUST_EXIST);
-        $context = get_context_instance(CONTEXT_COURSE, $course->id, MUST_EXIST);
+        $context = context_course::instance($course->id);
         $manager = new course_enrolment_manager($PAGE, $course);
 
         $instances = $manager->get_enrolment_instances();
