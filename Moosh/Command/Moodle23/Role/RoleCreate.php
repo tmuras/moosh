@@ -6,6 +6,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace Moosh\Command\Moodle23\Role;
+use Moosh\MooshCommand;
+
 class RoleCreate extends MooshCommand
 {
     public function __construct()
