@@ -22,7 +22,12 @@ class ConfigPlugins extends MooshCommand
         global $CFG, $DB;
 
         if (isset($this->arguments[0])) {
-            $rows = $DB->get_records_sql('SELECT plugin FROM {config_plugins} WHERE plugin LIKE ? GROUP BY plugin ORDER BY plugin ASC',array('%'.$this->arguments[0].'%'));
+            $rows = $DB->get_records_sql(
+                'SELECT plugin FROM {config_plugins}
+                  WHERE ' . $DB->sql_like('plugin', ':plugin') . '
+                  GROUP BY plugin
+                  ORDER BY plugin ASC',
+                  array('plugin' => '%'.$this->arguments[0].'%'));
         } else {
             $rows = $DB->get_records_sql('SELECT plugin FROM {config_plugins} GROUP BY plugin ORDER BY plugin ASC');
         }
