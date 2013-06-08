@@ -6,6 +6,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace Moosh\Command\Moodle23\Download;
+use Moosh\MooshCommand;
+
 class DownloadMoodle extends MooshCommand
 {
     const downloadUrl = "http://download.moodle.org/download.php/direct/stable<major>/moodle-latest-<major>.tgz";
