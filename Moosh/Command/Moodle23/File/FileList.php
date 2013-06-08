@@ -43,8 +43,8 @@ timemodified
 
         $fs = get_file_storage();
 
-        $files = $DB->get_records_sql ("SELECT * FROM {files} WHERE ". $this->arguments[0]);
-        foreach($files as $file) {
+        $rs = $DB->get_recordset_sql ("SELECT id FROM {files} WHERE ". $this->arguments[0]);
+        foreach($rs as $file) {
             if($this->expandedOptions['id']) {
                 echo $file->id . "\n";
                 continue;
@@ -94,6 +94,7 @@ timemodified
             echo chr(27) . "[0G";
             flush();
         }
+        $rs->close();
 
     }
 }
