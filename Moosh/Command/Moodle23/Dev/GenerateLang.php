@@ -6,6 +6,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace Moosh\Command\Moodle23\Dev;
+use Moosh\MooshCommand;
+use mlang_parser_factory;
+use mlang_version;
+use mlang_component;
+use mlang_string;
+
 class GenerateLang extends MooshCommand
 {
     public function __construct()
@@ -96,7 +103,7 @@ class GenerateLang extends MooshCommand
             foreach($langKeys as $key) {
                 if(!$component->has_string($key)) {
                     echo "\t$key\n";
-                    $string = new \mlang_string($key,$key);
+                    $string = new mlang_string($key,$key);
                     $component->add_string($string);
                 }
             }
