@@ -160,16 +160,16 @@ function array_merge_recursive_distinct ( array &$array1, array &$array2 )
 
 /**
  * Get the moodle version from the branch variable in version.php
- * If not run from inside a Moodle directory, it will return the $default value
+ * If not run from inside a Moodle directory, it will return the $default value.
  *
  * @param string $topdir moodle directory
- * @return string either 'default' or a branch version (e.g. 23, 24, 25, etc.)
+ * @return string a branch version (e.g. 23, 24, 25, etc.)
  */
-function moosh_moodle_version($topdir, $default=24)
+function moosh_moodle_version($topdir, $default=23)
 {
     if ($topdir && is_dir($topdir) && file_exists($topdir . '/version.php')) {
 
-        // use the branch definied in version.php
+        // use the branch defined in version.php
         $lines = file($topdir . '/version.php');
         foreach ($lines as $line) {
             $matches = array();
@@ -184,7 +184,7 @@ function moosh_moodle_version($topdir, $default=24)
     return $default;
 }
 
-function moosh_generate_version_list($upto, $from=24)
+function moosh_generate_version_list($upto, $from=23)
 {
     $upto = intval($upto);
     $from = intval($from);
@@ -199,12 +199,12 @@ function moosh_generate_version_list($upto, $from=24)
 
  * The command for the latest $viable_version will be used.
  * For example, if viable versions contains 25, and these commands exist:
- *   * Moosh/Command/Moodle24/Category/CategoryCreate.php
+ *   * Moosh/Command/Moodle23/Category/CategoryCreate.php
  *   * Moosh/Command/Moodle25/Category/CategoryCreate.php
  * then the Moodle25 version will be used.
  *
  * @param string $srcdir directory containing the Moosh directory
- * @param array $viable_versions array of ascending branch numbers representing Moodle versions, i.e (24, 25, 26) that can be used
+ * @param array $viable_versions array of ascending branch numbers representing Moodle versions, i.e (23, 24, 25, 26) that can be used
  */
 function moosh_load_all_commands($srcdir, $viable_versions)
 {
@@ -216,7 +216,7 @@ function moosh_load_all_commands($srcdir, $viable_versions)
         foreach ($command_files as $filename) {
             $classname = basename($filename, '.php');
             $full_classname = "Moosh\\Command\\$moodle_version\\" . basename(dirname($filename)) .  '\\' . $classname;
-            // Later vesions overwrite earlier ones (e.g. a 24 version will be overwritten by a 26 version, if present).
+            // Later vesions overwrite earlier ones (e.g. a 23 version will be overwritten by a 26 version, if present).
             // Like this, the most recent appropriate version available will be used.
             $classnames[$classname] = $full_classname;
         }

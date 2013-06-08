@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle24\Cohort;
+namespace Moosh\Command\Moodle23\Cohort;
 use Moosh\MooshCommand;
 
 class CohortCreate extends MooshCommand

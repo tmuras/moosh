@@ -7,7 +7,7 @@
  */
 namespace Moosh\Command\Moodle25\Category;
 
-class CategoryCreate extends \Moosh\Command\Moodle24\Category\CategoryCreate
+class CategoryCreate extends \Moosh\Command\Moodle23\Category\CategoryCreate
 {
     protected function create_category($category)
     {

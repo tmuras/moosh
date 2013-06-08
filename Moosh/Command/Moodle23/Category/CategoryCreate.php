@@ -5,7 +5,8 @@
  * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace Moosh\Command\Moodle24\Category;
+
+namespace Moosh\Command\Moodle23\Category;
 use Moosh\MooshCommand;
 
 class CategoryCreate extends MooshCommand

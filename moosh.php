@@ -38,7 +38,8 @@ if ($app_options->has('moodle-path')) {
     $top_dir = find_top_moodle_dir($cwd);
 }
 
-$viable_versions = moosh_generate_version_list(moosh_moodle_version($top_dir));
+$moodle_version = moosh_moodle_version($top_dir);
+$viable_versions = moosh_generate_version_list($moodle_version);
 $namespaced_commands = moosh_load_all_commands(__DIR__, $viable_versions);
 
 $subcommands = array();

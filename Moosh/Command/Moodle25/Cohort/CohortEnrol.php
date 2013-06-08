@@ -7,7 +7,7 @@
  */
 namespace Moosh\Command\Moodle25\Cohort;
 
-class CohortEnrol extends \Moosh\Command\Moodle24\Cohort\CohortEnrol
+class CohortEnrol extends \Moosh\Command\Moodle23\Cohort\CohortEnrol
 {
     protected function enrol_cohort_sync($courseid)
     {
