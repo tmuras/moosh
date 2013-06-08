@@ -7,6 +7,10 @@
  * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+namespace Moosh\Command\Moodle23\User;
+use Moosh\MooshCommand;
+
 class UserCreate extends MooshCommand
 {
     public function __construct()
@@ -33,7 +37,7 @@ class UserCreate extends MooshCommand
         foreach ($this->arguments as $argument) {
             $this->expandOptionsManually(array($argument));
             $options = $this->expandedOptions;
-            $user = new stdClass();
+            $user = new \stdClass();
             $user->password = $options['password'];
             $user->email = $options['email'];
             $user->city = $options['city'];
