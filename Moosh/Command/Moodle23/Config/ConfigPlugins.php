@@ -24,7 +24,7 @@ class ConfigPlugins extends MooshCommand
         if (isset($this->arguments[0])) {
             $rows = $DB->get_records_sql(
                 'SELECT plugin FROM {config_plugins}
-                  WHERE ' . $DB->sql_like('plugin', ':plugin') . '
+                  WHERE ' . $DB->sql_like('plugin', ':plugin', false) . '
                   GROUP BY plugin
                   ORDER BY plugin ASC',
                   array('plugin' => '%'.$this->arguments[0].'%'));
