@@ -14,7 +14,7 @@ Here is for example how you can create 5 Moodle user accounts with moosh:
 Requirements
 ============
 
-PHP 5.3+, Moodle 2.3 or 2.4.
+PHP 5.3+, Moodle 2.3 or higher.
 
 Installation
 ============
