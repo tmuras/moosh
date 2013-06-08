@@ -6,6 +6,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace Moosh\Command\Moodle24\Cohort;
+use Moosh\MooshCommand;
+
 class CohortEnrol extends MooshCommand
 {
     public function __construct()
@@ -82,7 +85,7 @@ class CohortEnrol extends MooshCommand
                         ));
                         echo "Cohort enrolled\n";
                     }
-                    enrol_cohort_sync($course->id);
+                    $this->enrol_cohort_sync($course->id);
                 }
             }
 
@@ -92,12 +95,17 @@ class CohortEnrol extends MooshCommand
                     cohort_add_member($cohort->id,$options['userid']);
                     echo "User enrolled\n";
                     if (!empty($course)) {
-                        enrol_cohort_sync($course->id);
+                        $this->enrol_cohort_sync($course->id);
                     }
                 }
             }
 
 
         }
+    }
+
+    protected function enrol_cohort_sync($courseid)
+    {
+        enrol_cohort_sync($courseid);
     }
 }

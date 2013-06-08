@@ -6,6 +6,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace Moosh\Command\Moodle24\Cohort;
+use Moosh\MooshCommand;
+
 class CohortCreate extends MooshCommand
 {
     public function __construct()
@@ -42,7 +45,7 @@ class CohortCreate extends MooshCommand
                 }
             }
 
-            $cohort = new stdClass();
+            $cohort = new \stdClass();
             if (!empty($categorycontext)) {
                 $cohort->contextid = $categorycontext->id;
             } else {
