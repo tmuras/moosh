@@ -6,6 +6,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace Moosh\Command\Moodle23\Course;
+use Moosh\MooshCommand;
+use backup_controller;
+use backup;
+
 class CourseBackup extends MooshCommand
 {
     public function __construct()
@@ -46,7 +51,7 @@ class CourseBackup extends MooshCommand
             cli_error("File '{$options['filename']}' already exists, I will not over-write it.");
         }
 
-        $bc = new backup_controller(backup::TYPE_1COURSE, $this->arguments[0], backup::FORMAT_MOODLE,
+        $bc = new backup_controller(\backup::TYPE_1COURSE, $this->arguments[0], backup::FORMAT_MOODLE,
             backup::INTERACTIVE_NO, backup::MODE_GENERAL, $admin->id);
 
         $bc->execute_plan();

@@ -6,6 +6,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace Moosh\Command\Moodle23\Course;
+use Moosh\MooshCommand;
+
 class CourseList extends MooshCommand
 {
     public function __construct()
@@ -29,7 +32,10 @@ class CourseList extends MooshCommand
 
             $search = mysql_real_escape_string($argument);
             $sql = "SELECT id,category,shortname,fullname FROM {course} WHERE shortname LIKE '%$search%' OR fullname LIKE '%$search%'";
-            $courses = $DB->get_records_sql($sql);
+            $sql = "SELECT id,category,shortname,fullname
+                      FROM {course}
+                      WHERE (" . $DB->sql_like('shortname', ':shortname', false) . " OR " . $DB->sql_like('fullname', ':fullname', false) . ")";
+            $courses = $DB->get_records_sql($sql, array('shortname' => "%$search%", 'fullname' => "%$search%"));
 
             $outputheader = $outputcontent = "";
             $doheader = 0;

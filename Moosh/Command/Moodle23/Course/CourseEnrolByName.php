@@ -13,12 +13,18 @@
  * @copyright  2013 onwards Mirko Otto
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+namespace Moosh\Command\Moodle23\Course;
+use Moosh\MooshCommand;
+use course_enrolment_manager;
+use context_course;
+
 class CourseEnrolByName extends MooshCommand
 {
     public function __construct()
     {
         parent::__construct('enrolbyname', 'course');
-        $this->addOption('i|id:', 'use numeric IDs instead of user name(s)');
+        $this->addOption('i|id:', 'use this user id instead of user name');
         $this->addOption('r|role:', 'role short name');
         $this->addOption('f|firstname:', 'users firstname');
         $this->addOption('l|lastname:', 'users lastname');
@@ -60,7 +66,7 @@ class CourseEnrolByName extends MooshCommand
             $course = $DB->get_record('course', array('id' => $arguments[0]), '*', MUST_EXIST);
             array_shift($arguments);
         }
-        $context = get_context_instance(CONTEXT_COURSE, $course->id, MUST_EXIST);
+        $context = context_course::instance($course->id);
         $manager = new course_enrolment_manager($PAGE, $course);
 
         $instances = $manager->get_enrolment_instances();

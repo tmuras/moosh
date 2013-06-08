@@ -9,6 +9,11 @@
  * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+namespace Moosh\Command\Moodle23\Course;
+use Moosh\MooshCommand;
+use course_enrolment_manager;
+
 class CourseEnrol extends MooshCommand
 {
     public function __construct()

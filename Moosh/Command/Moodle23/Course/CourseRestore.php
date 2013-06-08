@@ -6,6 +6,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace Moosh\Command\Moodle23\Course;
+use Moosh\MooshCommand;
+use restore_controller;
+use restore_dbops;
+use backup;
+
 class CourseRestore extends MooshCommand
 {
     public function __construct()
