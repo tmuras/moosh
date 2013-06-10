@@ -105,7 +105,7 @@ if ($moodlerc) {
 }
 
 /**
- * @var MooshCommand $subcommand
+ * @var Moosh\MooshCommand $subcommand
  *
  */
 $subcommand = $subcommands[$subcommand];
