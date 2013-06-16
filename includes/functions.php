@@ -172,6 +172,10 @@ function moosh_moodle_version($topdir, $default=23)
         // use the branch defined in version.php
         $lines = file($topdir . '/version.php');
         foreach ($lines as $line) {
+            //also support 1.9
+            if (strstr($line, "release = '1.9.")) {
+                return '19';
+            }
             $matches = array();
             if (preg_match('/^\$branch\s+=\s+\'(\d\d)\'.*/', $line, $matches)) {
                 return $matches[1];
@@ -179,12 +183,12 @@ function moosh_moodle_version($topdir, $default=23)
         }
 
         // If the file was there and we couldn't parse out the branch, there was a problem.
-        throw new Exception("Unable to determine branch version from Moode's version.php");
+        throw new Exception("Unable to determine branch version from '$topdir/version.php'");
     }
     return $default;
 }
 
-function moosh_generate_version_list($upto, $from=23)
+function moosh_generate_version_list($upto, $from=19)
 {
     $upto = intval($upto);
     $from = intval($from);
