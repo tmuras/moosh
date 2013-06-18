@@ -14,7 +14,7 @@ Here is for example how you can create 5 Moodle user accounts with moosh:
 Requirements
 ============
 
-PHP 5.3+, Moodle 2.3 or higher.
+PHP 5.3+, Moodle 1.9, 2.3 or higher.
 
 Installation
 ============
@@ -260,6 +260,16 @@ Restore course from path/to/backup.mbz to category with a given id.
 Example 1: Restore backup.mbz into category with id=1
 
     moosh course-restore backup.mbz 1
+
+
+course-reset
+--------------
+
+Reset course by ID, using default settings.
+
+Example 1: Reset course with id=17
+
+    moosh course-reset 17
 
 
 role-create
