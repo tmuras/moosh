@@ -28,43 +28,45 @@ class GenerateBlock extends MooshCommand
             exit(1);
         }
         $ret = null;
-        system("cp -r '{$this->mooshDir}/vendor/danielneis/moodle-block_newblock' '$blockPath'",$ret);
-        if($ret) {
+        system("cp -r '{$this->mooshDir}/vendor/danielneis/moodle-block_newblock' '$blockPath'", $ret);
+        if ($ret) {
             cli_error("Copying from module template failed");
         }
 
-        $ret = null;
-        system("rm --interactive=never -r '$blockPath/.git'",$ret);
-        if($ret) {
-            cli_error("Removing .git failed");
+        if (file_exists("$blockPath/.git")) {
+            $ret = null;
+            system("rm --interactive=never -r '$blockPath/.git'", $ret);
+            if ($ret) {
+                cli_error("Removing .git failed");
+            }
         }
 
         //replace newblock with $this->arguments[0]
         $ret = null;
-        system("find '$blockPath' -type f -exec sed 's/newblock/{$this->arguments[0]}/g' -i {} \;",$ret);
-        if($ret) {
+        system("find '$blockPath' -type f -exec sed 's/newblock/{$this->arguments[0]}/g' -i {} \;", $ret);
+        if ($ret) {
             cli_error("sed command failed");
         }
 
         //replace newblock with $this->arguments[0]
         $ret = null;
-        system("find '$blockPath' -type f -exec sed 's/Newblock/{$this->arguments[0]}/g' -i {} \;",$ret);
-        if($ret) {
+        system("find '$blockPath' -type f -exec sed 's/Newblock/{$this->arguments[0]}/g' -i {} \;", $ret);
+        if ($ret) {
             cli_error("sed command failed");
         }
 
 
         //rename lang/en/block_newblock.php
         $ret = null;
-        system("mv '$blockPath/lang/en/block_newblock.php' '$blockPath/lang/en/block_{$this->arguments[0]}.php'",$ret);
-        if($ret) {
+        system("mv '$blockPath/lang/en/block_newblock.php' '$blockPath/lang/en/block_{$this->arguments[0]}.php'", $ret);
+        if ($ret) {
             cli_error("Renaming lang file failed");
         }
 
         //rename block_newblock.php
         $ret = null;
-        system("mv '$blockPath/block_newblock.php' '$blockPath/block_{$this->arguments[0]}.php'",$ret);
-        if($ret) {
+        system("mv '$blockPath/block_newblock.php' '$blockPath/block_{$this->arguments[0]}.php'", $ret);
+        if ($ret) {
             cli_error("Renaming block_newblock.php failed");
         }
 

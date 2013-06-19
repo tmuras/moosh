@@ -28,28 +28,30 @@ class GenerateModule extends MooshCommand
             exit(1);
         }
         $ret = null;
-        system("cp -r '{$this->mooshDir}/vendor/moodlehq/moodle-mod_newmodule' '$modPath'",$ret);
-        if($ret) {
+        system("cp -r '{$this->mooshDir}/vendor/moodlehq/moodle-mod_newmodule' '$modPath'", $ret);
+        if ($ret) {
             cli_error("Copying from module template failed");
         }
 
-        $ret = null;
-        system("rm --interactive=never -r '$modPath/.git'",$ret);
-        if($ret) {
-            cli_error("Removing .git failed");
+        if (file_exists("$modPath/.git")) {
+            $ret = null;
+            system("rm --interactive=never -r '$modPath/.git'", $ret);
+            if ($ret) {
+                cli_error("Removing .git failed");
+            }
         }
 
         //replace newmodule with $this->arguments[0]
         $ret = null;
-        system("find '$modPath' -type f -exec sed 's/newmodule/{$this->arguments[0]}/g' -i {} \;",$ret);
-        if($ret) {
+        system("find '$modPath' -type f -exec sed 's/newmodule/{$this->arguments[0]}/g' -i {} \;", $ret);
+        if ($ret) {
             cli_error("sed command failed");
         }
 
         //rename lang/en/newmodule.php
         $ret = null;
-        system("mv '$modPath/lang/en/newmodule.php' '$modPath/lang/en/{$this->arguments[0]}.php'",$ret);
-        if($ret) {
+        system("mv '$modPath/lang/en/newmodule.php' '$modPath/lang/en/{$this->arguments[0]}.php'", $ret);
+        if ($ret) {
             cli_error("Renaming lang file failed");
         }
     }

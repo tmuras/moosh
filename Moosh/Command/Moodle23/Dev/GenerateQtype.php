@@ -28,35 +28,37 @@ class GenerateQtype extends MooshCommand
             exit(1);
         }
         $ret = null;
-        system("cp -r '{$this->mooshDir}/vendor/jamiepratt/moodle-qtype_TEMPLATE' '$modPath'",$ret);
-        if($ret) {
+        system("cp -r '{$this->mooshDir}/vendor/jamiepratt/moodle-qtype_TEMPLATE' '$modPath'", $ret);
+        if ($ret) {
             cli_error("Copying from qtype template failed");
         }
 
-        $ret = null;
-        system("rm --interactive=never -r '$modPath/.git'",$ret);
-        if($ret) {
-            cli_error("Removing .git failed");
+        if (file_exists("$modPath/.git")) {
+            $ret = null;
+            system("rm --interactive=never -r '$modPath/.git'", $ret);
+            if ($ret) {
+                cli_error("Removing .git failed");
+            }
         }
 
         //replace newmodule with $this->arguments[0]
         $ret = null;
-        system("find '$modPath' -type f -exec sed 's/YOURQTYPENAME/{$this->arguments[0]}/g' -i {} \;",$ret);
-        if($ret) {
+        system("find '$modPath' -type f -exec sed 's/YOURQTYPENAME/{$this->arguments[0]}/g' -i {} \;", $ret);
+        if ($ret) {
             cli_error("sed command failed");
         }
 
         //rename lang/en/qtype_YOURQTYPENAME.php
         $ret = null;
-        system("mv '$modPath/lang/en/qtype_YOURQTYPENAME.php' '$modPath/lang/en/qtype_{$this->arguments[0]}.php'",$ret);
-        if($ret) {
+        system("mv '$modPath/lang/en/qtype_YOURQTYPENAME.php' '$modPath/lang/en/qtype_{$this->arguments[0]}.php'", $ret);
+        if ($ret) {
             cli_error("Renaming lang file failed");
         }
 
         //rename edit_YOURQTYPENAME_form.php
         $ret = null;
-        system("mv '$modPath/edit_YOURQTYPENAME_form.php' '$modPath/edit_{$this->arguments[0]}_form.php'",$ret);
-        if($ret) {
+        system("mv '$modPath/edit_YOURQTYPENAME_form.php' '$modPath/edit_{$this->arguments[0]}_form.php'", $ret);
+        if ($ret) {
             cli_error("Renaming lang file failed");
         }
     }
