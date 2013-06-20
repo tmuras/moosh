@@ -161,6 +161,20 @@ Example 2: Add category "mycat" under category id 6, set to visible and descript
     moosh category-create -p 6 -v 1 -d "My category" mycat
 
 
+category-move
+---------------
+
+Move one category to another category
+
+Example 1: Move the category with id 5 to be in the category with id 7
+
+    moosh category-move 5 7
+
+Example 2: Make the category with id 3 a top-level category
+
+    moosh category-move 3 0
+
+
 cohort-create
 -------------
 
