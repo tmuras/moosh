@@ -133,20 +133,6 @@ Example 2: Count the number of rows is log table
     moosh sql-run "select count(*) from {log}"
 
 
-category-list
--------------
-
-List all categories or those that match search string(s).
-
-Example 1: List all categories
-
-    moosh category-list
-
-Example 2: List all categories with name "test" OR "foobar"
-
-    moosh category-list test foobar
-
-
 category-create
 ---------------
 
@@ -159,6 +145,30 @@ Example 1: Add new top level category "mycat", invisible with no description.
 Example 2: Add category "mycat" under category id 6, set to visible and description to "My category".
 
     moosh category-create -p 6 -v 1 -d "My category" mycat
+
+
+category-export
+-------------
+
+Export category structure to XML.
+
+Example 1: Export all categories to XML.
+
+    moosh category-export 1
+
+
+category-list
+-------------
+
+List all categories or those that match search string(s).
+
+Example 1: List all categories
+
+    moosh category-list
+
+Example 2: List all categories with name "test" OR "foobar"
+
+    moosh category-list test foobar
 
 
 category-move
@@ -559,4 +569,5 @@ Contributing to moosh
 2. Follow "installation from Moodle git" section.
 3. Look at existing plugins to see how they are done.
 4. Create new plugin/update existing one.
+5. Update this README.md file with the example on how to use your plugin.
 5. Send me pull request.
