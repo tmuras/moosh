@@ -132,10 +132,14 @@ if ($subcommand->isBootstraped()) {
     $subcommand->topDir = $top_dir;
     $subcommand->relativeDir = $relative_dir;
 
+    //set up debugging
     @error_reporting(E_ALL | E_STRICT);
     @ini_set('display_errors', '1');
     $CFG->debug = (E_ALL | E_STRICT);
     $CFG->debugdisplay = 1;
+
+    //by default set up $USER to admin user
+
 
 }
 

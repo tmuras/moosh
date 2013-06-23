@@ -571,3 +571,13 @@ Contributing to moosh
 4. Create new plugin/update existing one.
 5. Update this README.md file with the example on how to use your plugin.
 5. Send me pull request.
+
+
+What other said about moosh
+===========================
+
+_Fan-effing-tastic! Thank you. I've used Drush and it is so incredibly
+helpful. I just got this running on win 2k8 (not my choice) and it is
+useful as hell. Thanks!_
+
+_Jeff Masiello_
