@@ -19,6 +19,9 @@ class GradebookImport extends MooshCommand
         $this->addArgument('course_id');
 
         $this->addOption('t|test', 'only test and show summary of actions, don\'t do any writes');
+        $this->addOption('u|map-users-by:', 'what to use for map users from CSV. Possible values: email (default), idnumber (for ID number profile field)', 'email');
+        $this->addOption('c|course-idnumber', 'instead of course id take mdl_course.idnumber as argument for selecting the course');
+
     }
 
     public function execute()
@@ -45,7 +48,11 @@ class GradebookImport extends MooshCommand
             cli_error("No data in file '{$this->arguments[0]}''");
         }
 
-        $course = $DB->get_record('course', array('id' => $this->arguments[1]), '*', MUST_EXIST);
+        if ($options['course-idnumber']) {
+            $course = $DB->get_record('course', array('idnumber' => $this->arguments[1]), '*', MUST_EXIST);
+        } else {
+            $course = $DB->get_record('course', array('id' => $this->arguments[1]), '*', MUST_EXIST);
+        }
 
         $iid = \csv_import_reader::get_new_iid('moosh-gradebook');
         $csvimport = new \csv_import_reader($iid, 'moosh-gradebook');
@@ -54,11 +61,21 @@ class GradebookImport extends MooshCommand
 
         $header = $csvimport->get_columns();
 
-        //by default use "Email address" for mapping users
-        $usermap = array_search('Email address', $header);
+        //use "Email address" or "ID number" for mapping users
+        if ($options['map-users-by'] == 'idnumber') {
+            $usermap = array_search('ID number', $header);
 
-        if ($usermap === false) {
-            cli_error("Didn't find column called 'Email address' for mapping users");
+            if ($usermap === false) {
+                cli_error("Didn't find column called 'ID number' for mapping users");
+            }
+        } elseif ($options['map-users-by'] == 'email') {
+            $usermap = array_search('Email address', $header);
+
+            if ($usermap === false) {
+                cli_error("Didn't find column called 'Email address' for mapping users");
+            }
+        } else {
+            cli_error(' Wrong map-users-by value');
         }
         $map = array();
 
@@ -95,11 +112,17 @@ class GradebookImport extends MooshCommand
         $newgrades = array();
         while ($line = $csvimport->next()) {
             //first find user
-            if (!$user = $DB->get_record('user', array('email' => $line[$usermap]))) {
-                cli_error("Couldn't find user with email '{$line[$usermap]}'");
+            if ($options['map-users-by'] == 'idnumber') {
+                if (!$user = $DB->get_record('user', array('idnumber' => $line[$usermap]))) {
+                    cli_error("Couldn't find user with idnumber '{$line[$usermap]}'");
+                }
+            } elseif ($options['map-users-by'] == 'email') {
+                if (!$user = $DB->get_record('user', array('email' => $line[$usermap]))) {
+                    cli_error("Couldn't find user with email '{$line[$usermap]}'");
+                }
             }
 
-            echo "Processing user {$user->email} ({$user->id})\n";
+            echo "Processing user {$user->email} ({$user->id},{$user->idnumber})\n";
             foreach ($map as $k => $v) {
                 $gradeitem = $grade_items[$v];
                 $value = $line[$k];
@@ -128,8 +151,8 @@ class GradebookImport extends MooshCommand
 
                 echo "\tGrade for '{$gradeitem->get_name()}', type {$gradeitem->gradetype} will be set to '$value'\n";
                 $newgrade->finalgrade = $value;
-                $newgrade->userid     = $user->id;
-                $newgrade->importer   = $USER->id;
+                $newgrade->userid = $user->id;
+                $newgrade->importer = $USER->id;
                 $newgrades[] = $newgrade;
             }
         }
