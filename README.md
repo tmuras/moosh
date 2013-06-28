@@ -561,6 +561,14 @@ Example 2: Download latest Moodle 2.3.
 
         moosh download-moodle -v 23
 
+webservice-call
+---------------
+
+Calls 
+
+Example: Get list of all courses enroled for a user
+
+    moosh webservice-call --token 4ac42118db3ee8d4b1ae78f2c1232afd --params userid=3 core_enrol_get_users_courses
 
 Contributing to moosh
 =====================
