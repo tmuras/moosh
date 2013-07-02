@@ -30,6 +30,6 @@ $defaultOptions['course']['category'] = 1;
 
 $defaultOptions['course']['role'] = 'student';
 
-$defaultOptions['download']['version'] = '24';
+$defaultOptions['download']['version'] = '25';
 
 

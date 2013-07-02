@@ -176,6 +176,9 @@ function moosh_moodle_version($topdir, $default=23)
             if (strstr($line, "release = '1.9.")) {
                 return '19';
             }
+            if (strstr($line, "release  = '2.2.")) {
+                return '22';
+            }
             $matches = array();
             if (preg_match('/^\$branch\s+=\s+\'(\d\d)\'.*/', $line, $matches)) {
                 return $matches[1];
