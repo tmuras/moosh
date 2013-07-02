@@ -13,6 +13,10 @@ class GenerateMoosh extends MooshCommand
         parent::__construct('moosh', 'generate');
 
         $this->addArgument('name');
+
+        $this->addOption('t|test', 'option with no value');
+        $this->addOption('o|option:', 'option with value and default', 'default');
+
     }
 
     public function execute()
@@ -22,6 +26,8 @@ class GenerateMoosh extends MooshCommand
         //$this->mooshDir - moosh installation directory
         //$this->expandedOptions - commandline provided options, merged with defaults
         //$this->topDir - top Moodle directory
+
+        $options = $this->expandedOptions;
 
         /* if verbose mode was requested, show some more information/debug messages
         if($this->verbose) {

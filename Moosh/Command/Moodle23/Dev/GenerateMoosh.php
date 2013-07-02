@@ -15,11 +15,26 @@ class GenerateMoosh extends MooshCommand
     {
         parent::__construct('moosh', 'generate');
 
-        $this->addArgument('name');
+        $this->addArgument('category-command');
     }
 
     public function execute()
     {
-        //exactly one -
+        $loader = new Twig_Loader_Filesystem($this->mooshDir.'/templates');
+        $twig = new Twig_Environment($loader);
+
+        $command = explode('-',$this->arguments[0],2);
+
+
+        $fileName = ucfirst($command[0]).ucfirst($command[1]).'.php';
+        $filePath = $this->cwd . '/' .$fileName;
+        $content = $twig->render('moosh/command.twig', array('formName' => $formName));
+        if (file_exists($filePath)) {
+            cli_problem("File $fileName exists");
+            echo $content;
+            echo "\n---------------------\n";
+        } else {
+            file_put_contents($filePath, $content);
+        }
     }
 }
