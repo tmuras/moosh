@@ -562,6 +562,26 @@ Example 2: Download latest Moodle 2.3.
         moosh download-moodle -v 23
 
 
+info
+---------------
+
+Show information about plugin in current directory.
+
+Example 1:
+
+    moosh info
+
+
+info-plugins
+---------------
+
+List all possible plugins in this version of Moodle and directory for each.
+
+Example 1: Show all plugin types.
+
+    moosh info-plugins
+
+
 Contributing to moosh
 =====================
 
