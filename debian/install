@@ -1,0 +1,5 @@
+moosh /usr/bin
+includes /usr/share/moosh
+Moosh /usr/share/moosh
+templates /usr/share/moosh
+vendor /usr/share/moosh

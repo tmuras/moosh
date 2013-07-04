@@ -1,0 +1,17 @@
+Source: moosh
+Section: devel
+Priority: extra
+Maintainer: Tomasz Muras <nexor1984@gmail.com>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.2
+Homepage: https://github.com/tmuras/moosh
+Vcs-Git: https://github.com/tmuras/moosh.git
+Vcs-Browser: https://github.com/tmuras/moosh
+
+Package: moosh
+Architecture: all
+Depends: ${misc:Depends},php5-cli
+Description: Commandline utility helper for Moodle
+ Similar to drush for Drupal, moodle is a helper
+ utility that can manage and help develop a Moodle
+ LMS (http://moodle.org).
