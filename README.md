@@ -593,11 +593,16 @@ Contributing to moosh
 5. Send me pull request.
 
 
-What other said about moosh
-===========================
+moosh praise
+============
 
 _Fan-effing-tastic! Thank you. I've used Drush and it is so incredibly
 helpful. I just got this running on win 2k8 (not my choice) and it is
 useful as hell. Thanks!_
 
 _Jeff Masiello_
+
+
+_Soooo beautiful :-) Thank you!_
+
+_Nadav Kavalerchik_
