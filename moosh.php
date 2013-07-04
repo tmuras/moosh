@@ -8,15 +8,23 @@
  */
 
 $cwd = getcwd();
-$moosh_dir = __DIR__;
+
+//try to detect if we are packaged moosh version - e.g. dude where are my libraries
+if(file_exists(__DIR__.'/Moosh')) {
+    $moosh_dir = __DIR__;
+} elseif (file_exists('/usr/share/moosh')) {
+    $moosh_dir = '/usr/share/moosh';
+} else {
+    die("I can't find my own libraries\n");
+}
 
 $loader = require $moosh_dir . '/vendor/autoload.php';
-$loader->add('Moosh\\', __DIR__);
+$loader->add('Moosh\\', $moosh_dir);
 
 $options = array('debug' => true, 'optimizations' => 0);
 
-require_once 'includes/functions.php';
-require_once 'includes/default_options.php';
+require_once $moosh_dir.'/includes/functions.php';
+require_once $moosh_dir.'/includes/default_options.php';
 
 use GetOptionKit\ContinuousOptionParser;
 use GetOptionKit\OptionSpecCollection;
@@ -40,7 +48,7 @@ if ($app_options->has('moodle-path')) {
 
 $moodle_version = moosh_moodle_version($top_dir);
 $viable_versions = moosh_generate_version_list($moodle_version);
-$namespaced_commands = moosh_load_all_commands(__DIR__, $viable_versions);
+$namespaced_commands = moosh_load_all_commands($moosh_dir, $viable_versions);
 
 $subcommands = array();
 foreach ($namespaced_commands as $command) {
