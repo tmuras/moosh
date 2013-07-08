@@ -68,6 +68,11 @@ Example 3: use bash/zsh expansion to create 10 users
 
 The users will have unique email addresses based on the user name (testuser1, testuser2, testuser3...).
 
+Example 4: create a user with LDAP authentication
+
+    moosh user-create --auth ldap --password ""  --email joe.blogs@domain.tld --city "Some City" --country IE --firstname "Joe" --lastname "Blogs" jblogs
+
+
 user-getidbyname
 ----------------
 
