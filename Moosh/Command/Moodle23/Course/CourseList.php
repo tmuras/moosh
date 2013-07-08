@@ -32,7 +32,7 @@ class CourseList extends MooshCommand
 
             $search = mysql_real_escape_string($argument);
             $sql = "SELECT id,category,shortname,fullname FROM {course} WHERE shortname LIKE '%$search%' OR fullname LIKE '%$search%'";
-            $sql = "SELECT id,category,shortname,fullname
+            $sql = "SELECT id,category,idnumber,shortname,fullname
                       FROM {course}
                       WHERE (" . $DB->sql_like('shortname', ':shortname', false) . " OR " . $DB->sql_like('fullname', ':fullname', false) . ")";
             $courses = $DB->get_records_sql($sql, array('shortname' => "%$search%", 'fullname' => "%$search%"));
