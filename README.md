@@ -224,7 +224,21 @@ Example 1: Create 10 new courses using bash/zim expansion
 
 Example 2: Create new course
 
-    moosh course-create --category 1 --fullname "full course name" --description "course description" shortname
+    moosh course-create --category 1 --fullname "full course name" --description "course description" --idnumber "course idnumber" shortname
+
+
+course-enableselfenrol
+----------------------
+
+Enable self enrolment on one or more courses given a list of course IDs. By default self enrolment is enabled without an enrolment key, but one can be passed as an option.
+
+Example 1: Enable self enrolment on a course without an enrolment key
+
+    moosh course-enableselfenrol 3
+    
+Example 2: Enable self enrolment on a course with an enrolment key
+
+    moosh course-enableselfenrol --key "an example enrolment key" 3
 
 
 course-enrol
