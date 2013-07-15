@@ -246,7 +246,7 @@ course-enrolbyname
 ------------------
 
 Is similar to course-enrol function. But it can also be used the first- and lastname of the user and the course shortname.
- 
+
 Example 1: Enroll user with firstname test42 and lastname user42 into the course with shortname T12345 as an editing teacher.
 
     moosh course-enrolbyname -r editingteacher -f test42 -l user42 -c T12345
@@ -257,7 +257,7 @@ course-enrolleduser
 
 Returns all enrolled user in a course, which have a specific role. First argument is the shortname of a role, second argument is a course ID.
 
-Example 1: 
+Example 1:
 
     moosh course-enrolleduser student 4
 
@@ -580,6 +580,22 @@ List all possible plugins in this version of Moodle and directory for each.
 Example 1: Show all plugin types.
 
     moosh info-plugins
+
+
+block-add
+---------------
+
+Add a new block instance to any system context (front page, category, course, module ...)
+Can add a block instance to a single course or to all courses in a category
+Can add a block to the category itself which will appear in all it's sub categories and courses
+(use "moosh block-add -h" for more help)
+
+Example:
+
+    moosh block-add category 2 calendar_month admin-course-category side-pre -1
+    moosh block-add -s category 2 calendar_month admin-course-category side-pre -1
+    moosh block-add categorycourses 2 calendar_month course-view-* side-post 0
+    moosh block-add course 32 calendar_month course-view-* side-post 0
 
 
 Contributing to moosh
