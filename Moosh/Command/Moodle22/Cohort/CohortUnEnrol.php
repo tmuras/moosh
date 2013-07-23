@@ -16,7 +16,6 @@ class CohortUnEnrol extends MooshCommand
         parent::__construct('unenrol', 'cohort');
 
         $this->addArgument('cohortid');
-
         $this->addArgument('userid');
 
         $this->maxArguments = 255;
@@ -29,21 +28,18 @@ class CohortUnEnrol extends MooshCommand
         require_once $CFG->dirroot . '/cohort/lib.php';
         require_once $CFG->dirroot . '/enrol/cohort/locallib.php';
 
-	$cohortid = $this->arguments[0];
-	
-    	// Sanity Checks.
-    	// Check if cohorst exists.
-   	if (!$cohort = $DB->get_record('cohort', array('id'=>$cohortid))) {
+        $cohortid = $this->arguments[0];
 
-		echo "Cohort does not exist\n";
-		exit(0);
+        // Check if cohort exists.
+        if (!$cohort = $DB->get_record('cohort', array('id' => $cohortid))) {
+            echo "Cohort does not exist\n";
+            exit(0);
+        }
 
-	} 
-
-	foreach(array_slice($this->arguments,1) as $key=>$userid) {
-
+        $users = array_slice($this->arguments, 1);
+        foreach ($users as $key => $userid) {
             cohort_remove_member($cohortid, $userid);
             echo "User " . $userid . " un-enrolled\n";
-	}
+        }
     }
 }
