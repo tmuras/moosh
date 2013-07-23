@@ -213,6 +213,16 @@ Example 2: Enroll cohort "my cohort18" to course id 4.
     moosh cohort-enrol -c 4 "my cohort18"
 
 
+cohort-unenrol
+--------------
+
+Remove user(s) from a cohort (by cohort id)
+
+Example 1: Remove users 20,30,40 from cohort id=7.
+
+    moosh cohort-unenrol 7 20 30 40
+
+
 course-create
 -------------
 
