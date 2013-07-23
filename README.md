@@ -14,7 +14,7 @@ Here is for example how you can create 5 Moodle user accounts with moosh:
 Requirements
 ============
 
-PHP 5.3+, Moodle 1.9, 2.3 or higher.
+PHP 5.3+, Moodle 1.9, 2.2 or higher.
 
 Installation
 ============
@@ -598,15 +598,31 @@ Example:
     moosh block-add course 32 calendar_month course-view-* side-post 0
 
 
+random-label
+------------
+
+Add a label with random text to random section of course id provided.
+
+Example 1: Add 5 labels to course id 17.
+
+    for i in {1..5}; do moosh random-label 17; done
+
+Example 2: Add label that will contain string " uniquetext " inside.
+
+    moosh random-label -i ' uniquetext ' 17
+
 Contributing to moosh
 =====================
 
 1. Fork the project on github.
 2. Follow "installation from Moodle git" section.
 3. Look at existing plugins to see how they are done.
-4. Create new plugin/update existing one.
+4. Create new plugin/update existing one. You can use moosh itself to generate a new command from a template for you:
+
+    moosh generate-moosh category-command
+
 5. Update this README.md file with the example on how to use your plugin.
-5. Send me pull request.
+6. Send me pull request.
 
 
 moosh praise

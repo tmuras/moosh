@@ -1,4 +1,7 @@
 <?php
+
+global $table, $n, $separator;
+
 $n = 2;
 $separator = ' ';
 $table = array (

@@ -6,16 +6,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-class GenerateMoosh extends MooshCommand
+namespace Moosh\Command\Moodle23\{{ category|capitalize }};
+use Moosh\MooshCommand;
+
+class {{ category|capitalize }}{{ command|capitalize }} extends MooshCommand
 {
     public function __construct()
     {
-        parent::__construct('moosh', 'generate');
+        parent::__construct('{{ command }}', '{{ category }}');
 
-        $this->addArgument('name');
+        //$this->addArgument('name');
 
-        $this->addOption('t|test', 'option with no value');
-        $this->addOption('o|option:', 'option with value and default', 'default');
+        //$this->addOption('t|test', 'option with no value');
+        //$this->addOption('o|option:', 'option with value and default', 'default');
 
     }
 
@@ -26,6 +29,7 @@ class GenerateMoosh extends MooshCommand
         //$this->mooshDir - moosh installation directory
         //$this->expandedOptions - commandline provided options, merged with defaults
         //$this->topDir - top Moodle directory
+        //$this->arguments[0] - first argument passed
 
         $options = $this->expandedOptions;
 
@@ -34,4 +38,5 @@ class GenerateMoosh extends MooshCommand
             echo "Say what you're doing now";
         }
         */
+    }
 }
