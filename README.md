@@ -621,6 +621,18 @@ Example 2: Add label that will contain string " uniquetext " inside.
 
     moosh random-label -i ' uniquetext ' 17
 
+
+module-config
+----------------
+
+Set or Get any plugin's settings values
+
+Example:
+
+    moosh module-config set dropbox dropbox_secret 123
+    moosh module-config get dropbox dropbox_secret ?
+
+
 Contributing to moosh
 =====================
 
