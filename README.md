@@ -621,6 +621,18 @@ Example 2: Add label that will contain string " uniquetext " inside.
 
     moosh random-label -i ' uniquetext ' 17
 
+
+module-manage
+----------------
+
+Show or Hide moudles, system wide (Will also delete, in the future)
+
+Example:
+
+    moosh module-manage hide scorm
+    moosh module-manage show scorm
+
+
 Contributing to moosh
 =====================
 
