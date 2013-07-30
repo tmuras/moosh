@@ -122,6 +122,9 @@ Example 1: list 10 user accounts
 
     moosh user-list -n 10
 
+Example 2: list 100 accounts sorted on email address in descending order and showing idnumber column
+
+    moosh user-list --limit 100 --idnumber --sort email --descending
 
 sql-run
 -------

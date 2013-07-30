@@ -19,34 +19,38 @@ class UserList extends MooshCommand
         parent::__construct('list', 'user');
 
         $this->addOption('n|limit:', 'display max n users');
-
-        //TODO
-        //$this->addOption('s|sort:', 'sort by');
+        $this->addOption('i|idnumber', 'display idnumber column');
+        $this->addOption('s|sort:', 'sort by (id, username, email or idnumber)');
+        $this->addOption('d|descending', 'sort in descending order');
     }
 
     public function execute()
     {
-        global $CFG, $USER;
+        global $DB;
 
-        $USER->country = "PL";
-        require_once($CFG->libdir.'/adminlib.php');
-        require_once($CFG->dirroot.'/user/filters/lib.php');
-
-        // Carry on with the user listing
-        $context = context_system::instance();
         $options = $this->expandedOptions;
 
-        $extrasql = '';
-        $params = array();
         $sort = "id";
+        if($options['sort'] == 'id' || $options['sort'] == 'username' || $options['sort'] == 'email' || $options['sort'] == 'idnumber'){
+            $sort = $options['sort'];
+        }
         $dir = 'ASC';
-        $start = 0;
+        if($options['descending']){
+            $dir = 'DESC';
+        }
 
-        $users = get_users_listing($sort, $dir, $start, $options['limit'], '', '', '',
-            $extrasql, $params, $context);
+        $select_sql = "SELECT * FROM {user} WHERE confirmed = 1 AND deleted = 0 ORDER BY $sort $dir";
+        if($options['limit'] && preg_match('/^\d+$/', $options['limit'])){
+            $select_sql .= " LIMIT " . $options['limit'];
+        }
+        $users = $DB->get_records_sql($select_sql);
 
         foreach($users as $user) {
-            echo $user->username . " ({$user->id}), " . $user->email . ", " . "\n";
+            $to_print = $user->username . " ({$user->id}), " . $user->email . ", ";
+            if($options['idnumber']){
+                $to_print .= $user->idnumber . ", ";
+            }
+            echo $to_print . "\n";
         }
     }
 }
