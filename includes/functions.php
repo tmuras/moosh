@@ -11,62 +11,63 @@
  * based on the current directory.
  * @param $dir
  */
-function detect_plugin($dir) {
+function detect_plugin($dir)
+{
     $templates = array(
-        'qtype' => array('dir'=>'question/type'),
-        'qbehaviour' => array('dir'=>'question/behaviour'),
-        'qformat' => array('dir'=>'question/format'),
-        'filter' => array('dir'=>'filter'),
-        'enrol' => array('dir'=>'enrol'),
-        'auth' => array('dir'=>'auth'),
-        'message' => array('dir'=>'message/output'),
-        'editor' => array('dir'=>'lib/editor'),
-        'format' => array('dir'=>'course/format'),
-        'profilefield' => array('dir'=>'user/profile/field'),
-        'report' => array('dir'=>'report'),
-        'coursereport' => array('dir'=>'course/report'),
-        'gradeexport' => array('dir'=>'grade/export'),
-        'gradeimport' => array('dir'=>'grade/import'),
-        'gradereport' => array('dir'=>'grade/report'),
-        'gradingform' => array('dir'=>'grade/grading/form'),
-        'mnetservice' => array('dir'=>'mnet/service'),
-        'webservice' => array('dir'=>'webservice'),
-        'repository' => array('dir'=>'repository'),
-        'portfolio' => array('dir'=>'portfolio'),
-        'plagiarism' => array('dir'=>'plagiarism'),
-        'tool' => array('dir'=>'admin/tool'),
-        'cachestore' => array('dir'=>'cache/stores'),
-        'cachelock' => array('dir'=>'cache/locks'),
-        'theme' => array('dir'=>'theme'),
-        'assignsubmission' => array('dir'=>'mod/assign/submission'),
-        'assignfeedback' => array('dir'=>'mod/assign/feedback'),
-        'assignment' => array('dir'=>'mod/assignment/type'),
-        'booktool' => array('dir'=>'mod/book/tool'),
-        'datafield' => array('dir'=>'mod/data/field'),
-        'datapreset' => array('dir'=>'mod/data/preset'),
-        'quiz' => array('dir'=>'mod/quiz/report'),
-        'quizaccess' => array('dir'=>'mod/quiz/accessrule'),
-        'scormreport' => array('dir'=>'mod/scorm/report'),
-        'workshopform' => array('dir'=>'mod/workshop/form'),
-        'workshopallocation' => array('dir'=>'mod/workshop/allocation'),
-        'workshopeval' => array('dir'=>'mod/workshop/eval'),
-        'tinymce' => array('dir'=>'lib/editor/tinymce/plugins/moodlemedia'),
-        'mod' => array('dir'=>'mod'),
-        'block' => array('dir'=>'blocks'),
+        'qtype' => array('dir' => 'question/type'),
+        'qbehaviour' => array('dir' => 'question/behaviour'),
+        'qformat' => array('dir' => 'question/format'),
+        'filter' => array('dir' => 'filter'),
+        'enrol' => array('dir' => 'enrol'),
+        'auth' => array('dir' => 'auth'),
+        'message' => array('dir' => 'message/output'),
+        'editor' => array('dir' => 'lib/editor'),
+        'format' => array('dir' => 'course/format'),
+        'profilefield' => array('dir' => 'user/profile/field'),
+        'report' => array('dir' => 'report'),
+        'coursereport' => array('dir' => 'course/report'),
+        'gradeexport' => array('dir' => 'grade/export'),
+        'gradeimport' => array('dir' => 'grade/import'),
+        'gradereport' => array('dir' => 'grade/report'),
+        'gradingform' => array('dir' => 'grade/grading/form'),
+        'mnetservice' => array('dir' => 'mnet/service'),
+        'webservice' => array('dir' => 'webservice'),
+        'repository' => array('dir' => 'repository'),
+        'portfolio' => array('dir' => 'portfolio'),
+        'plagiarism' => array('dir' => 'plagiarism'),
+        'tool' => array('dir' => 'admin/tool'),
+        'cachestore' => array('dir' => 'cache/stores'),
+        'cachelock' => array('dir' => 'cache/locks'),
+        'theme' => array('dir' => 'theme'),
+        'assignsubmission' => array('dir' => 'mod/assign/submission'),
+        'assignfeedback' => array('dir' => 'mod/assign/feedback'),
+        'assignment' => array('dir' => 'mod/assignment/type'),
+        'booktool' => array('dir' => 'mod/book/tool'),
+        'datafield' => array('dir' => 'mod/data/field'),
+        'datapreset' => array('dir' => 'mod/data/preset'),
+        'quiz' => array('dir' => 'mod/quiz/report'),
+        'quizaccess' => array('dir' => 'mod/quiz/accessrule'),
+        'scormreport' => array('dir' => 'mod/scorm/report'),
+        'workshopform' => array('dir' => 'mod/workshop/form'),
+        'workshopallocation' => array('dir' => 'mod/workshop/allocation'),
+        'workshopeval' => array('dir' => 'mod/workshop/eval'),
+        'tinymce' => array('dir' => 'lib/editor/tinymce/plugins/moodlemedia'),
+        'mod' => array('dir' => 'mod'),
+        'block' => array('dir' => 'blocks'),
     );
 
-    foreach($templates as $key => $value) {
-        $templates[$key]['regex'] = '|' .$templates[$key]['dir'].'/([^/]+)|';
+    foreach ($templates as $key => $value) {
+        $templates[$key]['regex'] = '|' . $templates[$key]['dir'] . '/([^/]+)|';
     }
 
-    foreach($templates as $name => $template) {
+    foreach ($templates as $name => $template) {
         $matches = null;
-        if(preg_match($template['regex'],$dir,$matches)) {
-            return array ('dir'=>$template['dir'],'type'=>$name, 'name'=>$matches[1]);
+        if (preg_match($template['regex'], $dir, $matches)) {
+            return array('dir' => $template['dir'], 'type' => $name, 'name' => $matches[1]);
         }
     }
 
-    return array ('dir'=>'unknown', 'type'=>'unknown', 'name'=>'unknown');
+    return array('dir' => 'unknown', 'type' => 'unknown', 'name' => 'unknown');
 }
 
 /**
@@ -81,11 +82,11 @@ function find_top_moodle_dir($dir)
     $max = 10;
     $found = false;
     $up = 0;
-    while(!$found) {
-        if(is_top_moodle_dir($dir)) {
+    while (!$found) {
+        if (is_top_moodle_dir($dir)) {
             return $dir;
         }
-        if(++$up > $max || $dir == '/') {
+        if (++$up > $max || $dir == '/') {
             break;
         }
 
@@ -122,8 +123,9 @@ function home_dir()
  * @param $text
  * @return void
  */
-function cli_problem($text) {
-    fwrite(STDERR, $text."\n");
+function cli_problem($text)
+{
+    fwrite(STDERR, $text . "\n");
 }
 
 /**
@@ -133,24 +135,21 @@ function cli_problem($text) {
  * @param int $errorcode
  * @return void (does not return)
  */
-function cli_error($text, $errorcode=1) {
+function cli_error($text, $errorcode = 1)
+{
     fwrite(STDERR, $text);
     fwrite(STDERR, "\n");
     die($errorcode);
 }
 
-function array_merge_recursive_distinct ( array &$array1, array &$array2 )
+function array_merge_recursive_distinct(array &$array1, array &$array2)
 {
     $merged = $array1;
 
-    foreach ( $array2 as $key => &$value )
-    {
-        if ( is_array ( $value ) && isset ( $merged [$key] ) && is_array ( $merged [$key] ) )
-        {
-            $merged [$key] = array_merge_recursive_distinct ( $merged [$key], $value );
-        }
-        else
-        {
+    foreach ($array2 as $key => &$value) {
+        if (is_array($value) && isset ($merged [$key]) && is_array($merged [$key])) {
+            $merged [$key] = array_merge_recursive_distinct($merged [$key], $value);
+        } else {
             $merged [$key] = $value;
         }
     }
@@ -165,7 +164,7 @@ function array_merge_recursive_distinct ( array &$array1, array &$array2 )
  * @param string $topdir moodle directory
  * @return string a branch version (e.g. 23, 24, 25, etc.)
  */
-function moosh_moodle_version($topdir, $default=23)
+function moosh_moodle_version($topdir, $default = 23)
 {
     if ($topdir && is_dir($topdir) && file_exists($topdir . '/version.php')) {
 
@@ -191,7 +190,7 @@ function moosh_moodle_version($topdir, $default=23)
     return $default;
 }
 
-function moosh_generate_version_list($upto, $from=19)
+function moosh_generate_version_list($upto, $from = 19)
 {
     $upto = intval($upto);
     $from = intval($from);
@@ -203,7 +202,6 @@ function moosh_generate_version_list($upto, $from=19)
 
 /**
  * Return full namespaced classname of all moosh commands.
-
  * The command for the latest $viable_version will be used.
  * For example, if viable versions contains 25, and these commands exist:
  *   * Moosh/Command/Moodle23/Category/CategoryCreate.php
@@ -222,7 +220,7 @@ function moosh_load_all_commands($srcdir, $viable_versions)
         $command_files = glob("$srcdir/Moosh/Command/$moodle_version/*/*.php");
         foreach ($command_files as $filename) {
             $classname = basename($filename, '.php');
-            $full_classname = "Moosh\\Command\\$moodle_version\\" . basename(dirname($filename)) .  '\\' . $classname;
+            $full_classname = "Moosh\\Command\\$moodle_version\\" . basename(dirname($filename)) . '\\' . $classname;
             // Later vesions overwrite earlier ones (e.g. a 23 version will be overwritten by a 26 version, if present).
             // Like this, the most recent appropriate version available will be used.
             $classnames[$classname] = $full_classname;
@@ -232,3 +230,75 @@ function moosh_load_all_commands($srcdir, $viable_versions)
     // the classnames as keys served their purpose to provide uniqueness, but are not really necessary, so remove them.
     return array_values($classnames);
 }
+
+function generate_paragraph($length)
+{
+    global $table, $n;
+
+
+    $out = array();
+    $ngram = array();
+    $arr = $table;
+    for ($i = 0; $i < $n - 1; $i++) {
+        $target = array_rand($arr);
+        $ngram[] = $target;
+        $arr = & $arr[$target];
+    }
+    for ($i = 0; $i < $length; $i++) {
+        $arr = & $table;
+        for ($j = 0; $j < $n - 1; $j++) {
+            $token = $ngram[$j];
+            $arr = & $arr[$token];
+        }
+        $sum = array_sum($arr);
+        $random = rand(0, $sum);
+        $counter = 0;
+        foreach ($arr as $token => $count) {
+            $counter += $count;
+            if ($counter >= $random) {
+                $target = $token;
+                break;
+            }
+        }
+
+        $out[] = array_shift($ngram);
+        array_push($ngram, $target);
+    }
+    $text = implode(' ', $out);
+    $replacements = array(
+        '  ' => ' ',
+    );
+    $text = strtr($text, $replacements);
+    return $text;
+}
+
+function generate_html_element()
+{
+    $html = array(
+        'p' => 100,
+        'span' => 100,
+        'a' => 10,
+        'h1' => 10,
+        'h2' => 10,
+    );
+    $key = array_rand($html);
+
+    return "<$key>" . generate_paragraph($html[$key]) . "</$key>";
+}
+
+function generate_html_page($minlength)
+{
+    srand((float)microtime() * 10000000);
+
+    require_once("en-galaxy-word-2gram.php");
+
+    $text = '';
+    while (strlen($text) < $minlength) {
+        $text = $text . "\n" . generate_html_element();
+    }
+    return $text;
+}
+
+
+
+

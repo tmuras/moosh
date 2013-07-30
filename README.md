@@ -14,7 +14,7 @@ Here is for example how you can create 5 Moodle user accounts with moosh:
 Requirements
 ============
 
-PHP 5.3+, Moodle 1.9, 2.3 or higher.
+PHP 5.3+, Moodle 1.9, 2.2 or higher.
 
 Installation
 ============
@@ -221,6 +221,16 @@ Example 2: Enroll cohort "my cohort18" to course id 4.
     moosh cohort-enrol -c 4 "my cohort18"
 
 
+cohort-unenrol
+--------------
+
+Remove user(s) from a cohort (by cohort id)
+
+Example 1: Remove users 20,30,40 from cohort id=7.
+
+    moosh cohort-unenrol 7 20 30 40
+
+
 course-create
 -------------
 
@@ -268,7 +278,7 @@ course-enrolbyname
 ------------------
 
 Is similar to course-enrol function. But it can also be used the first- and lastname of the user and the course shortname.
- 
+
 Example 1: Enroll user with firstname test42 and lastname user42 into the course with shortname T12345 as an editing teacher.
 
     moosh course-enrolbyname -r editingteacher -f test42 -l user42 -c T12345
@@ -279,7 +289,7 @@ course-enrolleduser
 
 Returns all enrolled user in a course, which have a specific role. First argument is the shortname of a role, second argument is a course ID.
 
-Example 1: 
+Example 1:
 
     moosh course-enrolleduser student 4
 
@@ -604,15 +614,47 @@ Example 1: Show all plugin types.
     moosh info-plugins
 
 
+block-add
+---------------
+
+Add a new block instance to any system context (front page, category, course, module ...)
+Can add a block instance to a single course or to all courses in a category
+Can add a block to the category itself which will appear in all it's sub categories and courses
+(use "moosh block-add -h" for more help)
+
+Example:
+
+    moosh block-add category 2 calendar_month admin-course-category side-pre -1
+    moosh block-add -s category 2 calendar_month admin-course-category side-pre -1
+    moosh block-add categorycourses 2 calendar_month course-view-* side-post 0
+    moosh block-add course 32 calendar_month course-view-* side-post 0
+
+
+random-label
+------------
+
+Add a label with random text to random section of course id provided.
+
+Example 1: Add 5 labels to course id 17.
+
+    for i in {1..5}; do moosh random-label 17; done
+
+Example 2: Add label that will contain string " uniquetext " inside.
+
+    moosh random-label -i ' uniquetext ' 17
+
 Contributing to moosh
 =====================
 
 1. Fork the project on github.
 2. Follow "installation from Moodle git" section.
 3. Look at existing plugins to see how they are done.
-4. Create new plugin/update existing one.
+4. Create new plugin/update existing one. You can use moosh itself to generate a new command from a template for you:
+
+    moosh generate-moosh category-command
+
 5. Update this README.md file with the example on how to use your plugin.
-5. Send me pull request.
+6. Send me pull request.
 
 
 moosh praise
