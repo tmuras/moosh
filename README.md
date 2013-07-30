@@ -632,6 +632,16 @@ Example:
     moosh block-manage hide calendar
     moosh block-manage show calendar
 
+module-manage
+----------------
+
+Show or Hide moudles, system wide (Will also delete, in the future)
+
+Example:
+
+    moosh module-manage hide scorm
+    moosh module-manage show scorm
+
 
 Contributing to moosh
 =====================
