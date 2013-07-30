@@ -23,6 +23,7 @@ class UserCreate extends MooshCommand
         $this->addOption('C|country:','country');
         $this->addOption('f|firstname:','first name');
         $this->addOption('l|lastname:','last name');
+        $this->addOption('i|idnumber:','idnumber');
 
         $this->addArgument('username');
         $this->maxArguments = 255;
@@ -48,6 +49,7 @@ class UserCreate extends MooshCommand
             $user->country = $options['country'];
             $user->firstname = $options['firstname'];
             $user->lastname = $options['lastname'];
+            $user->idnumber = $options['idnumber'];
             $user->timecreated = time();
             $user->timemodified = $user->timecreated;
             $user->username = $argument;
