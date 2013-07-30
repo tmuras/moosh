@@ -632,6 +632,7 @@ Example:
     moosh block-manage hide calendar
     moosh block-manage show calendar
 
+
 module-manage
 ----------------
 
@@ -641,6 +642,17 @@ Example:
 
     moosh module-manage hide scorm
     moosh module-manage show scorm
+
+
+module-config
+----------------
+
+Set or Get any plugin's settings values
+
+Example:
+
+    moosh module-config set dropbox dropbox_secret 123
+    moosh module-config get dropbox dropbox_secret ?
 
 
 Contributing to moosh
