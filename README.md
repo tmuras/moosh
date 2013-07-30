@@ -68,6 +68,11 @@ Example 3: use bash/zsh expansion to create 10 users
 
 The users will have unique email addresses based on the user name (testuser1, testuser2, testuser3...).
 
+Example 4: create a user with LDAP authentication
+
+    moosh user-create --auth ldap --password ""  --email joe.blogs@domain.tld --city "Some City" --country IE --firstname "Joe" --lastname "Blogs" jblogs
+
+
 user-getidbyname
 ----------------
 
@@ -117,6 +122,9 @@ Example 1: list 10 user accounts
 
     moosh user-list -n 10
 
+Example 2: list 100 accounts sorted on email address in descending order and showing idnumber column
+
+    moosh user-list --limit 100 --idnumber --sort email --descending
 
 sql-run
 -------
@@ -234,7 +242,21 @@ Example 1: Create 10 new courses using bash/zim expansion
 
 Example 2: Create new course
 
-    moosh course-create --category 1 --fullname "full course name" --description "course description" shortname
+    moosh course-create --category 1 --fullname "full course name" --description "course description" --idnumber "course idnumber" shortname
+
+
+course-enableselfenrol
+----------------------
+
+Enable self enrolment on one or more courses given a list of course IDs. By default self enrolment is enabled without an enrolment key, but one can be passed as an option.
+
+Example 1: Enable self enrolment on a course without an enrolment key
+
+    moosh course-enableselfenrol 3
+    
+Example 2: Enable self enrolment on a course with an enrolment key
+
+    moosh course-enableselfenrol --key "an example enrolment key" 3
 
 
 course-enrol
