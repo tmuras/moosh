@@ -16,6 +16,7 @@ class CourseList extends MooshCommand
         parent::__construct('list', 'course');
 
         $this->addArgument('search');
+        $this->addOption('i|idnumber', 'show idnumber');
 
         $this->maxArguments = 255;
     }
@@ -31,8 +32,11 @@ class CourseList extends MooshCommand
             $options = $this->expandedOptions;
 
             $search = mysql_real_escape_string($argument);
-            $sql = "SELECT id,category,shortname,fullname FROM {course} WHERE shortname LIKE '%$search%' OR fullname LIKE '%$search%'";
-            $sql = "SELECT id,category,shortname,fullname
+            $sql = "SELECT id,category,";
+            if($options['idnumber']){
+                $sql .= "idnumber,";
+            }
+            $sql .= "shortname,fullname
                       FROM {course}
                       WHERE (" . $DB->sql_like('shortname', ':shortname', false) . " OR " . $DB->sql_like('fullname', ':fullname', false) . ")";
             $courses = $DB->get_records_sql($sql, array('shortname' => "%$search%", 'fullname' => "%$search%"));
