@@ -3,7 +3,7 @@
  * Delete user by username.
  * moosh user-delete      [<username1> <username2> ...]
  *
- * @copyright  2012 onwards Tomasz Muras
+ * @copyright  2013 onwards Matteo Mosangini
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -24,15 +24,12 @@ class UserDelete extends MooshCommand
     public function execute()
     {
         global $CFG, $DB;
-
         require_once $CFG->dirroot . '/user/lib.php';
-        
+      
          foreach ($this->arguments as $argument) {
-             
-             $this->expandOptionsManually(array($argument));
-             $options = $this->expandedOptions;
-             $user = new \stdClass();
-                       
+           
+            $user = new \stdClass();
+                   
              try {
                 $user = $DB->get_record('user', array('username' => $argument));
                 user_delete_user($user);
