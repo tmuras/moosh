@@ -73,6 +73,21 @@ Example 4: create a user with LDAP authentication
     moosh user-create --auth ldap --password ""  --email joe.blogs@domain.tld --city "Some City" --country IE --firstname "Joe" --lastname "Blogs" jblogs
 
 
+user-delete
+-----------
+
+Delete user(s) from Moodle. Provide one ore more usernames as arguments.
+
+Example 1: delete user testuser
+
+    moosh user-delete testuser
+
+Example 2: delete user testuser1 and user testuser2
+    
+    moosh user delete testuser1 testuser2
+
+
+
 user-getidbyname
 ----------------
 
