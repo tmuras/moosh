@@ -1,6 +1,7 @@
 <?php
 /**
- * moosh - Moodle Shell
+ * Delete user by username.
+ * moosh user-delete      [<username1> <username2> ...]
  *
  * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -16,6 +17,7 @@ class UserDelete extends MooshCommand
         parent::__construct('delete', 'user');
       
         $this->addArgument('username');
+        $this->maxArguments = 255;
 
     }
 
