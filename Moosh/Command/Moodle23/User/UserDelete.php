@@ -27,15 +27,16 @@ class UserDelete extends MooshCommand
         require_once $CFG->dirroot . '/user/lib.php';
       
          foreach ($this->arguments as $argument) {
-           
-            $user = new \stdClass();
-                   
-             try {
-                $user = $DB->get_record('user', array('username' => $argument));
-                user_delete_user($user);
+            
+            try {
+                 $user = $DB->get_record('user', array('username' => $argument));
+               
             } catch (Exception $e) {
                 print get_class($e)." thrown within the exception handler. Message: ".$e->getMessage()." on line ".$e->getLine();
+                          
             }
+           
+            user_delete_user($user);
              
          }
          
