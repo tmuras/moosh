@@ -33,27 +33,12 @@ class UserDelete extends MooshCommand
                        
              try {
                 $user = $DB->get_record('user', array('username' => $argument));
-                echo $user->id."\n";
+                user_delete_user($user);
             } catch (Exception $e) {
                 print get_class($e)." thrown within the exception handler. Message: ".$e->getMessage()." on line ".$e->getLine();
             }
              
          }
          
-        
-//some variables you may want to use
-        //$this->cwd - the directory where moosh command was executed
-        //$this->mooshDir - moosh installation directory
-        //$this->expandedOptions - commandline provided options, merged with defaults
-        //$this->topDir - top Moodle directory
-        //$this->arguments[0] - first argument passed
-
-        #$options = $this->expandedOptions;
-
-        /* if verbose mode was requested, show some more information/debug messages
-        if($this->verbose) {
-            echo "Say what you're doing now";
-        }
-        */
     }
 }
