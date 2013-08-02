@@ -201,6 +201,8 @@ function moosh_generate_version_list($upto, $from = 19)
     foreach( range($from, $upto) as $no) {
         $versions[] = 'Moodle'.$no;
     }
+
+    return $versions;
 }
 
 /**
