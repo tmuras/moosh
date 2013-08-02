@@ -33,10 +33,15 @@ class UserDelete extends MooshCommand
                
             } catch (Exception $e) {
                 print get_class($e)." thrown within the exception handler. Message: ".$e->getMessage()." on line ".$e->getLine();
-                          
+                
             }
            
-            user_delete_user($user);
+            if ($user instanceof \stdClass){
+                user_delete_user($user);
+            }else{
+                print "User not found";
+            }
+            
              
          }
          
