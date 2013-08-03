@@ -20,6 +20,22 @@
             "type":"package",
             "package":{
                 "version":"dev-master",
+                "name":"moodlehq/moodle-local_amos",
+                "source":{
+                    "url":"https://github.com/moodlehq/moodle-local_amos.git",
+                    "type":"git",
+                    "reference":"master"
+                },
+                "dist":{
+                    "url":"https://github.com/moodlehq/moodle-local_amos/archive/master.zip",
+                    "type":"zip"
+                }
+            }
+        },
+         {
+            "type":"package",
+            "package":{
+                "version":"dev-master",
                 "name":"danielneis/moodle-block_newblock",
                 "source":{
                     "url":"https://github.com/danielneis/moodle-block_newblock.git",
@@ -71,6 +87,7 @@
         "moodlehq/moodle-mod_newmodule":"dev-master",
         "danielneis/moodle-block_newblock":"dev-master",
         "jamiepratt/moodle-qtype_TEMPLATE":"dev-master",
-        "danielneis/moodle-gradereport_newgradereport":"dev-master"
+        "danielneis/moodle-gradereport_newgradereport":"dev-master",
+        "moodlehq/moodle-local_amos":"dev-master"
     }
 }
