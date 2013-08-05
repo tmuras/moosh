@@ -39,7 +39,7 @@ class UserDelete extends MooshCommand
             if ($user instanceof \stdClass){
                 user_delete_user($user);
             }else{
-                print "User not found";
+                print "User not found\n";
             }
             
              
