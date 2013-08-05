@@ -197,7 +197,10 @@ function moosh_generate_version_list($upto, $from = 19)
     if (!($from && $upto) || $from > $upto) {
         throw new Exception("Invalid from or upto value; they must both be > 0 and from must be <= upto");
     }
-    return range($from, $upto);
+    $versions = array();
+    foreach( range($from, $upto) as $no) {
+        $versions[] = 'Moodle'.$no;
+    }
 }
 
 /**
@@ -216,11 +219,11 @@ function moosh_load_all_commands($srcdir, $viable_versions)
     //load all commands
     $classnames = array();
     foreach ($viable_versions as $version) {
-        $moodle_version = 'Moodle' . $version;
-        $command_files = glob("$srcdir/Moosh/Command/$moodle_version/*/*.php");
+        //$moodle_version = 'Moodle' . $version;
+        $command_files = glob("$srcdir/Moosh/Command/$version/*/*.php");
         foreach ($command_files as $filename) {
             $classname = basename($filename, '.php');
-            $full_classname = "Moosh\\Command\\$moodle_version\\" . basename(dirname($filename)) . '\\' . $classname;
+            $full_classname = "Moosh\\Command\\$version\\" . basename(dirname($filename)) . '\\' . $classname;
             // Later vesions overwrite earlier ones (e.g. a 23 version will be overwritten by a 26 version, if present).
             // Like this, the most recent appropriate version available will be used.
             $classnames[$classname] = $full_classname;

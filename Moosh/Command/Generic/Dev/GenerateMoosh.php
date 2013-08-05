@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle23\Dev;
+namespace Moosh\Command\Generic\Dev;
 use Moosh\MooshCommand;
 use Twig_Loader_Filesystem;
 use Twig_Environment;
