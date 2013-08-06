@@ -1,4 +1,5 @@
 <?php
+
 /**
  * moosh - Moodle Shell
  *
@@ -7,28 +8,25 @@
  */
 
 namespace Moosh\Command\Moodle23\Course;
+
 use Moosh\MooshCommand;
 use context_course;
 use course_enrolment_manager;
 
-class CourseUnenrol extends MooshCommand
-{
-    public function __construct()
-    {
+class CourseUnenrol extends MooshCommand {
+
+    public function __construct() {
         parent::__construct('unenrol', 'course');
-        
-        $this->addOption('a|all:', 'unenrol everyone');
-        
+
+        $this->addOption('c|cohort:', 'unenrol all cohorts sync');
+        $this->addOption('r|role:', 'roles');
+
         $this->addArgument('courseid');
-        
-        
     }
 
-    public function execute()
-            
-    {
-        
-        
+    public function execute() {
+
+
         global $CFG, $DB, $PAGE;
 
         require_once($CFG->dirroot . '/enrol/locallib.php');
@@ -36,51 +34,51 @@ class CourseUnenrol extends MooshCommand
 
         $options = $this->expandedOptions;
         $arguments = $this->arguments;
-        
-        
-        
-        
+
         $course = $DB->get_record('course', array('id' => $arguments[0]), '*', MUST_EXIST);
         $context = context_course::instance($course->id);
         $manager = new course_enrolment_manager($PAGE, $course);
-        $instances = $manager->get_enrolment_instances();
-        
 
         
-        print $options['all'];
-        
-        foreach ($instances as $instance) {
-            print $instance->enrol."\n";
-        }
-        
-        try{
-            $course = $DB->get_record('course', array('id' => $arguments[1]), '*', MUST_EXIST);
-            $role = $DB->get_record('role', array('shortname' => 'editingteacher'));
-            $context = context_course::instance($course->id);
-            $users = get_role_users($role->id, $context);
-            foreach ($users as $user) {
-                    print_r($user);
-                    #echo $user->id . "\n";
+        #remove all cohort sync
+        if ($options['cohort'] == 1) {
+            $plugins = $manager->get_enrolment_plugins();
+            $instances = $DB->get_records('enrol', array('courseid' => $arguments[0], 'enrol' => 'cohort'), 'id ASC');
+
+            if (!isset($plugins['cohort'])) {
+                die("No cohort enrolment plugin for the course\n");
+            }
+            $cohortPlugin = $plugins['cohort'];
+
+            try {
+                foreach ($instances as $instance) {
+                    $cohortPlugin->delete_instance($instance);
                 }
-            
-            
-        }catch (Exception $e) {
-            print get_class($e)." thrown within the exception handler. Message: ".$e->getMessage()." on line ".$e->getLine();
+            } catch (Exception $e) {
+                print get_class($e) . " thrown within the exception handler. Message: " . $e->getMessage() . " on line " . $e->getLine();
+            }
         }
-        
-        //some variables you may want to use
-        //$this->cwd - the directory where moosh command was executed
-        //$this->mooshDir - moosh installation directory
-        //$this->expandedOptions - commandline provided options, merged with defaults
-        //$this->topDir - top Moodle directory
-        //$this->arguments[0] - first argument passed
 
-        //$options = $this->expandedOptions;
-
-        /* if verbose mode was requested, show some more information/debug messages
-        if($this->verbose) {
-            echo "Say what you're doing now";
+        #remove all enrolled removable users
+        try {
+            foreach (explode(',', $options['role']) as $role) {
+                $role = $DB->get_record('role', array('shortname' => $role));
+                $context = context_course::instance($course->id);
+                $users = get_role_users($role->id, $context);
+                #unenrol 
+                foreach ($users as $user) {
+                    $enrolments = $manager->get_user_enrolments($user->id);
+                        foreach ($enrolments as $enrolment) {
+                        list ($instance, $plugin) = $manager->get_user_enrolment_components($enrolment);
+                        if ($instance && $plugin && $plugin->allow_unenrol_user($instance, $enrolment)) {
+                            $plugin->unenrol_user($instance, $enrolment->userid);
+                        }
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            print get_class($e) . " thrown within the exception handler. Message: " . $e->getMessage() . " on line " . $e->getLine();
         }
-        */
     }
+
 }
