@@ -3,7 +3,7 @@
 /**
  * moosh - Moodle Shell
  *
- * @copyright  2012 onwards Tomasz Muras
+ * @copyright  2013 Matteo Mosangini
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
