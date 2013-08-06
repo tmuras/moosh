@@ -8,6 +8,8 @@
 
 namespace Moosh\Command\Moodle23\Course;
 use Moosh\MooshCommand;
+use context_course;
+use course_enrolment_manager;
 
 class CourseUnenrol extends MooshCommand
 {
