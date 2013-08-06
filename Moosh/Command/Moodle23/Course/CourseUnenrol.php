@@ -53,6 +53,20 @@ class CourseUnenrol extends MooshCommand
             print $instance->enrol."\n";
         }
         
+        try{
+            $course = $DB->get_record('course', array('id' => $arguments[1]), '*', MUST_EXIST);
+            $role = $DB->get_record('role', array('shortname' => 'editingteacher'));
+            $context = context_course::instance($course->id);
+            $users = get_role_users($role->id, $context);
+            foreach ($users as $user) {
+                    print_r($user);
+                    #echo $user->id . "\n";
+                }
+            
+            
+        }catch (Exception $e) {
+            print get_class($e)." thrown within the exception handler. Message: ".$e->getMessage()." on line ".$e->getLine();
+        }
         
         //some variables you may want to use
         //$this->cwd - the directory where moosh command was executed
