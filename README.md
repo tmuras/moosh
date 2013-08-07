@@ -352,6 +352,21 @@ Example 2: Delete role id 10.
     moosh role-delete -i 10
 
 
+role-update-contextlevel
+------------------------
+
+Update the context level upon a role can be updated.
+
+Use: "short role name" or -i "roleid" with relevant context level (system|user|category|course|activity|block)
+and add "-on" or "-off" to the caontext level name to turn it on or off.
+
+Example 1: Allow "student" role to be set on block level
+    moosh student -block-on
+
+Example 1: Prevent "manager" role to be set on course level
+    moosh manager -course-off
+
+
 config-plugins
 --------------
 
