@@ -246,7 +246,7 @@ course-enrolbyname
 ------------------
 
 Is similar to course-enrol function. But it can also be used the first- and lastname of the user and the course shortname.
- 
+
 Example 1: Enroll user with firstname test42 and lastname user42 into the course with shortname T12345 as an editing teacher.
 
     moosh course-enrolbyname -r editingteacher -f test42 -l user42 -c T12345
@@ -257,7 +257,7 @@ course-enrolleduser
 
 Returns all enrolled user in a course, which have a specific role. First argument is the shortname of a role, second argument is a course ID.
 
-Example 1: 
+Example 1:
 
     moosh course-enrolleduser student 4
 
@@ -318,6 +318,21 @@ Example 1: Delete role "newstudentrole"
 Example 2: Delete role id 10.
 
     moosh role-delete -i 10
+
+
+role-update-capability
+----------------------
+
+Update role capabilities on any context.
+
+Use: -i "roleid" or "role_short_name" with "role capability" and "capability setting" (inherit|allow|prevent|prohibit)
+and finally, "contextid" (where 1 is system wide)
+
+Example 1: update "student" role (roleid=5) "mod/forumng:grade" capability, system wide (contextid=1)
+    moosh student mod/forumng:grade allow 1
+
+Example 2: update "editingteacher" role (roleid=3) "mod/forumng:grade" capability, system wide (contextid=1)
+    moosh -i 3 mod/forumng:grade prevent 1
 
 
 config-plugins
