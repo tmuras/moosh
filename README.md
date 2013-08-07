@@ -352,6 +352,21 @@ Example 2: Delete role id 10.
     moosh role-delete -i 10
 
 
+role-update-capability
+----------------------
+
+Update role capabilities on any context.
+
+Use: -i "roleid" or "role_short_name" with "role capability" and "capability setting" (inherit|allow|prevent|prohibit)
+and finally, "contextid" (where 1 is system wide)
+
+Example 1: update "student" role (roleid=5) "mod/forumng:grade" capability, system wide (contextid=1)
+    moosh student mod/forumng:grade allow 1
+
+Example 2: update "editingteacher" role (roleid=3) "mod/forumng:grade" capability, system wide (contextid=1)
+    moosh -i 3 mod/forumng:grade prevent 1
+
+
 config-plugins
 --------------
 
