@@ -393,6 +393,20 @@ Example 1: update "student" role (roleid=5) "mod/forumng:grade" capability, syst
 Example 2: update "editingteacher" role (roleid=3) "mod/forumng:grade" capability, system wide (contextid=1)
     moosh -i 3 mod/forumng:grade prevent 1
 
+role-update-contextlevel
+------------------------
+
+Update the context level upon a role can be updated.
+
+Use: "short role name" or -i "roleid" with relevant context level (system|user|category|course|activity|block)
+and add "-on" or "-off" to the caontext level name to turn it on or off.
+
+Example 1: Allow "student" role to be set on block level
+    moosh student -block-on
+
+Example 1: Prevent "manager" role to be set on course level
+    moosh manager -course-off
+
 
 config-plugins
 --------------
