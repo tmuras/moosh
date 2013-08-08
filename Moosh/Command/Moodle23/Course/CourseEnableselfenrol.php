@@ -38,7 +38,7 @@ class CourseEnableselfenrol extends MooshCommand
             // get the details of the self enrolment plugin
             $plugin = enrol_get_plugin('self');
             if(!$plugin){
-                throw new Exception('could not find self enrolment plugin');
+                throw new \Exception('could not find self enrolment plugin');
             }
             
             // get the enrolment plugin instances for the course
@@ -51,8 +51,26 @@ class CourseEnableselfenrol extends MooshCommand
                     $selfEnrolInstance = $instance;
                 }
             }
+            
+            // if we didn't find an instance for the self enrolment plugin then we need to add
+            // one to the course
             if(!$selfEnrolInstance){
-                throw new Exception('failed to find the instance for the self enrolment plugin');
+                // first try add an instance
+                $plugin->add_default_instance($course);
+                
+                // then try retreive it
+                $instances = enrol_get_instances($course->id, false);
+                $selfEnrolInstance = 0;
+                foreach($instances as $instance){
+                    if($instance->enrol === 'self'){
+                        $selfEnrolInstance = $instance;
+                    }
+                }
+                
+                // if we still didn't get an instance - give up
+                if(!$selfEnrolInstance){
+                    throw new \Exception('failed to create instance of self enrolment plugin');
+                }
             }
             
             // activate self enrolment
