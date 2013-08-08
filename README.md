@@ -73,6 +73,21 @@ Example 4: create a user with LDAP authentication
     moosh user-create --auth ldap --password ""  --email joe.blogs@domain.tld --city "Some City" --country IE --firstname "Joe" --lastname "Blogs" jblogs
 
 
+user-delete
+-----------
+
+Delete user(s) from Moodle. Provide one ore more usernames as arguments.
+
+Example 1: delete user testuser
+
+    moosh user-delete testuser
+
+Example 2: delete user testuser1 and user testuser2
+    
+    moosh user delete testuser1 testuser2
+
+
+
 user-getidbyname
 ----------------
 
@@ -272,6 +287,18 @@ Example 1: Enroll username1 and username2 into course ID 21 as students.
 Example 2: Enroll user with id 21 into the course with id 31 as a non-editing teacher.
 
     moosh course-enrol -r teacher -i 31 21
+
+course-unenrol
+------------
+
+Unerol user(s) from a course id provided. First argument is a course ID, possible options:
+
+--roles : comma separated list of user roles
+--cohort: boolean 1 remove all cohort sync enrolments
+
+Example 1:
+
+    moosh course-unenrol --role editingteacher --cohort 1 144
 
 
 course-enrolbyname
