@@ -686,6 +686,20 @@ Example:
     moosh block-add course 32 calendar_month course-view-* side-post 0
 
 
+activity-add
+------------
+
+Adds an activity instance to the specified course. The activity is specified by it's component name
+without the plugin type prefix, so "forum", "assign" or "data" for example, and the course is specified
+by it's id.
+
+Example:
+
+    moosh activity-add assign 2
+    moosh activity-add --section 3 forum 4
+    moosh activity-add --name "General course forum" --section 2 forum 3
+    moosh activity-add --name "Easy assignent" --section 2 --idnumber "ASD123" assign 2
+
 random-label
 ------------
 
