@@ -747,6 +747,19 @@ Example:
     moosh module-config get dropbox dropbox_secret ?
 
 
+forum-newdiscussion
+-------------------
+
+Adds a new discussion to an existing forum. You should provide a course id, a forum id
+and an user id in this order. If no name or message is specified it defaults to the data
+generator one.
+
+Example:
+
+    moosh forum-newdiscussion 3 7 2
+    moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 7 2
+
+
 Contributing to moosh
 =====================
 
