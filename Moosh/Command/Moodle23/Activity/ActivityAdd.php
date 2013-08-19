@@ -40,9 +40,9 @@ class ActivityAdd extends MooshCommand
      */
     public function execute()
     {
-        global $CFG;
-        require_once($CFG->dirroot . '/lib/testing/generator/lib.php');
-        $generator = new \testing_data_generator();
+
+        // Getting moodle's data generator.
+        $generator = get_data_generator();
 
         // All data provided by the data generator.
         $moduledata = new \stdClass();
