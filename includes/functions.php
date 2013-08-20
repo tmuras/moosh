@@ -303,6 +303,18 @@ function generate_html_page($minlength)
     return $text;
 }
 
+/**
+ * Gets an instance of Moodle's data generator
+ *
+ * The data generator should be used as a single instance object.
+ *
+ * @return testing_data_generator
+ */
+function get_data_generator()
+{
+    global $CFG;
 
-
+    require_once($CFG->dirroot . '/lib/testing/generator/lib.php');
+    return new testing_data_generator();
+}
 
