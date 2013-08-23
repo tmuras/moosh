@@ -33,11 +33,9 @@ class SqlRun extends MooshCommand
                 echo "\nRecord $n\n";
                 print_r($result);
             }
-        } elseif(stripos($sql,'update') === 0 || stripos($sql,'insert') === 0) {
+        } else {
             //UPDATE or INSERT type query
             echo $DB->execute($sql) . "\n";
-        } else {
-            cli_error("I don't know how to handle this query");
         }
     }
 }
