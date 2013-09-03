@@ -60,7 +60,7 @@ Example 1: create user "testuser" with the all default profile fields.
 
 Example 2: create user "testuser" with the all the optional values
 
-    moosh user-create --password pass --email me@example.com --city Szczecin --country PL --firstname "first name" --lastname name testuser
+    moosh user-create --password pass --email me@example.com --digest 2 --city Szczecin --country PL --firstname "first name" --lastname name testuser
 
 Example 3: use bash/zsh expansion to create 10 users
 
@@ -70,7 +70,7 @@ The users will have unique email addresses based on the user name (testuser1, te
 
 Example 4: create a user with LDAP authentication
 
-    moosh user-create --auth ldap --password ""  --email joe.blogs@domain.tld --city "Some City" --country IE --firstname "Joe" --lastname "Blogs" jblogs
+    moosh user-create --auth ldap --password NONE  --email joe.blogs@domain.tld --city "Some City" --country IE --firstname "Joe" --lastname "Blogs" jblogs
 
 
 user-delete
