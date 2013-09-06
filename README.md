@@ -457,6 +457,24 @@ Example 2: Set URL to logo for Sky High theme.
 
     moosh config-set logo http://example.com/logo.png theme_sky_high
 
+maintenance-on
+--------------
+
+Enable maintenance mode.
+
+    moosh maintenance-on
+    
+A maintenance message can also be set:
+
+    moosh maintenace-on -m "Example message"
+    
+maintenance-off
+---------------
+
+Disable maintenance mode.
+
+    moosh maintenance-off
+
 
 file-list
 ---------
