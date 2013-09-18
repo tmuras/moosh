@@ -354,6 +354,18 @@ Example 1: Reset course with id=17
 
     moosh course-reset 17
 
+course-config-set
+-----------------
+
+Update a field in the Moodle {course} table for a single course, or for all courses in a category.
+
+Example 1: set the shortname of a single course with id=42
+
+    moosh course-config-set course 42 shortname new_shortname
+    
+Example 2: set the format to topics for all courses in a category with id=7
+
+    moosh course-config-set category 7 format topics
 
 role-create
 -----------
