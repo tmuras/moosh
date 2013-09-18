@@ -24,8 +24,6 @@ class CourseConfigSet extends MooshCommand
 
     public function execute()
     {
-        global $DB;
-
         $setting = trim($this->arguments[2]);
         $value = trim($this->arguments[3]);
 
@@ -37,9 +35,19 @@ class CourseConfigSet extends MooshCommand
             case 'category':
                 //get all courses in category (recursive)
                 $courselist = get_courses($this->arguments[1]/* categoryid */,'','c.id');
+                $succeeded = 0;
+                $failed = 0;
                 foreach ($courselist as $course) {
-                    echo "debug: courseid=$course->id , $setting=$value\n";
-                    self::setCourseSetting($course->id,$setting,$value);
+                    if(self::setCourseSetting($course->id,$setting,$value)){
+                        $succeeded++;
+                    }else{
+                        $failed++;
+                    }
+                }
+                if($failed == 0){
+                    echo "OK - successfully modified $succeeded courses\n";
+                }else{
+                    echo "WARNING - failed to mofify $failed courses (successfully modified $succeeded)\n";
                 }
                 break;
         }
@@ -47,11 +55,14 @@ class CourseConfigSet extends MooshCommand
     }
 
     private function setCourseSetting($courseid,$setting,$value) {
+        
+        global $DB;
+        
         if ($DB->set_field('course',$setting,$value,array('id'=>$courseid))) {
-            echo "debug: Success (courseid={$courseid})\n";
+            echo "OK - Set $setting='$value' (courseid={$courseid})\n";
             return true;
         } else {
-            echo "debug: Fail (courseid={$courseid})\n";
+            echo "ERROR - failed to set $setting='$value' (courseid={$courseid})\n";
             return false;
         }
 
