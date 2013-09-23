@@ -31,6 +31,14 @@ PHP 5.3+, Moodle 1.9, 2.2 or higher.
 Installation
 ============
 
+
+Installation from Ubuntu package
+--------------------------------
+
+     sudo add-apt-repository ppa:zabuch/ppa
+     sudo apt-get update
+     sudo apt-get install moosh
+
 Installation from Moodle package
 --------------------------------
 
