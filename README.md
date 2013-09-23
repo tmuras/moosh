@@ -10,6 +10,18 @@ Here is for example how you can create 5 Moodle user accounts with moosh:
     cd /moodle/root/installation
     moosh user-create user_{1..5}
 
+If you don't know the exact name of the command you want to run but know the part of it, run moosh with the sub-string:
+
+    moosh user
+
+As a result you will get a list of all commands that contain string "user":
+
+    course-enrolleduser
+    user-create
+    user-delete
+    user-getidbyname
+    user-list
+    user-mod
 
 Requirements
 ============
@@ -788,6 +800,16 @@ Example:
 
     moosh forum-newdiscussion 3 7 2
     moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 7 2
+
+chkdatadir
+----------
+
+Check if every file and directory in Moodle data is writeable for the user that runs the command.
+You usually want to run the check as the same user that runs web server.
+
+Example:
+
+    sudo -u www-data moosh chkdatadir
 
 
 Contributing to moosh
