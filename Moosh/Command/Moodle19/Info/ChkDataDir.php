@@ -29,7 +29,8 @@ class ChkDataDir extends MooshCommand
             return;
         }
         
-        $username = posix_getpwuid (posix_getuid())['name'];
+        $username = posix_getpwuid (posix_getuid());
+        $username = $username['name'];
         
         $parentdir = $CFG->dataroot;
         $this->chkmydir($parentdir);
