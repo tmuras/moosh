@@ -1,3 +1,9 @@
+moosh (0.11-1ubuntu1) precise; urgency=low
+
+  * Upstream release 0.11
+
+ -- Tomasz Muras <nexor1984@gmail.com>  Mon, 23 Sep 2013 16:33:19 +0200
+
 moosh (0.10-1) precise; urgency=low
 
   * Initial release
