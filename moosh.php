@@ -10,7 +10,7 @@
 $cwd = getcwd();
 
 //try to detect if we are packaged moosh version - e.g. dude where are my libraries
-if(file_exists(__DIR__.'/Moosh')) {
+if (file_exists(__DIR__ . '/Moosh')) {
     $moosh_dir = __DIR__;
 } elseif (file_exists('/usr/share/moosh')) {
     $moosh_dir = '/usr/share/moosh';
@@ -23,15 +23,15 @@ $loader->add('Moosh\\', $moosh_dir);
 
 $options = array('debug' => true, 'optimizations' => 0);
 
-require_once $moosh_dir.'/includes/functions.php';
-require_once $moosh_dir.'/includes/default_options.php';
+require_once $moosh_dir . '/includes/functions.php';
+require_once $moosh_dir . '/includes/default_options.php';
 
 use GetOptionKit\ContinuousOptionParser;
 use GetOptionKit\OptionSpecCollection;
 
 error_reporting(E_ALL);
 
-define('MOOSH_VERSION', '0.10');
+define('MOOSH_VERSION', '0.11');
 
 $appspecs = new OptionSpecCollection;
 $spec_verbose = $appspecs->add('v|verbose', "be verbose");
@@ -48,6 +48,7 @@ if ($app_options->has('moodle-path')) {
 
 $moodle_version = moosh_moodle_version($top_dir);
 $viable_versions = moosh_generate_version_list($moodle_version);
+$viable_versions[] = 'Generic';
 $namespaced_commands = moosh_load_all_commands($moosh_dir, $viable_versions);
 
 $subcommands = array();
@@ -79,6 +80,15 @@ while (!$parser->isEnd()) {
 }
 
 if (!$subcommand) {
+    //if there was exactly one argument use it to grep through existing commands
+    if ($argc == 2) {
+        foreach ($subcommands as $k => $v) {
+            if (strpos($k, $argv[1]) !== false) {
+                echo "$k\n";
+            }
+        }
+        exit(1);
+    }
     echo "moosh version " . MOOSH_VERSION . "\n";
     echo "No command provided, possible commands:\n\t";
     echo implode("\n\t", array_keys($subcommands));

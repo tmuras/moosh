@@ -10,14 +10,34 @@ Here is for example how you can create 5 Moodle user accounts with moosh:
     cd /moodle/root/installation
     moosh user-create user_{1..5}
 
+If you don't know the exact name of the command you want to run but know the part of it, run moosh with the sub-string:
+
+    moosh user
+
+As a result you will get a list of all commands that contain string "user":
+
+    course-enrolleduser
+    user-create
+    user-delete
+    user-getidbyname
+    user-list
+    user-mod
 
 Requirements
 ============
 
-PHP 5.3+, Moodle 1.9, 2.3 or higher.
+PHP 5.3+, Moodle 1.9, 2.2 or higher.
 
 Installation
 ============
+
+
+Installation from Ubuntu package
+--------------------------------
+
+     sudo add-apt-repository ppa:zabuch/ppa
+     sudo apt-get update
+     sudo apt-get install moosh
 
 Installation from Moodle package
 --------------------------------
@@ -32,7 +52,7 @@ Install composer - see http://getcomposer.org/download .
 
     git clone git://github.com/tmuras/moosh.git
     cd moosh
-    composer update
+    ./composer.phar update
 
 Common steps
 ------------
@@ -60,13 +80,33 @@ Example 1: create user "testuser" with the all default profile fields.
 
 Example 2: create user "testuser" with the all the optional values
 
-    moosh user-create --password pass --email me@example.com --city Szczecin --country PL --firstname "first name" --lastname name testuser
+    moosh user-create --password pass --email me@example.com --digest 2 --city Szczecin --country PL --firstname "first name" --lastname name testuser
 
 Example 3: use bash/zsh expansion to create 10 users
 
     moosh user-create testuser{1..10}
 
 The users will have unique email addresses based on the user name (testuser1, testuser2, testuser3...).
+
+Example 4: create a user with LDAP authentication
+
+    moosh user-create --auth ldap --password NONE  --email joe.blogs@domain.tld --city "Some City" --country IE --firstname "Joe" --lastname "Blogs" jblogs
+
+
+user-delete
+-----------
+
+Delete user(s) from Moodle. Provide one ore more usernames as arguments.
+
+Example 1: delete user testuser
+
+    moosh user-delete testuser
+
+Example 2: delete user testuser1 and user testuser2
+    
+    moosh user delete testuser1 testuser2
+
+
 
 user-getidbyname
 ----------------
@@ -117,6 +157,9 @@ Example 1: list 10 user accounts
 
     moosh user-list -n 10
 
+Example 2: list 100 accounts sorted on email address in descending order and showing idnumber column
+
+    moosh user-list --limit 100 --idnumber --sort email --descending
 
 sql-run
 -------
@@ -213,6 +256,16 @@ Example 2: Enroll cohort "my cohort18" to course id 4.
     moosh cohort-enrol -c 4 "my cohort18"
 
 
+cohort-unenrol
+--------------
+
+Remove user(s) from a cohort (by cohort id)
+
+Example 1: Remove users 20,30,40 from cohort id=7.
+
+    moosh cohort-unenrol 7 20 30 40
+
+
 course-create
 -------------
 
@@ -224,7 +277,21 @@ Example 1: Create 10 new courses using bash/zim expansion
 
 Example 2: Create new course
 
-    moosh course-create --category 1 --fullname "full course name" --description "course description" shortname
+    moosh course-create --category 1 --fullname "full course name" --description "course description" --idnumber "course idnumber" shortname
+
+
+course-enableselfenrol
+----------------------
+
+Enable self enrolment on one or more courses given a list of course IDs. By default self enrolment is enabled without an enrolment key, but one can be passed as an option.
+
+Example 1: Enable self enrolment on a course without an enrolment key
+
+    moosh course-enableselfenrol 3
+    
+Example 2: Enable self enrolment on a course with an enrolment key
+
+    moosh course-enableselfenrol --key "an example enrolment key" 3
 
 
 course-enrol
@@ -241,12 +308,24 @@ Example 2: Enroll user with id 21 into the course with id 31 as a non-editing te
 
     moosh course-enrol -r teacher -i 31 21
 
+course-unenrol
+------------
+
+Unerol user(s) from a course id provided. First argument is a course ID, possible options:
+
+--roles : comma separated list of user roles
+--cohort: boolean 1 remove all cohort sync enrolments
+
+Example 1:
+
+    moosh course-unenrol --role editingteacher --cohort 1 144
+
 
 course-enrolbyname
 ------------------
 
 Is similar to course-enrol function. But it can also be used the first- and lastname of the user and the course shortname.
- 
+
 Example 1: Enroll user with firstname test42 and lastname user42 into the course with shortname T12345 as an editing teacher.
 
     moosh course-enrolbyname -r editingteacher -f test42 -l user42 -c T12345
@@ -257,7 +336,7 @@ course-enrolleduser
 
 Returns all enrolled user in a course, which have a specific role. First argument is the shortname of a role, second argument is a course ID.
 
-Example 1: 
+Example 1:
 
     moosh course-enrolleduser student 4
 
@@ -295,6 +374,18 @@ Example 1: Reset course with id=17
 
     moosh course-reset 17
 
+course-config-set
+-----------------
+
+Update a field in the Moodle {course} table for a single course, or for all courses in a category.
+
+Example 1: set the shortname of a single course with id=42
+
+    moosh course-config-set course 42 shortname new_shortname
+    
+Example 2: set the format to topics for all courses in a category with id=7
+
+    moosh course-config-set category 7 format topics
 
 role-create
 -----------
@@ -318,6 +409,35 @@ Example 1: Delete role "newstudentrole"
 Example 2: Delete role id 10.
 
     moosh role-delete -i 10
+
+
+role-update-capability
+----------------------
+
+Update role capabilities on any context.
+
+Use: -i "roleid" or "role_short_name" with "role capability" and "capability setting" (inherit|allow|prevent|prohibit)
+and finally, "contextid" (where 1 is system wide)
+
+Example 1: update "student" role (roleid=5) "mod/forumng:grade" capability, system wide (contextid=1)
+    moosh student mod/forumng:grade allow 1
+
+Example 2: update "editingteacher" role (roleid=3) "mod/forumng:grade" capability, system wide (contextid=1)
+    moosh -i 3 mod/forumng:grade prevent 1
+
+role-update-contextlevel
+------------------------
+
+Update the context level upon a role can be updated.
+
+Use: "short role name" or -i "roleid" with relevant context level (system|user|category|course|activity|block)
+and add "-on" or "-off" to the caontext level name to turn it on or off.
+
+Example 1: Allow "student" role to be set on block level
+    moosh student -block-on
+
+Example 1: Prevent "manager" role to be set on course level
+    moosh manager -course-off
 
 
 config-plugins
@@ -368,6 +488,24 @@ Example 1: Enable debug.
 Example 2: Set URL to logo for Sky High theme.
 
     moosh config-set logo http://example.com/logo.png theme_sky_high
+
+maintenance-on
+--------------
+
+Enable maintenance mode.
+
+    moosh maintenance-on
+    
+A maintenance message can also be set:
+
+    moosh maintenace-on -m "Example message"
+    
+maintenance-off
+---------------
+
+Disable maintenance mode.
+
+    moosh maintenance-off
 
 
 file-list
@@ -582,15 +720,118 @@ Example 1: Show all plugin types.
     moosh info-plugins
 
 
+block-add
+---------------
+
+Add a new block instance to any system context (front page, category, course, module ...)
+Can add a block instance to a single course or to all courses in a category
+Can add a block to the category itself which will appear in all it's sub categories and courses
+(use "moosh block-add -h" for more help)
+
+Example:
+
+    moosh block-add category 2 calendar_month admin-course-category side-pre -1
+    moosh block-add -s category 2 calendar_month admin-course-category side-pre -1
+    moosh block-add categorycourses 2 calendar_month course-view-* side-post 0
+    moosh block-add course 32 calendar_month course-view-* side-post 0
+
+
+activity-add
+------------
+
+Adds an activity instance to the specified course. The activity is specified by it's component name
+without the plugin type prefix, so "forum", "assign" or "data" for example, and the course is specified
+by it's id.
+
+Example:
+
+    moosh activity-add assign 2
+    moosh activity-add --section 3 forum 4
+    moosh activity-add --name "General course forum" --section 2 forum 3
+    moosh activity-add --name "Easy assignent" --section 2 --idnumber "ASD123" assign 2
+
+random-label
+------------
+
+Add a label with random text to random section of course id provided.
+
+Example 1: Add 5 labels to course id 17.
+
+    for i in {1..5}; do moosh random-label 17; done
+
+Example 2: Add label that will contain string " uniquetext " inside.
+
+    moosh random-label -i ' uniquetext ' 17
+
+
+block-manage
+----------------
+
+Show or Hide blocks, system wide (Will also delete, in the future)
+
+Example:
+
+    moosh block-manage hide calendar
+    moosh block-manage show calendar
+
+
+module-manage
+----------------
+
+Show or Hide moudles, system wide (Will also delete, in the future)
+
+Example:
+
+    moosh module-manage hide scorm
+    moosh module-manage show scorm
+
+
+module-config
+----------------
+
+Set or Get any plugin's settings values
+
+Example:
+
+    moosh module-config set dropbox dropbox_secret 123
+    moosh module-config get dropbox dropbox_secret ?
+
+
+forum-newdiscussion
+-------------------
+
+Adds a new discussion to an existing forum. You should provide a course id, a forum id
+and an user id in this order. If no name or message is specified it defaults to the data
+generator one.
+
+Example:
+
+    moosh forum-newdiscussion 3 7 2
+    moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 7 2
+
+chkdatadir
+----------
+
+Check if every file and directory in Moodle data is writeable for the user that runs the command.
+You usually want to run the check as the same user that runs web server.
+
+Example:
+
+    sudo -u www-data moosh chkdatadir
+
+
 Contributing to moosh
 =====================
 
 1. Fork the project on github.
 2. Follow "installation from Moodle git" section.
 3. Look at existing plugins to see how they are done.
-4. Create new plugin/update existing one.
+4. Create new plugin/update existing one. You can use moosh itself to generate a new command from a template for you:
+
+    moosh generate-moosh category-command
+
 5. Update this README.md file with the example on how to use your plugin.
-5. Send me pull request.
+6. Send me pull request.
 
 
 moosh praise

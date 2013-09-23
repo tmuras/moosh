@@ -6,16 +6,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle23\{{ category|capitalize }};
+namespace Moosh\Command\Moodle23\Module;
 use Moosh\MooshCommand;
 
-class {{ category|capitalize }}{{ command|capitalize }} extends MooshCommand
+class ModuleReinstall extends MooshCommand
 {
     public function __construct()
     {
-        parent::__construct('{{ command }}', '{{ category }}');
+        parent::__construct('reinstall', 'module');
 
-        //$this->addArgument('name');
+        $this->addArgument('name');
 
         //$this->addOption('t|test', 'option with no value');
         //$this->addOption('o|option:', 'option with value and default', 'default');
@@ -24,6 +24,13 @@ class {{ category|capitalize }}{{ command|capitalize }} extends MooshCommand
 
     public function execute()
     {
+        global $CFG;
+        require_once($CFG->libdir.'/adminlib.php');       // various admin-only functions
+        require_once($CFG->libdir.'/upgradelib.php');     // general upgrade/install related functions
+        require_once($CFG->libdir.'/environmentlib.php');
+        require_once($CFG->libdir.'/pluginlib.php');
+        require_once($CFG->dirroot.'/course/lib.php');
+
         //some variables you may want to use
         //$this->cwd - the directory where moosh command was executed
         //$this->mooshDir - moosh installation directory
@@ -31,7 +38,10 @@ class {{ category|capitalize }}{{ command|capitalize }} extends MooshCommand
         //$this->topDir - top Moodle directory
         //$this->arguments[0] - first argument passed
 
-        $options = $this->expandedOptions;
+        //$options = $this->expandedOptions;
+
+        uninstall_plugin('mod',$this->arguments[0]);
+        upgrade_noncore(true);
 
         /* if verbose mode was requested, show some more information/debug messages
         if($this->verbose) {

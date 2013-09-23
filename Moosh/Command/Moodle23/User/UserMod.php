@@ -15,7 +15,7 @@ class UserMod extends MooshCommand
     {
         parent::__construct('mod', 'user');
 
-        $this->addOption('a|all', 'modify all users');
+        $this->addOption('all', 'modify all users');
         $this->addOption('i|id', 'use id to match a user');
 
         $this->addOption('a|auth:', 'auth');

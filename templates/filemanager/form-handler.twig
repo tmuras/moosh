@@ -5,8 +5,8 @@
 // From http://docs.moodle.org/dev/Using_the_File_API_in_Moodle_forms#filemanager
 $itemid = 0; // This is used to distinguish between multiple file areas, e.g. different student's assignment submissions, or attachments to different forum posts, in this case we use '0' as there is no relevant id to use
 
-// Fetches the file manager draft area, called 'attachments'
-$draftitemid = file_get_submitted_draft_itemid('attachments');
+// Fetches the file manager draft area, called 'attachment'
+$draftitemid = file_get_submitted_draft_itemid('attachment');
 
 // Copy all the files from the 'real' area, into the draft area
 file_prepare_draft_area($draftitemid, $context->id, '{{ id }}', 'attachment', $itemid, $filemanageropts);
