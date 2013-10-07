@@ -818,6 +818,7 @@ Example:
     moosh forum-newdiscussion 3 7 2
     moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 7 2
 
+
 chkdatadir
 ----------
 
@@ -827,6 +828,16 @@ You usually want to run the check as the same user that runs web server.
 Example:
 
     sudo -u www-data moosh chkdatadir
+
+
+theme-info
+----------
+
+Show what themes are really used on Moodle site.
+
+Example:
+
+    moosh theme-info
 
 
 Contributing to moosh
