@@ -31,7 +31,7 @@ use GetOptionKit\OptionSpecCollection;
 
 error_reporting(E_ALL);
 
-define('MOOSH_VERSION', '0.11');
+define('MOOSH_VERSION', '0.12');
 
 $appspecs = new OptionSpecCollection;
 $spec_verbose = $appspecs->add('v|verbose', "be verbose");
@@ -47,9 +47,16 @@ if ($app_options->has('moodle-path')) {
 }
 
 $moodle_version = moosh_moodle_version($top_dir);
+$local_dir = home_dir(). DIRECTORY_SEPARATOR . '.moosh';
 $viable_versions = moosh_generate_version_list($moodle_version);
 $viable_versions[] = 'Generic';
 $namespaced_commands = moosh_load_all_commands($moosh_dir, $viable_versions);
+$namespaced_commands_extra = moosh_load_all_commands($local_dir, $viable_versions);
+
+if ($namespaced_commands_extra) {
+    $namespaced_commands = array_merge($namespaced_commands, $namespaced_commands_extra);
+    $loader->set(false, $local_dir);
+}
 
 $subcommands = array();
 foreach ($namespaced_commands as $command) {
