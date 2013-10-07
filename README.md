@@ -66,6 +66,15 @@ Or system-wide:
     sudo ln -s $PWD/moosh.php /usr/local/bin/moosh
 
 
+Local commands
+==============
+
+You can add your own, local commands to moosh by storing them in the same structure as moosh does but under ~/.moosh.
+For example, to create your custom command dev-mytest that works with any Moodle version, you would put it under:
+
+    ~/.moosh/Moosh/Command/Generic/Dev/MyTest.php
+
+
 Commands
 ========
 
