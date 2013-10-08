@@ -11,6 +11,22 @@ define('MOOSH_CODE_MARKER','/** MOOSH AUTO-GENERATED */');
 
 class MooshCommand
 {
+
+    /**
+     * @var int Do not include config.php at all
+     */
+    public static $BOOTSTRAP_NONE = 0;
+
+    /**
+     * @var int set CLI_SCRIPT, ABORT_AFTER_CONFIG and include config.php
+     */
+    public static $BOOTSTRAP_CONFIG = 1;
+
+    /**
+     * @var int set CLI_SCRIPT and include config.php
+     */
+    public static $BOOTSTRAP_FULL = 2;
+
     /**
      * @var \GetOptionKit\OptionSpecCollection
      */
@@ -305,11 +321,11 @@ class MooshCommand
 
     /**
      * Should command be bootstrapped as CLI_SCRIPT and include config.php?
-     * @return bool
+     * @return int
      */
-    public function isBootstraped()
+    public function bootstrapLevel()
     {
-        return true;
+        return self::BOOTSTRAP_FULL;
     }
 
     /**

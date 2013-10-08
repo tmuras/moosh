@@ -7,6 +7,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use \Moosh\MooshCommand;
+
 $cwd = getcwd();
 
 //try to detect if we are packaged moosh version - e.g. dude where are my libraries
@@ -31,7 +33,7 @@ use GetOptionKit\OptionSpecCollection;
 
 error_reporting(E_ALL);
 
-define('MOOSH_VERSION', '0.12');
+define('MOOSH_VERSION', '0.13');
 
 $appspecs = new OptionSpecCollection;
 $spec_verbose = $appspecs->add('v|verbose', "be verbose");
@@ -136,8 +138,11 @@ if ($moodlerc) {
 $subcommand = $subcommands[$subcommand];
 
 
-if ($subcommand->isBootstraped()) {
+if ($subcommand->bootstrapLevel()) {
     define('CLI_SCRIPT', true);
+    if($subcommand->bootstrapLevel() == MooshCommand::$BOOTSTRAP_CONFIG) {
+        define('ABORT_AFTER_CONFIG', true);
+    }
     if (!$top_dir) {
         echo "Could not find Moodle installation!\n";
         exit(1);
