@@ -21,9 +21,9 @@ class GenerateMoosh extends MooshCommand
         $this->addArgument('category-command');
     }
 
-    public function isBootstraped()
+    public function bootstrapLevel()
     {
-        return false;
+        return self::$BOOTSTRAP_NONE;
     }
 
     public function execute()

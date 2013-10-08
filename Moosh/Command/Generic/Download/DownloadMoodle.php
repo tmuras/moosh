@@ -20,9 +20,9 @@ class DownloadMoodle extends MooshCommand
         $this->addOption('v|version:', 'version');
     }
 
-    public function isBootstraped()
+    public function bootstrapLevel()
     {
-        return false;
+        return self::$BOOTSTRAP_NONE;
     }
 
     public function execute()
