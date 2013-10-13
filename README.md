@@ -840,6 +840,17 @@ Example:
     moosh theme-info
 
 
+dev-versionbump
+---------------
+
+Increase the version in module's version.php.
+
+Example:
+
+    cd <moodle_root>/mod/<your_module>
+    moosh dev-versionbump
+
+
 Contributing to moosh
 =====================
 
