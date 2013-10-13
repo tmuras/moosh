@@ -30,7 +30,7 @@ class {{ category|capitalize }}{{ command|capitalize }} extends MooshCommand
         //$this->expandedOptions - commandline provided options, merged with defaults
         //$this->topDir - top Moodle directory
         //$this->arguments[0] - first argument passed
-        //$this->pluginInfo - array with information about the current plugin (based on cwd): ['type'] and ['name']
+        //$this->pluginInfo - array with information about the current plugin (based on cwd), keys:'type','name','dir'
 
         $options = $this->expandedOptions;
 
