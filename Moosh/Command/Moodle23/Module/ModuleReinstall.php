@@ -39,8 +39,9 @@ class ModuleReinstall extends MooshCommand
         //$this->arguments[0] - first argument passed
 
         //$options = $this->expandedOptions;
+        $split = explode('_',$this->arguments[0],2);
 
-        uninstall_plugin('mod',$this->arguments[0]);
+        uninstall_plugin($split[0],$split[1]);
         upgrade_noncore(true);
 
         /* if verbose mode was requested, show some more information/debug messages
