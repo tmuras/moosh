@@ -41,8 +41,13 @@ class GenerateLang extends MooshCommand
 
         $strings = array();
         foreach($targets as $target) {
+            if($this->verbose) {
+                echo "Processing $target\n";
+            }
             $strings[$target] = array();
             $content = file_get_contents($this->cwd . '/' . $target);
+
+            //get_string function
             $matches = null;
             preg_match_all("/get_string\('([^']+)'([^)]*?)\)/",$content, $matches);
             foreach($matches[1] as $k=>$lang) {
@@ -64,6 +69,37 @@ class GenerateLang extends MooshCommand
                 } else {
                     $strings[$target][$key]['number']++;
                 }
+            }
+
+            //addHelpButton('code', 'code', 'programming');
+            $matches = null;
+            preg_match_all("/addHelpButton\('([^']+)'\s*,\s*'([^']+)'\s*,\s*'([^']+)'/",$content, $matches);
+
+            foreach($matches[2] as $k=>$lang) {
+                $langCat = $matches[3][$k];
+                $key = $lang.'|'.$langCat;
+                if(!isset($strings[$target][$key])) {
+                    $strings[$target][$key] = array(
+                        'number' => 1,
+                        'lang' => $lang,
+                        'category' => $langCat,
+                    );
+                } else {
+                    $strings[$target][$key]['number']++;
+                }
+
+                $lang .= '_help';
+                $key = $lang.'|'.$langCat;
+                if(!isset($strings[$target][$key])) {
+                    $strings[$target][$key] = array(
+                        'number' => 1,
+                        'lang' => $lang,
+                        'category' => $langCat,
+                    );
+                } else {
+                    $strings[$target][$key]['number']++;
+                }
+
             }
         }
 
