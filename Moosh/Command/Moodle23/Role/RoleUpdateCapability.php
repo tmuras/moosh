@@ -54,7 +54,7 @@ class RoleUpdateCapability extends MooshCommand
             case 'prevent': $capability = CAP_PREVENT; break;
             case 'prohibit': $capability = CAP_PROHIBIT; break;
         }
-        if (assign_capability($arguments[1],$capability,$role->id,$arguments[3])) {
+        if (assign_capability($arguments[1],$capability,$role->id,$arguments[3]),true) {
             echo "Capability '{$arguments[1]}' was set to {$capability} for roleid {$role->id} ({$role->shortname}) successfuly\n";
         }
         echo "\n";
