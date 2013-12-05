@@ -35,7 +35,7 @@ Installation
 Installation from Ubuntu package
 --------------------------------
 
-     sudo add-apt-repository ppa:zabuch/ppa
+     sudo apt-add-repository 'deb http://ppa.launchpad.net/zabuch/ppa/ubuntu precise main'
      sudo apt-get update
      sudo apt-get install moosh
 
@@ -54,8 +54,8 @@ Install composer - see http://getcomposer.org/download .
     cd moosh
     ./composer.phar update
 
-Common steps
-------------
+Common steps for Moodle package and git
+---------------------------------------
 
 Link to a location that is set in your $PATH, eg:
 
