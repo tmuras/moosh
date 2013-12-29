@@ -1,5 +1,7 @@
 <?php
-class tmIntegerElement
+namespace Moosh\ApacheLogParser;
+
+class IntegerElement
 {
   public function __construct()
   {

@@ -5,7 +5,14 @@
  * @TODO Try to guess where the interesting logs start in the file (jump to predicted location and move formard/backward to the first log entry we want to process).
  */
 
-class tmApacheLogParser
+namespace Moosh\ApacheLogParser;
+
+require_once('LineParser.class.php');
+require_once('IntegerElement.class.php');
+require_once('StringElement.class.php');
+require_once('TimeElement.class.php');
+
+class Parser
 {
   public static $FORMAT_COMMON = 1;
   public static $FORMAT_COMMON_VHOST = 2;
@@ -14,7 +21,7 @@ class tmApacheLogParser
   public static $MAX_LINE_LENGTH = 8192;
   
   /**
-   * @var tmLineParser
+   * @var LineParser
    */
   private $lineParser;
   private $fhandle;
@@ -24,7 +31,7 @@ class tmApacheLogParser
   
   public function __construct($re, $elements)
   {
-    $this->lineParser = new tmLineParser($re, $elements);
+    $this->lineParser = new LineParser($re, $elements);
   }
   
   /**
@@ -55,7 +62,7 @@ class tmApacheLogParser
   public function next()
   {
     if(! $this->fhandle) {
-      throw new tmApacheLogParserException("No file to parse");
+      throw new \Exception("No file to parse");
     }
     
     while(1) {
@@ -84,7 +91,7 @@ class tmApacheLogParser
   public function setFile($filePath)
   {
     if(! is_file($filePath) || ! is_readable($filePath)) {
-      throw new tmApacheLogParserException("Can't read a file: $filePath");
+      throw new \Exception("Can't read a file: $filePath");
     }
     $this->filePath = $filePath;
     $this->fhandle = fopen($this->filePath, 'r');
@@ -128,10 +135,10 @@ class tmApacheLogParser
       case self::$FORMAT_VHOST_COMBINED :
      /*"%v:%p %h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\""*/
       $re = '%s:%s %s %s %s %s "%s" %s %s "%s" "%s"';
-        $elements = array (
-          'server_name', 'port', 'remote_host', 'remote_logname', 'remote_user', 'time', 'request_first_line', 'status', 'response_size_clf', array (
-          'element' => 'request_header_line', 'name' => 'referer' ), array (
-          'element' => 'request_header_line', 'name' => 'user_agent' ) );
+        $elements =
+            array('server_name', 'port', 'remote_host', 'remote_logname', 'remote_user', 'time', 'request_first_line', 'status', 'response_size_clf',
+            array('element' => 'request_header_line', 'name' => 'referer' ),
+            array('element' => 'request_header_line', 'name' => 'user_agent' ) );
         
         break;
       case self::$FORMAT_COMMON :
@@ -144,17 +151,17 @@ class tmApacheLogParser
       
       case self::$FORMAT_COMMON_VHOST :
      /*"%v %h %l %u %t \"%r\" %>s %b"*/
-	     $re = '%v %s %s %s %s "%s" %s %s';
+	     $re = '%s %s %s %s %s "%s" %s %s';
         $elements = array (
           'server_name', 'remote_host', 'remote_logname', 'remote_user', 'time', 'request_first_line', 'status', 'response_size_clf' );
         
         break;
       
       default :
-        throw new tmApacheLogParserException("Not supported format: '$format'");
+        throw new \Exception("Not supported format: '$format'");
     }
     
-    return new tmApacheLogParser($re, $elements);
+    return new Parser($re, $elements);
   }
   
   private function readlastline()
@@ -163,10 +170,10 @@ class tmApacheLogParser
     $t = " ";
     while($t != "\n") {
       fseek($this->fhandle, $pos, SEEK_END);
-      $t = fgetc($fp);
+      $t = fgetc($this->fhandle);
       $pos = $pos - 1;
     }
-    $t = fgets($fp);
+    $t = fgets($this->fhandle);
     return $t;
   }
 }

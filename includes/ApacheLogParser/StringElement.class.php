@@ -1,6 +1,7 @@
 <?php
+namespace Moosh\ApacheLogParser;
 
-class tmStringElement
+class StringElement
 {
 	private $format;
 	public function __construct($format = null)

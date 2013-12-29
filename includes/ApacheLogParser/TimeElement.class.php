@@ -1,6 +1,7 @@
 <?php
+namespace Moosh\ApacheLogParser;
 
-class tmTimeElement
+class TimeElement
 {
   private $format;
   public function __construct($format)
