@@ -175,6 +175,9 @@ function moosh_moodle_version($topdir, $default = 23)
             if (strstr($line, "release = '1.9.")) {
                 return '19';
             }
+            if (strstr($line, "release  = '2.1.")) {
+                return '21';
+            }
             if (strstr($line, "release  = '2.2.")) {
                 return '22';
             }
