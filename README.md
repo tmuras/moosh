@@ -10,7 +10,7 @@ Here is for example how you can create 5 Moodle user accounts with moosh:
     cd /moodle/root/installation
     moosh user-create user_{1..5}
 
-If you don't know the exact name of the command you want to run but know the part of it, run moosh with the sub-string:
+If you don't know the exact name of the command you want to run but know the part of it, run moosh with the substring:
 
     moosh user
 
