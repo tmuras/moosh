@@ -1,12 +1,12 @@
 #!/bin/bash
-source config.sh
+source functions.sh
 
-mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" < "$DBNAME".sql
+install_db
 cd /var/www
 
 moosh category-create hyperion
 if moosh category-list | grep hyperion; then
-  echo 1
+  exit 0
 else
-  echo 0
+  exit 1
 fi
