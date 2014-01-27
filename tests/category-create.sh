@@ -2,7 +2,7 @@
 source functions.sh
 
 install_db
-cd /var/www
+cd $MOOSH_TEST_DIR
 
 moosh category-create hyperion
 if moosh category-list | grep hyperion; then

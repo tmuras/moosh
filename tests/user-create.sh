@@ -2,7 +2,7 @@
 source functions.sh
 
 install_db
-cd /var/www
+cd $MOOSH_TEST_DIR
 
 moosh user-create --password pass1234 --email me@example.com --city Szczecin\
  --country PL --firstname bruce --lastname wayne batman
