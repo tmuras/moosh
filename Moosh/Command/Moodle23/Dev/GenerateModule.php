@@ -20,6 +20,11 @@ class GenerateModule extends MooshCommand
 
     public function execute()
     {
+
+        if(strpos($this->arguments[0],'_') !== false) {
+            cli_error("Module name can not contain _");
+        }
+
         //copy newmodule
         $modPath = $this->topDir . '/mod/' . $this->arguments[0];
         if (file_exists($modPath)) {
