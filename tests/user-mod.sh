@@ -2,7 +2,7 @@
 source functions.sh
 
 install_db
-cd /var/www
+cd $MOOSH_TEST_DIR
 
 moosh user-mod --email newemail@example.com testuser
 if moosh user-list | grep newemail@example.com; then

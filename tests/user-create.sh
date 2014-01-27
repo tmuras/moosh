@@ -1,8 +1,8 @@
 #!/bin/bash
-source config.sh
+source functions.sh
 
-mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" < "$DBNAME".sql
-cd /var/www
+install_db
+cd $MOOSH_TEST_DIR
 
 moosh user-create --password pass1234 --email me@example.com --city Szczecin\
  --country PL --firstname bruce --lastname wayne batman

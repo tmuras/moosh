@@ -2,7 +2,7 @@
 source functions.sh
 
 install_db
-cd /var/www
+cd $MOOSH_TEST_DIR
 
 userid=`moosh user-getidbyname testuser`
 if moosh user-list | grep "$userid"; then
