@@ -2,6 +2,7 @@
 source functions.sh
 
 install_db
+install_data
 cd $MOOSH_TEST_DIR
 
 moosh role-create -d "test description" -n "testrole" newstudent

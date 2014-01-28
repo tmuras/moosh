@@ -2,6 +2,7 @@
 source functions.sh
 
 install_db
+install_data
 cd $MOOSH_TEST_DIR
 
 moosh course-backup -f ${MOOSH_TEST_DIR}/coursebackup.mbz 2

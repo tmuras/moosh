@@ -2,6 +2,7 @@
 source functions.sh
 
 install_db
+install_data
 cd $MOOSH_TEST_DIR
 
 moosh category-create hyperion
