@@ -22,6 +22,8 @@ class UserList extends MooshCommand
         $this->addOption('i|idnumber', 'display idnumber column');
         $this->addOption('s|sort:', 'sort by (id, username, email or idnumber)');
         $this->addOption('d|descending', 'sort in descending order');
+        $this->addOption('f|fname:','first name');
+        $this->addOption('l|lname:','last name');
     }
 
     public function execute()
@@ -37,6 +39,15 @@ class UserList extends MooshCommand
         $dir = 'ASC';
         if($options['descending']){
             $dir = 'DESC';
+        }
+
+	if($options['fname'] and $options['lname']) {
+            try {
+                $user = $DB->get_record('user', array('firstname'=>$options['fname'], 'lastname'=>$options['lname']),'*', MUST_EXIST); 
+                echo $options['fname'] . " " . $options['lname'] . " id number is " . $user->id ."\n";
+            } catch (Exception $e) {
+                print get_class($e)." thrown within the exception handler. Message: ".$e->getMessage()." on line ".$e->getLine();
+            }
         }
 
         $select_sql = "SELECT * FROM {user} WHERE confirmed = 1 AND deleted = 0 ORDER BY $sort $dir";
