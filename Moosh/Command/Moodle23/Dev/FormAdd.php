@@ -47,13 +47,17 @@ class FormAdd extends MooshCommand
             //replace /** MOOSH AUTO-GENERATED */ with new code
             $fileContent = str_replace(MOOSH_CODE_MARKER,$content . "\n".MOOSH_CODE_MARKER,$fileContent);
             file_put_contents($fileName,$fileContent);
-            //use xdotool to refresh current browser window (and by current browser windows I mean firefox [for now])
-            try {
-                exec("active=$(xdotool getwindowfocus) ; xdotool windowactivate\
-                 `xdotool search --name 'Mozilla Firefox'` ; xdotool key F5 ;\
-                  xdotool windowactivate \$active");
-            } catch (Exception $e) {
-                echo "Caught exception: " . $e->getMessage() . "\n";
+
+            if ($this->defaults['global']['xdotool']) {
+                try {
+                    $browser = $this->defaults['global']['browser_string'];
+
+                    exec("active=$(xdotool getwindowfocus) ; xdotool windowactivate\
+                     `xdotool search --name '$browser'` ; xdotool key F5 ;\
+                      xdotool windowactivate \$active");
+                } catch (Exception $e) {
+                    echo "Caught exception: " . $e->getMessage() . "\n";
+                }
             }
         } else {
             echo $content;

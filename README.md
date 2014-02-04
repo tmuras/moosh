@@ -74,6 +74,16 @@ For example, to create your custom command dev-mytest that works with any Moodle
 
     ~/.moosh/Moosh/Command/Generic/Dev/MyTest.php
 
+xdotool integration
+===================
+
+You can automate some of the manual tasks (like refreshing browser page after adding a form) by using xdotool. First, install xdotool:
+
+    apt-get install xdotool
+
+Then go to default_options.php change xdotool flag to true and choose your preferred browser. Commands that currently support xdotool:
+
+    form-add
 
 Commands
 ========

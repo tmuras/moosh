@@ -32,4 +32,6 @@ $defaultOptions['course']['role'] = 'student';
 
 $defaultOptions['download']['version'] = '25';
 
-
+//use xdotool to automate some of the tasks
+$defaultOptions['global']['xdotool'] = false;
+$defaultOptions['global']['browser_string'] = 'Mozilla Firefox';
