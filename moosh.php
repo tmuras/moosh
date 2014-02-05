@@ -49,7 +49,7 @@ if ($app_options->has('moodle-path')) {
 }
 
 $moodle_version = moosh_moodle_version($top_dir);
-$local_dir = home_dir(). DIRECTORY_SEPARATOR . '.moosh';
+$local_dir = home_dir() . DIRECTORY_SEPARATOR . '.moosh';
 $viable_versions = moosh_generate_version_list($moodle_version);
 $viable_versions[] = 'Generic';
 $namespaced_commands = moosh_load_all_commands($moosh_dir, $viable_versions);
@@ -77,27 +77,30 @@ $subcommand_options = array();
 // command arguments
 $arguments = array();
 
+// The first argument must be a subcommand.
 $subcommand = NULL;
-while (!$parser->isEnd()) {
-    if (isset($subcommand_specs[$parser->getCurrentArgument()])) {
-        $subcommand = $parser->advance();
-        $parser->setSpecs($subcommand_specs[$subcommand]);
-        $subcommand_options[$subcommand] = $parser->continueParse();
+$possible_matches = array();
+
+if (!$parser->isEnd()) {
+    $subcommand = $parser->advance();
+}
+
+
+if (!isset($subcommand_specs[$subcommand])) {
+    $possible_matches = array();
+    foreach ($subcommands as $k => $v) {
+        if (strpos($k, $subcommand) !== false) {
+            $possible_matches[] = $k;
+        }
+    }
+    if (count($possible_matches) == 1) {
+        $subcommand = $possible_matches[0];
     } else {
-        $arguments[] = $parser->advance();
+        $subcommand = NULL;
     }
 }
 
-if (!$subcommand) {
-    //if there was exactly one argument use it to grep through existing commands
-    if ($argc == 2) {
-        foreach ($subcommands as $k => $v) {
-            if (strpos($k, $argv[1]) !== false) {
-                echo "$k\n";
-            }
-        }
-        exit(1);
-    }
+if (!$subcommand && !$possible_matches) {
     echo "moosh version " . MOOSH_VERSION . "\n";
     echo "No command provided, possible commands:\n\t";
     echo implode("\n\t", array_keys($subcommands));
@@ -106,6 +109,20 @@ if (!$subcommand) {
     $appspecs->printOptions();
     echo "\n";
     exit(1);
+}
+
+if (!$subcommand && $possible_matches) {
+    foreach ($possible_matches as $match) {
+        echo $match . "\n";
+    }
+    exit(1);
+}
+
+$parser->setSpecs($subcommand_specs[$subcommand]);
+$subcommand_options[$subcommand] = $parser->continueParse();
+
+while (!$parser->isEnd()) {
+    $arguments[] = $parser->advance();
 }
 
 //read config file if available
@@ -140,7 +157,7 @@ $subcommand = $subcommands[$subcommand];
 
 if ($subcommand->bootstrapLevel()) {
     define('CLI_SCRIPT', true);
-    if($subcommand->bootstrapLevel() == MooshCommand::$BOOTSTRAP_CONFIG) {
+    if ($subcommand->bootstrapLevel() == MooshCommand::$BOOTSTRAP_CONFIG) {
         define('ABORT_AFTER_CONFIG', true);
     }
     if (!$top_dir) {
