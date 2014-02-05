@@ -16,9 +16,9 @@ class ReportConcurrency extends MooshCommand
     {
         parent::__construct('concurrency', 'report');
 
-        $this->addOption('f|from:', 'from date');
-        $this->addOption('t|to:', 'to date');
-        $this->addOption('p|period:', 'period of time');
+        $this->addOption('f|from:', 'from date in YYYYMMDD or YYYY-MM-DD format (default is 30 days backwards)');
+        $this->addOption('t|to:', 'to date in YYYYMMDD or YYYY-MM-DD format (default is today)');
+        $this->addOption('p|period:', 'period of time (sic)');
     }
 
     public function execute()
@@ -27,12 +27,15 @@ class ReportConcurrency extends MooshCommand
 
         $options = $this->expandedOptions;
 
+        $from_date = date("Y-m-d",(time() - 60*60*24*30));
         if($options['from']) {
-        	echo $options['from'];
+        	$from_date = strtotime($options['from']);
         }
         
+        $to_date = strtotime(date('Y-m-d'));
         if ($options['to']) {
-        	echo $options['to'];
+        	$to_date = strtotime($options['to']);
+        	echo $to_date . "\n";
         }
 
         $period = 5;
@@ -43,7 +46,9 @@ class ReportConcurrency extends MooshCommand
         $sql = "SELECT (FROM_UNIXTIME(period * ( $period*60 ))) AS time, 
 				online_users FROM (SELECT ROUND( time / ( $period*60 ) ) AS period,
 				COUNT( DISTINCT userid ) AS online_users
-				FROM mdl_log
+				FROM {log}
+				WHERE action <> 'error' AND module <> 'library'
+				AND time >= $from_date AND time <= $to_date
 				GROUP BY period
 				) AS concurrent_users_report";
 
