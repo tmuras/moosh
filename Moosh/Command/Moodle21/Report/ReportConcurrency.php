@@ -27,15 +27,14 @@ class ReportConcurrency extends MooshCommand
 
         $options = $this->expandedOptions;
 
-        $from_date = date("Y-m-d",(time() - 60*60*24*30));
+        $from_date = strtotime(date("Y-m-d", strtotime('-30 days')));
         if($options['from']) {
         	$from_date = strtotime($options['from']);
         }
-        
-        $to_date = strtotime(date('Y-m-d'));
+
+        $to_date = strtotime(date("Y-m-d"));
         if ($options['to']) {
         	$to_date = strtotime($options['to']);
-        	echo $to_date . "\n";
         }
 
         $period = 5;
