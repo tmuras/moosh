@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 source config.sh
 
 function install_db {
@@ -10,7 +10,13 @@ function install_db {
 }
 
 function install_data {
-  rm -rf $MOOSH_DATA_DIR/*
-  tar xjf moodledata.tar.bz2
-  mv $PWD/moodledata/* $MOOSH_DATA_DIR
+  DIR_PATH=$(readlink -f "${MOOSH_DATA_DIR}")
+
+  if [[ -d "${DIR_PATH}" ]] ; then
+    rm -rf $MOOSH_DATA_DIR/*
+    tar xjf moodledata.tar.bz2
+    mv $PWD/moodledata/* $MOOSH_DATA_DIR
+  else
+    exit 1
+  fi
 }
