@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 source config.sh
 
 function install_db {
