@@ -49,14 +49,25 @@ class FormAdd extends MooshCommand
             file_put_contents($fileName,$fileContent);
 
             if ($this->defaults['global']['xdotool']) {
-                try {
-                    $browser = $this->defaults['global']['browser_string'];
+                exec("xdotool getwindowfocus", $output, $return);
+                if ($return != 0) {
+                    exit($return);
+                }
+                $active = $output[0];
 
-                    exec("active=$(xdotool getwindowfocus) ; xdotool windowactivate\
-                     `xdotool search --name '$browser'` ; xdotool key F5 ;\
-                      xdotool windowactivate \$active");
-                } catch (Exception $e) {
-                    echo "Caught exception: " . $e->getMessage() . "\n";
+                exec("xdotool windowactivate `xdotool search --name '$browser'` ", $output, $return);
+                if ($return != 0) {
+                    exit($return);
+                }
+
+                exec("xdotool key F5", $output, $return);
+                if ($return != 0) {
+                    exit($return);
+                }
+
+                exec("xdotool windowactivate $active", $output, $return);
+                if ($return != 0) {
+                    exit($return);
                 }
             }
         } else {
