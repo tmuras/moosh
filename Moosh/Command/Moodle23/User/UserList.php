@@ -24,6 +24,7 @@ class UserList extends MooshCommand
         $this->addOption('d|descending', 'sort in descending order');
 
         $this->addArgument('sql expression');
+        $this->minArguments = 0;
     }
 
     public function execute()
@@ -32,28 +33,32 @@ class UserList extends MooshCommand
 
         $options = $this->expandedOptions;
 
+        if (count($this->arguments) == 0) {
+            $this->arguments[0] = "id > 1 and id < 102"; // if user didn't provide any arguments return first 100 users
+        }
+
         $users = ("SELECT * FROM {user} WHERE " . $this->arguments[0]);
 
         $sort = "id";
-        if($options['sort'] == 'id' || $options['sort'] == 'username' || $options['sort'] == 'email' || $options['sort'] == 'idnumber'){
+        if ($options['sort'] == 'id' || $options['sort'] == 'username' || $options['sort'] == 'email' || $options['sort'] == 'idnumber') {
             $sort = $options['sort'];
         }
 
         $dir = 'ASC';
-        if($options['descending']){
+        if ($options['descending']) {
             $dir = 'DESC';
         }
 
         $users .= " ORDER BY $sort $dir";
  
-        if($options['limit'] && preg_match('/^\d+$/', $options['limit'])){
+        if ($options['limit'] && preg_match('/^\d+$/', $options['limit'])) {
             $users .= " LIMIT " . $options['limit'];
         }
 
         $users = $DB->get_records_sql($users);
 
         foreach ($users as $user) {
-            if($options['id']) {
+            if ($options['id']) {
                 echo "$user->id \n";
                 continue;
             }
