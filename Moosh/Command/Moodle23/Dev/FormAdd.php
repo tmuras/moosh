@@ -49,6 +49,8 @@ class FormAdd extends MooshCommand
             file_put_contents($fileName,$fileContent);
 
             if ($this->defaults['global']['xdotool']) {
+                $browser = $this->defaults['global']['browser_string'];
+
                 exec("xdotool getwindowfocus", $output, $return);
                 if ($return != 0) {
                     exit($return);
