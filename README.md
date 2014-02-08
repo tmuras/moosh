@@ -455,9 +455,18 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.
 Example 1: Allow "student" role to be set on block level
     moosh student -block-on
 
-Example 1: Prevent "manager" role to be set on course level
+Example 2: Prevent "manager" role to be set on course level
     moosh manager -course-off
 
+report-concurrency
+------------------
+
+Get information about concurrent users online.
+
+Use: -f and -t with date in either YYYYMMDD or YYYY-MM-DD date. Add -p te specify period.
+
+Example 1: Get concurrent users between 20-01-2014 and 27-01-2014 with 30 minut periods.
+    moosh -f 20140120 -t 20140127 -p 30
 
 config-plugins
 --------------
