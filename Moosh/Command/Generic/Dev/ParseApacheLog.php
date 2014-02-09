@@ -14,9 +14,9 @@ use Moosh\ApacheLogParser\Parser;
 /**
  * The DB table:
  *
- * time,timestamp,url,memory_peak,includecount,langcountgetstring,db_reads,ticks,user,sys,serverload
  *
- * Class ParsePerformanceLog
+ *
+ * Class ParseApacheLog
  * @package Moosh\Command\Generic\Dev
  */
 class ParseApacheLog extends MooshCommand
@@ -39,6 +39,7 @@ class ParseApacheLog extends MooshCommand
 
     public function execute()
     {
+        cli_error('Not implemented yet');
         $logfile = $this->arguments[0];
 
         if (!is_file($logfile) || !is_readable($logfile)) {
@@ -47,11 +48,11 @@ class ParseApacheLog extends MooshCommand
 
         require_once($this->mooshDir . '/includes/ApacheLogParser/Parser.class.php');
 
-        //H: aua3.learnonline.ie U: 10164391 T: 0s / 20500µs | 192.198.151.44 - - [22/Dec/2013:08:20:35 +0000] "GET /login/index.php?testsession=1164 HTTP/1.1"
-        //303 904 "http://aua3.learnonline.ie/login/index.php" "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko"
         /*
-               // LogFormat "H: %v U: %{MOODLEUSER}n T: %Ts / %Dµs | %{X-Forwarded-For}i %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" time_taken
-          */
+         LogFormat "H: %v U: %{MOODLEUSER}n T: %Ts / %Dµs | %{X-Forwarded-For}i %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" time_taken
+           H: www,example.com U: 10164391 T: 0s / 20500µs | 192.198.151.44 - - [22/Dec/2013:08:20:35 +0000] "GET /login/index.php?testsession=1164 HTTP/1.1"
+           303 904 "http://www,example.com/login/index.php" "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko"
+         */
         $elements = array(
             'server_name',
             array('element' => 'note', 'name' => 'moodle_user'),
