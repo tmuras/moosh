@@ -3,7 +3,7 @@ source functions.sh
 
 install_db
 install_data
-cd $MOOSH_TEST_DIR
+cd $MOODLEDIR
 
 if moosh report-concurrency | grep "users online" ; then
   exit 0

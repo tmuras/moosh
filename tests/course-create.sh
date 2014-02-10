@@ -3,7 +3,7 @@ source functions.sh
 
 install_db
 install_data
-cd $MOOSH_TEST_DIR
+cd $MOODLEDIR
 
 moosh course-create newcourse
 if moosh course-list newcourse; then

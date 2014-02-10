@@ -3,7 +3,7 @@ source functions.sh
 
 install_db
 install_data
-cd $MOOSH_TEST_DIR
+cd $MOODLEDIR
 
 userid=`moosh user-getidbyname testuser`
 if moosh user-list | grep "$userid"; then

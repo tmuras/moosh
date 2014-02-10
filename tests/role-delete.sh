@@ -3,7 +3,7 @@ source functions.sh
 
 install_db
 install_data
-cd $MOOSH_TEST_DIR
+cd $MOODLEDIR
 
 moosh sql-run "SELECT * FROM {role} WHERE shortname = 'delete'"
 moosh role-delete -i 9 

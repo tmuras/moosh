@@ -3,7 +3,7 @@ source functions.sh
 
 install_db
 install_data
-cd $MOOSH_TEST_DIR
+cd $MOODLEDIR
 
 moosh cohort-create testcohort
 if [ $(moosh sql-run "select * from {cohort} where name = 'testcohort'" | grep -o 'testcohort') ]; then

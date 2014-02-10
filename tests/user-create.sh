@@ -3,7 +3,7 @@ source functions.sh
 
 install_db
 install_data
-cd $MOOSH_TEST_DIR
+cd $MOODLEDIR
 
 moosh user-create --password pass1234 --email me@example.com --city Szczecin\
  --country PL --firstname bruce --lastname wayne batman
