@@ -170,15 +170,15 @@ Example 4: update all users
 user-list
 --------
 
-List user accounts.
+List user accounts. It accepts sql WHERE clause. If run without sql argument it will list first 100 users from database.
 
-Example 1: list 10 user accounts
+Example 1: list user accounts with id number higher than 10 and sort them by email
 
-    moosh user-list -n 10
+    moosh user-list --sort email "id > 10"
 
-Example 2: list 100 accounts sorted on email address in descending order and showing idnumber column
+Example 2: list users whos first name is bruce and username is batman
 
-    moosh user-list --limit 100 --idnumber --sort email --descending
+    moosh user-list "name = 'bruce' and username = 'batman'"
 
 sql-run
 -------
