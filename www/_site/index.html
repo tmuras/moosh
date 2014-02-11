@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="command line utility tool for moodle">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="">
+
+    <title>moosh</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap-yeti.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px;
+      }
+    </style>
+    <link href="/css/boostrap-theme.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">moosh</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="https://github.com/tmuras/moosh">github</a></li>
+            <li><a href="/faq">FAQ</a></li>
+            <li><a href="/commands">commands</a></li>
+            <li><a href="/tutorials">tutorials</a></li>
+            <li><a href="/ci">CI</a></li>
+          </ul>
+          <a href="https://github.com/tmuras/moosh"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container">
+
+     <h1>Hello World</h1>
+
+<p>Moosh stands for MOOdle SHell. It is a commandline tool that will allow you to perform most common Moodle tasks. It's inspired by Drush - a similar tool for Drupal.
+moosh is licenced under GNU GPL v3 or any later.</p>
+
+<p>I've created it when I realized how much time I waste each time I debug/test some Moodle issue and need to setup my environment.
+Here is for example how you can create 5 Moodle user accounts with moosh:</p>
+
+<pre><code>cd /moodle/root/installation
+moosh user-create user_{1..5}
+</code></pre>
+
+<p>If you don't know the exact name of the command you want to run but know the part of it, run moosh with the substring:</p>
+
+<pre><code>moosh user
+</code></pre>
+
+<p>As a result you will get a list of all commands that contain string "user":</p>
+
+<pre><code>course-enrolleduser
+user-create
+user-delete
+user-getidbyname
+user-list
+user-mod
+</code></pre>
+
+<h1>Contributing to moosh</h1>
+
+<ol>
+<li>Fork the project on github.</li>
+<li>Follow "installation from Moodle git" section.</li>
+<li>Look at existing plugins to see how they are done.</li>
+<li><p>Create new plugin/update existing one. You can use moosh itself to generate a new command from a template for you:</p>
+
+<p> moosh generate-moosh category-command</p></li>
+<li><p>Update this README.md file with the example on how to use your plugin.</p></li>
+<li>Send me pull request.</li>
+</ol>
+
+
+    </div><!-- /.container -->
+    <hr>
+<footer>
+<div class="container">
+    <p>&copy; <a href="https://github.com/tmuras">Tomasz Muras</a></p>
+    </div>
+</footer>
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    </script>
+  </body>
+</html>
