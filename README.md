@@ -149,7 +149,6 @@ Example 1: Export all categories to XML.
 
     moosh category-export 1
 
-
 category-list
 -------------
 
@@ -192,6 +191,41 @@ clear-cache
 The same as "purge all caches" page.
 
     moosh clear-cache
+
+cohort-create
+-------------
+
+Create new cohort.
+
+Example 1: Create two system cohorts "mycohort1" and "mycohort2".
+
+    moosh cohort-create mycohort1 mycohort2
+
+Example 2: Create cohort "my cohort18" with id "cohort18" under category id 2, with description "Long description".
+
+    moosh cohort-create -d "Long description" -i cohort18 -c 2 "my cohort18"
+
+cohort-enrol
+------------
+
+Add user to cohort or enroll cohort to a course.
+
+Example 1: Add user id 17 to cohort named "my cohort18"
+
+    moosh cohort-enrol -u 17 "my cohort18"
+
+Example 2: Enroll cohort "my cohort18" to course id 4.
+
+    moosh cohort-enrol -c 4 "my cohort18"
+
+cohort-unenrol
+--------------
+
+Remove user(s) from a cohort (by cohort id)
+
+Example 1: Remove users 20,30,40 from cohort id=7.
+
+    moosh cohort-unenrol 7 20 30 40
 
 config-get
 ----------
@@ -239,43 +273,6 @@ Example 1: Enable debug.
 Example 2: Set URL to logo for Sky High theme.
 
     moosh config-set logo http://example.com/logo.png theme_sky_high
-
-cohort-create
--------------
-
-Create new cohort.
-
-Example 1: Create two system cohorts "mycohort1" and "mycohort2".
-
-    moosh cohort-create mycohort1 mycohort2
-
-Example 2: Create cohort "my cohort18" with id "cohort18" under category id 2, with description "Long description".
-
-    moosh cohort-create -d "Long description" -i cohort18 -c 2 "my cohort18"
-
-
-cohort-enrol
-------------
-
-Add user to cohort or enroll cohort to a course.
-
-Example 1: Add user id 17 to cohort named "my cohort18"
-
-    moosh cohort-enrol -u 17 "my cohort18"
-
-Example 2: Enroll cohort "my cohort18" to course id 4.
-
-    moosh cohort-enrol -c 4 "my cohort18"
-
-
-cohort-unenrol
---------------
-
-Remove user(s) from a cohort (by cohort id)
-
-Example 1: Remove users 20,30,40 from cohort id=7.
-
-    moosh cohort-unenrol 7 20 30 40
 
 course-backup
 -------------
@@ -391,19 +388,19 @@ Example 1:
 
     moosh course-unenrol --role editingteacher --cohort 1 144
 
-debug-on
---------
-
-Turns on full debug - all the options in debugging section of the settings plus enables theme designer mode.
-
-    moosh debug-on
-
 debug-off
 ---------
 
 Turns off full debug and disables theme designer mode.
 
     moosh debug-off
+
+debug-on
+--------
+
+Turns on full debug - all the options in debugging section of the settings plus enables theme designer mode.
+
+    moosh debug-on
 
 dev-versionbump
 ---------------
@@ -461,7 +458,6 @@ The output will contain some defaults or nearly all possible file information if
  * "m" if time created and time modified differ
 
 With "-i" option only IDs are returned. This can be used when pipe-ing into other file-related commands.
-
 
 Example 1: Show all legacy files for a course, which context id is 15
 
@@ -704,7 +700,7 @@ Example 1: list user accounts with id number higher than 10 and sort them by ema
 
 Example 2: list users with first name bruce and username batman
 
-    moosh user-list "name = 'bruce' and username = 'batman'"
+    moosh user-list "name = 'bruce' AND username = 'batman'"
 
 user-mod
 --------
@@ -718,7 +714,6 @@ Example 1: change admin's user password and email
 Example 2: change authentication method for users with ids 17,20,22
 
     moosh user-mod -i --auth manual 17 20 22
-
 
 Example 3: use bash/zsh expansion to change password for users with ID between 100 and 200
 
