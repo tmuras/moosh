@@ -88,112 +88,44 @@ Then go to default_options.php change xdotool flag to true and choose your prefe
 Commands
 ========
 
-user-create
------------
+activity-add
+------------
 
-Create a new Moodle user. Provide one or more arguments to create one or more users.
+Adds an activity instance to the specified course. The activity is specified by it's component name
+without the plugin type prefix, so "forum", "assign" or "data" for example, and the course is specified
+by it's id.
 
-Example 1: create user "testuser" with the all default profile fields.
+Example:
 
-    moosh user-create testuser
+    moosh activity-add assign 2
+    moosh activity-add --section 3 forum 4
+    moosh activity-add --name "General course forum" --section 2 forum 3
+    moosh activity-add --name "Easy assignent" --section 2 --idnumber "ASD123" assign 2
 
-Example 2: create user "testuser" with the all the optional values
+block-add
+---------------
 
-    moosh user-create --password pass --email me@example.com --digest 2 --city Szczecin --country PL --firstname "first name" --lastname name testuser
+Add a new block instance to any system context (front page, category, course, module ...)
+Can add a block instance to a single course or to all courses in a category
+Can add a block to the category itself which will appear in all it's sub categories and courses
+(use "moosh block-add -h" for more help)
 
-Example 3: use bash/zsh expansion to create 10 users
+Example:
 
-    moosh user-create testuser{1..10}
+    moosh block-add category 2 calendar_month admin-course-category side-pre -1
+    moosh block-add -s category 2 calendar_month admin-course-category side-pre -1
+    moosh block-add categorycourses 2 calendar_month course-view-* side-post 0
+    moosh block-add course 32 calendar_month course-view-* side-post 0
 
-The users will have unique email addresses based on the user name (testuser1, testuser2, testuser3...).
-
-Example 4: create a user with LDAP authentication
-
-    moosh user-create --auth ldap --password NONE  --email joe.blogs@domain.tld --city "Some City" --country IE --firstname "Joe" --lastname "Blogs" jblogs
-
-
-user-delete
------------
-
-Delete user(s) from Moodle. Provide one ore more usernames as arguments.
-
-Example 1: delete user testuser
-
-    moosh user-delete testuser
-
-Example 2: delete user testuser1 and user testuser2
-    
-    moosh user delete testuser1 testuser2
-
-
-
-user-getidbyname
+block-manage
 ----------------
 
-Returns the userid of users. The parameter can be the first and last name of a user, or one or more username(s). (When using first and last name may be ambiguous. If more than one user with the same first and last name is found, it returns an error message: Multiple records found, only one record expected.)
+Show or Hide blocks, system wide (Will also delete, in the future)
 
-Example 1: Returns the userid of the user "test user"
+Example:
 
-    moosh user-getidbyname --fname test --lname user
-
-Example 2: Returns the userid of the user with username "testuser"
-
-    moosh user-getidbyname testuser
-
-Example 3: Returns the userid of the users with username testuser{1..10}
-
-    moosh user-getidbyname testuser{1..5}
-
-user-mod
---------
-
-Modify user(s) account.
-
-Example 1: change admin's user password and email
-
-    moosh user-mod --email my@email.com --password newpwd admin
-
-Example 2: change authentication method for users with ids 17,20,22
-
-    moosh user-mod -i --auth manual 17 20 22
-
-
-Example 3: use bash/zsh expansion to change password for users with ID between 100 and 200
-
-    moosh user-mod -i --password x {100..200}
-
-Example 4: update all users
-
-    moosh user-mod --email my@email.com --password newpwd --auth manual --all
-
-
-user-list
---------
-
-List user accounts. It accepts sql WHERE clause. If run without sql argument it will list first 100 users from database.
-
-Example 1: list user accounts with id number higher than 10 and sort them by email
-
-    moosh user-list --sort email "id > 10"
-
-Example 2: list users whos first name is bruce and username is batman
-
-    moosh user-list "name = 'bruce' and username = 'batman'"
-
-sql-run
--------
-
-Run any custom SQL against bootstrapped Moodle instance DB. If query start with SELECT then matched rows will be displayed.
-
-Example 1: Set the country of all the users to Poland
-
-    moosh sql-run "update {user} set country='PL'"
-
-
-Example 2: Count the number of rows is log table
-
-    moosh sql-run "select count(*) from {log}"
-
+    moosh block-manage hide calendar
+    moosh block-manage show calendar
 
 category-create
 ---------------
@@ -207,7 +139,6 @@ Example 1: Add new top level category "mycat", invisible with no description.
 Example 2: Add category "mycat" under category id 6, set to visible and description to "My category".
 
     moosh category-create -p 6 -v 1 -d "My category" mycat
-
 
 category-export
 -------------
@@ -232,7 +163,6 @@ Example 2: List all categories with name "test" OR "foobar"
 
     moosh category-list test foobar
 
-
 category-move
 ---------------
 
@@ -246,6 +176,69 @@ Example 2: Make the category with id 3 a top-level category
 
     moosh category-move 3 0
 
+chkdatadir
+----------
+
+Check if every file and directory in Moodle data is writeable for the user that runs the command.
+You usually want to run the check as the same user that runs web server.
+
+Example:
+
+    sudo -u www-data moosh chkdatadir
+
+clear-cache
+-----------
+
+The same as "purge all caches" page.
+
+    moosh clear-cache
+
+config-get
+----------
+
+Get config variable from config or config_plugins table. The syntax is based on get_config($plugin,$name) API function. Both arguments are optional.
+
+Example 1: Show all core config variables.
+
+    moosh config-get
+
+Example 2: Show all config variables for "user"
+
+    moosh config-get user
+
+Example 3: Show core setting "dirroot"
+
+    moosh config-get core dirroot
+
+config-plugins
+--------------
+
+Shows all plugins that have at least one entry in the config_plugins table. Optionally provide an argument to match plugin name.
+
+Example 1: Show all plugins from config_plugins table.
+
+    moosh config-plugins
+
+Example 2: Show all themes that have some settings.
+
+    moosh config-plugins theme_
+
+config-set
+----------
+
+Set config variable. The syntax of the command is based on the set_config() Moodle API:
+
+    moosh config-set name value <plugin>
+
+If third argument (plugin) is not provided then the variable is set in the core Moodle configuration table.
+
+Example 1: Enable debug.
+
+    moosh config-set debug 32767
+
+Example 2: Set URL to logo for Sky High theme.
+
+    moosh config-set logo http://example.com/logo.png theme_sky_high
 
 cohort-create
 -------------
@@ -284,6 +277,18 @@ Example 1: Remove users 20,30,40 from cohort id=7.
 
     moosh cohort-unenrol 7 20 30 40
 
+course-backup
+-------------
+
+Backup course with provided id.
+
+Example 1: Backup course id=3 into default .mbz file in current directory:
+
+    moosh course-backup 3
+
+Example 2: Backup course id=3 and save it as /tmp/mybackup.mbz:
+
+    moosh course-backup -f /tmp/mybackup.mbz 3
 
 course-create
 -------------
@@ -298,20 +303,18 @@ Example 2: Create new course
 
     moosh course-create --category 1 --fullname "full course name" --description "course description" --idnumber "course idnumber" shortname
 
+course-config-set
+-----------------
 
-course-enableselfenrol
-----------------------
+Update a field in the Moodle {course} table for a single course, or for all courses in a category.
 
-Enable self enrolment on one or more courses given a list of course IDs. By default self enrolment is enabled without an enrolment key, but one can be passed as an option.
+Example 1: set the shortname of a single course with id=42
 
-Example 1: Enable self enrolment on a course without an enrolment key
-
-    moosh course-enableselfenrol 3
+    moosh course-config-set course 42 shortname new_shortname
     
-Example 2: Enable self enrolment on a course with an enrolment key
+Example 2: set the format to topics for all courses in a category with id=7
 
-    moosh course-enableselfenrol --key "an example enrolment key" 3
-
+    moosh course-config-set category 7 format topics
 
 course-enrol
 ------------
@@ -327,6 +330,55 @@ Example 2: Enroll user with id 21 into the course with id 31 as a non-editing te
 
     moosh course-enrol -r teacher -i 31 21
 
+course-enrolbyname
+------------------
+
+Is similar to course-enrol function. But it can also be used the first- and lastname of the user and the course shortname.
+
+Example 1: Enroll user with firstname test42 and lastname user42 into the course with shortname T12345 as an editing teacher.
+
+    moosh course-enrolbyname -r editingteacher -f test42 -l user42 -c T12345
+
+course-enrolleduser
+-------------------
+
+Returns all enrolled user in a course, which have a specific role. First argument is the shortname of a role, second argument is a course ID.
+
+Example 1:
+
+    moosh course-enrolleduser student 4
+
+course-enableselfenrol
+----------------------
+
+Enable self enrolment on one or more courses given a list of course IDs. By default self enrolment is enabled without an enrolment key, but one can be passed as an option.
+
+Example 1: Enable self enrolment on a course without an enrolment key
+
+    moosh course-enableselfenrol 3
+    
+Example 2: Enable self enrolment on a course with an enrolment key
+
+    moosh course-enableselfenrol --key "an example enrolment key" 3
+
+course-reset
+--------------
+
+Reset course by ID, using default settings.
+
+Example 1: Reset course with id=17
+
+    moosh course-reset 17
+
+course-restore
+--------------
+
+Restore course from path/to/backup.mbz to category with a given id.
+
+Example 1: Restore backup.mbz into category with id=1
+
+    moosh course-restore backup.mbz 1
+
 course-unenrol
 ------------
 
@@ -339,72 +391,365 @@ Example 1:
 
     moosh course-unenrol --role editingteacher --cohort 1 144
 
+debug-on
+--------
 
-course-enrolbyname
-------------------
+Turns on full debug - all the options in debugging section of the settings plus enables theme designer mode.
 
-Is similar to course-enrol function. But it can also be used the first- and lastname of the user and the course shortname.
+    moosh debug-on
 
-Example 1: Enroll user with firstname test42 and lastname user42 into the course with shortname T12345 as an editing teacher.
+debug-off
+---------
 
-    moosh course-enrolbyname -r editingteacher -f test42 -l user42 -c T12345
+Turns off full debug and disables theme designer mode.
+
+    moosh debug-off
+
+dev-versionbump
+---------------
+
+Increase the version in module's version.php.
+
+Example:
+
+    cd <moodle_root>/mod/<your_module>
+    moosh dev-versionbump
+
+download-moodle
+---------------
+
+Download latest Moodle version from the latest branch (default) or previous one if -v given.
+
+Example 1: Download latest Moodle.
+
+    moosh download-moodle
+
+Example 2: Download latest Moodle 2.3.
+
+        moosh download-moodle -v 23
+
+file-delete
+-----------
+
+Delete Moodle files from DB and possibly move them to trash. File IDs can be provided as arguments or on the standard input (with moosh file-delete -s).
+--flush option will remove the trashcan directory.
+
+Example 1: Remove files with IDs 10,20 and 30.
+
+    moosh file-delete 10 20 30
+
+Example 2: Remove all files with size greater than 100 bytes
+
+    moosh file-list -i 'filesize>1000' | moosh file-delete -s
+
+Example 3: Flush trashcan
+
+    moosh file-delete --flush
+
+file-list
+---------
+
+Search and list files from mdl_files table. The argument should be a valid SQL WHERE statement. Interesting columns of possible search criterias are:
+contextid, component, filearea, itemid, filepath, filename, userid, filesize, mimetype, status, timecreated, timemodified.
+
+The output will contain some defaults or nearly all possible file information if "-a|--all" flag is provided. The meaning of the flags column is (in order):
+
+ * mdl_files.status
+ * lowercase letter "d" if entry is a dicrectory
+ * "e" if external file
+ * "i" if a valid image
+ * "m" if time created and time modified differ
+
+With "-i" option only IDs are returned. This can be used when pipe-ing into other file-related commands.
 
 
-course-enrolleduser
+Example 1: Show all legacy files for a course, which context id is 15
+
+    moosh file-list "contextid=15 AND component='course' AND filearea='legacy'"
+
+Example 2: Display full information on file with ID 17
+
+    moosh file-list -a id=162
+
+file-path
+---------
+
+Show full path in the filesystem to a Moodle file. Files can be identified by ID or hash (auto-detected) as arguments or on stdin (-s option).
+
+Example 1: Show path to a file with contenthash da39a3ee5e6b4b0d3255bfef95601890afd80709
+
+    moosh file-path da39a3ee5e6b4b0d3255bfef95601890afd80709
+
+Example 2: Show paths to files with ID bewteen 100 and 200
+
+    moosh file-list -i 'id>100 AND id<200' | moosh file-path -s
+
+Example 3: Like above but with no duplicates
+
+    moosh file-list -i 'id>100 AND id<200' | moosh file-path -s | sort | uniq
+
+form-add
+--------
+
+Adds an element to the form. If there is a form in your current working directory, that you have recently worked on with
+moosh (e.g. you have generated it with moosh generate-form), moosh will inject the code into that file. If moosh is not
+ able to figure out where you would like the code added, it will display it on the standard output.
+
+    moosh form-add type name
+
+Example 1: Display list of all available element templates.
+
+    moosh form-add
+
+Example 2: Add (or display) the code for advanced checkbox element for Moodle form.
+
+    moosh form-add advcheckbox checkboxid
+
+forum-newdiscussion
 -------------------
 
-Returns all enrolled user in a course, which have a specific role. First argument is the shortname of a role, second argument is a course ID.
+Adds a new discussion to an existing forum. You should provide a course id, a forum id
+and an user id in this order. If no name or message is specified it defaults to the data
+generator one.
+
+Example:
+
+    moosh forum-newdiscussion 3 7 2
+    moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 7 2
+
+generate-filepicker
+-------------------
+
+Shows how to code filepicker, based on https://github.com/AndyNormore/filemanager. Takes no arguments.
+
+    moosh generate-filepicker
+
+generate-form
+-------------
+
+Creates a new file with the form class code. Will display on the screen a boilerplate code to use the form. If the form
+file already exists, both form & form usage code will only be displayed on the standard output.
+moosh will try to figure out what plugin are you currently working on, based on your current working directory, and prefix
+the form accordingly.
+
+    moosh generate-form form_name
+
+Example: Assuming you are in mod/flashcard directory, the command will create edit_form.php containing mod_flashcard_edit_form
+class. It will also display a boilerplate code on how can you use the form.
+
+    moosh generate-form edit
+
+generate-gradereport
+--------------
+
+Creates new grade report under grade/report based on the template from https://github.com/danielneis/moodle-gradereport_newgradereport.
+
+    moosh generate-gradereport report_name
+
+Example: Create new module under grade/report/beststudents
+
+    moosh generate-gradereport beststudents
+
+generate-lang
+-------------
+
+Scan files given as arguments or currently remembered file, extract language strings and add them to the lang file if
+necessary.
+
+    moosh generate-lang [file1] [file2] [file3]...
+
+Example 1: Extract lang strings from edit_form.php.
+
+    moosh generate-lang edit_form.php
+
+generate-module
+---------------
+
+Creates new module based on the NEWMODULE template from Moodle HQ.
+
+    moosh generate-module module_name
+
+Example: Create new module under mod/flashcard
+
+    moosh generate-module flashcard
+
+generate-qtype
+--------------
+
+Creates new question type based on the NEWMODULE template from https://github.com/jamiepratt/moodle-qtype_TEMPLATE.
+
+    moosh generate-qtype qtype_name
+
+Example: Create new module under question/type/myqtype
+
+    moosh generate-qtype myqtype
+
+info
+---------------
+
+Show information about plugin in current directory.
 
 Example 1:
 
-    moosh course-enrolleduser student 4
+    moosh info
 
+info-plugins
+---------------
 
-course-backup
--------------
+List all possible plugins in this version of Moodle and directory for each.
 
-Backup course with provided id.
+Example 1: Show all plugin types.
 
-Example 1: Backup course id=3 into default .mbz file in current directory:
+    moosh info-plugins
 
-    moosh course-backup 3
+maintenance-off
+---------------
 
-Example 2: Backup course id=3 and save it as /tmp/mybackup.mbz:
+Disable maintenance mode.
 
-    moosh course-backup -f /tmp/mybackup.mbz 3
+    moosh maintenance-off
 
-
-course-restore
+maintenance-on
 --------------
 
-Restore course from path/to/backup.mbz to category with a given id.
+Enable maintenance mode.
 
-Example 1: Restore backup.mbz into category with id=1
-
-    moosh course-restore backup.mbz 1
-
-
-course-reset
---------------
-
-Reset course by ID, using default settings.
-
-Example 1: Reset course with id=17
-
-    moosh course-reset 17
-
-course-config-set
------------------
-
-Update a field in the Moodle {course} table for a single course, or for all courses in a category.
-
-Example 1: set the shortname of a single course with id=42
-
-    moosh course-config-set course 42 shortname new_shortname
+    moosh maintenance-on
     
-Example 2: set the format to topics for all courses in a category with id=7
+A maintenance message can also be set:
 
-    moosh course-config-set category 7 format topics
+    moosh maintenace-on -m "Example message"
+
+module-config
+----------------
+
+Set or Get any plugin's settings values
+
+Example:
+
+    moosh module-config set dropbox dropbox_secret 123
+    moosh module-config get dropbox dropbox_secret ?
+
+module-manage
+----------------
+
+Show or Hide moudles, system wide (Will also delete, in the future)
+
+Example:
+
+    moosh module-manage hide scorm
+    moosh module-manage show scorm
+
+user-create
+-----------
+
+Create a new Moodle user. Provide one or more arguments to create one or more users.
+
+Example 1: create user "testuser" with the all default profile fields.
+
+    moosh user-create testuser
+
+Example 2: create user "testuser" with the all the optional values
+
+    moosh user-create --password pass --email me@example.com --digest 2 --city Szczecin --country PL --firstname "first name" --lastname name testuser
+
+Example 3: use bash/zsh expansion to create 10 users
+
+    moosh user-create testuser{1..10}
+
+The users will have unique email addresses based on the user name (testuser1, testuser2, testuser3...).
+
+Example 4: create a user with LDAP authentication
+
+    moosh user-create --auth ldap --password NONE  --email joe.blogs@domain.tld --city "Some City" --country IE --firstname "Joe" --lastname "Blogs" jblogs
+
+user-delete
+-----------
+
+Delete user(s) from Moodle. Provide one ore more usernames as arguments.
+
+Example 1: delete user testuser
+
+    moosh user-delete testuser
+
+Example 2: delete user testuser1 and user testuser2
+    
+    moosh user delete testuser1 testuser2
+
+user-getidbyname
+----------------
+
+Returns the userid of users. The parameter can be the first and last name of a user, or one or more username(s). (When using first and last name may be ambiguous. If more than one user with the same first and last name is found, it returns an error message: Multiple records found, only one record expected.)
+
+Example 1: Returns the userid of the user "test user"
+
+    moosh user-getidbyname --fname test --lname user
+
+Example 2: Returns the userid of the user with username "testuser"
+
+    moosh user-getidbyname testuser
+
+Example 3: Returns the userid of the users with username testuser{1..10}
+
+    moosh user-getidbyname testuser{1..5}
+
+user-list
+--------
+
+List user accounts. It accepts sql WHERE clause. If run without sql argument it will list first 100 users from database.
+
+Example 1: list user accounts with id number higher than 10 and sort them by email
+
+    moosh user-list --sort email "id > 10"
+
+Example 2: list users with first name bruce and username batman
+
+    moosh user-list "name = 'bruce' and username = 'batman'"
+
+user-mod
+--------
+
+Modify user(s) account.
+
+Example 1: change admin's user password and email
+
+    moosh user-mod --email my@email.com --password newpwd admin
+
+Example 2: change authentication method for users with ids 17,20,22
+
+    moosh user-mod -i --auth manual 17 20 22
+
+
+Example 3: use bash/zsh expansion to change password for users with ID between 100 and 200
+
+    moosh user-mod -i --password x {100..200}
+
+Example 4: update all users
+
+    moosh user-mod --email my@email.com --password newpwd --auth manual --all
+
+random-label
+------------
+
+Add a label with random text to random section of course id provided.
+
+Example 1: Add 5 labels to course id 17.
+
+    for i in {1..5}; do moosh random-label 17; done
+
+Example 2: Add label that will contain string " uniquetext " inside.
+
+    moosh random-label -i ' uniquetext ' 17
+
+report-concurrency
+------------------
+
+Get information about concurrent users online.
+
+Use: -f and -t with date in either YYYYMMDD or YYYY-MM-DD date. Add -p te specify period.
+
+Example 1: Get concurrent users between 20-01-2014 and 27-01-2014 with 30 minut periods.
+    moosh -f 20140120 -t 20140127 -p 30
 
 role-create
 -----------
@@ -414,7 +759,6 @@ Create new role, optionally provide description, archetype and name. Role id is 
 Example 1: Create role with short name "newstudentrole" a description, name an archetype
 
     moosh role-create -d "Role description" -a student -n "Role name" newstudentrole
-
 
 role-delete
 -----------
@@ -428,7 +772,6 @@ Example 1: Delete role "newstudentrole"
 Example 2: Delete role id 10.
 
     moosh role-delete -i 10
-
 
 role-update-capability
 ----------------------
@@ -458,404 +801,18 @@ Example 1: Allow "student" role to be set on block level
 Example 2: Prevent "manager" role to be set on course level
     moosh manager -course-off
 
-report-concurrency
-------------------
+sql-run
+-------
 
-Get information about concurrent users online.
+Run any custom SQL against bootstrapped Moodle instance DB. If query start with SELECT then matched rows will be displayed.
 
-Use: -f and -t with date in either YYYYMMDD or YYYY-MM-DD date. Add -p te specify period.
+Example 1: Set the country of all the users to Poland
 
-Example 1: Get concurrent users between 20-01-2014 and 27-01-2014 with 30 minut periods.
-    moosh -f 20140120 -t 20140127 -p 30
+    moosh sql-run "update {user} set country='PL'"
 
-config-plugins
---------------
+Example 2: Count the number of rows is log table
 
-Shows all plugins that have at least one entry in the config_plugins table. Optionally provide an argument to match plugin name.
-
-Example 1: Show all plugins from config_plugins table.
-
-    moosh config-plugins
-
-Example 2: Show all themes that have some settings.
-
-    moosh config-plugins theme_
-
-
-config-get
-----------
-
-Get config variable from config or config_plugins table. The syntax is based on get_config($plugin,$name) API function. Both arguments are optional.
-
-Example 1: Show all core config variables.
-
-    moosh config-get
-
-Example 2: Show all config variables for "user"
-
-    moosh config-get user
-
-Example 3: Show core setting "dirroot"
-
-    moosh config-get core dirroot
-
-
-config-set
-----------
-
-Set config variable. The syntax of the command is based on the set_config() Moodle API:
-
-    moosh config-set name value <plugin>
-
-If third argument (plugin) is not provided then the variable is set in the core Moodle configuration table.
-
-Example 1: Enable debug.
-
-    moosh config-set debug 32767
-
-Example 2: Set URL to logo for Sky High theme.
-
-    moosh config-set logo http://example.com/logo.png theme_sky_high
-
-maintenance-on
---------------
-
-Enable maintenance mode.
-
-    moosh maintenance-on
-    
-A maintenance message can also be set:
-
-    moosh maintenace-on -m "Example message"
-    
-maintenance-off
----------------
-
-Disable maintenance mode.
-
-    moosh maintenance-off
-
-
-file-list
----------
-
-Search and list files from mdl_files table. The argument should be a valid SQL WHERE statement. Interesting columns of possible search criterias are:
-contextid, component, filearea, itemid, filepath, filename, userid, filesize, mimetype, status, timecreated, timemodified.
-
-The output will contain some defaults or nearly all possible file information if "-a|--all" flag is provided. The meaning of the flags column is (in order):
-
- * mdl_files.status
- * lowercase letter "d" if entry is a dicrectory
- * "e" if external file
- * "i" if a valid image
- * "m" if time created and time modified differ
-
-With "-i" option only IDs are returned. This can be used when pipe-ing into other file-related commands.
-
-
-Example 1: Show all legacy files for a course, which context id is 15
-
-    moosh file-list "contextid=15 AND component='course' AND filearea='legacy'"
-
-Example 2: Display full information on file with ID 17
-
-    moosh file-list -a id=162
-
-
-file-delete
------------
-
-Delete Moodle files from DB and possibly move them to trash. File IDs can be provided as arguments or on the standard input (with moosh file-delete -s).
---flush option will remove the trashcan directory.
-
-Example 1: Remove files with IDs 10,20 and 30.
-
-    moosh file-delete 10 20 30
-
-Example 2: Remove all files with size greater than 100 bytes
-
-    moosh file-list -i 'filesize>1000' | moosh file-delete -s
-
-Example 3: Flush trashcan
-
-    moosh file-delete --flush
-
-
-file-path
----------
-
-Show full path in the filesystem to a Moodle file. Files can be identified by ID or hash (auto-detected) as arguments or on stdin (-s option).
-
-Example 1: Show path to a file with contenthash da39a3ee5e6b4b0d3255bfef95601890afd80709
-
-    moosh file-path da39a3ee5e6b4b0d3255bfef95601890afd80709
-
-Example 2: Show paths to files with ID bewteen 100 and 200
-
-    moosh file-list -i 'id>100 AND id<200' | moosh file-path -s
-
-Example 3: Like above but with no duplicates
-
-    moosh file-list -i 'id>100 AND id<200' | moosh file-path -s | sort | uniq
-
-
-clear-cache
------------
-
-The same as "purge all caches" page.
-
-    moosh clear-cache
-
-
-debug-on
---------
-
-Turns on full debug - all the options in debugging section of the settings plus enables theme designer mode.
-
-    moosh debug-on
-
-
-debug-off
----------
-
-Turns off full debug and disables theme designer mode.
-
-    moosh debug-off
-
-
-generate-module
----------------
-
-Creates new module based on the NEWMODULE template from Moodle HQ.
-
-    moosh generate-module module_name
-
-Example: Create new module under mod/flashcard
-
-    moosh generate-module flashcard
-
-
-generate-form
--------------
-
-Creates a new file with the form class code. Will display on the screen a boilerplate code to use the form. If the form
-file already exists, both form & form usage code will only be displayed on the standard output.
-moosh will try to figure out what plugin are you currently working on, based on your current working directory, and prefix
-the form accordingly.
-
-    moosh generate-form form_name
-
-Example: Assuming you are in mod/flashcard directory, the command will create edit_form.php containing mod_flashcard_edit_form
-class. It will also display a boilerplate code on how can you use the form.
-
-    moosh generate-form edit
-
-
-form-add
---------
-
-Adds an element to the form. If there is a form in your current working directory, that you have recently worked on with
-moosh (e.g. you have generated it with moosh generate-form), moosh will inject the code into that file. If moosh is not
- able to figure out where you would like the code added, it will display it on the standard output.
-
-    moosh form-add type name
-
-Example 1: Display list of all available element templates.
-
-    moosh form-add
-
-Example 2: Add (or display) the code for advanced checkbox element for Moodle form.
-
-    moosh form-add advcheckbox checkboxid
-
-
-generate-lang
--------------
-
-Scan files given as arguments or currently remembered file, extract language strings and add them to the lang file if
-necessary.
-
-    moosh generate-lang [file1] [file2] [file3]...
-
-Example 1: Extract lang strings from edit_form.php.
-
-    moosh generate-lang edit_form.php
-
-
-generate-qtype
---------------
-
-Creates new question type based on the NEWMODULE template from https://github.com/jamiepratt/moodle-qtype_TEMPLATE.
-
-    moosh generate-qtype qtype_name
-
-Example: Create new module under question/type/myqtype
-
-    moosh generate-qtype myqtype
-
-
-generate-gradereport
---------------
-
-Creates new grade report under grade/report based on the template from https://github.com/danielneis/moodle-gradereport_newgradereport.
-
-    moosh generate-gradereport report_name
-
-Example: Create new module under grade/report/beststudents
-
-    moosh generate-gradereport beststudents
-
-
-generate-filepicker
--------------------
-
-Shows how to code filepicker, based on https://github.com/AndyNormore/filemanager. Takes no arguments.
-
-    moosh generate-filepicker
-
-
-download-moodle
----------------
-
-Download latest Moodle version from the latest branch (default) or previous one if -v given.
-
-Example 1: Download latest Moodle.
-
-    moosh download-moodle
-
-Example 2: Download latest Moodle 2.3.
-
-        moosh download-moodle -v 23
-
-webservice-call
----------------
-
-Calls 
-
-Example: Get list of all courses enroled for a user
-
-    moosh webservice-call --token 4ac42118db3ee8d4b1ae78f2c1232afd --params userid=3 core_enrol_get_users_courses
-
-info
----------------
-
-Show information about plugin in current directory.
-
-Example 1:
-
-    moosh info
-
-
-info-plugins
----------------
-
-List all possible plugins in this version of Moodle and directory for each.
-
-Example 1: Show all plugin types.
-
-    moosh info-plugins
-
-
-block-add
----------------
-
-Add a new block instance to any system context (front page, category, course, module ...)
-Can add a block instance to a single course or to all courses in a category
-Can add a block to the category itself which will appear in all it's sub categories and courses
-(use "moosh block-add -h" for more help)
-
-Example:
-
-    moosh block-add category 2 calendar_month admin-course-category side-pre -1
-    moosh block-add -s category 2 calendar_month admin-course-category side-pre -1
-    moosh block-add categorycourses 2 calendar_month course-view-* side-post 0
-    moosh block-add course 32 calendar_month course-view-* side-post 0
-
-
-activity-add
-------------
-
-Adds an activity instance to the specified course. The activity is specified by it's component name
-without the plugin type prefix, so "forum", "assign" or "data" for example, and the course is specified
-by it's id.
-
-Example:
-
-    moosh activity-add assign 2
-    moosh activity-add --section 3 forum 4
-    moosh activity-add --name "General course forum" --section 2 forum 3
-    moosh activity-add --name "Easy assignent" --section 2 --idnumber "ASD123" assign 2
-
-random-label
-------------
-
-Add a label with random text to random section of course id provided.
-
-Example 1: Add 5 labels to course id 17.
-
-    for i in {1..5}; do moosh random-label 17; done
-
-Example 2: Add label that will contain string " uniquetext " inside.
-
-    moosh random-label -i ' uniquetext ' 17
-
-
-block-manage
-----------------
-
-Show or Hide blocks, system wide (Will also delete, in the future)
-
-Example:
-
-    moosh block-manage hide calendar
-    moosh block-manage show calendar
-
-
-module-manage
-----------------
-
-Show or Hide moudles, system wide (Will also delete, in the future)
-
-Example:
-
-    moosh module-manage hide scorm
-    moosh module-manage show scorm
-
-
-module-config
-----------------
-
-Set or Get any plugin's settings values
-
-Example:
-
-    moosh module-config set dropbox dropbox_secret 123
-    moosh module-config get dropbox dropbox_secret ?
-
-
-forum-newdiscussion
--------------------
-
-Adds a new discussion to an existing forum. You should provide a course id, a forum id
-and an user id in this order. If no name or message is specified it defaults to the data
-generator one.
-
-Example:
-
-    moosh forum-newdiscussion 3 7 2
-    moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 7 2
-
-
-chkdatadir
-----------
-
-Check if every file and directory in Moodle data is writeable for the user that runs the command.
-You usually want to run the check as the same user that runs web server.
-
-Example:
-
-    sudo -u www-data moosh chkdatadir
-
+    moosh sql-run "select count(*) from {log}"
 
 theme-info
 ----------
@@ -866,17 +823,14 @@ Example:
 
     moosh theme-info
 
-
-dev-versionbump
+webservice-call
 ---------------
 
-Increase the version in module's version.php.
+Calls 
 
-Example:
+Example: Get list of all courses enroled for a user
 
-    cd <moodle_root>/mod/<your_module>
-    moosh dev-versionbump
-
+    moosh webservice-call --token 4ac42118db3ee8d4b1ae78f2c1232afd --params userid=3 core_enrol_get_users_courses
 
 Contributing to moosh
 =====================
