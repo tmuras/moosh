@@ -54,6 +54,7 @@ function detect_plugin($dir)
         'tinymce' => array('dir' => 'lib/editor/tinymce/plugins/moodlemedia'),
         'mod' => array('dir' => 'mod'),
         'block' => array('dir' => 'blocks'),
+        'local' => array('dir' => 'local'),
     );
 
     foreach ($templates as $key => $value) {
@@ -175,7 +176,10 @@ function moosh_moodle_version($topdir, $default = 23)
             if (strstr($line, "release = '1.9.")) {
                 return '19';
             }
-            if (strstr($line, "release  = '2.2.")) {
+            if (strpos($line, "release  = '2.1.") || strpos($line, "release  = '2.1 ")) {
+                return '21';
+            }
+            if (strpos($line, "release  = '2.2.") || strpos($line, "release  = '2.2 ")) {
                 return '22';
             }
             $matches = array();

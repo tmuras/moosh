@@ -6,14 +6,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle23\{{ category|capitalize }};
+namespace Moosh\Command\Moodle27\Info;
 use Moosh\MooshCommand;
 
-class {{ category|capitalize }}{{ command|capitalize }} extends MooshCommand
+class EventList extends MooshCommand
 {
     public function __construct()
     {
-        parent::__construct('{{ command }}', '{{ category }}');
+        parent::__construct('list', 'event');
 
         //$this->addArgument('name');
 
@@ -24,6 +24,7 @@ class {{ category|capitalize }}{{ command|capitalize }} extends MooshCommand
 
     public function execute()
     {
+        global $CFG;
         //some variables you may want to use
         //$this->cwd - the directory where moosh command was executed
         //$this->mooshDir - moosh installation directory
@@ -39,5 +40,13 @@ class {{ category|capitalize }}{{ command|capitalize }} extends MooshCommand
             echo "Say what you're doing now";
         }
         */
+        //load cache file manually as there seems to be no way to get it using Moodle API
+        $cachefile = "$CFG->cachedir/core_component.php";
+        include($cachefile);
+        foreach($cache['classmap'] as $k=>$class) {
+            if(strstr($k,'\\event\\')) {
+                echo $k . "\n";
+            }
+        }
     }
 }

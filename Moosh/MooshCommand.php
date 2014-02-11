@@ -325,7 +325,7 @@ class MooshCommand
      */
     public function bootstrapLevel()
     {
-        return self::BOOTSTRAP_FULL;
+        return self::$BOOTSTRAP_FULL;
     }
 
     /**

@@ -43,7 +43,7 @@ timemodified
 
         $fs = get_file_storage();
 
-        $rs = $DB->get_recordset_sql ("SELECT id FROM {files} WHERE ". $this->arguments[0]);
+        $rs = $DB->get_recordset_sql("SELECT id FROM {files} WHERE ". $this->arguments[0]);
         foreach($rs as $file) {
             if($this->expandedOptions['id']) {
                 echo $file->id . "\n";

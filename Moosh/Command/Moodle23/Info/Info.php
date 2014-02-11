@@ -20,5 +20,6 @@ class Info extends MooshCommand
     {
         echo "Plugin type: ".$this->pluginInfo['type'] . "\n";
         echo "Plugin name: ".$this->pluginInfo['name'] . "\n";
+        echo "Plugin directory: ".$this->pluginInfo['dir'] . '/' . $this->pluginInfo['name'] . "\n";
     }
 }

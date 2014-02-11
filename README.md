@@ -10,7 +10,7 @@ Here is for example how you can create 5 Moodle user accounts with moosh:
     cd /moodle/root/installation
     moosh user-create user_{1..5}
 
-If you don't know the exact name of the command you want to run but know the part of it, run moosh with the sub-string:
+If you don't know the exact name of the command you want to run but know the part of it, run moosh with the substring:
 
     moosh user
 
@@ -35,7 +35,7 @@ Installation
 Installation from Ubuntu package
 --------------------------------
 
-     sudo add-apt-repository ppa:zabuch/ppa
+     sudo apt-add-repository 'deb http://ppa.launchpad.net/zabuch/ppa/ubuntu precise main'
      sudo apt-get update
      sudo apt-get install moosh
 
@@ -54,8 +54,8 @@ Install composer - see http://getcomposer.org/download .
     cd moosh
     ./composer.phar update
 
-Common steps
-------------
+Common steps for Moodle package and git
+---------------------------------------
 
 Link to a location that is set in your $PATH, eg:
 
@@ -74,6 +74,16 @@ For example, to create your custom command dev-mytest that works with any Moodle
 
     ~/.moosh/Moosh/Command/Generic/Dev/MyTest.php
 
+xdotool integration
+===================
+
+You can automate some of the manual tasks (like refreshing browser page after adding a form) by using xdotool. First, install xdotool:
+
+    apt-get install xdotool
+
+Then go to default_options.php change xdotool flag to true and choose your preferred browser. Commands that currently support xdotool:
+
+    form-add
 
 Commands
 ========
@@ -445,9 +455,18 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.
 Example 1: Allow "student" role to be set on block level
     moosh student -block-on
 
-Example 1: Prevent "manager" role to be set on course level
+Example 2: Prevent "manager" role to be set on course level
     moosh manager -course-off
 
+report-concurrency
+------------------
+
+Get information about concurrent users online.
+
+Use: -f and -t with date in either YYYYMMDD or YYYY-MM-DD date. Add -p te specify period.
+
+Example 1: Get concurrent users between 20-01-2014 and 27-01-2014 with 30 minut periods.
+    moosh -f 20140120 -t 20140127 -p 30
 
 config-plugins
 --------------
@@ -708,6 +727,14 @@ Example 2: Download latest Moodle 2.3.
 
         moosh download-moodle -v 23
 
+webservice-call
+---------------
+
+Calls 
+
+Example: Get list of all courses enroled for a user
+
+    moosh webservice-call --token 4ac42118db3ee8d4b1ae78f2c1232afd --params userid=3 core_enrol_get_users_courses
 
 info
 ---------------
@@ -838,6 +865,17 @@ Show what themes are really used on Moodle site.
 Example:
 
     moosh theme-info
+
+
+dev-versionbump
+---------------
+
+Increase the version in module's version.php.
+
+Example:
+
+    cd <moodle_root>/mod/<your_module>
+    moosh dev-versionbump
 
 
 Contributing to moosh
