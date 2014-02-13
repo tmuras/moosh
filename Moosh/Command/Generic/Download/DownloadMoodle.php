@@ -33,10 +33,6 @@ class DownloadMoodle extends MooshCommand
         $url = str_replace('<major>',$version,self::downloadUrl);
 
         //rename lang/en/newmodule.php
-        $ret = null;
-        system("wget --continue --timestamping '$url'",$ret);
-        if ($ret) {
-            cli_error("Fetching file failed");
-        }
+        run_external_command("wget --continue --timestamping '$url'", "Fetching file failed");
     }
 }

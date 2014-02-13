@@ -322,3 +322,13 @@ function get_data_generator()
     return new testing_data_generator();
 }
 
+function run_external_command($command, $error)
+{
+    exec($command, $output, $ret);
+
+    if ($ret != 0) {
+        cli_error($error);
+    }
+    
+    return $output;
+}
