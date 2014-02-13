@@ -2,7 +2,7 @@
 source functions.sh
 
 install_db
-#install_data
+install_data
 cd $MOODLEDIR
 
 output=$(moosh data-stats | head -1)
