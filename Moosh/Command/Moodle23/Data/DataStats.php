@@ -44,7 +44,7 @@ class DataStats extends MooshCommand
                             'files total' => $all_files->total, 
                             'distinct files total' => $distinct_contenthash->total);
 
-            return json_encode($to_encode);
+            echo json_encode($to_encode);
         } else {
             echo $matches[0] . "\n";
             echo $dir_matches[0] . "\n";
