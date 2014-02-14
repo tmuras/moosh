@@ -732,6 +732,7 @@ Get information about concurrent users online.
 Use: -f and -t with date in either YYYYMMDD or YYYY-MM-DD date. Add -p te specify period.
 
 Example 1: Get concurrent users between 20-01-2014 and 27-01-2014 with 30 minut periods.
+
     moosh report-concurrency -f 20140120 -t 20140127 -p 30
 
 role-create
