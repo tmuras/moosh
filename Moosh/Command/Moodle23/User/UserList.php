@@ -34,25 +34,25 @@ class UserList extends MooshCommand
         $options = $this->expandedOptions;
 
         if (count($this->arguments) == 0) {
-            $this->arguments[0] = "id > 1 and id < 102"; // if user didn't provide any arguments return first 100 users
-        }
+            $users = ("SELECT * FROM {user} LIMIT 0, 100");
+        } else {
+            $users = ("SELECT * FROM {user} WHERE " . $this->arguments[0]);
 
-        $users = ("SELECT * FROM {user} WHERE " . $this->arguments[0]);
+            $sort = "id";
+            if ($options['sort'] == 'id' || $options['sort'] == 'username' || $options['sort'] == 'email' || $options['sort'] == 'idnumber') {
+                $sort = $options['sort'];
+            }
 
-        $sort = "id";
-        if ($options['sort'] == 'id' || $options['sort'] == 'username' || $options['sort'] == 'email' || $options['sort'] == 'idnumber') {
-            $sort = $options['sort'];
-        }
+            $dir = 'ASC';
+            if ($options['descending']) {
+                $dir = 'DESC';
+            }
 
-        $dir = 'ASC';
-        if ($options['descending']) {
-            $dir = 'DESC';
-        }
-
-        $users .= " ORDER BY $sort $dir";
- 
-        if ($options['limit'] && preg_match('/^\d+$/', $options['limit'])) {
-            $users .= " LIMIT " . $options['limit'];
+            $users .= " ORDER BY $sort $dir";
+     
+            if ($options['limit'] && preg_match('/^\d+$/', $options['limit'])) {
+                $users .= " LIMIT " . $options['limit'];
+            }
         }
 
         $users = $DB->get_records_sql($users);
