@@ -675,19 +675,7 @@ Example 2: delete user testuser1 and user testuser2
 user-getidbyname
 ----------------
 
-Returns the userid of users. The parameter can be the first and last name of a user, or one or more username(s). (When using first and last name may be ambiguous. If more than one user with the same first and last name is found, it returns an error message: Multiple records found, only one record expected.)
-
-Example 1: Returns the userid of the user "test user"
-
-    moosh user-getidbyname --fname test --lname user
-
-Example 2: Returns the userid of the user with username "testuser"
-
-    moosh user-getidbyname testuser
-
-Example 3: Returns the userid of the users with username testuser{1..10}
-
-    moosh user-getidbyname testuser{1..5}
+This command has been deprecated. Use user-list instead.
 
 user-list
 --------
