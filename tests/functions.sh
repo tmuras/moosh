@@ -10,12 +10,12 @@ function install_db {
 }
 
 function install_data {
-  DIR_PATH=$(readlink -f "${MOOSH_DATA_DIR}")
+  DIR_PATH=$(readlink -f "${MOODLEDATA}")
 
   if [[ -d "${DIR_PATH}" ]] ; then
-    rm -rf $MOOSH_DATA_DIR/*
+    rm -rf $MOODLEDATA/*
     tar xjf moodledata.tar.bz2
-    mv $PWD/moodledata/* $MOOSH_DATA_DIR
+    mv $PWD/moodledata/* $MOODLEDATA
   else
     exit 1
   fi
