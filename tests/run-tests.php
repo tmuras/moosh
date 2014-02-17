@@ -7,14 +7,6 @@
  */
 require_once '../includes/functions.php'; // everything is hardcoded for now
 
-exec("cd /var/www && moosh", $output);
-
-$commands = array();
-
-foreach ($output as $line) {
-	preg_match("/(?<=\t)(.*)/", $line, $commands[]);
-}
-
 $tests = '---
 title: CI
 layout: default
@@ -38,29 +30,13 @@ CI
 	</thead>
 	<tbody>';
 
-foreach ($commands as $command) {
-
-	if ($command == null) {
-		continue;
-	}
-
-	exec("./$command[0].sh", $output, $ret);
-
-	if ($ret == 0) {
-		$tests .= "<tr>
-					<td>$command[0]</td>
-					<td><i class=\"fa fa-check\"></i></td>
-				</tr>\n";
-	} else {
-		$tests .= "<tr>
-					<td>$command[0]</td>
-					<td><i class=\"fa fa-times\"></i></td>
-				</tr>\n";
-	}
-}
+$tests .= run_tests("moodle25");
+$tests .= run_tests("moodle26");
 
 $tests .= "	</tbody>
 	</table>
 	</div>";
 
-file_put_contents("../../jekyll/ci/index.md", $tests);
+var_dump($tests);
+
+//file_put_contents("../../jekyll/ci/index.md", $tests);
