@@ -81,7 +81,12 @@ You can automate some of the manual tasks (like refreshing browser page after ad
 
     apt-get install xdotool
 
-Then go to default_options.php change xdotool flag to true and choose your preferred browser. Commands that currently support xdotool:
+Then go to ~/.mooshrc.php and add these flags: 
+
+    $defaultOptions['global']['xdotool'] = false;
+    $defaultOptions['global']['browser_string'] = 'Mozilla Firefox';
+
+Change Mozilla Firefox to your preferred browser and you're good to go. Commands that currently support xdotool:
 
     form-add
 
