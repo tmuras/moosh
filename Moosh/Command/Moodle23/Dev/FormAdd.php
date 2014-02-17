@@ -51,11 +51,11 @@ class FormAdd extends MooshCommand
             if ($this->defaults['global']['xdotool']) {
                 $browser = $this->defaults['global']['browser_string'];
 
-                $output = run_external_command("xdotool getwindowfocus", "Couldn't find active window");
-                $active = $output[0];
-                run_external_command("xdotool windowactivate `xdotool search --name '$browser'` ", "Couldn't find $browser");
+                $active_window = run_external_command("xdotool getwindowfocus", "Couldn't find active window");
+                $browser_window  = run_external_command("xdotool search --name '$browser'", "Couldn't find $browser");
+                run_external_command("xdotool windowactivate $browser_window[0] ", "Couldn't activate window: $browser");
                 run_external_command("xdotool key F5", "Couldn't refresh browser");
-                run_external_command("xdotool windowactivate $active", "Couldn't find window: $active");
+                run_external_command("xdotool windowactivate $active_window[0]", "Couldn't activate window: $active_window[0]");
             }
         } else {
             echo $content;
