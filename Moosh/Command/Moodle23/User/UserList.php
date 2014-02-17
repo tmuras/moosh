@@ -20,7 +20,7 @@ class UserList extends MooshCommand
 
         $this->addOption('n|limit:', 'display max n users');
         $this->addOption('i|id', 'display id only column');
-        $this->addOption('s|sort:', 'sort by (id, username, email or idnumber)');
+        $this->addOption('s|sort:', 'sort by (username, email or idnumber)');
         $this->addOption('d|descending', 'sort in descending order');
 
         $this->addArgument('sql expression');
@@ -32,14 +32,17 @@ class UserList extends MooshCommand
         global $DB;
 
         $options = $this->expandedOptions;
+        $limit_from = 0;
 
         if (count($this->arguments) == 0) {
-            $users = ("SELECT * FROM {user} LIMIT 0, 100");
+            $users = ("SELECT * FROM {user}");
+            $limit_to = 100;
         } else {
             $users = ("SELECT * FROM {user} WHERE " . $this->arguments[0]);
+            $limit_to = 0;
 
             $sort = "id";
-            if ($options['sort'] == 'id' || $options['sort'] == 'username' || $options['sort'] == 'email' || $options['sort'] == 'idnumber') {
+            if ($options['sort'] == 'username' || $options['sort'] == 'email' || $options['sort'] == 'idnumber') {
                 $sort = $options['sort'];
             }
 
@@ -51,11 +54,11 @@ class UserList extends MooshCommand
             $users .= " ORDER BY $sort $dir";
      
             if ($options['limit'] && preg_match('/^\d+$/', $options['limit'])) {
-                $users .= " LIMIT " . $options['limit'];
+                $limit_to = $options['limit'];
             }
         }
 
-        $users = $DB->get_records_sql($users);
+        $users = $DB->get_records_sql($users, $params=null, $limit_from, $limit_to);
 
         foreach ($users as $user) {
             if ($options['id']) {
