@@ -393,6 +393,14 @@ Example 1:
 
     moosh course-unenrol --role editingteacher --cohort 1 144
 
+data-stats
+----------
+
+Provides information on size of dataroot directory, dataroot/filedir subdirectory and total size of non-external files in moodle. Outpus data in json format when run using --json option.
+
+    moosh data-stats
+
+
 debug-off
 ---------
 
