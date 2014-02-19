@@ -46,7 +46,7 @@ class UserList extends MooshCommand
                 if ($options['sort'] == 'username' || $options['sort'] == 'email' || $options['sort'] == 'idnumber') {
                     $sort = $options['sort'];
                 } else {
-                    echo "Invalid sorting option. Use 'username 'email' or 'idnumber'.\n";
+                    echo "Invalid sorting option. Use 'username', 'email' or 'idnumber'.\n";
                 }
             }
 
