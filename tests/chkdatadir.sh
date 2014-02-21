@@ -1,8 +1,8 @@
 #!/bin/bash
 source functions.sh
 
-#install_db
-#install_data
+install_db
+install_data
 cd $MOODLEDIR
 
 if moosh chkdatadir | grep "Checked dir" ; then
