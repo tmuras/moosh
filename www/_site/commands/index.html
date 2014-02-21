@@ -378,6 +378,13 @@ Use -i for providing username IDs.</p>
 <pre><code>moosh course-unenrol --role editingteacher --cohort 1 144
 </code></pre>
 
+<h2><a name="data-stats">data-stats</a></h2>
+
+<p>Provides information on size of dataroot directory, dataroot/filedir subdirectory and total size of non-external files in moodle. Outpus data in json format when run using --json option.</p>
+
+<pre><code>moosh data-stats
+</code></pre>
+
 <h2><a name="debug-off">debug-off</a></h2>
 
 <p>Turns off full debug and disables theme designer mode.</p>
@@ -685,22 +692,7 @@ moosh module-manage show scorm
 
 <h2><a name="user-getidbyname">user-getidbyname</a></h2>
 
-<p>Returns the userid of users. The parameter can be the first and last name of a user, or one or more username(s). (When using first and last name may be ambiguous. If more than one user with the same first and last name is found, it returns an error message: Multiple records found, only one record expected.)</p>
-
-<p>Example 1: Returns the userid of the user "test user"</p>
-
-<pre><code>moosh user-getidbyname --fname test --lname user
-</code></pre>
-
-<p>Example 2: Returns the userid of the user with username "testuser"</p>
-
-<pre><code>moosh user-getidbyname testuser
-</code></pre>
-
-<p>Example 3: Returns the userid of the users with username testuser{1..10}</p>
-
-<pre><code>moosh user-getidbyname testuser{1..5}
-</code></pre>
+<p>This command has been deprecated. Use user-list instead.</p>
 
 <h2><a name="user-list">user-list</a></h2>
 
@@ -890,6 +882,7 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 <li>
 <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">D - I</a>
 <ul id="collapseThree" class="panel-collapse collapse">
+<li><a href="#data-stats">data-stats</a></li>
 <li><a href="#debug-off">debug-off</a></li>
 <li><a href="#debug-on">debug-on</a></li>
 <li><a href="#dev-versionbump">dev-versionbump</a></li>

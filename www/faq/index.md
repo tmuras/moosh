@@ -5,4 +5,4 @@ layout: default
 
 FAQ
 ========
-lorem ipsum etc.
+No questions asked yet, you can be the first!
