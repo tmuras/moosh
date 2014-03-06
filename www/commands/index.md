@@ -630,7 +630,7 @@ Example 2: change authentication method for users with ids 17,20,22
 
 Example 3: use bash/zsh expansion to change password for users with ID between 100 and 200
 
-    moosh user-mod -i --password x {100..200}
+    moosh user-mod -i --password newpwd {100..200}
 
 Example 4: update all users
 
