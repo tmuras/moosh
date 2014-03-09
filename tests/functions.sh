@@ -8,6 +8,7 @@ fi
 
 if [[ ! $(echo select 1 | mysql -u $DBUSER -p$DBPASSWORD $DBNAME) ]]; then
     echo Could not connect to the database, check \$DBUSER, \$DBNAME and \$DBPASSWORD
+    exit 1
 fi
 
 if [ -z "${MOODLEDIR}" ]; then
@@ -25,7 +26,7 @@ function install_db {
   bzip2 -dk moodle.sql.bz2
   echo "DROP DATABASE $DBNAME" | mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME"
   echo "CREATE DATABASE $DBNAME" | mysql -u "$DBUSER" -p"$DBPASSWORD"
-  mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" < "$DBNAME".sql
+  mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" < moodle.sql
 }
 
 function install_data {
@@ -39,4 +40,3 @@ function install_data {
     exit 1
   fi
 }
-
