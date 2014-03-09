@@ -103,12 +103,12 @@ Example:
 
     sudo -u www-data moosh chkdatadir
 
-<a name="clear-cache">clear-cache</a>
+<a name="cache-clear">cache-clear</a>
 -----------
 
 The same as "purge all caches" page.
 
-    moosh clear-cache
+    moosh cache-clear
 
 <a name="cohort-create">cohort-create</a>
 -------------

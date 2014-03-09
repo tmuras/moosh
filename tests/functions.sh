@@ -20,8 +20,6 @@ if [ -z "${MOODLEDATA}" ]; then
     exit 1
 fi
 
-
-exit 0
 function install_db {
   cd ../data
   bzip2 -dk moodle.sql.bz2
@@ -41,3 +39,4 @@ function install_data {
     exit 1
   fi
 }
+
