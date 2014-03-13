@@ -368,6 +368,11 @@ Example 3: Flush trashcan
 
     moosh file-delete --flush
 
+Example 4: Remove all automated backups and reclaim the space
+
+    moosh file-list -i 'component="backup" AND filearea="automated"' | moosh file-delete -s
+    moosh file-delete --flush
+
 <a name="file-list">file-list</a>
 ---------
 
