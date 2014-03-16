@@ -1,6 +1,8 @@
 #!/bin/bash
 source config.sh
 
+set -e #fail if anything goes wrong
+
 if [ -z "${DBNAME}" ]; then
     echo "Moodle DB is not set up in \$DBNAME"
     exit 1
@@ -23,7 +25,7 @@ fi
 
 function install_db {
   cd ../data
-  bzip2 -dk moodle.sql.bz2
+  bzip2 -dk moodle.sql.bz2 || true #if bzip2 fails than most likely because it's already unpacked
   echo "DROP DATABASE $DBNAME" | mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME"
   echo "CREATE DATABASE $DBNAME" | mysql -u "$DBUSER" -p"$DBPASSWORD"
   mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" < moodle.sql
