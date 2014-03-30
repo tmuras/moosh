@@ -6,7 +6,8 @@ install_data
 cd $MOODLEDIR
 
 moosh user-mod --email newemail@example.com testuser
-if moosh user-list | grep newemail@example.com; then
+if mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" -e \
+  "SELECT * FROM mdl_user WHERE email = 'newemail@example.com'"; then
   exit 0
 else
   exit 1

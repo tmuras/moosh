@@ -5,8 +5,8 @@ install_db
 install_data
 cd $MOODLEDIR
 
-moosh course-backup -f ${MOOSH_TEST_DIR}/coursebackup.mbz 2
-if moosh course-restore coursebackup.mbz 1; then
+moosh course-backup -f ${MOODLEDIR}/coursebackup.mbz 2
+if ls | grep coursebackup.mbz; then
   rm coursebackup.mbz
   exit 0
 else
