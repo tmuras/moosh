@@ -1,8 +1,8 @@
-#!/bin/bash -x
+#!/bin/bash
 source functions.sh
 
-#install_db
-#install_data
+install_db
+install_data
 
 cd $MOODLEDIR
 
