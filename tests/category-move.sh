@@ -5,9 +5,10 @@ install_db
 install_data
 cd $MOODLEDIR
 
-moosh user-mod --email newemail@example.com testuser
+moosh category-move 1 2 
 if mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" -e \
-  "SELECT * FROM mdl_user WHERE email = 'newemail@example.com'"; then
+    "SELECT * FROM mdl_course_categories WHERE depth = 2"\
+    | grep /2/1; then
   exit 0
 else
   exit 1

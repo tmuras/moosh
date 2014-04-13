@@ -30,20 +30,15 @@ class UserDelete extends MooshCommand
             
             try {
                  $user = $DB->get_record('user', array('username' => $argument));
-               
             } catch (Exception $e) {
                 print get_class($e)." thrown within the exception handler. Message: ".$e->getMessage()." on line ".$e->getLine();
-                
             }
            
-            if ($user instanceof \stdClass){
+            if ($user instanceof \stdClass) {
                 user_delete_user($user);
-            }else{
+            } else {
                 print "User not found\n";
             }
-            
-             
          }
-         
     }
 }

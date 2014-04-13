@@ -5,9 +5,10 @@ install_db
 install_data
 cd $MOODLEDIR
 
-moosh user-mod --email newemail@example.com testuser
+moosh course-enableselfenrol 2
 if mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" -e \
-  "SELECT * FROM mdl_user WHERE email = 'newemail@example.com'"; then
+    "SELECT status FROM mdl_enrol WHERE enrol = 'self' AND courseid = 2"\
+    | grep 0; then
   exit 0
 else
   exit 1
