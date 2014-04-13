@@ -23,12 +23,22 @@ if [ -z "${MOODLEDATA}" ]; then
     exit 1
 fi
 
+if [ -z "${SOURCEDATA}" ]; then
+    echo "Moodle source data directory \$SOURCEDATA is not set"
+    exit 1
+fi
+
+if [ -z "${SOURCESQL}" ]; then
+    echo "Moodle source data directory \$SOURCESQL is not set"
+    exit 1
+fi
+
 function install_db {
   cd ../data
-  bzip2 -dk moodle.sql.bz2 || true #if bzip2 fails than most likely because it's already unpacked
+  bzip2 -dk $SOURCESQL.sql.bz2 || true #if bzip2 fails than most likely because it's already unpacked
   echo "DROP DATABASE $DBNAME" | mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME"
   echo "CREATE DATABASE $DBNAME" | mysql -u "$DBUSER" -p"$DBPASSWORD"
-  mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" < moodle.sql
+  mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" < $SOURCESQL.sql
 }
 
 function install_data {
@@ -36,8 +46,8 @@ function install_data {
 
   if [[ -d "${DIR_PATH}" ]] ; then
     rm -rf $MOODLEDATA/*
-    tar xjf moodledata.tar.bz2
-    mv $PWD/moodledata/* $MOODLEDATA
+    tar xjf $SOURCEDATA.tar.bz2
+    mv $PWD/$SOURCEDATA/* $MOODLEDATA
   else
     exit 1
   fi

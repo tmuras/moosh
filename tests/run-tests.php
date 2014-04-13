@@ -8,7 +8,7 @@
 require_once '../includes/functions.php'; // everything is hardcoded for now
 
 function get_commands_list($moodle_ver) {
-    run_external_command("cp $moodle_ver.sh config.sh", "Couldn't copy tests config file");
+    run_external_command("cp config$moodle_ver.sh config.sh", "Couldn't copy tests config file");
     $file = file_get_contents("config.sh");
 
     preg_match("/(?<=MOODLEDIR=)(.*)/", $file, $moodledir);
@@ -17,12 +17,14 @@ function get_commands_list($moodle_ver) {
     $commands_list = array();
 
     foreach ($output as $line) {
-        preg_match("/(?<=\t)(.*)/", $line, $commands_list[]);
+        if(preg_match("/(?<=\t)(.*)/", $line, $result)) {
+            $commands_list[] = $result[0];
+        }
     }
     return $commands_list;
-};
+}
 
-function run_tests(Array $commands) {
+function run_tests(array $commands) {
 
 	$results = array();
     foreach ($commands as $command) {
@@ -30,12 +32,32 @@ function run_tests(Array $commands) {
         if ($command == null) { // skip empty lines
             continue;
         }
-        exec("./$command[0].sh", $output, $ret);     
+
+        //check if test exists for command
+        $testfile = $command .'.sh';
+
+        if(!file_exists($testfile)) {
+            echo "No test for ". $command. "\n";
+            $results[$command] = "unknown";
+            continue;
+        }
+
+        $output = NULL;
+        echo "Executing '$testfile' in ". getcwd() ."\n";
+        exec("./$testfile", $output, $ret);
+        echo "Return: $ret\n";
+
+        if($ret == 127) {
+            die("File not found? That should not happen.\n");
+        }
 
         if ($ret == 0) {
-            $results[$command[0]] = "pass";
+            $results[$command] = "pass";
         } else {
-            $results[$command[0]] = "fail";
+            $results[$command] = "fail";
+            var_dump($output);
+            echo "\n";
+            die();
         }
     }
     return $results;
@@ -47,8 +69,8 @@ layout: default
 ---
 
 CI
-========
-<div class="table-responsive">
+========';
+$out = '<div class="table-responsive">
 	<table class="table table-striped table-bordered table-hover">
 	<thead>
 	  <tr>
@@ -63,22 +85,36 @@ CI
 	</thead>
 	<tbody>';
 
-$all_commands = get_commands_list("moodle26"); // this is ugly, disregard
-$moodle26 = run_tests(get_commands_list("moodle26"));
-$moodle25 = run_tests(get_commands_list("moodle25"));
+$all_commands = get_commands_list("26"); // this is ugly, disregard
+$support_versions = array('19','21','22','23','24','25','26');
 
-$moodle_ver = array($moodle26,
-	$moodle25);
+$results = array();
+foreach($support_versions as $version) {
+    $results[$version] = array();
+    foreach($all_commands as $command) {
+        $results[$version][$command] = 'not implemented';
+    }
+}
+
+$moodle26 = run_tests(get_commands_list("26"));
+foreach($moodle26 as $k=>$v) {
+    $results['26'][$k] = $v;
+}
+
+$moodle25 = run_tests(get_commands_list("25"));
+foreach($moodle25 as $k=>$v) {
+    $results['25'][$k] = $v;
+}
+
 
 foreach ($all_commands as $command) {
 
-	if ($command == null) {
-        continue;
-    }
+	$out .= "<tr><td>$command</td>";
 
-	$table .= "<tr><td>$command[0]</td>";
-
-	foreach ($moodle_ver as $moodle) {
+	foreach ($support_versions as $moodle) {
+        //if($results[$moodle][])
+        $out .=  '<td>' .$results[$moodle][$command] .'</td>';
+            /*
 		if (array_key_exists($command[0], $moodle)) {
 			$result = $moodle[$command[0]];
 
@@ -90,12 +126,13 @@ foreach ($all_commands as $command) {
 		} else {
 			$table .= "<td></td>";
 		}
+            */
 	}
-	$table .= "</tr>";
+    $out .= '</tr>';
 }
 
-$table .= "	</tbody>
+$out .= "	</tbody>
 	</table>
 	</div>";
 
-file_put_contents("../../jekyll/ci/index.md", $table);
+file_put_contents("out.txt", $out);

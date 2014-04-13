@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-if moosh sql-run "SELECT * FROM {user} WHERE id=5" | grep "test@example.com"; then
+if moosh sql-run "SELECT * FROM {user} WHERE username='mooshtest'" | grep "test@example.com"; then
   exit 0
 else
   exit 1

@@ -5,8 +5,10 @@ install_db
 install_data
 cd $MOODLEDIR
 
-moosh course-backup -f ${MOODLEDIR}/coursebackup.mbz 2
-if ls | grep coursebackup.mbz; then
+export BACKUP=/tmp/mooshcoursebackup.mbz
+rm -f $BACKUP
+moosh course-backup -f $BACKUP 2
+if ls $BACKUP; then
   rm coursebackup.mbz
   exit 0
 else
