@@ -27,48 +27,19 @@ class GenerateBlock extends MooshCommand
             cli_problem("Not creating new block " . $this->arguments[0]);
             exit(1);
         }
-        $ret = null;
-        system("cp -r '{$this->mooshDir}/vendor/danielneis/moodle-block_newblock' '$blockPath'", $ret);
-        if ($ret) {
-            cli_error("Copying from module template failed");
-        }
+        run_external_command("cp -r '{$this->mooshDir}/vendor/danielneis/moodle-block_newblock' '$blockPath'", "Copying from module template failed");
 
         if (file_exists("$blockPath/.git")) {
-            $ret = null;
-            system("rm --interactive=never -r '$blockPath/.git'", $ret);
-            if ($ret) {
-                cli_error("Removing .git failed");
-            }
+            run_external_command("rm --interactive=never -r '$blockPath/.git'", "Removing .git failed");
         }
 
         //replace newblock with $this->arguments[0]
-        $ret = null;
-        system("find '$blockPath' -type f -exec sed 's/newblock/{$this->arguments[0]}/g' -i {} \;", $ret);
-        if ($ret) {
-            cli_error("sed command failed");
-        }
-
-        //replace newblock with $this->arguments[0]
-        $ret = null;
-        system("find '$blockPath' -type f -exec sed 's/Newblock/{$this->arguments[0]}/g' -i {} \;", $ret);
-        if ($ret) {
-            cli_error("sed command failed");
-        }
-
+        run_external_command("find '$blockPath' -type f -exec sed 's/newblock/{$this->arguments[0]}/g' -i {} \;", "sed command failed");
 
         //rename lang/en/block_newblock.php
-        $ret = null;
-        system("mv '$blockPath/lang/en/block_newblock.php' '$blockPath/lang/en/block_{$this->arguments[0]}.php'", $ret);
-        if ($ret) {
-            cli_error("Renaming lang file failed");
-        }
+        run_external_command("mv '$blockPath/lang/en/block_newblock.php' '$blockPath/lang/en/block_{$this->arguments[0]}.php'", "Renaming lang file failed");
 
         //rename block_newblock.php
-        $ret = null;
-        system("mv '$blockPath/block_newblock.php' '$blockPath/block_{$this->arguments[0]}.php'", $ret);
-        if ($ret) {
-            cli_error("Renaming block_newblock.php failed");
-        }
-
+        run_external_command("mv '$blockPath/block_newblock.php' '$blockPath/block_{$this->arguments[0]}.php'", "Renaming block_newblock.php failed");
     }
 }

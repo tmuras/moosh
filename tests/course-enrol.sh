@@ -3,7 +3,7 @@ source functions.sh
 
 install_db
 install_data
-cd $MOOSH_TEST_DIR
+cd $MOODLEDIR
 
 moosh course-enrol 2 testuser
 if [ $(moosh sql-run "SELECT * FROM {enrol} LEFT JOIN {user_enrolments}\

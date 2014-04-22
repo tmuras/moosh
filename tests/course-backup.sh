@@ -3,11 +3,13 @@ source functions.sh
 
 install_db
 install_data
-cd $MOOSH_TEST_DIR
+cd $MOODLEDIR
 
-moosh course-backup -f ${MOOSH_TEST_DIR}/coursebackup.mbz 2
-if moosh course-restore coursebackup.mbz 1; then
-  rm coursebackup.mbz
+export BACKUP=/tmp/mooshcoursebackup.mbz
+rm -f $BACKUP
+moosh course-backup -f $BACKUP 2
+if ls $BACKUP; then
+  rm $BACKUP
   exit 0
 else
   exit 1

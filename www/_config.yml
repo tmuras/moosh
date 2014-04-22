@@ -1,0 +1,8 @@
+name: "moosh"
+description: "command line utility tool for moodle"
+
+url: "http://localhost:4000"
+
+markdown: rdiscount
+permalink: pretty
+pygments: true

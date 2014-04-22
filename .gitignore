@@ -4,3 +4,4 @@ composer.lock
 .idea
 .DS_Store
 config.sh
+*.swp

@@ -24,7 +24,7 @@ class UserCreate extends MooshCommand
         $this->addOption('f|firstname:','first name');
         $this->addOption('l|lastname:','last name');
         $this->addOption('i|idnumber:','idnumber');
-        $this->addOption('d|digest:', 'mail digest type as int (0=No digest, 1=Compelte, 2=Subjects)');
+        $this->addOption('d|digest:', 'mail digest type as int (0=No digest, 1=Complete, 2=Subjects)');
 
         $this->addArgument('username');
         $this->maxArguments = 255;

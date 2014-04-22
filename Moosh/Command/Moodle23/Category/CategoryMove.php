@@ -26,7 +26,7 @@ class CategoryMove extends MooshCommand
         global $DB;
         list($categoryid, $destcategoryid) = $this->arguments;
         if (!$cattomove = $DB->get_record('course_categories', array('id'=>$categoryid))) {
-            cli_error("No cateegory with id '$categoryid' found");
+            cli_error("No category with id '$categoryid' found");
         }
         if ($cattomove->parent != $destcategoryid) {
             if ($destcategoryid == 0) {
@@ -34,7 +34,7 @@ class CategoryMove extends MooshCommand
                 $newparent->id = 0;
                 $newparent->visible = 1;
             } else if (!$newparent = $DB->get_record('course_categories', array('id'=>$destcategoryid))) {
-                cli_error("No destination cateegory with id '$destcategoryid' found");
+                cli_error("No destination category with id '$destcategoryid' found");
             }
             $this->move_category($cattomove, $newparent);
         }
