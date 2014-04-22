@@ -332,3 +332,80 @@ function run_external_command($command, $error)
     
     return $output;
 }
+
+function get_sub_context_ids($path) {
+    global $DB;
+    
+    $sql = "SELECT ctx.id FROM {context} ctx WHERE ";
+    $sql_like = $DB->sql_like('ctx.path', ':path');
+    $contextids = $DB->get_records_sql($sql.$sql_like, array('path' => $path.'%'));
+    return $contextids;
+}
+
+function get_all_courses($sort="c.sortorder DESC", $fields="c.*") {
+    global $CFG, $DB;
+    
+    require_once($CFG->dirroot . '/lib/accesslib.php');
+
+    $where = 'WHERE c.id != 1';
+    if (empty($sort)) {
+        $sortstatement = "";
+    } else {
+        $sortstatement = "ORDER BY $sort";
+    }
+
+    list($ccselect, $ccjoin) = context_instance_preload_sql('c.id', CONTEXT_COURSE, 'ctx');
+
+    $sql = "SELECT $fields $ccselect
+                FROM {course} c
+                $ccjoin
+                $where
+                $sortstatement";
+    return $DB->get_records_sql($sql);
+}
+
+function get_files($contextid) {
+    global $DB;
+    
+    $sql = 'SELECT f.contenthash, f.filesize FROM {files} f 
+                WHERE f.contextid = ? 
+                AND f.filesize > 0';
+    $param = array($contextid);
+    return $DB->get_records_sql($sql, $param);
+}
+
+function file_is_unique($contenthash, $contextid) {
+    global $DB;
+
+    $unique = TRUE;
+    $sql_like = $DB->sql_like('f.contenthash', ':hash');
+    $not_like = $DB->sql_like('f.component', ':component', true, true, true);
+    $sql = "SELECT f.id FROM {files} f
+                WHERE f.contextid != :ctxid
+                AND f.filesize > 0
+                AND $sql_like
+                AND $not_like";
+    $params = array('ctxid' => $contextid, 'hash' => $contenthash, 'component' => 'user');
+    if ($DB->get_records_sql($sql, $params)) {
+        $unique = FALSE;
+    }
+    return $unique;
+}
+
+function higher_size($filesbycourse) {
+    $newarr = array();
+    $sortarr = array();
+    foreach ($filesbycourse as $courseid => $value) {
+        $newarr[$courseid] = $value['all'];
+    }
+    arsort($newarr);
+    $i = 0;
+    foreach ($newarr as  $key => $value) {
+        if ($i == 10) {
+            break;
+        } else {
+            $sortarr[$key] = $filesbycourse[$key];
+        }
+    }
+    return $sortarr;
+}
