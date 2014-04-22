@@ -20,8 +20,7 @@ class DataStats extends MooshCommand
 
     public function execute() 
     {
-        global $CFG;
-        global $DB;
+        global $CFG, $DB;
 
         $options = $this->expandedOptions;
 
@@ -54,25 +53,21 @@ class DataStats extends MooshCommand
             }
         }
         $sortarray = higher_size($filesbycourse);
-        
+
+        $data = array('dataroot' => $matches[0],
+            'filedir' => $dir_matches[0],
+            'files total' => $all_files->total,
+            'distinct files total' => $distinct_contenthash->total);
+        foreach ($sortarray as $courseid => $values) {
+            $data["Course $courseid files total"] = strval($values['all']);
+            $data["Course $courseid files unique"] = strval($values['unique']);
+        }
+
         if ($options['json']) {
-            $to_encode = array('dataroot' => $matches[0],
-                            'filedir' => $dir_matches[0], 
-                            'files total' => $all_files->total, 
-                            'distinct files total' => $distinct_contenthash->total);
-            foreach ($sortarray as $courseid => $values) {
-                $to_encode["Course $courseid files total"] = strval($values['all']);
-                $to_encode["Course $courseid files unique"] = strval($values['unique']);
-            }
-            echo json_encode($to_encode);
+            echo json_encode($data);
         } else {
-            echo $matches[0] . "\n";
-            echo $dir_matches[0] . "\n";
-            echo $all_files->total . "\n";
-            echo $distinct_contenthash->total . "\n";
-            foreach ($sortarray as $courseid => $values) {
-                echo "Course $courseid files total: {$values['all']}\n";
-                echo "Course $courseid files unique: {$values['unique']}\n";
+            foreach ($data as $k => $v) {
+                echo "$k: " . display_size($v) ."\n";
             }
         }
     }
