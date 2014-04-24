@@ -329,13 +329,13 @@ function run_external_command($command, $error)
     if ($ret != 0) {
         cli_error($error);
     }
-    
+
     return $output;
 }
 
 function get_sub_context_ids($path) {
     global $DB;
-    
+
     $sql = "SELECT ctx.id FROM {context} ctx WHERE ";
     $sql_like = $DB->sql_like('ctx.path', ':path');
     $contextids = $DB->get_records_sql($sql.$sql_like, array('path' => $path.'%'));
@@ -344,7 +344,7 @@ function get_sub_context_ids($path) {
 
 function get_all_courses($sort="c.sortorder DESC", $fields="c.*") {
     global $CFG, $DB;
-    
+
     require_once($CFG->dirroot . '/lib/accesslib.php');
 
     $where = 'WHERE c.id != 1';
@@ -354,21 +354,22 @@ function get_all_courses($sort="c.sortorder DESC", $fields="c.*") {
         $sortstatement = "ORDER BY $sort";
     }
 
-    list($ccselect, $ccjoin) = context_instance_preload_sql('c.id', CONTEXT_COURSE, 'ctx');
-
+    $ccselect = ", " . context_helper::get_preload_record_columns_sql('ctx');
+    $ccjoin = "LEFT JOIN {context} ctx ON (ctx.instanceid = c.id AND ctx.contextlevel = :contextlevel)";
     $sql = "SELECT $fields $ccselect
                 FROM {course} c
                 $ccjoin
                 $where
                 $sortstatement";
-    return $DB->get_records_sql($sql);
+    $param = array('contextlevel' => CONTEXT_COURSE);
+    return $DB->get_records_sql($sql, $param);
 }
 
 function get_files($contextid) {
     global $DB;
-    
-    $sql = 'SELECT f.contenthash, f.filesize FROM {files} f 
-                WHERE f.contextid = ? 
+
+    $sql = 'SELECT f.id, f.contenthash, f.filesize FROM {files} f
+                WHERE f.contextid = ?
                 AND f.filesize > 0';
     $param = array($contextid);
     return $DB->get_records_sql($sql, $param);
