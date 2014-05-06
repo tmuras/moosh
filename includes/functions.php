@@ -367,7 +367,7 @@ function get_all_courses($sort="c.sortorder DESC", $fields="c.*") {
 function get_files($contextid) {
     global $DB;
     
-    $sql = 'SELECT f.contenthash, f.filesize FROM {files} f 
+    $sql = 'SELECT f.id, f.contenthash, f.filesize FROM {files} f 
                 WHERE f.contextid = ? 
                 AND f.filesize > 0';
     $param = array($contextid);
@@ -406,6 +406,20 @@ function higher_size($filesbycourse) {
         } else {
             $sortarr[$key] = $filesbycourse[$key];
         }
+        $i++;
     }
     return $sortarr;
+}
+
+function backup_size() {
+    global $DB;
+    $like = $DB->sql_like('f.filearea', ':filearea');
+    $sql = "SELECT f.id, SUM(f.filesize) AS backupsize, f.userid, u.username
+                FROM {files} f
+                LEFT JOIN {user} u ON f.userid = u.id
+                WHERE $like
+                GROUP BY f.userid
+                ORDER BY backupsize DESC";
+    
+    return $DB->get_records_sql($sql, array('filearea' => 'backup'));
 }

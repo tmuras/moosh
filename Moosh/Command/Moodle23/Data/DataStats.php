@@ -43,10 +43,10 @@ class DataStats extends MooshCommand
             foreach ($courses as $course) {
                 $subcontexts = get_sub_context_ids($course->ctxpath);
                 $filesbycourse[$course->id] = array('unique' => 0, 'all' => 0);
-                foreach($subcontexts as $subcontexts) {
-                    if ($files = get_files($subcontexts->id)) {
+                foreach($subcontexts as $subcontext) {
+                    if ($files = get_files($subcontext->id)) {
                         foreach ($files as $file) {
-                            $filesbycourse[$course->id]['unique'] += file_is_unique($file->contenthash, $subcontexts->id) ? $file->filesize : 0;
+                            $filesbycourse[$course->id]['unique'] += file_is_unique($file->contenthash, $subcontext->id) ? $file->filesize : 0;
                             $filesbycourse[$course->id]['all'] += $file->filesize;
                         }
                     }
@@ -54,6 +54,7 @@ class DataStats extends MooshCommand
             }
         }
         $sortarray = higher_size($filesbycourse);
+        $backups = backup_size();
         
         if ($options['json']) {
             $to_encode = array('dataroot' => $matches[0],
@@ -64,6 +65,9 @@ class DataStats extends MooshCommand
                 $to_encode["Course $courseid files total"] = strval($values['all']);
                 $to_encode["Course $courseid files unique"] = strval($values['unique']);
             }
+            foreach ($backups as $key => $values) {
+                $to_encode["Backup {$values->username}"] = strval($values->backupsize);
+            }
             echo json_encode($to_encode);
         } else {
             echo $matches[0] . "\n";
@@ -73,6 +77,9 @@ class DataStats extends MooshCommand
             foreach ($sortarray as $courseid => $values) {
                 echo "Course $courseid files total: {$values['all']}\n";
                 echo "Course $courseid files unique: {$values['unique']}\n";
+            }
+            foreach ($backups as $key => $values) {
+                echo "Backup {$values->username}: {$values->backupsize}\n";
             }
         }
     }
