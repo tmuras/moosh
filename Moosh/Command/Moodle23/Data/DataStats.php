@@ -42,10 +42,10 @@ class DataStats extends MooshCommand
             foreach ($courses as $course) {
                 $subcontexts = get_sub_context_ids($course->ctxpath);
                 $filesbycourse[$course->id] = array('unique' => 0, 'all' => 0);
-                foreach($subcontexts as $subcontexts) {
-                    if ($files = get_files($subcontexts->id)) {
+                foreach($subcontexts as $subcontext) {
+                    if ($files = get_files($subcontext->id)) {
                         foreach ($files as $file) {
-                            $filesbycourse[$course->id]['unique'] += file_is_unique($file->contenthash, $subcontexts->id) ? $file->filesize : 0;
+                            $filesbycourse[$course->id]['unique'] += file_is_unique($file->contenthash, $subcontext->id) ? $file->filesize : 0;
                             $filesbycourse[$course->id]['all'] += $file->filesize;
                         }
                     }
@@ -53,6 +53,7 @@ class DataStats extends MooshCommand
             }
         }
         $sortarray = higher_size($filesbycourse);
+        $backups = backup_size();
 
         $data = array('dataroot' => $matches[0],
             'filedir' => $dir_matches[0],
@@ -61,6 +62,9 @@ class DataStats extends MooshCommand
         foreach ($sortarray as $courseid => $values) {
             $data["Course $courseid files total"] = strval($values['all']);
             $data["Course $courseid files unique"] = strval($values['unique']);
+        }
+        foreach ($backups as $key => $values) {
+            $data["Backup {$values->username}"] = strval($values->backupsize);
         }
 
         if ($options['json']) {
