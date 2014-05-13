@@ -1,3 +1,9 @@
+moosh (0.15-1) precise; urgency=low
+
+  * Upstream release 0.15
+
+ -- Tomasz Muras <nexor1984@gmail.com>  Tue, 13 May 2014 16:28:30 +0200
+
 moosh (0.14-1) precise; urgency=low
 
    * Upstream release 0.14
