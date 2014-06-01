@@ -12,13 +12,19 @@
 
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap-yeti.css" rel="stylesheet">
+    <link href="/css/boostrap-theme.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <style>
       body {
         padding-top: 60px;
       }
+      .fa-times {
+	color: #FF4136;
+      }
+      .fa-check {
+	color: #2ECC40;
+      }
     </style>
-    <link href="/css/boostrap-theme.css" rel="stylesheet">
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -163,11 +169,11 @@ You usually want to run the check as the same user that runs web server.</p>
 <pre><code>sudo -u www-data moosh chkdatadir
 </code></pre>
 
-<h2><a name="clear-cache">clear-cache</a></h2>
+<h2><a name="cache-clear">cache-clear</a></h2>
 
 <p>The same as "purge all caches" page.</p>
 
-<pre><code>moosh clear-cache
+<pre><code>moosh cache-clear
 </code></pre>
 
 <h2><a name="cohort-create">cohort-create</a></h2>
@@ -441,6 +447,12 @@ moosh dev-versionbump
 <p>Example 3: Flush trashcan</p>
 
 <pre><code>moosh file-delete --flush
+</code></pre>
+
+<p>Example 4: Remove all automated backups and reclaim the space</p>
+
+<pre><code>moosh file-list -i 'component="backup" AND filearea="automated"' | moosh file-delete -s
+moosh file-delete --flush
 </code></pre>
 
 <h2><a name="file-list">file-list</a></h2>
@@ -855,7 +867,7 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 <li><a href="#category-list">category-list</a></li>
 <li><a href="#category-move">category-move</a></li>
 <li><a href="#chkdatadir">chkdatadir</a></li>
-<li><a href="#clear-cache">clear-cache</a></li>
+<li><a href="#cache-clear">cache-clear</a></li>
 </ul>
 </li>
 <li>
@@ -948,3 +960,4 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
     </script>
   </body>
 </html>
+
