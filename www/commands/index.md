@@ -379,6 +379,10 @@ Example 4: Remove all automated backups and reclaim the space
 Search and list files from mdl_files table. The argument should be a valid SQL WHERE statement. Interesting columns of possible search criterias are:
 contextid, component, filearea, itemid, filepath, filename, userid, filesize, mimetype, status, timecreated, timemodified.
 
+You can also use some special values:
+
+ * course=NNN to list all files that relate to a course
+
 The output will contain some defaults or nearly all possible file information if "-a|--all" flag is provided. The meaning of the flags column is (in order):
 
  * mdl_files.status
@@ -397,10 +401,14 @@ Example 2: Display full information on file with ID 17
 
     moosh file-list -a id=162
 
+Example 3: Show all files from course 6
+
+    moosh file-list course=6
+
 <a name="file-path">file-path</a>
 ---------
 
-Show full path in the filesystem to a Moodle file. Files can be identified by ID or hash (auto-detected) as arguments or on stdin (-s option).
+Show full or relative path in the filesystem to Moodle file(s). Files can be identified by ID or hash (auto-detected) as arguments or on stdin (-s option).
 
 Example 1: Show path to a file with contenthash da39a3ee5e6b4b0d3255bfef95601890afd80709
 
@@ -410,9 +418,13 @@ Example 2: Show paths to files with ID bewteen 100 and 200
 
     moosh file-list -i 'id>100 AND id<200' | moosh file-path -s
 
-Example 3: Like above but with no duplicates
+Example 3: Like above but with no duplicates and show path relative to data root (-r)
 
-    moosh file-list -i 'id>100 AND id<200' | moosh file-path -s | sort | uniq
+    moosh file-list -r -i 'id>100 AND id<200' | moosh file-path -s | sort | uniq
+
+Example 4: Super-combo. Get all course files and tar/bzip2 them up.
+
+    moosh file-list -i course=2 | moosh file-path -s -r | tar -C $(moosh config-get core dataroot) -T - -cjf files.tar.bz2
 
 <a name="form-add">form-add</a>
 --------

@@ -7,6 +7,7 @@
  */
 
 namespace Moosh\Command\Moodle23\File;
+
 use Moosh\MooshCommand;
 
 class FilePath extends MooshCommand
@@ -19,6 +20,7 @@ class FilePath extends MooshCommand
         $this->minArguments = 0;
         $this->maxArguments = 255;
         $this->addOption('s|stdin', 'read list of file IDs from standard input');
+        $this->addOption('r|relative', 'show path relative from Moodle data');
 
     }
 
@@ -38,7 +40,8 @@ class FilePath extends MooshCommand
 
     }
 
-    private function printFile($arg) {
+    private function printFile($arg)
+    {
         global $CFG;
 
         $id = trim($arg);
@@ -48,7 +51,7 @@ class FilePath extends MooshCommand
         } else {
             $fs = get_file_storage();
             $file = $fs->get_file_by_id($id);
-            if(!$file) {
+            if (!$file) {
                 echo "File '$id' not found\n";
                 return;
             }
@@ -58,12 +61,17 @@ class FilePath extends MooshCommand
         if (isset($CFG->filedir)) {
             $filedir = $CFG->filedir;
         } else {
-            $filedir = $CFG->dataroot.'/filedir';
+            $filedir = $CFG->dataroot . '/filedir';
         }
-        $l1 = $hash[0].$hash[1];
-        $l2 = $hash[2].$hash[3];
+        $l1 = $hash[0] . $hash[1];
+        $l2 = $hash[2] . $hash[3];
 
-        echo "$filedir/$l1/$l2/$hash\n";
+        if ($this->expandedOptions['relative']) {
+            echo "filedir/$l1/$l2/$hash\n";
+        } else {
+            echo "$filedir/$l1/$l2/$hash\n";
+
+        }
     }
 }
 
