@@ -8,16 +8,22 @@ set -e
 export GITCHECKOUT=$(cd .. && pwd -P)
 export VERSIONS="25 26"
 
+#moodledata25, moodledata26, etc will be created inside DATA
 export DATA="/home/tomasz/data/moosh-test"
+
+#Prefix for DB name, 25, 26 will be added at the end
 export DB="mooshtest_"
 export DBUSER=root
 export DBPASSWORD=
+export SHELLUSER=
 #export WWW="~/www/moosh-test"
 
 for V in $VERSIONS; do
     echo Restoring $V
 
     #clean existing
+    cd $DATA || exit 1
+    sudo chown -R $SHELLUSER $DATA/moodledata$V
     rm -rf $DATA/moodledata$V
     echo "DROP DATABASE IF EXISTS $DB$V" | mysql -u "$DBUSER" -p"$DBPASSWORD"
 

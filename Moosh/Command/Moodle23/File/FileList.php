@@ -37,13 +37,45 @@ timemodified
   //      $this->maxArguments = 3;
     }
 
+    protected function getArgumentsHelp()
+    {
+        $help = parent::getArgumentsHelp();
+        $help .= "\n\n";
+        $help .= "To get all files from course N use 'course=N' as an argument.";
+
+        return $help;
+    }
+
+
     public function execute()
     {
         global $CFG, $DB;
 
         $fs = get_file_storage();
 
-        $rs = $DB->get_recordset_sql("SELECT id FROM {files} WHERE ". $this->arguments[0]);
+        $query = trim($this->arguments[0]);
+
+        //check if asking for course files: course=NNN
+        $match = NULL;
+        if(preg_match('/course=(\d+)/',$query,$match) !== false) {
+            //get all context IDs
+            $courseid = $match[1];
+
+            //get context path for course
+            $context = \context_course::instance($courseid);
+            $contexts = array($context->get_course_context()->id);
+            $results = $DB->get_records_sql("SELECT * FROM {context} WHERE path LIKE '" . $context->get_course_context()->path . "/%'");
+            foreach($results as $result) {
+                $contexts[] = $result->id;
+            }
+            list($sql, $params) = $DB->get_in_or_equal($contexts);
+
+            $rs = $DB->get_recordset_sql("SELECT id FROM {files} WHERE filename <> '.' AND contextid $sql", $params);
+        } else {
+            $rs = $DB->get_recordset_sql("SELECT id FROM {files} WHERE ". $query);
+
+        }
+
         foreach($rs as $file) {
             if($this->expandedOptions['id']) {
                 echo $file->id . "\n";
