@@ -405,6 +405,10 @@ Example 3: Show all files from course 6
 
     moosh file-list course=6
 
+Example 4: Super-combo. Get all course files and tar/bzip2 them up.
+
+    moosh file-list -i course=2 | moosh file-path -s -r | tar -C $(moosh config-get core dataroot) -T - -cjf files.tar.bz2
+
 <a name="file-path">file-path</a>
 ---------
 
@@ -421,10 +425,6 @@ Example 2: Show paths to files with ID bewteen 100 and 200
 Example 3: Like above but with no duplicates and show path relative to data root (-r)
 
     moosh file-list -r -i 'id>100 AND id<200' | moosh file-path -s | sort | uniq
-
-Example 4: Super-combo. Get all course files and tar/bzip2 them up.
-
-    moosh file-list -i course=2 | moosh file-path -s -r | tar -C $(moosh config-get core dataroot) -T - -cjf files.tar.bz2
 
 <a name="form-add">form-add</a>
 --------
