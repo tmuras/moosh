@@ -37,6 +37,8 @@ class PhpEval extends MooshCommand
             echo "Evaluating PHP: {$command}";
         }
 
+        chdir($this->cwd);
+
         return eval($command . ';');
 
     }
