@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="command line utility tool for moodle">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="">
+
+    <title>moosh</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap-yeti.css" rel="stylesheet">
+    <link href="/css/boostrap-theme.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px;
+      }
+      .fa-times {
+	color: #FF4136;
+      }
+      .fa-check {
+	color: #2ECC40;
+      }
+    </style>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">moosh</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="https://github.com/tmuras/moosh">github</a></li>
+            <li><a href="/faq">FAQ</a></li>
+            <li><a href="/commands">commands</a></li>
+            <li><a href="/dev">dev</a></li>
+            <li><a href="/tutorials">tutorials</a></li>
+            <li><a href="/ci">CI</a></li>
+          </ul>
+          <a href="https://github.com/tmuras/moosh"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container">
+
+     <h1>Functional tests</h1>
+
+<p>There are no unit tests implemented for testing moosh at the moment. Instead, a set of functional tests have been developed.
+They are basically very simple bash scripts located in tests directory and named after command they test, e.g.:</p>
+
+<pre><code>tests/file-list.sh
+</code></pre>
+
+<p>is used to test moosh file-list command.</p>
+
+<p>All tests start with some common boilerplate:</p>
+
+<pre><code>#!/bin/bash
+source functions.sh
+
+install_db
+install_data
+cd $MOODLEDIR
+</code></pre>
+
+<p>and then the test of the commmand is performed. Script should return (exit) with 0 if test is a success, with 1 otherwise. Here is test from file-list.sh:</p>
+
+<pre><code>if moosh file-list id=6 | grep -w "grumpycat"; then
+  exit 0
+else
+  exit 1
+fi
+</code></pre>
+
+<p>All tests are then run with run-tests.php script, which in turn will generate status on the <a href="http://moosh-online.com/ci/">continues integration</a> page.</p>
+
+<h2>Environment</h2>
+
+<p>Notice in the test above that test suite assumes there is Moodle instance already setup and it contains a file called "grumpycat".
+All commands will be run in a known, prepared environment with users, courses pre-created. “install moodle” means restoring Moodle DB and data from prepared snapshot.</p>
+
+<h2>Set up &amp; run functional tests</h2>
+
+<p>Some scripts use sudo chown command to operate on Moodle data, so to let them run without prompting for password add something like this to /etc/sudoers (use visudo to edit):</p>
+
+<pre><code>%adm    ALL = NOPASSWD: /bin/chown, /bin/chmod
+</code></pre>
+
+<p>Then make sure your shell user is in group adm.</p>
+
+<p>Create 2 directories for Moodle data, eg: ~/data/moosh-test/moodledata25 and ~/data/moosh-test/moodledata26. Give apache user write access to Moodle data dirs.</p>
+
+<p>Create 2 empty databases: mooshtest_25 and mooshtest_26.</p>
+
+<pre><code>#Get Moodle source code for 2.6 and 2.7
+cd ~/www/html/moosh/
+git clone https://github.com/moodle/moodle.git moodle25
+cd moodle25
+git checkout 3d176316cc1791e258a7c1b2118fd35976c9bcae
+cp config-dist.php config.php
+#configure settings in config.php down to &amp; including $CFG-&gt;dataroot
+
+cd ~/www/html/moosh/
+cp -r moodle25 moodle26
+cd moodle26
+git checkout ba05f57
+cp config-dist.php config.php
+#configure settings in config.php down to &amp; including $CFG-&gt;dataroot
+
+git clone https://github.com/tmuras/moosh
+cd moosh/tests
+#Configure DATA,DB,DBUSER and DBPASSWORD in restore_all.sh and run it
+./restore_all.sh
+</code></pre>
+
+<p>Login to Moodle instances (e.g. http://localhost/moosh/moodle26/) as admin / a and check if it works OK after restore.</p>
+
+<pre><code>cp config-template.sh config25.sh
+cp config-template.sh config26.sh
+#configure variables in config25.sh and config26.sh
+
+#run tests, several should pass but some eventually fail:
+php run-tests.php
+</code></pre>
+
+<h1>Contributing to moosh</h1>
+
+<ol>
+<li>Fork the project on github.</li>
+<li>Follow "installation from Moodle git" section.</li>
+<li>Look at existing plugins to see how they are done.</li>
+<li><p>Create new plugin/update existing one. You can use moosh itself to generate a new command from a template for you:</p>
+
+<p> moosh generate-moosh category-command</p></li>
+<li><p>Update this README.md file with the example on how to use your plugin.</p></li>
+<li>For the extra bonus create a functional test to cover your command.</li>
+<li>Send me pull request.</li>
+</ol>
+
+
+<h1>Local commands</h1>
+
+<p>You can add your own, local commands to moosh by storing them in the same structure as moosh does but under ~/.moosh.
+For example, to create your custom command dev-mytest that works with any Moodle version, you would put it under:</p>
+
+<pre><code>~/.moosh/Moosh/Command/Generic/Dev/MyTest.php
+</code></pre>
+
+    </div><!-- /.container -->
+    <hr>
+<footer>
+<div class="container">
+    <p>&copy; <a href="https://github.com/tmuras">Tomasz Muras</a></p>
+    </div>
+</footer>
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    </script>
+  </body>
+</html>
