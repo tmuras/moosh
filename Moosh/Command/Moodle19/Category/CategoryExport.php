@@ -5,7 +5,7 @@
  * @copyright 2012 onwards Tomasz Muras
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace Moosh\Command\Moodle23\Category;
+namespace Moosh\Command\Moodle19\Category;
 use Moosh\MooshCommand;
 
 class CategoryExport extends MooshCommand
@@ -20,19 +20,20 @@ class CategoryExport extends MooshCommand
 
     public function execute()
     {
-        global $CFG, $DB;
+        global $CFG;
 
         require_once $CFG->dirroot . '/course/lib.php';
 
         $categoryid = intval($this->arguments[0]);
-        $category = $DB->get_record('course_categories', array('id' => $categoryid));
+        $category = get_record('course_categories', 'id',$categoryid);
         if ($categoryid && !$category) {
             cli_error("Wrong category '$categoryid'");
         } elseif (!$categoryid) {
             $category = NULL;
         }
 
-        $categories = get_course_category_tree($categoryid);
+        $categories = get_child_categories($categoryid);
+
         //add top lever category as well
         if ($category) {
             $category->categories = $categories;
@@ -55,11 +56,9 @@ class CategoryExport extends MooshCommand
                 debug_print_backtrace();
                 die();
             }
+            $category->categories = get_child_categories($category->id);
 
             echo "<category oldid='{$category->id}' ";
-            if ($category->idnumber) {
-                echo "idnumber='{$category->idnumber}' ";
-            }
 
             $name = str_replace(
                 array("&",     "<",    ">",    '"',      "'"),
@@ -70,7 +69,6 @@ class CategoryExport extends MooshCommand
             echo "name='$name'>";
 
             foreach ($category->categories as $categories2) {
-                //var_dump($categories2);.
                 $this->categories2xml(array($categories2));
             }
             echo "</category>\n";
