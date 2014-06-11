@@ -72,7 +72,7 @@ Create 2 empty databases: mooshtest_25 and mooshtest_26.
     #Configure DATA,DB,DBUSER and DBPASSWORD in restore_all.sh and run it
     ./restore_all.sh
 
-Login to Moodle instances (e.g. http://localhost/moosh/moodle26/) as admin / a and check if it works OK after restore.
+Login to Moodle instances (e.g. http://localhost/moosh/moodle26/) as 'admin' using password 'a' and check if it works OK after restore.
 
     cp config-template.sh config25.sh
     cp config-template.sh config26.sh
