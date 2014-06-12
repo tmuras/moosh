@@ -5,7 +5,9 @@ install_db
 install_data
 cd $MOODLEDIR
 
-moosh course-enrol 2 testuser
+echo dwiedupy
+moosh course-enrolbyname -c tc1 -f test -l user
+echo dupa
 if echo "SELECT courseid, userid FROM mdl_enrol LEFT JOIN mdl_user_enrolments \
     ON mdl_enrol.id = mdl_user_enrolments.enrolid \
     WHERE courseid=2 AND userid=5" \
@@ -13,7 +15,5 @@ if echo "SELECT courseid, userid FROM mdl_enrol LEFT JOIN mdl_user_enrolments \
     | grep -c "userid\|(5)" ]; then
     exit 0
 else
-    exit 1
+  exit 1
 fi
-
-

@@ -57,7 +57,7 @@ function run_tests(array $commands) {
             $results[$command] = "fail";
             var_dump($output);
             echo "\n";
-            die();
+            continue;
         }
     }
     return $results;
