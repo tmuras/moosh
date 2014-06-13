@@ -63,30 +63,28 @@ function run_tests(array $commands) {
     return $results;
 };
 
-$table = '---
+$out = '---
 title: CI
 layout: default
 ---
 
 CI
-========';
-$out = '<div class="table-responsive">
+========
+';
+$out .= '<div class="table-responsive">
 	<table class="table table-striped table-bordered table-hover">
 	<thead>
 	  <tr>
 		<th></th>
 		<th>Moodle 2.6</th>
 		<th>Moodle 2.5</th>
-		<th>Moodle 2.3</th>
-		<th>Moodle 2.2</th>
-		<th>Moodle 2.1</th>
-		<th>Moodle 1.9</th>
 	  </tr>
 	</thead>
-	<tbody>';
+	<tbody>
+    ';
 
 $all_commands = get_commands_list("26"); // this is ugly, disregard
-$support_versions = array('19','21','22','23','24','25','26');
+$support_versions = array('25','26');
 
 $results = array();
 foreach($support_versions as $version) {
@@ -101,37 +99,34 @@ foreach($moodle26 as $k=>$v) {
     $results['26'][$k] = $v;
 }
 
-$moodle25 = run_tests(get_commands_list("25"));
-foreach($moodle25 as $k=>$v) {
-    $results['25'][$k] = $v;
-}
+// $moodle25 = run_tests(get_commands_list("25"));
+// foreach($moodle25 as $k=>$v) {
+//     $results['25'][$k] = $v;
+// }
 
 
 foreach ($all_commands as $command) {
 
-	$out .= "<tr><td>$command</td>";
+	$out .= "\t<tr><td>$command</td>\n";
 
 	foreach ($support_versions as $moodle) {
         //if($results[$moodle][])
-        $out .=  '<td>' .$results[$moodle][$command] .'</td>';
-            /*
-		if (array_key_exists($command[0], $moodle)) {
-			$result = $moodle[$command[0]];
-
-			if ($result == "pass") {
-				$table .= "<td><i class=\"fa fa-check\"></i></td>\n";
-			} else {
-				$table .= "<td><i class=\"fa fa-times\"></i></td>\n";
-			}
+        // $out .=  '<td>' .$results[$moodle][$command] .'</td>';
+        $result = $results[$moodle][$command];
+		if ($result == "pass") {
+			$out .= "\t\t<td><i class=\"fa fa-check\"></i></td>\n";
+		} else if ($results == "fail") {
+			$out .= "\t\t<td><i class=\"fa fa-times\"></i></td>\n";
 		} else {
-			$table .= "<td></td>";
-		}
-            */
+            $our .= "\t\t<td><i class=\"fa fa-ban\"></i></td>\n";
+        }
+
+
 	}
-    $out .= '</tr>';
+    $out .= "\t</tr>\n";
 }
 
-$out .= "	</tbody>
+$out .= "</tbody>
 	</table>
 	</div>";
 
