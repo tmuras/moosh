@@ -25,13 +25,8 @@ class SqlCli extends MooshCommand
 
         $connstr = '';
 
-        if ($CFG->dbtype === 'mysqli') {
-            $conn = "mysql -u {$CFG->dbuser} -h '{$CFG->dbhost}' -p'{$CFG->dbpass}' {$CFG->dbname}";
-        }
-
         switch ($CFG->dbtype) {
             case 'mysqli':
-                // TODO hide password rather than passing on command-line (see drush equivalent).
                 $connstr = "mysql -h {$CFG->dbhost} -u {$CFG->dbuser} -p{$CFG->dbpass} {$CFG->dbname}";
                 break;
             case 'pgsql':
@@ -47,13 +42,11 @@ class SqlCli extends MooshCommand
                 break;
         }
 
-        // TODO add?
-        // if verbose mode was requested, show some more information/debug messages
-        // if ($this->verbose) {
-        //     echo "Say what you're doing now";
-        // }
+        if ($this->verbose) {
+            echo "Connecting to database using '{$connstr}'";
+        }
 
-        $process = proc_open($conn, array(0 => STDIN, 1 => STDOUT, 2 => STDERR), $pipes);
+        $process = proc_open($connstr, array(0 => STDIN, 1 => STDOUT, 2 => STDERR), $pipes);
         $proc_status = proc_get_status($process);
         $exit_code = proc_close($process);
 
