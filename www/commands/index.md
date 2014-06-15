@@ -739,6 +739,15 @@ Example 2: Count the number of rows is log table
 
     moosh sql-run "select count(*) from {log}"
 
+<a name="sql-cli">sql-cli</a>
+-------
+
+Open a connection to the Moodle DB using credentials in config.php. Currently supports PostgreSQL and MySQL.
+
+Example:
+
+    moosh sql-cli
+
 <a name="theme-info">theme-info</a>
 ----------
 
