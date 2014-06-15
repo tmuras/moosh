@@ -522,6 +522,24 @@ Example: Create new module under question/type/myqtype
 
     moosh generate-qtype myqtype
 
+<a name="gradebook-import">gradebook-import</a>
+---------------
+
+Imports gradebook grades from csv file into a course given by id. With --course-idnumber use take mdl_course.idnumber instead of course.id.
+--map-users-by will change what to use for mapping users from CSV (email or idnumber).
+
+Use --test for testing the import first.
+
+Example:
+
+    moosh gradebook-import --test gradebook.csv course_id
+
+Possible column headers to us:
+
+* "ID number" user's ID number (idnumber)
+* "email" user's email
+* one or more columns matching grade item name
+
 <a name="info">info</a>
 ---------------
 
