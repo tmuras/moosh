@@ -578,6 +578,15 @@ Example:
     moosh module-manage hide scorm
     moosh module-manage show scorm
 
+<a name="php-eval">php-eval</a>
+----------------
+
+Evaluate arbitrary php code after bootstrapping Moodle.
+
+Example:
+
+    moosh php-eval 'var_dump(get_object_vars($CFG))'
+
 <a name="user-create">user-create</a>
 -----------
 
