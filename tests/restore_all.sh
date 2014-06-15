@@ -31,7 +31,7 @@ for V in $VERSIONS; do
     cd $GITCHECKOUT/data
     tar -xf moodledata$V.tar.bz2
     mv moodledata$V $DATA
-    chmod 777 -R $DATA/moodledata$V
+    chmod -R 777 $DATA/moodledata$V
 
     #apply
     echo "CREATE DATABASE $DB$V" | mysql -u "$DBUSER" -p"$DBPASSWORD"
