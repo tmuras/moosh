@@ -130,4 +130,4 @@ $out .= "</tbody>
 	</table>
 	</div>";
 
-file_put_contents("out.txt", $out);
+file_put_contents("../www/ci/index.md", $out);
