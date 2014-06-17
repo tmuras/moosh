@@ -23,7 +23,7 @@ class SqlDump extends MooshCommand
 
         switch ($CFG->dbtype) {
             case 'mysqli':
-                passthru("mysqldump -h {$CFG->dbhost} -u {$CFG->dbuser} -p{$CFG->dbpass} {$CFG->dbname}");
+                passthru("mysqldump -h {$CFG->dbhost} -u {$CFG->dbuser} --password='{$CFG->dbpass}' {$CFG->dbname}");
                 break;
             case 'pgsql':
                 $portoption = '';
