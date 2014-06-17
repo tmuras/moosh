@@ -17,6 +17,7 @@ class CategoryCreate extends MooshCommand
 
         $this->addOption('d|description:', 'description');
         $this->addOption('p|parent:', 'format');
+        $this->addOption('i|idnumber:', 'idnumber');
         $this->addOption('v|visible:', 'visible');
 
         $this->addArgument('name');
@@ -34,6 +35,7 @@ class CategoryCreate extends MooshCommand
             $category->name = $argument;
             $category->description = $options['description'];
             $category->parent = $options['parent'];
+            $category->idnumber = $options['idnumber']; 
             $category->visible = $options['visible'];
             $newcategory = $this->create_category($category);
 
