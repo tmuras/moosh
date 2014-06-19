@@ -1,3 +1,9 @@
+moosh (0.15.2-1) precise; urgency=medium
+
+  * Upstream release 0.15.2
+
+ -- Tomasz Muras <nexor1984@gmail.com>  Thu, 19 Jun 2014 18:37:19 +0200
+
 moosh (0.15.1-1) precise; urgency=medium
 
   * Update for 0.15 release
