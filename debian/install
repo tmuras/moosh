@@ -4,4 +4,5 @@ includes /usr/share/moosh
 Moosh /usr/share/moosh
 templates /usr/share/moosh
 vendor /usr/share/moosh
-bach_completion => /etc/bash_completion.d/moosh
+bash_completion => /etc/bash_completion.d/moosh
+zsh_completion => /usr/share/zsh/functions/Completion/Debian/_moosh
