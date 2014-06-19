@@ -26,7 +26,7 @@ function get_commands_list($moodle_ver) {
 
 function run_tests(array $commands) {
 
-	$results = array();
+    $results = array();
     foreach ($commands as $command) {
 
         if ($command == null) { // skip empty lines
@@ -57,36 +57,39 @@ function run_tests(array $commands) {
             $results[$command] = "fail";
             var_dump($output);
             echo "\n";
-            die();
+            continue;
         }
     }
     return $results;
 };
 
-$table = '---
+
+$support_versions = array('26', '25');
+
+$out = '---
 title: CI
 layout: default
 ---
 
 CI
-========';
-$out = '<div class="table-responsive">
-	<table class="table table-striped table-bordered table-hover">
-	<thead>
-	  <tr>
-		<th></th>
-		<th>Moodle 2.6</th>
-		<th>Moodle 2.5</th>
-		<th>Moodle 2.3</th>
-		<th>Moodle 2.2</th>
-		<th>Moodle 2.1</th>
-		<th>Moodle 1.9</th>
-	  </tr>
-	</thead>
-	<tbody>';
+========
+';
+$out .= '<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Function</th>
+        ';
+
+foreach ($support_versions as $version) {
+    $out .= "\t\t<th>Moodle " . $version . "</th>";
+} 
+$out .='</tr>
+    </thead>
+    <tbody>
+    ';
 
 $all_commands = get_commands_list("26"); // this is ugly, disregard
-$support_versions = array('19','21','22','23','24','25','26');
 
 $results = array();
 foreach($support_versions as $version) {
@@ -96,43 +99,65 @@ foreach($support_versions as $version) {
     }
 }
 
+echo "tests for moodle 2.6\n";
 $moodle26 = run_tests(get_commands_list("26"));
 foreach($moodle26 as $k=>$v) {
     $results['26'][$k] = $v;
 }
-
+echo "tests for moodle 2.5\n";
 $moodle25 = run_tests(get_commands_list("25"));
 foreach($moodle25 as $k=>$v) {
     $results['25'][$k] = $v;
 }
 
 
+
+
 foreach ($all_commands as $command) {
 
-	$out .= "<tr><td>$command</td>";
+	$out .= "\t<tr>\n\t\t<td>$command</td>\n";
 
 	foreach ($support_versions as $moodle) {
         //if($results[$moodle][])
-        $out .=  '<td>' .$results[$moodle][$command] .'</td>';
-            /*
-		if (array_key_exists($command[0], $moodle)) {
-			$result = $moodle[$command[0]];
-
-			if ($result == "pass") {
-				$table .= "<td><i class=\"fa fa-check\"></i></td>\n";
-			} else {
-				$table .= "<td><i class=\"fa fa-times\"></i></td>\n";
-			}
+        // $out .=  '<td>' .$results[$moodle][$command] .'</td>';
+        $result = $results[$moodle][$command];
+		if ($result == "pass") {
+			$out .= "\t\t<td><i class=\"fa fa-check\"></i></td>\n";
+		} else if ($result == "fail") {
+			$out .= "\t\t<td><i class=\"fa fa-times\"></i></td>\n";
 		} else {
-			$table .= "<td></td>";
-		}
-            */
+            $out .= "\t\t<td><i class=\"fa fa-ban\"></i></td>\n";
+        }
+
+
 	}
-    $out .= '</tr>';
+    $out .= "\t</tr>\n";
 }
 
-$out .= "	</tbody>
+$out .= "</tbody>
 	</table>
 	</div>";
 
-file_put_contents("out.txt", $out);
+// add footer
+
+$out .= '
+=======
+Table legend:
+<div class="table-responsive">
+<table>
+    <tr>
+        <td><i class="fa fa-check"></td>
+        <td>Test passed</td>
+    </tr>
+    <tr>
+        <td><i class="fa fa-times"></td>
+        <td>Test failed</td>
+    </tr>
+    <tr>
+        <td><i class="fa fa-ban"></td>
+        <td>Test not existing</td>
+    </tr>
+</table></div>
+';
+
+file_put_contents("../www/ci/index.md", $out);

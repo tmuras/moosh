@@ -51,6 +51,7 @@
             <li><a href="https://github.com/tmuras/moosh">github</a></li>
             <li><a href="/faq">FAQ</a></li>
             <li><a href="/commands">commands</a></li>
+            <li><a href="/dev">dev</a></li>
             <li><a href="/tutorials">tutorials</a></li>
             <li><a href="/ci">CI</a></li>
           </ul>
@@ -622,6 +623,27 @@ necessary.</p>
 <pre><code>moosh generate-qtype myqtype
 </code></pre>
 
+<h2><a name="gradebook-import">gradebook-import</a></h2>
+
+<p>Imports gradebook grades from csv file into a course given by id. With --course-idnumber use take mdl_course.idnumber instead of course.id.
+--map-users-by will change what to use for mapping users from CSV (email or idnumber).</p>
+
+<p>Use --test for testing the import first.</p>
+
+<p>Example:</p>
+
+<pre><code>moosh gradebook-import --test gradebook.csv course_id
+</code></pre>
+
+<p>Possible column headers to us:</p>
+
+<ul>
+<li>"ID number" user's ID number (idnumber)</li>
+<li>"email" user's email</li>
+<li>one or more columns matching grade item name</li>
+</ul>
+
+
 <h2><a name="info">info</a></h2>
 
 <p>Show information about plugin in current directory.</p>
@@ -677,6 +699,15 @@ moosh module-config get dropbox dropbox_secret ?
 
 <pre><code>moosh module-manage hide scorm
 moosh module-manage show scorm
+</code></pre>
+
+<h2><a name="php-eval">php-eval</a></h2>
+
+<p>Evaluate arbitrary php code after bootstrapping Moodle.</p>
+
+<p>Example:</p>
+
+<pre><code>moosh php-eval 'var_dump(get_object_vars($CFG))'
 </code></pre>
 
 <h2><a name="user-create">user-create</a></h2>
@@ -847,6 +878,15 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 <pre><code>moosh sql-run "select count(*) from {log}"
 </code></pre>
 
+<h2><a name="sql-cli">sql-cli</a></h2>
+
+<p>Open a connection to the Moodle DB using credentials in config.php. Currently supports PostgreSQL and MySQL.</p>
+
+<p>Example:</p>
+
+<pre><code>moosh sql-cli
+</code></pre>
+
 <h2><a name="theme-info">theme-info</a></h2>
 
 <p>Show what themes are really used on Moodle site.</p>
@@ -878,7 +918,6 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 <li><a href="#activity-add">activity-add</a></li>
 <li><a href="#block-add">block-add</a></li>
 <li><a href="#block-manage">block-manage</a></li>
-<li><a href="#block-add">block-add</a></li>
 <li><a href="#category-create">category-create</a></li>
 <li><a href="#category-export">category-export</a></li>
 <li><a href="#category-list">category-list</a></li>
@@ -927,10 +966,11 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 <li><a href="#generate-lang">generate-lang</a></li>
 <li><a href="#generate-module">generate-module</a></li>
 <li><a href="#generate-qtype">generate-qtype</a></li>
+<li><a href="#gradebook-import">gradebook-import</a></li>
 </ul>
 </li>
 <li>
-<a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">I - S</a>
+<a data-toggle="collapse" data-parent="#accordion" href="#collapseFour">I - R</a>
 <ul id="collapseFour" class="panel-collapse collapse">
 <li><a href="#info">info</a></li>
 <li><a href="#info-plugins">info-plugins</a></li>
@@ -938,13 +978,11 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 <li><a href="#maintenance-on">maintenance-on</a></li>
 <li><a href="#module-config">module-config</a></li>
 <li><a href="#module-manage">module-manage</a></li>
-<li><a href="#user-create">user-create</a></li>
-<li><a href="#user-delete">user-delete</a></li>
-<li><a href="#user-getidbyname">user-getidbyname</a></li>
-<li><a href="#user-list">user-list</a></li>
-<li><a href="#user-mod">user-mod</a></li>
+<li><a href="#php-eval">php-eval</a></li>
 <li><a href="#random-label">random-label</a></li>
 <li><a href="#report-concurrency">report-concurrency</a></li>
+<li><a href="#role-create">role-create</a></li>
+<li><a href="#role-delete">role-delete</a></li>
 <li><a href="#role-update-capability">role-update-capability</a></li>
 <li><a href="#role-update-contextlevel">role-update-contextlevel</a></li>
 </ul>
@@ -953,7 +991,13 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive">S - Z</a>
 <ul id="collapseFive" class="panel-collapse collapse">
 <li><a href="#sql-run">sql-run</a></li>
+<li><a href="#sql-cli">sql-cli</a></li>
 <li><a href="#theme-info">theme-info</a></li>
+<li><a href="#user-create">user-create</a></li>
+<li><a href="#user-delete">user-delete</a></li>
+<li><a href="#user-getidbyname">user-getidbyname</a></li>
+<li><a href="#user-list">user-list</a></li>
+<li><a href="#user-mod">user-mod</a></li>
 <li><a href="#webservice-call">webservice-call</a></li>
 </ul>
 </li>

@@ -77,14 +77,6 @@ Or system-wide:
     sudo ln -s $PWD/moosh.php /usr/local/bin/moosh
 
 
-Local commands
-==============
-
-You can add your own, local commands to moosh by storing them in the same structure as moosh does but under ~/.moosh.
-For example, to create your custom command dev-mytest that works with any Moodle version, you would put it under:
-
-    ~/.moosh/Moosh/Command/Generic/Dev/MyTest.php
-
 xdotool integration
 ===================
 
@@ -94,25 +86,13 @@ You can automate some of the manual tasks (like refreshing browser page after ad
 
 Then go to ~/.mooshrc.php and add these flags:
 
-    $defaultOptions['global']['xdotool'] = false;
+    $defaultOptions['global']['xdotool'] = true;
     $defaultOptions['global']['browser_string'] = 'Mozilla Firefox';
 
 Change Mozilla Firefox to your preferred browser and you're good to go. Commands that currently support xdotool:
 
     form-add
 
-Contributing to moosh
-=====================
-
-1. Fork the project on github.
-2. Follow "installation from Moodle git" section.
-3. Look at existing plugins to see how they are done.
-4. Create new plugin/update existing one. You can use moosh itself to generate a new command from a template for you:
-
-    moosh generate-moosh category-command
-
-5. Update this README.md file with the example on how to use your plugin.
-6. Send me pull request.
 
 moosh praise
 ============

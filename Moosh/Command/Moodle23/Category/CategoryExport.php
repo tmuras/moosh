@@ -60,7 +60,14 @@ class CategoryExport extends MooshCommand
             if ($category->idnumber) {
                 echo "idnumber='{$category->idnumber}' ";
             }
-            echo "name='{$category->name}'>";
+
+            $name = str_replace(
+                array("&",     "<",    ">",    '"',      "'"),
+                array("&amp;", "&lt;", "&gt;", "&quot;", "&apos;"),
+                $category->name
+            );
+
+            echo "name='$name'>";
 
             foreach ($category->categories as $categories2) {
                 //var_dump($categories2);.

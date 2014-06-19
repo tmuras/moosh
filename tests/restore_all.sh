@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#set -x
+set -x
 set -e
 
 # Create or restore all data directories from git repository to test locations.
@@ -9,17 +9,17 @@ export GITCHECKOUT=$(cd .. && pwd -P)
 export VERSIONS="25 26"
 
 #moodledata25, moodledata26, etc will be created inside DATA
-export DATA="/home/tomasz/data/moosh-test"
+export DATA="/var/www/html/workspace/moosh"
 
 #Prefix for DB name, 25, 26 will be added at the end
 export DB="mooshtest_"
 export DBUSER=root
-export DBPASSWORD=
-export SHELLUSER=
+export DBPASSWORD=kryzys
+export SHELLUSER=tallock
 #export WWW="~/www/moosh-test"
 
 for V in $VERSIONS; do
-    echo Restoring $V
+    echo Restoring 
 
     #clean existing
     cd $DATA || exit 1

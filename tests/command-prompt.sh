@@ -5,11 +5,12 @@ install_db
 install_data
 cd $MOODLEDIR
 
-if moosh act assign 2 | grep 1 ; then
+if moosh activity-add assign | grep 1 ; then
   :
 else
   exit 1
 fi
+# What `moosh act assign 2` should actually do?
 
 if moosh user-c | grep "Not enough arguments" ; then
   :
@@ -35,3 +36,5 @@ if moosh asd | grep "No command provided" ; then
 else
   exit 1
 fi
+
+exit 0
