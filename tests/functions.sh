@@ -8,7 +8,7 @@ if [ -z "${DBNAME}" ]; then
     exit 1
 fi
 
-if [[ ! $(echo select 1 | mysql -u $DBUSER -p$DBPASSWORD $DBNAME) ]]; then
+if [[ ! $(echo "select 1 | mysql -u $DBUSER -p$DBPASSWORD $DBNAME") ]]; then
     echo Could not connect to the database, check \$DBUSER, \$DBNAME and \$DBPASSWORD
     exit 1
 fi
