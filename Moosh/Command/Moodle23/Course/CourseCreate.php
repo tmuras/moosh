@@ -20,7 +20,7 @@ class CourseCreate extends MooshCommand
         $this->addOption('d|description:', 'description');
         $this->addOption('F|format:', 'format (e.g. one of site, weeks, topics, etc.)');
         $this->addOption('i|idnumber:', 'id number');
-        $this->addOption('v|visible:', 'visible (boolean 0 or 1, by default created visible)');
+        $this->addOption('v|visible:', 'visible (y or n, by default created visible)');
 
         $this->addArgument('shortname');
 
@@ -42,7 +42,13 @@ class CourseCreate extends MooshCommand
             $course->description = $options['description'];
             $course->format = $options['format'];
             $course->idnumber = $options['idnumber'];
-            $course->visible = $options['visible'];
+            $visible = strtolower($options['visible']);
+            if($visible == 'n' || $visible == 'no' ){
+            	$visible = 0;
+            }else{
+            	$visible = 1;
+            }
+            $course->visible = $visible;
             $course->category = $options['category'];
             //either use API create_course
             $newcourse = create_course($course);
