@@ -7,7 +7,6 @@
  */
 
 namespace Moosh\Command\Moodle23\Category;
-use ___PHPSTORM_HELPERS\object;
 use Moosh\MooshCommand;
 
 class CategoryConfigSet extends MooshCommand
