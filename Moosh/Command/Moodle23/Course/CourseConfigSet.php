@@ -7,7 +7,6 @@
  */
 
 namespace Moosh\Command\Moodle23\Course;
-use ___PHPSTORM_HELPERS\object;
 use Moosh\MooshCommand;
 
 class CourseConfigSet extends MooshCommand
