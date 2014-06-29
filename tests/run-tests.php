@@ -64,7 +64,7 @@ function run_tests(array $commands) {
 };
 
 
-$support_versions = array('26', '25');
+$support_versions = array('25', '26');
 
 $out = '---
 title: CI
@@ -110,12 +110,13 @@ foreach($moodle25 as $k=>$v) {
     $results['25'][$k] = $v;
 }
 
-
+sort($all_commands);
 
 
 foreach ($all_commands as $command) {
 
-	$out .= "\t<tr>\n\t\t<td>$command</td>\n";
+	$out .= "\t<tr>\n\t\t<td><a href=\"/commands/#$command \">$command</td>\n";
+
 
 	foreach ($support_versions as $moodle) {
         //if($results[$moodle][])
@@ -155,7 +156,7 @@ Table legend:
     </tr>
     <tr>
         <td><i class="fa fa-ban"></td>
-        <td>Test not existing</td>
+        <td>Test not provided</td>
     </tr>
 </table></div>
 ';
