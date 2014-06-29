@@ -7,6 +7,7 @@
  */
 
 namespace Moosh\Command\Moodle23\Course;
+
 use Moosh\MooshCommand;
 use restore_controller;
 use restore_dbops;
@@ -26,8 +27,8 @@ class CourseRestore extends MooshCommand
     {
         global $CFG, $DB;
 
-        require_once($CFG->dirroot."/backup/util/includes/backup_includes.php");
-        require_once($CFG->dirroot."/backup/util/includes/restore_includes.php");
+        require_once($CFG->dirroot . "/backup/util/includes/backup_includes.php");
+        require_once($CFG->dirroot . "/backup/util/includes/restore_includes.php");
 
         //check if category is OK
         $category = $DB->get_record('course_categories', array('id' => $this->arguments[1]), '*', MUST_EXIST);
@@ -48,7 +49,7 @@ class CourseRestore extends MooshCommand
         //unzip into $CFG->dataroot / "temp" / "backup" / "auto_restore_" . $split[1];
         $backupdir = "moosh_restore_" . uniqid();
         $path = $CFG->dataroot . DIRECTORY_SEPARATOR . "temp" . DIRECTORY_SEPARATOR . "backup" . DIRECTORY_SEPARATOR . $backupdir;
-        if($this->verbose) {
+        if ($this->verbose) {
             echo "Extracting Moode backup file to: '" . $path . "'\n";
         }
 
@@ -58,35 +59,49 @@ class CourseRestore extends MooshCommand
 
         //extract original full & short names
         $xmlfile = $path . DIRECTORY_SEPARATOR . "course" . DIRECTORY_SEPARATOR . "course.xml";
+
+        // Different XML file in Moodle 1.9 backup
+        if (!file_exists($xmlfile)) {
+            $xmlfile = $path . DIRECTORY_SEPARATOR . "moodle.xml";
+        }
+
         $xml = simplexml_load_file($xmlfile);
         $fullname = $xml->xpath('/course/fullname');
+        if (!$fullname) {
+            $fullname = $xml->xpath('/MOODLE_BACKUP/COURSE/HEADER/FULLNAME');
+        }
         $shortname = $xml->xpath('/course/shortname');
+        if (!$shortname) {
+            $shortname = $xml->xpath('/MOODLE_BACKUP/COURSE/HEADER/SHORTNAME');
+        }
+
         $fullname = (string)($fullname[0]);
         $shortname = (string)($shortname[0]);
 
-        if(!$shortname) {
+        if (!$shortname) {
+
             cli_error('No shortname in the backup file.');
         }
 
-        if(!$fullname) {
+        if (!$fullname) {
             $fullname = $shortname;
         }
 
         //get unique shortname
-        if ($DB->get_record('course',array('category'=>$category->id,'shortname'=>$shortname))) {
+        if ($DB->get_record('course', array('category' => $category->id, 'shortname' => $shortname))) {
             $matches = NULL;
             preg_match('/(.*)_(\d+)$/', $shortname, $matches);
-            if($matches) {
+            if ($matches) {
                 $base = $matches[1];
                 $number = $matches[2];
             } else {
                 $base = $shortname;
                 $number = 1;
             }
-            $shortname = $base.'_'.$number;
-            while ($DB->get_record('course',array('category'=>$category->id,'shortname'=>$shortname))) {
+            $shortname = $base . '_' . $number;
+            while ($DB->get_record('course', array('category' => $category->id, 'shortname' => $shortname))) {
                 $number++;
-                $shortname = $base.'_'.$number;
+                $shortname = $base . '_' . $number;
             }
         }
 
@@ -99,12 +114,15 @@ class CourseRestore extends MooshCommand
         $courseid = restore_dbops::create_new_course($fullname, $shortname, $category->id);
         $rc = new restore_controller($backupdir, $courseid, backup::INTERACTIVE_NO,
             backup::MODE_GENERAL, $admin->id, backup::TARGET_NEW_COURSE);
+        if ($rc->get_status() == backup::STATUS_REQUIRE_CONV) {
+            $rc->convert();
+        }
         $plan = $rc->get_plan();
         $tasks = $plan->get_tasks();
         $rc->execute_precheck();
         $rc->execute_plan();
         $rc->destroy();
 
-        echo "New course ID: $courseid\n";
+        echo "New course ID for '$shortname': $courseid in {$category->id}\n";
     }
 }
