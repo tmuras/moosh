@@ -426,6 +426,25 @@ Example 3: Like above but with no duplicates and show path relative to data root
 
     moosh file-list -r -i 'id>100 AND id<200' | moosh file-path -s | sort | uniq
 
+<a name="file-upload">file-upload</a>
+--------
+
+Upload selected file to user's private area. Must specify full path to filename.
+
+* -f|--filename - change name of file saved to moodle.
+* -m|--mintype - set type of displayed miniature.
+* -l|--license - set license of upload file.
+* -c|--contextid - set context id.
+* -r|--replace - replace existing file
+
+Example 1: Upload file /home/user/file to private area of user with id 2.
+    
+    moosh file-upload /home/user/file 2 
+
+Example 2: Upload file /home/user/file and change its name for moodle.
+
+    moosh file-upload --filename="new file name" /home/user/file 2 
+
 <a name="form-add">form-add</a>
 --------
 
