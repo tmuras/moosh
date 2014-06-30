@@ -73,11 +73,8 @@ class FileUpload extends MooshCommand
         $sql = "INSERT INTO {files}
                 VALUES (NULL, \"$contenthash\", \"$pathnamehash\", \"$contextid\", \"$component\", \"$filearea\", \"$itemid\", \"$filepath\", \"$filename\", \"$userid\", \"$filesize\", \"$mintype\", \"$status\", \"$source\", \"$author\", \"$license\", \"$timecreated\", \"$timemodified\", \"$sortorder\", NULL, NULL, NULL)";
 
-
         $destDir = $CFG->dataroot . "/filedir/" . $this->getFileDirPath($this->arguments[0]);
         $dest = $destDir . "/" . $contenthash;
-
-        echo "DUPADUPADUAP" . $destDir . " " . $dest . "\n";
 
         if (!mkdir($destDir, 0777, true)) {
             die('Failed to create folders...');
@@ -90,8 +87,7 @@ class FileUpload extends MooshCommand
 
         $DB->execute($sql);
 
-
-           
+        echo "File uploaded successfully!"
     }
 
     private function getFilepathHash($filename, $contextid, $filepath = "")
