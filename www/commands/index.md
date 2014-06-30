@@ -20,6 +20,19 @@ Example:
     moosh activity-add --name "General course forum" --section 2 forum 3
     moosh activity-add --name "Easy assignent" --section 2 --idnumber "ASD123" assign 2
 
+<a name="auth-manage">auth-manage</a>
+---------------
+
+Allows to manage auth plugins. Disable, enable, moving up and down in order.
+
+Example 1. Disable External database (bd) auth plugin.
+
+    moosh auth-manage disable db
+
+Example 2. Move up Email-based self-registration (email).
+
+    moosh auth-manage up email 
+
 <a name="block-add">block-add</a>
 ---------------
 
