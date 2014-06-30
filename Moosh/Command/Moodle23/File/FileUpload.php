@@ -87,7 +87,7 @@ class FileUpload extends MooshCommand
 
         $DB->execute($sql);
 
-        echo "File uploaded successfully!"
+        echo "File uploaded successfully!";
     }
 
     private function getFilepathHash($filename, $contextid, $filepath = "")
