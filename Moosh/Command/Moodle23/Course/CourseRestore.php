@@ -90,15 +90,11 @@ class CourseRestore extends MooshCommand
             }
         }
 
-        $admin = get_admin();
-        if (!$admin) {
-            echo "Error: No admin account was found";
-            exit(1);
-        }
+        $user = $this->user;
 
         $courseid = restore_dbops::create_new_course($fullname, $shortname, $category->id);
         $rc = new restore_controller($backupdir, $courseid, backup::INTERACTIVE_NO,
-            backup::MODE_GENERAL, $admin->id, backup::TARGET_NEW_COURSE);
+            backup::MODE_GENERAL, $user->id, backup::TARGET_NEW_COURSE);
         $plan = $rc->get_plan();
         $tasks = $plan->get_tasks();
         $rc->execute_precheck();

@@ -57,15 +57,11 @@ class CourseRestoreExisting extends MooshCommand
         $fp = get_file_packer('application/vnd.moodle.backup');
         $fp->extract_to_pathname($arguments[0], $path);
 
-        $admin = get_admin();
-        if (!$admin) {
-            echo "Error: No admin account was found";
-            exit(1);
-        }
+        $user = $this->user;
 
         $courseid = $course->id;
         $rc = new restore_controller($backupdir, $courseid, backup::INTERACTIVE_NO,
-            backup::MODE_GENERAL, $admin->id, backup::TARGET_CURRENT_ADDING);
+            backup::MODE_GENERAL, $user->id, backup::TARGET_CURRENT_ADDING);
         $plan = $rc->get_plan();
         $tasks = $plan->get_tasks();
         $rc->execute_precheck();
