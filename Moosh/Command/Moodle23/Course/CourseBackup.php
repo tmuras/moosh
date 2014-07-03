@@ -28,11 +28,8 @@ class CourseBackup extends MooshCommand
 
         require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
 
-        $admin = get_admin();
-        if (!$admin) {
-            echo "Error: No admin account was found";
-            exit(1);
-        }
+        $user = $this->user;
+        
 
         //check if course id exists
         $course = $DB->get_record('course', array('id' => $this->arguments[0]), '*', MUST_EXIST);
@@ -52,7 +49,7 @@ class CourseBackup extends MooshCommand
         }
 
         $bc = new backup_controller(\backup::TYPE_1COURSE, $this->arguments[0], backup::FORMAT_MOODLE,
-            backup::INTERACTIVE_NO, backup::MODE_GENERAL, $admin->id);
+            backup::INTERACTIVE_NO, backup::MODE_GENERAL, $user->id);
 
         $bc->execute_plan();
         $result = $bc->get_results();

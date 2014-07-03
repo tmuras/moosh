@@ -35,13 +35,8 @@ class GradebookImport extends MooshCommand
         require_once($CFG->libdir . '/csvlib.class.php');
 
         $options = $this->expandedOptions;
-
-        $admin = get_admin();
-        if (!$admin) {
-            echo "Error: No admin account was found";
-            exit(1);
-        }
-        $USER = $admin;
+        
+        $USER = $this->user;
 
         $text = file_get_contents($this->arguments[0]);
         if (!$text) {

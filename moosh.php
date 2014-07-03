@@ -28,16 +28,19 @@ $options = array('debug' => true, 'optimizations' => 0);
 require_once $moosh_dir . '/includes/functions.php';
 require_once $moosh_dir . '/includes/default_options.php';
 
+
 use GetOptionKit\ContinuousOptionParser;
 use GetOptionKit\OptionSpecCollection;
 
 error_reporting(E_ALL);
 
 define('MOOSH_VERSION', '0.15.2');
+define('MOODLE_INTERNAL', true);
 
 $appspecs = new OptionSpecCollection;
 $spec_verbose = $appspecs->add('v|verbose', "be verbose");
 $spec_moodle_path = $appspecs->add('p|moodle-path:', "Moodle directory.");
+$spec_moodle_user = $appspecs->add('u|user', "Moodle user, by default ADMIN");
 
 $parser = new ContinuousOptionParser($appspecs);
 $app_options = $parser->parse($argv);
@@ -155,6 +158,7 @@ if ($moodlerc) {
 $subcommand = $subcommands[$subcommand];
 
 
+
 if ($subcommand->bootstrapLevel()) {
     define('CLI_SCRIPT', true);
     if ($subcommand->bootstrapLevel() == MooshCommand::$BOOTSTRAP_CONFIG) {
@@ -190,6 +194,18 @@ if ($subcommand->bootstrapLevel()) {
 
 }
 
+//require_once($top_dir . '/lib/datalib.php');
+
+if ($app_options->has('user')) {
+    $user = get_user_by_name($app_options['user']->value);
+} else {
+    $user = get_admin();
+    if (!$user) {
+        echo "Error: No admin account was found";
+        exit(1);
+    }
+}
+
 if ($app_options->has('verbose')) {
     $subcommand->verbose = true;
 }
@@ -197,6 +213,7 @@ if ($app_options->has('verbose')) {
 $subcommand->cwd = $cwd;
 $subcommand->mooshDir = $moosh_dir;
 $subcommand->defaults = $options;
+$subcommand->user = $user;
 
 //process the arguments
 $subcommand->setParsedOptions($subcommand_options[$subcommand->getName()]);

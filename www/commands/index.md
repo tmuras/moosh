@@ -20,6 +20,19 @@ Example:
     moosh activity-add --name "General course forum" --section 2 forum 3
     moosh activity-add --name "Easy assignent" --section 2 --idnumber "ASD123" assign 2
 
+<a name="auth-manage">auth-manage</a>
+---------------
+
+Allows to manage auth plugins. Disable, enable, moving up and down in order.
+
+Example 1. Disable External database (bd) auth plugin.
+
+    moosh auth-manage disable db
+
+Example 2. Move up Email-based self-registration (email).
+
+    moosh auth-manage up email 
+
 <a name="block-add">block-add</a>
 ---------------
 
@@ -425,6 +438,25 @@ Example 2: Show paths to files with ID bewteen 100 and 200
 Example 3: Like above but with no duplicates and show path relative to data root (-r)
 
     moosh file-list -r -i 'id>100 AND id<200' | moosh file-path -s | sort | uniq
+
+<a name="file-upload">file-upload</a>
+--------
+
+Upload selected file to user's private area. Must specify full path to filename.
+
+* -f|--filename - change name of file saved to moodle.
+* -m|--mintype - set type of displayed miniature.
+* -l|--license - set license of upload file.
+* -c|--contextid - set context id.
+* -r|--replace - replace existing file
+
+Example 1: Upload file /home/user/file to private area of user with id 2.
+    
+    moosh file-upload /home/user/file 2 
+
+Example 2: Upload file /home/user/file and change its name for moodle.
+
+    moosh file-upload --filename="new file name" /home/user/file 2 
 
 <a name="form-add">form-add</a>
 --------
