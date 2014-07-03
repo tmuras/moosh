@@ -21,6 +21,9 @@ class CourseRestore extends MooshCommand
 
         $this->addArgument('backup_file');
         $this->addArgument('category_id');
+
+        $this->addOption('d|directory', 'restore from extracted directory (1st param) under dataroot/temp/backup');
+
     }
 
     public function execute()
@@ -34,13 +37,26 @@ class CourseRestore extends MooshCommand
         $category = $DB->get_record('course_categories', array('id' => $this->arguments[1]), '*', MUST_EXIST);
 
         $arguments = $this->arguments;
-        if ($arguments[0][0] != '/') {
-            $arguments[0] = $this->cwd . DIRECTORY_SEPARATOR . $arguments[0];
+        $options = $this->options;
+
+        if (!$options['directory']) {
+            if ($arguments[0][0] != '/') {
+                $arguments[0] = $this->cwd . DIRECTORY_SEPARATOR . $arguments[0];
+            }
+
+            if (!file_exists($arguments[0])) {
+                cli_error("Backup file '" . $arguments[0] . "' does not exist.");
+            }
+
+        } else {
+            $path = $CFG->dataroot . DIRECTORY_SEPARATOR . "temp" . DIRECTORY_SEPARATOR . "backup" . DIRECTORY_SEPARATOR . $arguments[0];
+
+            if (!file_exists($path) || !is_dir($path)) {
+                cli_error("Directory '$path' does not exist or not a directory.");
+            }
+
         }
 
-        if (!file_exists($arguments[0])) {
-            cli_error("Backup file '" . $arguments[0] . "' does not exist.");
-        }
 
         if (!is_readable($arguments[0])) {
             cli_error("Backup file '" . $arguments[0] . "' is not readable.");
@@ -108,6 +124,7 @@ class CourseRestore extends MooshCommand
         $user = $this->user;
 
         $courseid = restore_dbops::create_new_course($fullname, $shortname, $category->id);
+        echo "Restoring (new course id,shortname,destination category): $courseid,$shortname," . $category->id . "\n";
         $rc = new restore_controller($backupdir, $courseid, backup::INTERACTIVE_NO,
             backup::MODE_GENERAL, $admin->id, backup::TARGET_NEW_COURSE);
         if ($rc->get_status() == backup::STATUS_REQUIRE_CONV) {
