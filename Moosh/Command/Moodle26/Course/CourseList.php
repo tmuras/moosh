@@ -19,9 +19,11 @@ class CourseList extends MooshCommand
         $this->addArgument('search');
         $this->addOption('n|idnumber', 'show idnumber');
         $this->addOption('i|id', 'display id only column');
-        $this->addOption('c|category:', 'courses from given category id only');
+        $this->addOption('c|category:', 'courses from given category id only', 1);
         $this->addOption('v|visible:', 'show all/yes/no visible', 'all');
         $this->addOption('e|empty:', 'show only empty courses: all/yes/no', 'all');
+        $this->addOption('f|fields:', 'show only those fields in the output (comma separated)');
+        $this->addOption('o|output:', 'output format: tab, csv', 'csv');
 
         $this->minArguments = 0;
         $this->maxArguments = 255;
@@ -107,10 +109,18 @@ class CourseList extends MooshCommand
     protected function display($courses)
     {
         $options = $this->expandedOptions;
+        $fields = NULL;
+        if ($options['fields']) {
+            $fields = str_getcsv($options["fields"]);
+            $fields = array_combine($fields, $fields);
+        }
 
         $outputheader = $outputcontent = "";
         $doheader = 0;
+        $header = array();
+        $output = array();
         foreach ($courses as $course) {
+            $line = array();
             if ($options['visible'] == 'yes' && $course->visible == 0) {
                 continue;
             }
@@ -122,22 +132,43 @@ class CourseList extends MooshCommand
                 continue;
             }
             foreach ($course as $field => $value) {
+                if ($fields && !isset($fields[$field])) {
+                    continue;
+                }
                 if ($doheader == 0) {
-                    $outputheader .= str_pad($field, 15);
+                    $header[] = $field;
+                    //$outputheader .= str_pad($field, 20);
                 }
                 if ($field == "category" && $value > 0) {
                     $value = $this->get_parent($value);
                 } elseif ($field == "parent") {
                     $value = "Top";
                 }
-
-                $outputcontent .= str_pad($value, 15);
+                $line[] = $value;
+                //$outputcontent .= str_pad($value, 20);
             }
-            $outputcontent .= "\n";
+            $output[] = $line;
+            //$outputcontent .= "\n";
             $doheader++;
         }
-        echo $outputheader . "\n";
-        echo $outputcontent;
+        if (!$options['id']) {
+            array_unshift($output, $header);
+            //$outputheader .= "\n";
+            //echo $outputheader;
+        }
+        //echo $outputcontent;
+        foreach ($output as $line) {
+            if ($options['output'] == 'csv') {
+
+                foreach ($line as $k => $l) {
+                    $line[$k] = "\"$l\"";
+                }
+                echo implode(',', $line) . "\n";
+
+            } elseif ($options['output'] == 'tab') {
+                echo implode("\t", $line) . "\n";
+            }
+        }
     }
 }
 
