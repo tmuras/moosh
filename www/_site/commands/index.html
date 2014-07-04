@@ -84,6 +84,20 @@ moosh activity-add --name "General course forum" --section 2 forum 3
 moosh activity-add --name "Easy assignent" --section 2 --idnumber "ASD123" assign 2
 </code></pre>
 
+<h2><a name="auth-manage">auth-manage</a></h2>
+
+<p>Allows to manage auth plugins. Disable, enable, moving up and down in order.</p>
+
+<p>Example 1. Disable External database (bd) auth plugin.</p>
+
+<pre><code>moosh auth-manage disable db
+</code></pre>
+
+<p>Example 2. Move up Email-based self-registration (email).</p>
+
+<pre><code>moosh auth-manage up email 
+</code></pre>
+
 <h2><a name="block-add">block-add</a></h2>
 
 <p>Add a new block instance to any system context (front page, category, course, module ...)
@@ -518,6 +532,29 @@ contextid, component, filearea, itemid, filepath, filename, userid, filesize, mi
 <p>Example 3: Like above but with no duplicates and show path relative to data root (-r)</p>
 
 <pre><code>moosh file-list -r -i 'id&gt;100 AND id&lt;200' | moosh file-path -s | sort | uniq
+</code></pre>
+
+<h2><a name="file-upload">file-upload</a></h2>
+
+<p>Upload selected file to user's private area. Must specify full path to filename.</p>
+
+<ul>
+<li>-f|--filename - change name of file saved to moodle.</li>
+<li>-m|--mintype - set type of displayed miniature.</li>
+<li>-l|--license - set license of upload file.</li>
+<li>-c|--contextid - set context id.</li>
+<li>-r|--replace - replace existing file</li>
+</ul>
+
+
+<p>Example 1: Upload file /home/user/file to private area of user with id 2.</p>
+
+<pre><code>moosh file-upload /home/user/file 2 
+</code></pre>
+
+<p>Example 2: Upload file /home/user/file and change its name for moodle.</p>
+
+<pre><code>moosh file-upload --filename="new file name" /home/user/file 2 
 </code></pre>
 
 <h2><a name="form-add">form-add</a></h2>

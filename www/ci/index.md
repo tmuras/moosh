@@ -24,6 +24,11 @@ CI
 		<td><i class="fa fa-ban"></i></td>
 	</tr>
 	<tr>
+		<td><a href="/commands/#auth-manage ">auth-manage</td>
+		<td><i class="fa fa-check"></i></td>
+		<td><i class="fa fa-check"></i></td>
+	</tr>
+	<tr>
 		<td><a href="/commands/#block-add ">block-add</td>
 		<td><i class="fa fa-check"></i></td>
 		<td><i class="fa fa-check"></i></td>
@@ -35,6 +40,11 @@ CI
 	</tr>
 	<tr>
 		<td><a href="/commands/#cache-clear ">cache-clear</td>
+		<td><i class="fa fa-ban"></i></td>
+		<td><i class="fa fa-ban"></i></td>
+	</tr>
+	<tr>
+		<td><a href="/commands/#category-config-set ">category-config-set</td>
 		<td><i class="fa fa-ban"></i></td>
 		<td><i class="fa fa-ban"></i></td>
 	</tr>
@@ -150,8 +160,8 @@ CI
 	</tr>
 	<tr>
 		<td><a href="/commands/#course-restore ">course-restore</td>
-		<td><i class="fa fa-check"></i></td>
-		<td><i class="fa fa-check"></i></td>
+		<td><i class="fa fa-times"></i></td>
+		<td><i class="fa fa-times"></i></td>
 	</tr>
 	<tr>
 		<td><a href="/commands/#course-restoreexisting ">course-restoreexisting</td>
@@ -185,8 +195,8 @@ CI
 	</tr>
 	<tr>
 		<td><a href="/commands/#download-moodle ">download-moodle</td>
-		<td><i class="fa fa-check"></i></td>
-		<td><i class="fa fa-check"></i></td>
+		<td><i class="fa fa-times"></i></td>
+		<td><i class="fa fa-times"></i></td>
 	</tr>
 	<tr>
 		<td><a href="/commands/#file-delete ">file-delete</td>
@@ -196,10 +206,15 @@ CI
 	<tr>
 		<td><a href="/commands/#file-list ">file-list</td>
 		<td><i class="fa fa-times"></i></td>
-		<td><i class="fa fa-times"></i></td>
+		<td><i class="fa fa-check"></i></td>
 	</tr>
 	<tr>
 		<td><a href="/commands/#file-path ">file-path</td>
+		<td><i class="fa fa-check"></i></td>
+		<td><i class="fa fa-check"></i></td>
+	</tr>
+	<tr>
+		<td><a href="/commands/#file-upload ">file-upload</td>
 		<td><i class="fa fa-check"></i></td>
 		<td><i class="fa fa-check"></i></td>
 	</tr>
@@ -282,6 +297,11 @@ CI
 		<td><a href="/commands/#maintenance-on ">maintenance-on</td>
 		<td><i class="fa fa-times"></i></td>
 		<td><i class="fa fa-times"></i></td>
+	</tr>
+	<tr>
+		<td><a href="/commands/#missing-files-parse ">missing-files-parse</td>
+		<td><i class="fa fa-ban"></i></td>
+		<td><i class="fa fa-ban"></i></td>
 	</tr>
 	<tr>
 		<td><a href="/commands/#module-config ">module-config</td>
