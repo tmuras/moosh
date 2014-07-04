@@ -11,8 +11,9 @@ function get_commands_list($moodle_ver) {
     run_external_command("cp config$moodle_ver.sh config.sh", "Couldn't copy tests config file");
     $file = file_get_contents("config.sh");
 
+    $moosh = __DIR__ . '/../moosh.php';
     preg_match("/(?<=MOODLEDIR=)(.*)/", $file, $moodledir);
-    exec("cd $moodledir[0] && moosh", $output);
+    exec("cd $moodledir[0] && $moosh", $output);
 
     $commands_list = array();
 
