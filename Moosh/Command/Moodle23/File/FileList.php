@@ -57,7 +57,7 @@ timemodified
 
         //check if asking for course files: course=NNN
         $match = NULL;
-        if(preg_match('/course=(\d+)/',$query,$match) !== false) {
+        if(preg_match('/course=(\d+)/',$query,$match)) {
             //get all context IDs
             $courseid = $match[1];
 
