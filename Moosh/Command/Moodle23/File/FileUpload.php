@@ -15,16 +15,14 @@ class FileUpload extends MooshCommand
     {
         parent::__construct('upload', 'file');
 
-        $this->addOption('f|filename', 'change name of file saved to moodle');
-        $this->addOption('m|mintype', 'set type of displayed miniature');
-        $this->addOption('l|license', 'set license of upload file');
-        $this->addOption('c|contextid', 'set context id');
+        $this->addOption('f|filename:', 'change name of file saved to moodle');
+        $this->addOption('m|mintype:', 'set type of displayed miniature');
+        $this->addOption('l|license:', 'set license of upload file');
+        $this->addOption('c|contextid:', 'set context id');
         $this->addOption('r|replace', 'replace existing file');
 
         $this->addArgument('file_path');
         $this->addArgument('user_id');
-        $this->minArguments = 1;
-        $this->maxArguments = 255;
     }
 
     public function execute()
@@ -55,37 +53,41 @@ class FileUpload extends MooshCommand
             $filename = basename($this->arguments[0]);
         }
 
-        $contenthash = sha1_file($this->arguments[0]);
-        $pathnamehash = $this->getFilepathHash($this->arguments[0], $contextid);
-        $component = "user";
-        $filearea = "private";
-        $itemid = "0";
-        $filepath = "/";
-        $userid = $this->arguments[1];
-        $filesize = filesize($this->arguments[0]);
-        $status = "0";
-        $source = basename($this->arguments[0]);
-        $author = "Admin User";
-        $timecreated = time();
-        $timemodified = time();
-        $sortorder = "0";
+        $fp = get_file_storage();
 
-        $sql = "INSERT INTO {files}
-                VALUES (NULL, \"$contenthash\", \"$pathnamehash\", \"$contextid\", \"$component\", \"$filearea\", \"$itemid\", \"$filepath\", \"$filename\", \"$userid\", \"$filesize\", \"$mintype\", \"$status\", \"$source\", \"$author\", \"$license\", \"$timecreated\", \"$timemodified\", \"$sortorder\", NULL, NULL, NULL)";
 
-        $destDir = $CFG->dataroot . "/filedir/" . $this->getFileDirPath($this->arguments[0]);
-        $dest = $destDir . "/" . $contenthash;
 
-        if (!mkdir($destDir, 0777, true)) {
-            die('Failed to create folders...');
-        }
+        // $contenthash = sha1_file($this->arguments[0]);
+        // $pathnamehash = $this->getFilepathHash($this->arguments[0], $contextid);
+        // $component = "user";
+        // $filearea = "private";
+        // $itemid = "0";
+        // $filepath = "/";
+        // $userid = $this->arguments[1];
+        // $filesize = filesize($this->arguments[0]);
+        // $status = "0";
+        // $source = basename($this->arguments[0]);
+        // $author = "Admin User";
+        // $timecreated = time();
+        // $timemodified = time();
+        // $sortorder = "0";
 
-        $source = $this->arguments[0];
-        if (!copy($source, $dest)) {
-            die('Failed to copy uploaded file...');
-        }
+        // $sql = "INSERT INTO {files}
+        //         VALUES (NULL, \"$contenthash\", \"$pathnamehash\", \"$contextid\", \"$component\", \"$filearea\", \"$itemid\", \"$filepath\", \"$filename\", \"$userid\", \"$filesize\", \"$mintype\", \"$status\", \"$source\", \"$author\", \"$license\", \"$timecreated\", \"$timemodified\", \"$sortorder\", NULL, NULL, NULL)";
 
-        $DB->execute($sql);
+        // $destDir = $CFG->dataroot . "/filedir/" . $this->getFileDirPath($this->arguments[0]);
+        // $dest = $destDir . "/" . $contenthash;
+
+        // if (!mkdir($destDir, 0777, true)) {
+        //     die('Failed to create folders...');
+        // }
+
+        // $source = $this->arguments[0];
+        // if (!copy($source, $dest)) {
+        //     die('Failed to copy uploaded file...');
+        // }
+
+        // $DB->execute($sql);
 
         echo "File uploaded successfully!";
     }
