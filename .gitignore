@@ -7,3 +7,4 @@ config.sh
 *.swp
 tests/config25.sh
 tests/config26.sh
+tests/out.txt

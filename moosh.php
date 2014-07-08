@@ -40,7 +40,7 @@ define('MOODLE_INTERNAL', true);
 $appspecs = new OptionSpecCollection;
 $spec_verbose = $appspecs->add('v|verbose', "be verbose");
 $spec_moodle_path = $appspecs->add('p|moodle-path:', "Moodle directory.");
-$spec_moodle_user = $appspecs->add('u|user', "Moodle user, by default ADMIN");
+$spec_moodle_user = $appspecs->add('u|user:', "Moodle user, by default ADMIN");
 
 $parser = new ContinuousOptionParser($appspecs);
 $app_options = $parser->parse($argv);

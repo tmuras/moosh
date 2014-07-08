@@ -10,7 +10,9 @@ CI
     <thead>
       <tr>
         <th>Function</th>
-        		<th>Moodle 25</th>		<th>Moodle 26</th></tr>
+		<th>Moodle 25</th>		
+		<th>Moodle 26</th>
+	  </tr>
     </thead>
     <tbody>
     	<tr>
@@ -409,9 +411,9 @@ CI
 		<td><i class="fa fa-ban"></i></td>
 	</tr>
 </tbody>
-	</table>
-	</div>
-=======
+</table>
+</div>
+
 Table legend:
 <div class="table-responsive">
 <table>
