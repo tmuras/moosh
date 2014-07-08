@@ -18,7 +18,7 @@ class PluginFetchInfo extends MooshCommand
     public function __construct()
     {
         parent::__construct('fetchinfo', 'plugin');
-        $this->addOption('p|path:', 'path to result json file', "~/.moosh/plugins.json");
+        $this->addOption('p|path:', 'path to result json file', getenv("HOME") . "/.moosh/plugins.json");
         $this->addOption('l|limit:', 'limit fetched results');
 
     }
