@@ -194,10 +194,12 @@ if ($subcommand->bootstrapLevel()) {
 
 }
 
-//require_once($top_dir . '/lib/datalib.php');
-
 if ($app_options->has('user')) {
     $user = get_user_by_name($app_options['user']->value);
+    if (!$user) {
+        echo "Error: No user account was found";
+        exit(1);
+    }
 } else {
     $user = get_admin();
     if (!$user) {
@@ -206,6 +208,8 @@ if ($app_options->has('user')) {
     }
 }
 
+complete_user_login($user);
+
 if ($app_options->has('verbose')) {
     $subcommand->verbose = true;
 }
@@ -213,7 +217,7 @@ if ($app_options->has('verbose')) {
 $subcommand->cwd = $cwd;
 $subcommand->mooshDir = $moosh_dir;
 $subcommand->defaults = $options;
-$subcommand->user = $user;
+
 
 //process the arguments
 $subcommand->setParsedOptions($subcommand_options[$subcommand->getName()]);

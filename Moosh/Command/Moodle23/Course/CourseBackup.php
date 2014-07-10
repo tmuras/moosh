@@ -26,10 +26,7 @@ class CourseBackup extends MooshCommand
     {
         global $CFG, $DB;
 
-        require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
-
-        $user = $this->user;
-        
+        require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');        
 
         //check if course id exists
         $course = $DB->get_record('course', array('id' => $this->arguments[0]), '*', MUST_EXIST);
@@ -49,7 +46,7 @@ class CourseBackup extends MooshCommand
         }
 
         $bc = new backup_controller(\backup::TYPE_1COURSE, $this->arguments[0], backup::FORMAT_MOODLE,
-            backup::INTERACTIVE_NO, backup::MODE_GENERAL, $user->id);
+            backup::INTERACTIVE_NO, backup::MODE_GENERAL, $this->user->id);
 
         $bc->execute_plan();
         $result = $bc->get_results();
