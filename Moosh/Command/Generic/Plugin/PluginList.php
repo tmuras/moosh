@@ -17,7 +17,7 @@ class PluginList extends MooshCommand
         parent::__construct('list', 'plugin');
 
         $this->addArgument('query');
-        $this->addOption('p|path', 'path to plugins.json file', getenv("HOME") . '/.moosh/plugins.json');    
+        $this->addOption('p|path:', 'path to plugins.json file', home_dir() . '/.moosh/plugins.json');    
     }
 
     public function execute()
