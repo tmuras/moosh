@@ -289,6 +289,20 @@ Example 2: Enable self enrolment on a course with an enrolment key
 
     moosh course-enableselfenrol --key "an example enrolment key" 3
 
+
+<a name="course-list">course-list</a>
+----------------------
+
+Lists courses with given short or full name.
+
+Example 1: List all courses with shor or full name containing phrase 'student'
+
+    moosh course-list student
+
+Example 2: List all courses with shor or full name containing phrase 'course' and display only id's of courses.
+
+    moosh course-list course -i
+
 <a name="course-reset">course-reset</a>
 --------------
 
