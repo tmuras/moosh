@@ -1,4 +1,10 @@
 {
+    "name": "tmuras/moosh",
+    "description": "Moosh stands for MOOdle SHell. It is a command-line tool that will allow you to perform most common Moodle tasks.",
+    "license": "GPL-3.0+",
+    "version": "0.5.12-dev",
+    "homepage": "http://moosh-online.com",
+    "keywords": ["moodle", "shell", "cli"],
     "repositories":[
         {
             "type":"package",
@@ -106,5 +112,6 @@
         "danielneis/moodle-gradereport_newgradereport":"dev-master#691f53a15de352c3fe25da03c001a97a76b18358",
         "moodlehq/moodle-local_amos":"dev-master#8a1f8e6f1322a0f5c247e7092a763b3b5b27c022",
         "moodlehq/moodle-local_wstemplate":"dev-master#add2ad0949e72f025c0aad36c4b822e8c6479d3b"
-    }
+    },
+    "bin": ["moosh.php"]
 }
