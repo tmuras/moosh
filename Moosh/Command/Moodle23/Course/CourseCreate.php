@@ -40,7 +40,11 @@ class CourseCreate extends MooshCommand
             $course->fullname = $options['fullname'];
             $course->shortname = $argument;
             $course->description = $options['description'];
-            $course->format = $options['format'];
+            $format = $options['format'];
+            if(!$format){
+            	$format = get_config('moodlecourse', 'format');
+            }
+            $course->format = $format;
             $course->idnumber = $options['idnumber'];
             $visible = strtolower($options['visible']);
             if($visible == 'n' || $visible == 'no' ){

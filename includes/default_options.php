@@ -24,7 +24,6 @@ $defaultOptions['role']['description'] = '%s';
 
 $defaultOptions['course']['fullname'] = '%s';
 $defaultOptions['course']['description'] = '%s';
-$defaultOptions['course']['format'] = 'weeks';
 $defaultOptions['course']['visible'] = 1;
 $defaultOptions['course']['category'] = 1;
 
