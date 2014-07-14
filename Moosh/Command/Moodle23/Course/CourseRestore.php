@@ -37,7 +37,7 @@ class CourseRestore extends MooshCommand
         $category = $DB->get_record('course_categories', array('id' => $this->arguments[1]), '*', MUST_EXIST);
 
         $arguments = $this->arguments;
-        $options = $this->options;
+        $options = $this->expandedOptions;
 
         if (!$options['directory']) {
             if ($arguments[0][0] != '/') {
@@ -48,30 +48,32 @@ class CourseRestore extends MooshCommand
                 cli_error("Backup file '" . $arguments[0] . "' does not exist.");
             }
 
-        } else {
-            $path = $CFG->dataroot . DIRECTORY_SEPARATOR . "temp" . DIRECTORY_SEPARATOR . "backup" . DIRECTORY_SEPARATOR . $arguments[0];
-
-            if (!file_exists($path) || !is_dir($path)) {
-                cli_error("Directory '$path' does not exist or not a directory.");
+            if (!is_readable($arguments[0])) {
+                cli_error("Backup file '" . $arguments[0] . "' is not readable.");
             }
 
+        } else {
+            $path = $CFG->dataroot . DIRECTORY_SEPARATOR . "temp" . DIRECTORY_SEPARATOR . "backup" . DIRECTORY_SEPARATOR . $arguments[0];
+            if (!file_exists($path) || !is_dir($path) || !is_readable($path)) {
+                cli_error("Directory '$path' does not exist, not a directory or not readable.");
+            }
         }
 
 
-        if (!is_readable($arguments[0])) {
-            cli_error("Backup file '" . $arguments[0] . "' is not readable.");
-        }
+        if (!$options['directory']) {
+            //unzip into $CFG->dataroot / "temp" / "backup" / "auto_restore_" . $split[1];
+            $backupdir = "moosh_restore_" . uniqid();
+            $path = $CFG->dataroot . DIRECTORY_SEPARATOR . "temp" . DIRECTORY_SEPARATOR . "backup" . DIRECTORY_SEPARATOR . $backupdir;
+            if ($this->verbose) {
+                echo "Extracting Moode backup file to: '" . $path . "'\n";
+            }
 
-        //unzip into $CFG->dataroot / "temp" / "backup" / "auto_restore_" . $split[1];
-        $backupdir = "moosh_restore_" . uniqid();
-        $path = $CFG->dataroot . DIRECTORY_SEPARATOR . "temp" . DIRECTORY_SEPARATOR . "backup" . DIRECTORY_SEPARATOR . $backupdir;
-        if ($this->verbose) {
-            echo "Extracting Moode backup file to: '" . $path . "'\n";
+            /** @var $fp file_packer */
+            $fp = get_file_packer('application/vnd.moodle.backup');
+            $fp->extract_to_pathname($arguments[0], $path);
+        } else {
+            $backupdir = $arguments[0];
         }
-
-        /** @var $fp file_packer */
-        $fp = get_file_packer('application/vnd.moodle.backup');
-        $fp->extract_to_pathname($arguments[0], $path);
 
         //extract original full & short names
         $xmlfile = $path . DIRECTORY_SEPARATOR . "course" . DIRECTORY_SEPARATOR . "course.xml";
