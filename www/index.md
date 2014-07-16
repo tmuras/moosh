@@ -35,6 +35,12 @@ As a result you will get a list of all commands that contain string "user":
     user-list
     user-mod
 
+Moosh will always try to use Moodle's superuser. But you can change on what user you want to execute specific command. For example:
+
+    moosh -u testuser course-backup 1 
+
+will execute command `course-backup` for user with name `testuser`
+
 Requirements
 ============
 
