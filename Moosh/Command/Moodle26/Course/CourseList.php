@@ -19,7 +19,7 @@ class CourseList extends MooshCommand
         $this->addArgument('search');
         $this->addOption('n|idnumber', 'show idnumber');
         $this->addOption('i|id', 'display id only column');
-        $this->addOption('c|category:', 'courses from given category id only', 1);
+        $this->addOption('c|categorysearch:', 'courses from given category id only');
         $this->addOption('v|visible:', 'show all/yes/no visible', 'all');
         $this->addOption('e|empty:', 'show only empty courses: all/yes/no', 'all');
         $this->addOption('f|fields:', 'show only those fields in the output (comma separated)');
@@ -33,12 +33,15 @@ class CourseList extends MooshCommand
     {
         global $CFG, $DB;
 
+
         require_once $CFG->dirroot . '/course/lib.php';
         require_once $CFG->dirroot . '/lib/coursecatlib.php';
 
         foreach ($this->arguments as $argument) {
             $this->expandOptionsManually(array($argument));
         }
+
+        $this->expandOptions();
 
         $options = $this->expandedOptions;
 
@@ -55,13 +58,15 @@ class CourseList extends MooshCommand
             $sql .= " LEFT JOIN {course_modules} m ON c.id=m.course ";
         }
 
-        $category = \coursecat::get($options['category']);
+        if ($options['categorysearch'] !== null) {
+            $category = \coursecat::get($options['category']);
 
-        $categories = $this->get_categories($category);
+            $categories = $this->get_categories($category);
 
-        list($where, $params) = $DB->get_in_or_equal(array_keys($categories));
+            list($where, $params) = $DB->get_in_or_equal(array_keys($categories));
 
-        $sql .= "WHERE c.category $where";
+            $sql .= "WHERE c.category $where";
+        }
         if ($options['empty'] == 'yes') {
             $sql .= " GROUP BY c.id HAVING modules < 2";
         }
@@ -171,4 +176,3 @@ class CourseList extends MooshCommand
         }
     }
 }
-
