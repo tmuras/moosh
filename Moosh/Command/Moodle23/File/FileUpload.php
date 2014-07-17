@@ -15,38 +15,22 @@ class FileUpload extends MooshCommand
     {
         parent::__construct('upload', 'file');
 
-        $this->addOption('f|filename:', 'change name of file saved to moodle');
-        $this->addOption('m|mintype:', 'set type of displayed miniature');
-        $this->addOption('l|license:', 'set license of upload file');
-        $this->addOption('c|contextid:', 'set context id');
-        $this->addOption('r|replace', 'replace existing file');
-
         $this->addArgument('file_path');
-        $this->addArgument('user_id');
+
+        $this->addOption('c|contextid:', 'set context id', "5");
+        $this->addOption('p|component:', 'set type of component, user by default', "user");
+        $this->addOption('f|filearea:', 'set filearea, private by default', 'private');
+        $this->addOption('i|itemid:', 'set item id, default 0', "0");
+        $this->addOption('s|sortorder:', 'set sortorder, 0 by default', '0');
+        $this->addOption('n|filename:', 'change name of file saved to moodle, default full name');
+
     }
 
     public function execute()
     {
         global $CFG, $DB;
 
-        if ($this->expandedOptions['license']) {
-            $license = $this->expandedOptions['license'];
-        } else {
-            $license = "allrightsreserved";
-        }
-
-        if ($this->expandedOptions['contextid']) {
-            $contextid = $this->expandedOptions['contextid'];
-        } else {
-            $contextid = "5";
-        }
-
-        if ($this->expandedOptions['mintype']) {
-            $mintype = $this->expandedOptions['mintype'];
-        } else {
-            $mintype = "textplain";
-        }
-
+        $filepath = $this->arguments[0];
         if ($this->expandedOptions['filename']) {
             $filename = $this->expandedOptions['filename'];
         } else {
@@ -55,57 +39,24 @@ class FileUpload extends MooshCommand
 
         $fp = get_file_storage();
 
+        $filerecord = new \stdClass();
 
+        $filerecord->contextid  = $this->expandedOptions['contextid'];
+        $filerecord->component  = $this->expandedOptions['component'];
+        $filerecord->filearea   = $this->expandedOptions['filearea'];
+        $filerecord->itemid     = $this->expandedOptions['itemid'];
+        $filerecord->sortorder  = $this->expandedOptions['sortorder'];
+        $filerecord->filepath   = $filepath . "/";
+        $filerecord->filename   = $filename;
 
-        // $contenthash = sha1_file($this->arguments[0]);
-        // $pathnamehash = $this->getFilepathHash($this->arguments[0], $contextid);
-        // $component = "user";
-        // $filearea = "private";
-        // $itemid = "0";
-        // $filepath = "/";
-        // $userid = $this->arguments[1];
-        // $filesize = filesize($this->arguments[0]);
-        // $status = "0";
-        // $source = basename($this->arguments[0]);
-        // $author = "Admin User";
-        // $timecreated = time();
-        // $timemodified = time();
-        // $sortorder = "0";
+        $content = file_get_contents($filepath);
 
-        // $sql = "INSERT INTO {files}
-        //         VALUES (NULL, \"$contenthash\", \"$pathnamehash\", \"$contextid\", \"$component\", \"$filearea\", \"$itemid\", \"$filepath\", \"$filename\", \"$userid\", \"$filesize\", \"$mintype\", \"$status\", \"$source\", \"$author\", \"$license\", \"$timecreated\", \"$timemodified\", \"$sortorder\", NULL, NULL, NULL)";
-
-        // $destDir = $CFG->dataroot . "/filedir/" . $this->getFileDirPath($this->arguments[0]);
-        // $dest = $destDir . "/" . $contenthash;
-
-        // if (!mkdir($destDir, 0777, true)) {
-        //     die('Failed to create folders...');
-        // }
-
-        // $source = $this->arguments[0];
-        // if (!copy($source, $dest)) {
-        //     die('Failed to copy uploaded file...');
-        // }
-
-        // $DB->execute($sql);
-
-        echo "File uploaded successfully!";
-    }
-
-    private function getFilepathHash($filename, $contextid, $filepath = "")
-    {
-        $contextid = "/" + $contextid;
-        $component = "/user";
-        $filearea = "/private";
-        $itemid = "/0";
-        $filename = "/" . $filename;
-        return sha1($contextid . $component . $filearea . $itemid . $filepath . $filename); 
-    }
-
-    private function getFileDirPath($filepath)
-    {       
-        $hash = sha1_file($filepath);
-        $path = substr($hash, 0, 2) . "/" . substr($hash, 2, 2);
-        return $path;
+        try {
+            $fp->create_file_from_string($filerecord, $content);
+            echo "File uploaded successfully!\n";
+        }
+        catch (Exception $e) {
+            echo "File was not uploaded. Error: " . $e . "\n";
+        }
     }
 }
