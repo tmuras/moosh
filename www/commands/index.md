@@ -604,6 +604,15 @@ Example 1: Show all plugin types.
 
     moosh info-plugins
 
+<a name="languages-update">languages-update</a>
+---------------
+
+Update all installed language packs, in the current Moodle folder.
+
+Example 1: Update all language packs.
+
+    moosh languages-update
+    
 <a name="maintenance-off">maintenance-off</a>
 ---------------
 
