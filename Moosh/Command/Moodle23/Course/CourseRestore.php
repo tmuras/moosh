@@ -28,7 +28,7 @@ class CourseRestore extends MooshCommand
 
     public function execute()
     {
-        global $CFG, $DB;
+        global $CFG, $DB, $USER;
 
         require_once($CFG->dirroot . "/backup/util/includes/backup_includes.php");
         require_once($CFG->dirroot . "/backup/util/includes/restore_includes.php");
@@ -126,7 +126,7 @@ class CourseRestore extends MooshCommand
         $courseid = restore_dbops::create_new_course($fullname, $shortname, $category->id);
         echo "Restoring (new course id,shortname,destination category): $courseid,$shortname," . $category->id . "\n";
         $rc = new restore_controller($backupdir, $courseid, backup::INTERACTIVE_NO,
-            backup::MODE_GENERAL, $this->user->id, backup::TARGET_NEW_COURSE);
+            backup::MODE_GENERAL, $USER->id, backup::TARGET_NEW_COURSE);
         if ($rc->get_status() == backup::STATUS_REQUIRE_CONV) {
             $rc->convert();
         }
