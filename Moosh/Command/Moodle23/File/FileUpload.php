@@ -4,6 +4,7 @@
  *
  * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author     Kacper Golewski <k.golewski@gmail.com>
  */
 
 namespace Moosh\Command\Moodle23\File;
@@ -18,23 +19,40 @@ class FileUpload extends MooshCommand
         $this->addArgument('file_path');
 
         $this->addOption('c|contextid:', 'set context id', "5");
-        $this->addOption('p|component:', 'set type of component, user by default', "user");
+        $this->addOption('m|component:', 'set type of component, user by default', "user");
         $this->addOption('f|filearea:', 'set filearea, private by default', 'private');
         $this->addOption('i|itemid:', 'set item id, default 0', "0");
         $this->addOption('s|sortorder:', 'set sortorder, 0 by default', '0');
         $this->addOption('n|filename:', 'change name of file saved to moodle, default full name');
+        $this->addOption('n|filepath:', 'change path of file saved to moodle, default full path');
 
     }
 
     public function execute()
     {
-        global $CFG, $DB;
-
-        $filepath = $this->arguments[0];
+        $arguments = $this->arguments;
         if ($this->expandedOptions['filename']) {
             $filename = $this->expandedOptions['filename'];
         } else {
             $filename = basename($this->arguments[0]);
+        }
+        if ($this->expandedOptions['filepath']) {
+            $savedfilepath = $this->expandedOptions['filepath'];
+        } else {
+            $savedfilepath = basename($this->arguments[0]);
+        }
+
+        if ($arguments[0][0] != '/') {
+            $filepath = $this->cwd . DIRECTORY_SEPARATOR .  DIRECTORY_SEPARATOR .$arguments[0];
+            $arguments[0] = $this->cwd . DIRECTORY_SEPARATOR . $arguments[0];
+        }
+
+        if (!file_exists($arguments[0])) {
+            cli_error("File '" . $arguments[0] . "' does not exist.");
+        }
+
+        if (!is_readable($arguments[0])) {
+            cli_error("File '" . $arguments[0] . "' is not readable.");
         }
 
         $fp = get_file_storage();
@@ -46,13 +64,11 @@ class FileUpload extends MooshCommand
         $filerecord->filearea   = $this->expandedOptions['filearea'];
         $filerecord->itemid     = $this->expandedOptions['itemid'];
         $filerecord->sortorder  = $this->expandedOptions['sortorder'];
-        $filerecord->filepath   = $filepath . "/";
+        $filerecord->filepath   = $savedfilepath . "/";
         $filerecord->filename   = $filename;
 
-        $content = file_get_contents($filepath);
-
         try {
-            $fp->create_file_from_string($filerecord, $content);
+            $fp->create_file_from_pathname($filerecord, $filepath);
             echo "File uploaded successfully!\n";
         }
         catch (Exception $e) {
