@@ -47,7 +47,7 @@ function install_data {
   if [[ -d "${DIR_PATH}" ]] ; then
     rm -rf $MOODLEDATA/*
     tar xjf $SOURCEDATA.tar.bz2
-    mv $PWD/$SOURCEDATA/* $MOODLEDATA
+    mv $SOURCEDATA/* $MOODLEDATA
   else
     exit 1
   fi
