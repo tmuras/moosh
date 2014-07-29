@@ -56,9 +56,6 @@ class PluginFetchInfo extends MooshCommand
         }
         $plugin_links = $xpath->query('//div[@class="plugin-moodleversions"]/a/@href');
         foreach ($plugin_links as $link) {
-            if(strstr($link->value, 'plugin=') !== false) {
-                continue;
-            }
             $this->make_request($link->value, array($this, 'parse_plugin'));
         }
         $this->save_json();
