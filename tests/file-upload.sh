@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-if moosh chkdatadir | grep "successfully" ; then
+if moosh file-upload config.php | grep "successfully" ; then
   echo 0
 else
   echo 1

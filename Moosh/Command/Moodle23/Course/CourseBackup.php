@@ -24,7 +24,7 @@ class CourseBackup extends MooshCommand
 
     public function execute()
     {
-        global $CFG, $DB;
+        global $CFG, $DB, $USER;
 
         require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');        
 
@@ -46,7 +46,7 @@ class CourseBackup extends MooshCommand
         }
 
         $bc = new backup_controller(\backup::TYPE_1COURSE, $this->arguments[0], backup::FORMAT_MOODLE,
-            backup::INTERACTIVE_NO, backup::MODE_GENERAL, $this->user->id);
+            backup::INTERACTIVE_NO, backup::MODE_GENERAL, $USER->id);
 
         $bc->execute_plan();
         $result = $bc->get_results();

@@ -32,7 +32,8 @@ require_once $moosh_dir . '/includes/default_options.php';
 use GetOptionKit\ContinuousOptionParser;
 use GetOptionKit\OptionSpecCollection;
 
-error_reporting(E_ALL);
+@error_reporting(E_ALL | E_STRICT);
+@ini_set('display_errors', '1');
 
 define('MOOSH_VERSION', '0.15.2');
 define('MOODLE_INTERNAL', true);
@@ -139,6 +140,11 @@ if (file_exists(home_dir() . DIRECTORY_SEPARATOR . ".mooshrc.php")) {
     $moodlerc = home_dir() . DIRECTORY_SEPARATOR . "mooshrc.php";
 }
 
+// Create directory for configuration if one is not there already.
+if(!file_exists(home_dir() . "/.moosh")) {
+    mkdir(home_dir() . "/.moosh");
+}
+
 $options = NULL;
 if ($moodlerc) {
     if (isset($app_options['verbose'])) {
@@ -156,7 +162,6 @@ if ($moodlerc) {
  *
  */
 $subcommand = $subcommands[$subcommand];
-
 
 
 if ($subcommand->bootstrapLevel()) {
@@ -184,31 +189,28 @@ if ($subcommand->bootstrapLevel()) {
     $subcommand->relativeDir = $relative_dir;
 
     //set up debugging
-    @error_reporting(E_ALL | E_STRICT);
-    @ini_set('display_errors', '1');
     $CFG->debug = (E_ALL | E_STRICT);
     $CFG->debugdisplay = 1;
 
-    //by default set up $USER to admin user
 
+    // by default set up $USER to admin user
 
-}
+    if ($app_options->has('user')) {
+        $user = get_user_by_name($app_options['user']->value);
+        if (!$user) {
+            echo "Error: No user account was found\n";
+            exit(1);
+        }
+    } else {
+        $user = get_admin();
+        if (!$user) {
+            echo "Error: No admin account was found\n";
+            exit(1);
+        }
 
-if ($app_options->has('user')) {
-    $user = get_user_by_name($app_options['user']->value);
-    if (!$user) {
-        echo "Error: No user account was found";
-        exit(1);
+        complete_user_login($user);
     }
-} else {
-    $user = get_admin();
-    if (!$user) {
-        echo "Error: No admin account was found";
-        exit(1);
-    }
 }
-
-complete_user_login($user);
 
 if ($app_options->has('verbose')) {
     $subcommand->verbose = true;
