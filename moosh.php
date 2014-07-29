@@ -192,26 +192,24 @@ if ($subcommand->bootstrapLevel()) {
     $CFG->debug = (E_ALL | E_STRICT);
     $CFG->debugdisplay = 1;
 
-}
 
-// by default set up $USER to admin user
+    // by default set up $USER to admin user
 
-require_once($top_dir . '/lib/datalib.php');
+    if ($app_options->has('user')) {
+        $user = get_user_by_name($app_options['user']->value);
+        if (!$user) {
+            echo "Error: No user account was found\n";
+            exit(1);
+        }
+    } else {
+        $user = get_admin();
+        if (!$user) {
+            echo "Error: No admin account was found\n";
+            exit(1);
+        }
 
-if ($app_options->has('user')) {
-    $user = get_user_by_name($app_options['user']->value);
-    if (!$user) {
-        echo "Error: No user account was found\n";
-        exit(1);
+        complete_user_login($user);
     }
-} else {
-    $user = get_admin();
-    if (!$user) {
-        echo "Error: No admin account was found\n";
-        exit(1);
-    }
-
-    complete_user_login($user);
 }
 
 if ($app_options->has('verbose')) {

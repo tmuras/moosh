@@ -21,7 +21,7 @@ class PluginFetchInfo extends MooshCommand
         parent::__construct('fetchinfo', 'plugin');
         $this->addOption('p|path:', 'path to result json file', home_dir() . "/.moosh/plugins.json");
         $this->addOption('l|limit:', 'limit fetched results');
-
+        $this->addOption('i|categoryid:', 'search only in given category id');
     }
 
     public function bootstrapLevel()
@@ -31,9 +31,15 @@ class PluginFetchInfo extends MooshCommand
 
     public function execute()
     {
-        $this->make_request("https://moodle.org/plugins/index.php", array($this, 'parse_listing'));
-
-        file_put_contents($this->expandedOptions['path'], json_encode($this->results));
+        if ($this->expandedOptions['categoryid']) {
+            $this->make_request("https://moodle.org/plugins/browse.php?list=category&id=".
+                                $this->expandedOptions['categoryid'], 
+                                array($this, 'parse_listing'));
+        } 
+        else {
+            $this->make_request("https://moodle.org/plugins/index.php", array($this, 'parse_listing'));
+        }
+        $this->save_json();
     }
 
     protected function parse_listing($url, $dom, $meta) {
@@ -50,8 +56,12 @@ class PluginFetchInfo extends MooshCommand
         }
         $plugin_links = $xpath->query('//div[@class="plugin-moodleversions"]/a/@href');
         foreach ($plugin_links as $link) {
+            if(strstr($link->value, 'plugin=') !== false) {
+                continue;
+            }
             $this->make_request($link->value, array($this, 'parse_plugin'));
         }
+        $this->save_json();
     }
 
     protected function parse_plugin($url, $dom, $meta)
@@ -62,7 +72,19 @@ class PluginFetchInfo extends MooshCommand
 
         try {
             $moodle_version = $query['moodle_version'];
-            $name = $query['plugin'];
+
+            if (array_key_exists('plugin', $query)) {
+                $name = $query['plugin'];
+            }
+            else {
+                $name_node = $xpath->query("//div[@class='frankenstyle muted']/text()");
+                if ($name_node->length) {
+                    $name = $name_node->item(0)->nodeValue;
+                }
+                else {
+                    $name = $xpath->query("//h2[@class='title']/a/text()")->item(0)->nodeValue;
+                }
+            }
 
             $download_url = $xpath->query("//a[@class='download btn latest']/@href")->item(0)->nodeValue;
             $full_name = $xpath->query("//h2[@class='title']/a/text()")->item(0)->nodeValue;
@@ -120,5 +142,9 @@ class PluginFetchInfo extends MooshCommand
                 echo "Failed to load page DOM at $url: " . $e->getMessage() . "\n"; flush();
             }
         }   
+    }
+
+    protected function save_json() {
+        file_put_contents($this->expandedOptions['path'], json_encode($this->results));
     }
 }
