@@ -1,0 +1,10 @@
+#!/bin/bash 
+source functions.sh
+
+cd $MOODLEDIR
+
+if moosh cache-clear ; then
+  exit 0
+else
+  exit 1
+fi

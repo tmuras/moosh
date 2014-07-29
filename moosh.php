@@ -193,17 +193,17 @@ if ($subcommand->bootstrapLevel()) {
 
 
 }
-
+require_once($top_dir . '/lib/datalib.php');
 if ($app_options->has('user')) {
     $user = get_user_by_name($app_options['user']->value);
     if (!$user) {
-        echo "Error: No user account was found";
+        echo "Error: No user account was found\n";
         exit(1);
     }
 } else {
     $user = get_admin();
     if (!$user) {
-        echo "Error: No admin account was found";
+        echo "Error: No admin account was found\n";
         exit(1);
     }
 }
