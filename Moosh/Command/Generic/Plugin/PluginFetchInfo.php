@@ -24,6 +24,11 @@ class PluginFetchInfo extends MooshCommand
 
     }
 
+    public function bootstrapLevel()
+    {
+        return self::$BOOTSTRAP_NONE;
+    }
+
     public function execute()
     {
         $this->make_request("https://moodle.org/plugins/index.php", array($this, 'parse_listing'));
