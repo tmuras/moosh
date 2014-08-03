@@ -4,7 +4,7 @@ composer.lock
 .idea
 .DS_Store
 config.sh
-*.swp
+*.sw*
 tests/config25.sh
 tests/config26.sh
 tests/out.txt
