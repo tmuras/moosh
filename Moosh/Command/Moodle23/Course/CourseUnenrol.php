@@ -20,12 +20,12 @@ class CourseUnenrol extends MooshCommand {
 
         $this->addOption('c|cohort:', 'unenrol all cohorts sync');
         $this->addOption('r|role:', 'roles');
+        $this->addOption('u|user:', 'user id');
 
         $this->addArgument('courseid');
     }
 
     public function execute() {
-
 
         global $CFG, $DB, $PAGE;
 
@@ -39,7 +39,6 @@ class CourseUnenrol extends MooshCommand {
         $context = context_course::instance($course->id);
         $manager = new course_enrolment_manager($PAGE, $course);
 
-        
         #remove all cohort sync
         if ($options['cohort'] == 1) {
             $plugins = $manager->get_enrolment_plugins();
@@ -59,20 +58,28 @@ class CourseUnenrol extends MooshCommand {
             }
         }
 
-        #remove all enrolled removable users
-        try {
+        if ($options['user']) {
+            $users = array();
+            $user = $DB->get_record('user', array('id' => $options['user']));
+            $users[] = $user;
+        } elseif ($options['role']) {
             foreach (explode(',', $options['role']) as $role) {
                 $role = $DB->get_record('role', array('shortname' => $role));
                 $context = context_course::instance($course->id);
                 $users = get_role_users($role->id, $context);
-                #unenrol 
-                foreach ($users as $user) {
-                    $enrolments = $manager->get_user_enrolments($user->id);
-                        foreach ($enrolments as $enrolment) {
-                        list ($instance, $plugin) = $manager->get_user_enrolment_components($enrolment);
-                        if ($instance && $plugin && $plugin->allow_unenrol_user($instance, $enrolment)) {
-                            $plugin->unenrol_user($instance, $enrolment->userid);
-                        }
+            }
+        } 
+
+        #remove all enrolled removable users
+        try {
+            foreach ($users as $user) {
+                $enrolments = $manager->get_user_enrolments($user->id);
+
+                foreach ($enrolments as $enrolment) {
+                    list ($instance, $plugin) = $manager->get_user_enrolment_components($enrolment);
+                    if ($instance && $plugin && $plugin->allow_unenrol_user($instance, $enrolment)) {
+                        $plugin->unenrol_user($instance, $enrolment->userid);
+                        echo "Succesfully unenroled user $enrolment->userid\n";
                     }
                 }
             }
@@ -80,5 +87,4 @@ class CourseUnenrol extends MooshCommand {
             print get_class($e) . " thrown within the exception handler. Message: " . $e->getMessage() . " on line " . $e->getLine();
         }
     }
-
 }
