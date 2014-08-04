@@ -49,42 +49,35 @@ class CourseUnenrol extends MooshCommand {
             }
             $cohortPlugin = $plugins['cohort'];
 
-            try {
-                foreach ($instances as $instance) {
-                    $cohortPlugin->delete_instance($instance);
-                }
-            } catch (Exception $e) {
-                print get_class($e) . " thrown within the exception handler. Message: " . $e->getMessage() . " on line " . $e->getLine();
+            foreach ($instances as $instance) {
+                $cohortPlugin->delete_instance($instance);
             }
         }
 
+        $users = array();
+
         if ($options['user']) {
-            $users = array();
             $user = $DB->get_record('user', array('id' => $options['user']));
             $users[] = $user;
         } elseif ($options['role']) {
+            $context = context_course::instance($course->id);
             foreach (explode(',', $options['role']) as $role) {
                 $role = $DB->get_record('role', array('shortname' => $role));
-                $context = context_course::instance($course->id);
                 $users = get_role_users($role->id, $context);
             }
         } 
 
         #remove all enrolled removable users
-        try {
-            foreach ($users as $user) {
-                $enrolments = $manager->get_user_enrolments($user->id);
+        foreach ($users as $user) {
+            $enrolments = $manager->get_user_enrolments($user->id);
 
-                foreach ($enrolments as $enrolment) {
-                    list ($instance, $plugin) = $manager->get_user_enrolment_components($enrolment);
-                    if ($instance && $plugin && $plugin->allow_unenrol_user($instance, $enrolment)) {
-                        $plugin->unenrol_user($instance, $enrolment->userid);
-                        echo "Succesfully unenroled user $enrolment->userid\n";
-                    }
+            foreach ($enrolments as $enrolment) {
+                list ($instance, $plugin) = $manager->get_user_enrolment_components($enrolment);
+                if ($instance && $plugin && $plugin->allow_unenrol_user($instance, $enrolment)) {
+                    $plugin->unenrol_user($instance, $enrolment->userid);
+                    echo "Succesfully unenroled user $enrolment->userid\n";
                 }
             }
-        } catch (Exception $e) {
-            print get_class($e) . " thrown within the exception handler. Message: " . $e->getMessage() . " on line " . $e->getLine();
         }
     }
 }
