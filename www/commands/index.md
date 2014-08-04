@@ -20,6 +20,15 @@ Example:
     moosh activity-add --name "General course forum" --section 2 forum 3
     moosh activity-add --name "Easy assignent" --section 2 --idnumber "ASD123" assign 2
 
+<a name="activity-delete">activity-delete</a>
+---------------
+
+Deletes activity with given module id.
+
+Example
+
+    moosh activity-delete 2
+
 <a name="auth-manage">auth-manage</a>
 ---------------
 
