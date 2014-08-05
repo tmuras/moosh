@@ -20,7 +20,6 @@ class CourseUnenrol extends MooshCommand {
 
         $this->addOption('c|cohort:', 'unenrol all cohorts sync');
         $this->addOption('r|role:', 'roles');
-        $this->addOption('u|user:', 'user id');
 
         $this->addArgument('courseid');
         $this->addArgument('userid');
