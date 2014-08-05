@@ -23,6 +23,9 @@ class CourseUnenrol extends MooshCommand {
         $this->addOption('u|user:', 'user id');
 
         $this->addArgument('courseid');
+        $this->addArgument('userid');
+        $this->minArguments = 1;
+        $this->maxArguments = 255;
     }
 
     public function execute() {
@@ -56,8 +59,8 @@ class CourseUnenrol extends MooshCommand {
 
         $users = array();
 
-        if ($options['user']) {
-            $user = $DB->get_record('user', array('id' => $options['user']));
+        if ($this->arguments[1]) {
+            $user = $DB->get_record('user', array('id' => $this->arguments[1]));
             $users[] = $user;
         } elseif ($options['role']) {
             $context = context_course::instance($course->id);
