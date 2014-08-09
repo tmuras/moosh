@@ -58,7 +58,6 @@ class CourseUnenrol extends MooshCommand {
 
         $users_id = $this->arguments;
         $course_id = array_shift($users_id);
-
         $users = array();
 
         if ($users_id) {
@@ -67,13 +66,18 @@ class CourseUnenrol extends MooshCommand {
                 $users[] = $user;
             }
         } elseif ($options['role']) {
-            $context = context_course::instance($course->id);
             $roles = explode(',', $options['role']); 
             foreach ($roles as $role) {
                 $role = $DB->get_record('role', array('shortname' => $role));
                 $users += get_role_users($role->id, $context);
             }
-        } 
+        } else {
+            $all_roles = get_all_roles();
+            foreach ($all_roles as $role) {
+                $role = $DB->get_record('role', array('shortname' => $role->id));
+                $users += get_role_users($role->id, $context);
+            }
+        }
 
         #remove all enrolled removable users
         foreach ($users as $user) {
