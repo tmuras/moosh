@@ -68,9 +68,10 @@ class CourseUnenrol extends MooshCommand {
             }
         } elseif ($options['role']) {
             $context = context_course::instance($course->id);
-            foreach (explode(',', $options['role']) as $role) {
+            $roles = explode(',', $options['role']); 
+            foreach ($roles as $role) {
                 $role = $DB->get_record('role', array('shortname' => $role));
-                $users = get_role_users($role->id, $context);
+                $users += get_role_users($role->id, $context);
             }
         } 
 
