@@ -56,13 +56,13 @@ class CourseUnenrol extends MooshCommand {
             }
         }
 
-        $users_id = $this->arguments;
-        $course_id = array_shift($users_id);
+        $usersid = $this->arguments;
+        $courseid = array_shift($usersid);
         $users = array();
 
-        if ($users_id) {
-            foreach($users_id as $single_user) {
-                $user = $DB->get_record('user', array('id' => $single_user));
+        if ($usersid) {
+            foreach($usersid as $singleuser) {
+                $user = $DB->get_record('user', array('id' => $singleuser));
                 $users[] = $user;
             }
         } elseif ($options['role']) {
@@ -72,8 +72,8 @@ class CourseUnenrol extends MooshCommand {
                 $users += get_role_users($role->id, $context);
             }
         } else {
-            $all_roles = get_all_roles();
-            foreach ($all_roles as $role) {
+            $allroles = get_allroles();
+            foreach ($allroles as $role) {
                 $role = $DB->get_record('role', array('shortname' => $role->id));
                 $users += get_role_users($role->id, $context);
             }
