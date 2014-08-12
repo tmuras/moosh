@@ -22,10 +22,12 @@ class CourseUnenrol extends MooshCommand {
         $this->addOption('r|role:', 'roles');
 
         $this->addArgument('courseid');
+        $this->addArgument('userid');
+        $this->minArguments = 1;
+        $this->maxArguments = 255;
     }
 
     public function execute() {
-
 
         global $CFG, $DB, $PAGE;
 
@@ -39,7 +41,6 @@ class CourseUnenrol extends MooshCommand {
         $context = context_course::instance($course->id);
         $manager = new course_enrolment_manager($PAGE, $course);
 
-        
         #remove all cohort sync
         if ($options['cohort'] == 1) {
             $plugins = $manager->get_enrolment_plugins();
@@ -50,35 +51,45 @@ class CourseUnenrol extends MooshCommand {
             }
             $cohortPlugin = $plugins['cohort'];
 
-            try {
-                foreach ($instances as $instance) {
-                    $cohortPlugin->delete_instance($instance);
-                }
-            } catch (Exception $e) {
-                print get_class($e) . " thrown within the exception handler. Message: " . $e->getMessage() . " on line " . $e->getLine();
+            foreach ($instances as $instance) {
+                $cohortPlugin->delete_instance($instance);
+            }
+        }
+
+        $usersid = $this->arguments;
+        $courseid = array_shift($usersid);
+        $users = array();
+
+        if ($usersid) {
+            foreach($usersid as $singleuser) {
+                $user = $DB->get_record('user', array('id' => $singleuser));
+                $users[] = $user;
+            }
+        } elseif ($options['role']) {
+            $roles = explode(',', $options['role']); 
+            foreach ($roles as $role) {
+                $role = $DB->get_record('role', array('shortname' => $role));
+                $users += get_role_users($role->id, $context);
+            }
+        } else {
+            $allroles = get_allroles();
+            foreach ($allroles as $role) {
+                $role = $DB->get_record('role', array('shortname' => $role->id));
+                $users += get_role_users($role->id, $context);
             }
         }
 
         #remove all enrolled removable users
-        try {
-            foreach (explode(',', $options['role']) as $role) {
-                $role = $DB->get_record('role', array('shortname' => $role));
-                $context = context_course::instance($course->id);
-                $users = get_role_users($role->id, $context);
-                #unenrol 
-                foreach ($users as $user) {
-                    $enrolments = $manager->get_user_enrolments($user->id);
-                        foreach ($enrolments as $enrolment) {
-                        list ($instance, $plugin) = $manager->get_user_enrolment_components($enrolment);
-                        if ($instance && $plugin && $plugin->allow_unenrol_user($instance, $enrolment)) {
-                            $plugin->unenrol_user($instance, $enrolment->userid);
-                        }
-                    }
+        foreach ($users as $user) {
+            $enrolments = $manager->get_user_enrolments($user->id);
+
+            foreach ($enrolments as $enrolment) {
+                list ($instance, $plugin) = $manager->get_user_enrolment_components($enrolment);
+                if ($instance && $plugin && $plugin->allow_unenrol_user($instance, $enrolment)) {
+                    $plugin->unenrol_user($instance, $enrolment->userid);
+                    echo "Succesfully unenroled user $enrolment->userid\n";
                 }
             }
-        } catch (Exception $e) {
-            print get_class($e) . " thrown within the exception handler. Message: " . $e->getMessage() . " on line " . $e->getLine();
         }
     }
-
 }

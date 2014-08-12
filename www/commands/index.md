@@ -20,6 +20,15 @@ Example:
     moosh activity-add --name "General course forum" --section 2 forum 3
     moosh activity-add --name "Easy assignent" --section 2 --idnumber "ASD123" assign 2
 
+<a name="activity-delete">activity-delete</a>
+---------------
+
+Deletes activity with given module id.
+
+Example
+
+    moosh activity-delete 2
+
 <a name="auth-manage">auth-manage</a>
 ---------------
 
@@ -329,9 +338,17 @@ Unerol user(s) from a course id provided. First argument is a course ID, possibl
 --roles : comma separated list of user roles
 --cohort: boolean 1 remove all cohort sync enrolments
 
+Possible arguments:
+userid
+
 Example 1:
 
     moosh course-unenrol --role editingteacher --cohort 1 144
+
+Example 2:
+    moosh course-unenrol 2 7 9 12 16
+
+This will unenrol users with id 7, 9, 12 and 16 from course with id 2.
 
 <a name="data-stats">data-stats</a>
 ----------
