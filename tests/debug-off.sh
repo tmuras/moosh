@@ -6,12 +6,10 @@ install_data
 
 cd $MOODLEDIR
 
-moodle_url=$(echo $MOODLEDIR | grep -oP "[^\/]+$")
-
-moosh debug-off
-if ! curl http://127.0.0.1/$moodle_url/ | grep "core/databasemeta"; then
-  exit 0 
+moosh debug-on
+if echo "SELECT * FROM mdl_config WHERE name='debug' AND value='0'" \
+    | mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" | grep "debug"; then
+  exit 0
 else
-  exit 1
+ exit 1
 fi
-

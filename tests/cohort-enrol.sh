@@ -5,8 +5,8 @@ install_db
 install_data
 cd $MOODLEDIR
 
-moosh cohort-create testcohotr
-moosh cohort-enrol -u 2 "testcohotr"
+moosh cohort-create testcohort
+moosh cohort-enrol -u 2 "testcohort"
 
 if echo "SELECT * FROM mdl_cohort_members WHERE userid = 2" \
     | mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" | grep "cohortid"; then
