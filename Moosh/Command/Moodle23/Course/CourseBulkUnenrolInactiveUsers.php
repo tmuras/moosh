@@ -42,7 +42,7 @@ class CourseBulkUnenrolInactiveUsers extends MooshCommand {
         try {
             foreach (explode(',', $options['role']) as $role) {
                 if (!in_array($role, array('student','teacher', 'manager', 'editingteacher'))) {
-                    exit('role is nor valid');
+                    exit('role is not valid');
                 }
                 $role = $DB->get_record('role', array('shortname' => $role));
                 $context = context_course::instance($course->id);
