@@ -29,7 +29,10 @@ class CourseConfigSet extends MooshCommand
 
         switch ($this->arguments[0]) {
             case 'course':
-                self::setCourseSetting($this->arguments[1]/* courseid */,$setting,$value);
+                if(!self::setCourseSetting($this->arguments[1]/* courseid */,$setting,$value)){
+                	// the setting was not applied, exit with a non-zero exit code
+                	exit(1);
+                }
                 break;
             case 'category':
                 //get all courses in category (recursive)
