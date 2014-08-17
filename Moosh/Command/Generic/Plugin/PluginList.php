@@ -22,6 +22,17 @@ class PluginList extends MooshCommand
 
     public function execute()
     {
+        $readablemoodleversions = array(
+            "17" => "2.7",
+            "15" => "2.6",
+            "13" => "2.5",
+            "11" => "2.4",
+            "10" => "2.3",
+            "8" => "2.2",
+            "1" => "2.1",
+            "2" => "2.0",
+            "3" => "1.9"
+        );
         $found = array();
         $json_path = $this->expandedOptions['path'];
         $query = $this->arguments[0];
@@ -41,9 +52,9 @@ class PluginList extends MooshCommand
                 echo "\t" . $plugin_data->short_description . "\n";
                 echo "\t" . "Supported Moodle versions: ";
                 foreach ($plugin_data->moodle_versions as $version => $version_data) {
-                    echo $version . " ";
+                    echo $readablemoodleversions[$version] . " ";
                 }
-                echo "\n";
+                echo "\n\n";
             } 
         }
     }

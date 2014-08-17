@@ -13,7 +13,7 @@ use Moosh\MooshCommand;
 class UserProfileImport extends MooshCommand
 {
     public function __construct() {
-        parent::__construct('import', 'userprofile');
+        parent::__construct('import', 'userprofilefields');
 
         $this->addArgument('path');
     }

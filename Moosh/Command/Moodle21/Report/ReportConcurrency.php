@@ -40,7 +40,7 @@ class ReportConcurrency extends MooshCommand
             $to_date = time();
         }
         
-        if ($from_date == -1) {
+        if ($from_date === false) {
             cli_error('invalid from date');
         }
 

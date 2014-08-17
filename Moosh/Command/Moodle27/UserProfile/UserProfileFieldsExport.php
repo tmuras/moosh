@@ -13,11 +13,9 @@ use Moosh\MooshCommand;
 class UserProfileExport extends MooshCommand
 {
     public function __construct() {
-        parent::__construct('export', 'userprofile');
+        parent::__construct('export', 'userprofilefields');
 
-        $this->addArgument('userid');
-
-        $this->addOption('p|path', 'path to save exported file.', 'exported_users.csv');
+        $this->addOption('p|path', 'path to save exported file.', 'user_profile_fields.csv');
     }
 
     public function execute() {
@@ -30,8 +28,6 @@ class UserProfileExport extends MooshCommand
         if ($filename[0] != '/') {
             $filename = $this->cwd . DIRECTORY_SEPARATOR . $filename;
         }
-        $userid = $this->arguments['0'];
-        $user = $DB->get_record('user', array('id' => $userid));
         $categories = $DB->get_records('user_info_category', null, 'sortorder ASC');
 
         $data = array();

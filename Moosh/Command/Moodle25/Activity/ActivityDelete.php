@@ -19,14 +19,18 @@ class ActivityDelete extends MooshCommand
 
     public function execute() 
     {
-        global $CFG;
+        global $CFG, $DB;
         require_once $CFG->dirroot . '/course/lib.php';
 
         $moduleid = intval($this->arguments[0]);
 
+
         if ($moduleid <= 0) {
-            exit("Argument 'moduleid' must be bigger than 0.");
+            cli_error("Argument 'moduleid' must be bigger than 0.");
         } 
+        if (!$DB->get_record('course_modules', array('id' => $this->arguments[0]))) {
+            cli_error("There is no such activity to delete.");
+        }
 
         course_delete_module($moduleid);
         echo "Deleted activity $moduleid\n";

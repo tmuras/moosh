@@ -6,14 +6,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle27\UserProfile;
+namespace Moosh\Command\Moodle23\Dev;
 use Moosh\MooshCommand;
 
-class UserProfileGenerate extends MooshCommand
+class GenerateUserProfileField extends MooshCommand
 {
     public function __construct()
     {
-        parent::__construct('userprofile', 'generate');
+        parent::__construct('userprofilefield', 'generate');
 
         $this->addArgument('userprofile_name');
     }
@@ -21,8 +21,7 @@ class UserProfileGenerate extends MooshCommand
     public function execute()
     {
         $userprofilename = $this->arguments[0];
-        if(preg_match('/[^a-z_0-9]/i', $string))
-        {
+        if(!preg_match('/[^a-z_0-9]/i', $userprofilename)) {
             cli_error('Agrument is not valid userprofile name');
         }
         $userprofilepath = $this->topDir . '/user/profile/field/' . $userprofilename;

@@ -6,7 +6,7 @@ layout: command
 Commands
 ========
 
-<a name="activity-add">activity-add</a>
+<a class="command-name" name="activity-add">activity-add</a>
 ------------
 
 Adds an activity instance to the specified course. The activity is specified by it's component name
@@ -20,7 +20,7 @@ Example:
     moosh activity-add --name "General course forum" --section 2 forum 3
     moosh activity-add --name "Easy assignent" --section 2 --idnumber "ASD123" assign 2
 
-<a name="activity-delete">activity-delete</a>
+<a class="command-name" name="activity-delete">activity-delete</a>
 ---------------
 
 Deletes activity with given module id.
@@ -29,7 +29,7 @@ Example
 
     moosh activity-delete 2
 
-<a name="auth-manage">auth-manage</a>
+<a class="command-name" name="auth-manage">auth-manage</a>
 ---------------
 
 Allows to manage auth plugins. Disable, enable, moving up and down in order.
@@ -42,7 +42,7 @@ Example 2. Move up Email-based self-registration (email).
 
     moosh auth-manage up email 
 
-<a name="block-add">block-add</a>
+<a class="command-name" name="block-add">block-add</a>
 ---------------
 
 Add a new block instance to any system context (front page, category, course, module ...)
@@ -57,7 +57,7 @@ Example:
     moosh block-add categorycourses 2 calendar_month course-view-* side-post 0
     moosh block-add course 32 calendar_month course-view-* side-post 0
 
-<a name="block-manage">block-manage</a>
+<a class="command-name" name="block-manage">block-manage</a>
 ----------------
 
 Show or Hide blocks, system wide (Will also delete, in the future)
@@ -67,7 +67,7 @@ Example:
     moosh block-manage hide calendar
     moosh block-manage show calendar
 
-<a name="category-create">category-create</a>
+<a class="command-name" name="category-create">category-create</a>
 ---------------
 
 Create new category.
@@ -80,7 +80,7 @@ Example 2: Add category "mycat" under category id 6, set to visible and descript
 
     moosh category-create -p 6 -v 1 -d "My category" mycat
 
-<a name="category-export">category-export</a>
+<a class="command-name" name="category-export">category-export</a>
 -------------
 
 Export category structure to XML.
@@ -89,7 +89,7 @@ Example 1: Export all categories to XML.
 
     moosh category-export 1
 
-<a name="category-list">category-list</a>
+<a class="command-name" name="category-list">category-list</a>
 -------------
 
 List all categories or those that match search string(s).
@@ -102,7 +102,7 @@ Example 2: List all categories with name "test" OR "foobar"
 
     moosh category-list test foobar
 
-<a name="category-move">category-move</a>
+<a class="command-name" name="category-move">category-move</a>
 ---------------
 
 Move one category to another category
@@ -115,7 +115,7 @@ Example 2: Make the category with id 3 a top-level category
 
     moosh category-move 3 0
 
-<a name="chkdatadir">chkdatadir</a>
+<a class="command-name" name="chkdatadir">chkdatadir</a>
 ----------
 
 Check if every file and directory in Moodle data is writeable for the user that runs the command.
@@ -125,14 +125,14 @@ Example:
 
     sudo -u www-data moosh chkdatadir
 
-<a name="cache-clear">cache-clear</a>
+<a class="command-name" name="cache-clear">cache-clear</a>
 -----------
 
 The same as "purge all caches" page.
 
     moosh cache-clear
 
-<a name="cohort-create">cohort-create</a>
+<a class="command-name" name="cohort-create">cohort-create</a>
 -------------
 
 Create new cohort.
@@ -145,7 +145,7 @@ Example 2: Create cohort "my cohort18" with id "cohort18" under category id 2, w
 
     moosh cohort-create -d "Long description" -i cohort18 -c 2 "my cohort18"
 
-<a name="cohort-enrol">cohort-enrol</a>
+<a class="command-name" name="cohort-enrol">cohort-enrol</a>
 ------------
 
 Add user to cohort or enroll cohort to a course.
@@ -158,7 +158,7 @@ Example 2: Enroll cohort "my cohort18" to course id 4.
 
     moosh cohort-enrol -c 4 "my cohort18"
 
-<a name="cohort-unenrol">cohort-unenrol</a>
+<a class="command-name" name="cohort-unenrol">cohort-unenrol</a>
 --------------
 
 Remove user(s) from a cohort (by cohort id)
@@ -167,7 +167,7 @@ Example 1: Remove users 20,30,40 from cohort id=7.
 
     moosh cohort-unenrol 7 20 30 40
 
-<a name="config-get">config-get</a>
+<a class="command-name" name="config-get">config-get</a>
 ----------
 
 Get config variable from config or config_plugins table. The syntax is based on get_config($plugin,$name) API function. Both arguments are optional.
@@ -184,7 +184,7 @@ Example 3: Show core setting "dirroot"
 
     moosh config-get core dirroot
 
-<a name="config-plugins">config-plugins</a>
+<a class="command-name" name="config-plugins">config-plugins</a>
 --------------
 
 Shows all plugins that have at least one entry in the config_plugins table. Optionally provide an argument to match plugin name.
@@ -197,7 +197,7 @@ Example 2: Show all themes that have some settings.
 
     moosh config-plugins theme_
 
-<a name="config-set">config-set</a>
+<a class="command-name" name="config-set">config-set</a>
 ----------
 
 Set config variable. The syntax of the command is based on the set_config() Moodle API:
@@ -214,7 +214,7 @@ Example 2: Set URL to logo for Sky High theme.
 
     moosh config-set logo http://example.com/logo.png theme_sky_high
 
-<a name="course-backup">course-backup</a>
+<a class="command-name" name="course-backup">course-backup</a>
 -------------
 
 Backup course with provided id.
@@ -227,7 +227,7 @@ Example 2: Backup course id=3 and save it as /tmp/mybackup.mbz:
 
     moosh course-backup -f /tmp/mybackup.mbz 3
 
-<a name="course-create">course-create</a>
+<a class="command-name" name="course-create">course-create</a>
 -------------
 
 Create a new course(s).
@@ -240,7 +240,7 @@ Example 2: Create new course
 
     moosh course-create --category 1 --fullname "full course name" --description "course description" --idnumber "course idnumber" shortname
 
-<a name="course-config-set">course-config-set</a>
+<a class="command-name" name="course-config-set">course-config-set</a>
 -----------------
 
 Update a field in the Moodle {course} table for a single course, or for all courses in a category.
@@ -253,7 +253,7 @@ Example 2: set the format to topics for all courses in a category with id=7
 
     moosh course-config-set category 7 format topics
 
-<a name="course-enrol">course-enrol</a>
+<a class="command-name" name="course-enrol">course-enrol</a>
 ------------
 
 Enrol user(s) into a course id provided. First argument is a course ID, then put one or more user names.
@@ -267,7 +267,7 @@ Example 2: Enroll user with id 21 into the course with id 31 as a non-editing te
 
     moosh course-enrol -r teacher -i 31 21
 
-<a name="course-enrolbyname">course-enrolbyname</a>
+<a class="command-name" name="course-enrolbyname">course-enrolbyname</a>
 ------------------
 
 Is similar to course-enrol function. But it can also be used the first- and lastname of the user and the course shortname.
@@ -276,7 +276,7 @@ Example 1: Enroll user with firstname test42 and lastname user42 into the course
 
     moosh course-enrolbyname -r editingteacher -f test42 -l user42 -c T12345
 
-<a name="course-enrolleduser">course-enrolleduser</a>
+<a class="command-name" name="course-enrolleduser">course-enrolleduser</a>
 -------------------
 
 Returns all enrolled user in a course, which have a specific role. First argument is the shortname of a role, second argument is a course ID.
@@ -285,7 +285,7 @@ Example 1:
 
     moosh course-enrolleduser student 4
 
-<a name="course-enableselfenrol">course-enableselfenrol</a>
+<a class="command-name" name="course-enableselfenrol">course-enableselfenrol</a>
 ----------------------
 
 Enable self enrolment on one or more courses given a list of course IDs. By default self enrolment is enabled without an enrolment key, but one can be passed as an option.
@@ -299,7 +299,7 @@ Example 2: Enable self enrolment on a course with an enrolment key
     moosh course-enableselfenrol --key "an example enrolment key" 3
 
 
-<a name="course-list">course-list</a>
+<a class="command-name" name="course-list">course-list</a>
 ----------------------
 
 Lists courses with given short or full name.
@@ -312,7 +312,7 @@ Example 2: List all courses with shor or full name containing phrase 'course' an
 
     moosh course-list course -i
 
-<a name="course-reset">course-reset</a>
+<a class="command-name" name="course-reset">course-reset</a>
 --------------
 
 Reset course by ID, using default settings.
@@ -321,7 +321,7 @@ Example 1: Reset course with id=17
 
     moosh course-reset 17
 
-<a name="course-restore">course-restore</a>
+<a class="command-name" name="course-restore">course-restore</a>
 --------------
 
 Restore course from path/to/backup.mbz to category with a given id.
@@ -330,7 +330,7 @@ Example 1: Restore backup.mbz into category with id=1
 
     moosh course-restore backup.mbz 1
 
-<a name="course-unenrol">course-unenrol</a>
+<a class="command-name" name="course-unenrol">course-unenrol</a>
 ------------
 
 Unerol user(s) from a course id provided. First argument is a course ID, possible options:
@@ -350,28 +350,28 @@ Example 2:
 
 This will unenrol users with id 7, 9, 12 and 16 from course with id 2.
 
-<a name="data-stats">data-stats</a>
+<a class="command-name" name="data-stats">data-stats</a>
 ----------
 
 Provides information on size of dataroot directory, dataroot/filedir subdirectory and total size of non-external files in moodle. Outpus data in json format when run using --json option.
 
     moosh data-stats
 
-<a name="debug-off">debug-off</a>
+<a class="command-name" name="debug-off">debug-off</a>
 ---------
 
 Turns off full debug and disables theme designer mode.
 
     moosh debug-off
 
-<a name="debug-on">debug-on</a>
+<a class="command-name" name="debug-on">debug-on</a>
 --------
 
 Turns on full debug - all the options in debugging section of the settings plus enables theme designer mode.
 
     moosh debug-on
 
-<a name="dev-versionbump">dev-versionbump</a>
+<a class="command-name" name="dev-versionbump">dev-versionbump</a>
 ---------------
 
 Increase the version in module's version.php.
@@ -381,7 +381,7 @@ Example:
     cd <moodle_root>/mod/<your_module>
     moosh dev-versionbump
 
-<a name="download-moodle">download-moodle</a>
+<a class="command-name" name="download-moodle">download-moodle</a>
 ---------------
 
 Download latest Moodle version from the latest branch (default) or previous one if -v given.
@@ -394,7 +394,7 @@ Example 2: Download latest Moodle 2.3.
 
         moosh download-moodle -v 23
 
-<a name="file-delete">file-delete</a>
+<a class="command-name" name="file-delete">file-delete</a>
 -----------
 
 Delete Moodle files from DB and possibly move them to trash. File IDs can be provided as arguments or on the standard input (with moosh file-delete -s).
@@ -417,7 +417,7 @@ Example 4: Remove all automated backups and reclaim the space
     moosh file-list -i 'component="backup" AND filearea="automated"' | moosh file-delete -s
     moosh file-delete --flush
 
-<a name="file-list">file-list</a>
+<a class="command-name" name="file-list">file-list</a>
 ---------
 
 Search and list files from mdl_files table. The argument should be a valid SQL WHERE statement. Interesting columns of possible search criterias are:
@@ -453,7 +453,7 @@ Example 4: Super-combo. Get all course files and tar/bzip2 them up.
 
     moosh file-list -i course=2 | moosh file-path -s -r | tar -C $(moosh config-get core dataroot) -T - -cjf files.tar.bz2
 
-<a name="file-path">file-path</a>
+<a class="command-name" name="file-path">file-path</a>
 ---------
 
 Show full or relative path in the filesystem to Moodle file(s). Files can be identified by ID or hash (auto-detected) as arguments or on stdin (-s option).
@@ -470,7 +470,7 @@ Example 3: Like above but with no duplicates and show path relative to data root
 
     moosh file-list -r -i 'id>100 AND id<200' | moosh file-path -s | sort | uniq
 
-<a name="file-upload">file-upload</a>
+<a class="command-name" name="file-upload">file-upload</a>
 --------
 
 Upload selected file to user's private area. Must specify full path to filename.
@@ -489,7 +489,7 @@ Example 2: Upload file /home/user/file and change its name for moodle.
 
     moosh file-upload --filename="new file name" /home/user/file 2 
 
-<a name="form-add">form-add</a>
+<a class="command-name" name="form-add">form-add</a>
 --------
 
 Adds an element to the form. If there is a form in your current working directory, that you have recently worked on with
@@ -506,7 +506,7 @@ Example 2: Add (or display) the code for advanced checkbox element for Moodle fo
 
     moosh form-add advcheckbox checkboxid
 
-<a name="forum-newdiscussion">forum-newdiscussion</a>
+<a class="command-name" name="forum-newdiscussion">forum-newdiscussion</a>
 -------------------
 
 Adds a new discussion to an existing forum. You should provide a course id, a forum id
@@ -518,14 +518,14 @@ Example:
     moosh forum-newdiscussion 3 7 2
     moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 7 2
 
-<a name="generate-filepicker">generate-filepicker</a>
+<a class="command-name" name="generate-filepicker">generate-filepicker</a>
 -------------------
 
 Shows how to code filepicker, based on https://github.com/AndyNormore/filemanager. Takes no arguments.
 
     moosh generate-filepicker
 
-<a name="generate-form">generate-form</a>
+<a class="command-name" name="generate-form">generate-form</a>
 -------------
 
 Creates a new file with the form class code. Will display on the screen a boilerplate code to use the form. If the form
@@ -540,7 +540,7 @@ class. It will also display a boilerplate code on how can you use the form.
 
     moosh generate-form edit
 
-<a name="generate-gradereport">generate-gradereport</a>
+<a class="command-name" name="generate-gradereport">generate-gradereport</a>
 --------------
 
 Creates new grade report under grade/report based on the template from https://github.com/danielneis/moodle-gradereport_newgradereport.
@@ -551,7 +551,7 @@ Example: Create new module under grade/report/beststudents
 
     moosh generate-gradereport beststudents
 
-<a name="generate-lang">generate-lang</a>
+<a class="command-name" name="generate-lang">generate-lang</a>
 -------------
 
 Scan files given as arguments or currently remembered file, extract language strings and add them to the lang file if
@@ -563,7 +563,7 @@ Example 1: Extract lang strings from edit_form.php.
 
     moosh generate-lang edit_form.php
 
-<a name="generate-module">generate-module</a>
+<a class="command-name" name="generate-module">generate-module</a>
 ---------------
 
 Creates new module based on the NEWMODULE template from Moodle HQ.
@@ -574,7 +574,7 @@ Example: Create new module under mod/flashcard
 
     moosh generate-module flashcard
 
-<a name="generate-qtype">generate-qtype</a>
+<a class="command-name" name="generate-qtype">generate-qtype</a>
 --------------
 
 Creates new question type based on the NEWMODULE template from https://github.com/jamiepratt/moodle-qtype_TEMPLATE.
@@ -585,7 +585,7 @@ Example: Create new module under question/type/myqtype
 
     moosh generate-qtype myqtype
 
-<a name="gradebook-import">gradebook-import</a>
+<a class="command-name" name="gradebook-import">gradebook-import</a>
 ---------------
 
 Imports gradebook grades from csv file into a course given by id. With --course-idnumber use take mdl_course.idnumber instead of course.id.
@@ -603,7 +603,7 @@ Possible column headers to us:
 * "email" user's email
 * one or more columns matching grade item name
 
-<a name="info">info</a>
+<a class="command-name" name="info">info</a>
 ---------------
 
 Show information about plugin in current directory.
@@ -612,7 +612,7 @@ Example 1:
 
     moosh info
 
-<a name="info-plugins">info-plugins</a>
+<a class="command-name" name="info-plugins">info-plugins</a>
 ---------------
 
 List all possible plugins in this version of Moodle and directory for each.
@@ -621,7 +621,7 @@ Example 1: Show all plugin types.
 
     moosh info-plugins
 
-<a name="languages-update">languages-update</a>
+<a class="command-name" name="languages-update">languages-update</a>
 ---------------
 
 Update all installed language packs, in the current Moodle folder.
@@ -630,14 +630,14 @@ Example 1: Update all language packs.
 
     moosh languages-update
     
-<a name="maintenance-off">maintenance-off</a>
+<a class="command-name" name="maintenance-off">maintenance-off</a>
 ---------------
 
 Disable maintenance mode.
 
     moosh maintenance-off
 
-<a name="maintenance-on">maintenance-on</a>
+<a class="command-name" name="maintenance-on">maintenance-on</a>
 --------------
 
 Enable maintenance mode.
@@ -648,7 +648,7 @@ A maintenance message can also be set:
 
     moosh maintenace-on -m "Example message"
 
-<a name="module-config">module-config</a>
+<a class="command-name" name="module-config">module-config</a>
 ----------------
 
 Set or Get any plugin's settings values
@@ -658,7 +658,7 @@ Example:
     moosh module-config set dropbox dropbox_secret 123
     moosh module-config get dropbox dropbox_secret ?
 
-<a name="module-manage">module-manage</a>
+<a class="command-name" name="module-manage">module-manage</a>
 ----------------
 
 Show or Hide moudles, system wide (Will also delete, in the future)
@@ -668,7 +668,7 @@ Example:
     moosh module-manage hide scorm
     moosh module-manage show scorm
 
-<a name="php-eval">php-eval</a>
+<a class="command-name" name="php-eval">php-eval</a>
 ----------------
 
 Evaluate arbitrary php code after bootstrapping Moodle.
@@ -677,7 +677,7 @@ Example:
 
     moosh php-eval 'var_dump(get_object_vars($CFG))'
 
-<a name="plugin-fetchinfo">plugin-fetchinfo</a>
+<a class="command-name" name="plugin-fetchinfo">plugin-fetchinfo</a>
 ----------------
 
 Parse moodle.org to get all info about available plugins, and stores data in json file. You can specity path to output file.
@@ -693,7 +693,7 @@ Example 2:
     moosh plugn-fetchingo -l 10
 
 
-<a name="plugin-install">plugin-install</a>
+<a class="command-name" name="plugin-install">plugin-install</a>
 ----------------
 
 Download and install plugin. Requires plugin short name, and moodle version. You can obtain those data by using `plugin-list' command. 
@@ -703,7 +703,7 @@ Example:
     moosh plugin-install mod_quickmail 10 
 
 
-<a name="plugin-list">plugin-list</a>
+<a class="command-name" name="plugin-list">plugin-list</a>
 ----------------
 
 List Moodle plugins filtered on given query. Returns plugin full name, short name, available Moodle versions and short decription.
@@ -713,7 +713,7 @@ Example:
     moosh plugin-list quickmail
 
 
-<a name="user-create">user-create</a>
+<a class="command-name" name="user-create">user-create</a>
 -----------
 
 Create a new Moodle user. Provide one or more arguments to create one or more users.
@@ -736,7 +736,7 @@ Example 4: create a user with LDAP authentication
 
     moosh user-create --auth ldap --password NONE  --email joe.blogs@domain.tld --city "Some City" --country IE --firstname "Joe" --lastname "Blogs" jblogs
 
-<a name="user-delete">user-delete</a>
+<a class="command-name" name="user-delete">user-delete</a>
 -----------
 
 Delete user(s) from Moodle. Provide one ore more usernames as arguments.
@@ -749,12 +749,12 @@ Example 2: delete user testuser1 and user testuser2
     
     moosh user delete testuser1 testuser2
 
-<a name="user-getidbyname">user-getidbyname</a>
+<a class="command-name" name="user-getidbyname">user-getidbyname</a>
 ----------------
 
 This command has been deprecated. Use user-list instead.
 
-<a name="user-list">user-list</a>
+<a class="command-name" name="user-list">user-list</a>
 --------
 
 List user accounts. It accepts sql WHERE clause. If run without sql argument it will list first 100 users from database.
@@ -767,7 +767,7 @@ Example 2: list users with first name bruce and username batman
 
     moosh user-list "name = 'bruce' AND username = 'batman'"
 
-<a name="user-mod">user-mod</a>
+<a class="command-name" name="user-mod">user-mod</a>
 --------
 
 Modify user(s) account.
@@ -788,7 +788,7 @@ Example 4: update all users
 
     moosh user-mod --email my@email.com --password newpwd --auth manual --all
 
-<a name="random-label">random-label</a>
+<a class="command-name" name="random-label">random-label</a>
 ------------
 
 Add a label with random text to random section of course id provided.
@@ -801,7 +801,7 @@ Example 2: Add label that will contain string " uniquetext " inside.
 
     moosh random-label -i ' uniquetext ' 17
 
-<a name="report-concurrency">report-concurrency</a>
+<a class="command-name" name="report-concurrency">report-concurrency</a>
 ------------------
 
 Get information about concurrent users online.
@@ -811,7 +811,7 @@ Use: -f and -t with date in either YYYYMMDD or YYYY-MM-DD date. Add -p te specif
 Example 1: Get concurrent users between 20-01-2014 and 27-01-2014 with 30 minut periods.
     moosh report-concurrency -f 20140120 -t 20140127 -p 30
 
-<a name="role-create">role-create</a>
+<a class="command-name" name="role-create">role-create</a>
 -----------
 
 Create new role, optionally provide description, archetype and name. Role id is returned.
@@ -820,7 +820,7 @@ Example 1: Create role with short name "newstudentrole" a description, name an a
 
     moosh role-create -d "Role description" -a student -n "Role name" newstudentrole
 
-<a name="role-delete">role-delete</a>
+<a class="command-name" name="role-delete">role-delete</a>
 -----------
 
 Delete role by ID or shortname.
@@ -833,7 +833,7 @@ Example 2: Delete role id 10.
 
     moosh role-delete -i 10
 
-<a name="role-update-capability">role-update-capability</a>
+<a class="command-name" name="role-update-capability">role-update-capability</a>
 ----------------------
 
 Update role capabilities on any context.
@@ -847,7 +847,7 @@ Example 1: update "student" role (roleid=5) "mod/forumng:grade" capability, syst
 Example 2: update "editingteacher" role (roleid=3) "mod/forumng:grade" capability, system wide (contextid=1)
     moosh -i 3 mod/forumng:grade prevent 1
 
-<a name="role-update-contextlevel">role-update-contextlevel</a>
+<a class="command-name" name="role-update-contextlevel">role-update-contextlevel</a>
 ------------------------
 
 Update the context level upon a role can be updated.
@@ -861,7 +861,7 @@ Example 1: Allow "student" role to be set on block level
 Example 2: Prevent "manager" role to be set on course level
     moosh manager -course-off
 
-<a name="sql-run">sql-run</a>
+<a class="command-name" name="sql-run">sql-run</a>
 -------
 
 Run any custom SQL against bootstrapped Moodle instance DB. If query start with SELECT then matched rows will be displayed.
@@ -874,7 +874,7 @@ Example 2: Count the number of rows is log table
 
     moosh sql-run "select count(*) from {log}"
 
-<a name="sql-cli">sql-cli</a>
+<a class="command-name" name="sql-cli">sql-cli</a>
 -------
 
 Open a connection to the Moodle DB using credentials in config.php. Currently supports PostgreSQL and MySQL.
@@ -883,7 +883,7 @@ Example:
 
     moosh sql-cli
 
-<a name="theme-info">theme-info</a>
+<a class="command-name" name="theme-info">theme-info</a>
 ----------
 
 Show what themes are really used on Moodle site.
@@ -892,7 +892,7 @@ Example:
 
     moosh theme-info
 
-<a name="webservice-call">webservice-call</a>
+<a class="command-name" name="webservice-call">webservice-call</a>
 ---------------
 
 Calls 
