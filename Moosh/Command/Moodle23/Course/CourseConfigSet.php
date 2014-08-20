@@ -31,7 +31,7 @@ class CourseConfigSet extends MooshCommand
             case 'course':
                 if(!self::setCourseSetting($this->arguments[1]/* courseid */,$setting,$value)){
                 	// the setting was not applied, exit with a non-zero exit code
-                	exit(1);
+                	cli_error('');
                 }
                 break;
             case 'category':
