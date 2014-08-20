@@ -27,16 +27,16 @@ class CacheCourseRebuild extends MooshCommand
         global $CFG;
 
         require_once $CFG->dirroot . '/lib/modinfolib.php';
+        $options = $this->expandedOptions;
 
         if ($this->arguments[0]) {
             rebuild_course_cache($this->arguments[0]);
-            echo "Succesfully rebuilt cache for course " . $this->arguments[0];
-            exit();
+            echo "Succesfully rebuilt cache for course " . $this->arguments[0] . "\n";
         }
 
-        if (is_null($options['all'])) {
+        if ($options['all']) {
             rebuild_course_cache();
-            exit("Succesfully rebuilt all courses cache");
+            exit("Succesfully rebuilt all courses cache\n");
         }
     }
 }
