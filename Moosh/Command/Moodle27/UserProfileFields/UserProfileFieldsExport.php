@@ -6,11 +6,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle27\UserProfile;
+namespace Moosh\Command\Moodle27\UserProfileFields;
 
 use Moosh\MooshCommand;
 
-class UserProfileExport extends MooshCommand
+class UserProfileFieldsExport extends MooshCommand
 {
     public function __construct() {
         parent::__construct('export', 'userprofilefields');
