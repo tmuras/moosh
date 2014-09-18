@@ -57,7 +57,7 @@ class CourseUnenrol extends MooshCommand {
         }
 
         $usersid = $this->arguments;
-        $courseid = array_shift($usersid);
+        array_shift($usersid);
         $users = array();
 
         if ($usersid) {
@@ -72,9 +72,8 @@ class CourseUnenrol extends MooshCommand {
                 $users += get_role_users($role->id, $context);
             }
         } else {
-            $allroles = get_allroles();
+            $allroles = get_all_roles();
             foreach ($allroles as $role) {
-                $role = $DB->get_record('role', array('shortname' => $role->id));
                 $users += get_role_users($role->id, $context);
             }
         }
