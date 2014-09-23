@@ -10,7 +10,7 @@ namespace Moosh\Command\Moodle27\UserProfile;
 
 use Moosh\MooshCommand;
 
-class UserProfileImport extends MooshCommand
+class UserProfileFieldsImport extends MooshCommand
 {
     public function __construct() {
         parent::__construct('import', 'userprofilefields');

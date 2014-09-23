@@ -10,7 +10,7 @@ namespace Moosh\Command\Moodle27\UserProfile;
 
 use Moosh\MooshCommand;
 
-class UserProfileExport extends MooshCommand
+class UserProfileFieldsExport extends MooshCommand
 {
     public function __construct() {
         parent::__construct('export', 'userprofilefields');
@@ -78,7 +78,7 @@ class UserProfileExport extends MooshCommand
         }
         try {
             file_put_contents($filename, $csvexport->print_csv_data(true));
-            echo "Userfields exported to: " . $filename;
+            echo "Userfields exported to: " . $filename ."\n";
         }
         catch (Exception $e) {
             cli_error("Unable to save file. Check if file $filename is writable");
