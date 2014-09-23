@@ -45,6 +45,7 @@ class CourseList extends MooshCommand
 
         $options = $this->expandedOptions;
 
+        $params = NULL;
         $sql = "SELECT c.id,c.category,";
         if ($options['idnumber']) {
             $sql .= "c.idnumber,";
@@ -67,6 +68,7 @@ class CourseList extends MooshCommand
 
             $sql .= "WHERE c.category $where";
         }
+
         if ($options['empty'] == 'yes') {
             $sql .= " GROUP BY c.id HAVING modules < 2";
         }
@@ -76,6 +78,20 @@ class CourseList extends MooshCommand
 
         //echo "$sql\n";        var_dump($params);
         $courses = $DB->get_records_sql($sql, $params);
+
+        // Filter out any that have any section information (summary)
+        if ($options['empty'] == 'yes') {
+            $sql = "SELECT COUNT(*) AS C FROM {course_sections} WHERE course = ? AND summary <> ''";
+            foreach ($courses as $k=>$course) {
+                $sections = $DB->get_record_sql($sql, array($course->id));
+                if($sections->c > 0) {
+                    unset($courses[$k]);
+                }
+            }
+        }
+
+        // @TODO: If empty == no, then add those that have no modules but some modification to sections
+
         $this->display($courses);
 
 

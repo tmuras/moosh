@@ -34,7 +34,7 @@ Example
 
 Allows to manage auth plugins. Disable, enable, moving up and down in order.
 
-Example 1. Disable External database (bd) auth plugin.
+Example 1. Disable External database (db) auth plugin.
 
     moosh auth-manage disable db
 

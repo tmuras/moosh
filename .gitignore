@@ -8,3 +8,5 @@ config.sh
 tests/config25.sh
 tests/config26.sh
 tests/out.txt
+tags
+*.tags
