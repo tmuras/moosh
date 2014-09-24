@@ -31,6 +31,7 @@ class PluginFetchInfo extends MooshCommand
 
     public function execute()
     {
+        $this->load_json();
         if ($this->expandedOptions['categoryid']) {
             $this->make_request("https://moodle.org/plugins/browse.php?list=category&id=".
                                 $this->expandedOptions['categoryid'], 
@@ -143,5 +144,12 @@ class PluginFetchInfo extends MooshCommand
 
     protected function save_json() {
         file_put_contents($this->expandedOptions['path'], json_encode($this->results));
+    }
+
+    protected function load_json() {
+        $file = file_get_contents(($this->expandedOptions['path']));
+        if ($file) {
+            $this->results = json_decode($file);
+        }
     }
 }
