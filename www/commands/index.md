@@ -29,6 +29,16 @@ Example
 
     moosh activity-delete 2
 
+<a class="command-name" name="apache-parse-missing-files">apache-parse-missing-files</a>
+---------------
+
+Looks for missing files in apache log when moodle files are accessed and reports them
+
+Example 1. Parse file `apache.log` and search for missing files
+
+    moosh apache-parse-missing-files apache.log
+
+
 <a class="command-name" name="auth-manage">auth-manage</a>
 ---------------
 
@@ -88,6 +98,16 @@ Export category structure to XML.
 Example 1: Export all categories to XML.
 
     moosh category-export 1
+
+<a class="command-name" name="category-import">category-import</a>
+-------------
+
+Imports category structure from XML.
+
+Example 1: Import all categories from XML.
+
+    moosh category-import categor-to-import.xml
+
 
 <a class="command-name" name="category-list">category-list</a>
 -------------

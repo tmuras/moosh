@@ -13,7 +13,7 @@ use Moosh\ApacheLogParser\Parser;
 
 /**
  *
- * Class ParseMissingFiles
+ * Class ApacheParseMissingFiles
  * @package Moosh\Command\Generic\Apache
  */
 class ParseMissingFiles extends MooshCommand
@@ -22,7 +22,7 @@ class ParseMissingFiles extends MooshCommand
 
     public function __construct()
     {
-        parent::__construct('parse', 'missing-files');
+        parent::__construct('parse-missing-files', 'apache');
 
         $this->addArgument('logfile');
         $this->addOption('a|after:','only entries after this date');
@@ -38,9 +38,7 @@ class ParseMissingFiles extends MooshCommand
         $logfile = $this->arguments[0];
         $options = $this->expandedOptions;
 
-        if (!is_file($logfile) || !is_readable($logfile)) {
-            cli_error("File '$logfile' does not exist or not readable.");
-        }
+        $this->checkFileArg($logfile);
 
         require_once($this->mooshDir . '/includes/ApacheLogParser/Parser.class.php');
 
@@ -56,7 +54,6 @@ class ParseMissingFiles extends MooshCommand
         $list = array();
         while (($line = $parser->next()) != -1) {
             $i++;
-
             if($line['status'] != 404) {
                 continue;
             }

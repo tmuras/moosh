@@ -29,6 +29,7 @@ class CategoryImport extends MooshCommand
 
         $options = $this->expandedOptions;
         $arguments = $this->arguments;
+        $this->checkFileArg($arguments[0]);
 
         $this->categorystack = array();
         if ($options['parent']) {
@@ -48,7 +49,7 @@ class CategoryImport extends MooshCommand
         );
 
 
-        if (!($fp = fopen($this->cwd . '/' . $arguments[0], "r"))) {
+        if (!($fp = fopen($arguments[0], "r"))) {
             die("could not open XML input");
         }
 
