@@ -25,30 +25,9 @@ class QuestionImport extends MooshCommand
 
         require_once($CFG->dirroot . '/question/editlib.php');
         require_once($CFG->dirroot . '/question/import_form.php');
-        require_once($CFG->dirroot . '/question/format.php');
+        require_once($CFG->dirroot . '/question/format.php');        
 
-        $user = get_admin();
-        if (!$user) {
-            echo "Error: No admin account was found\n";
-            exit(1);
-        }
-
-        complete_user_login($user);
-
-        $arguments = $this->arguments;
-        if ($arguments[0][0] != '/')
-        {
-            $arguments[0] = $this->cwd . DIRECTORY_SEPARATOR . $arguments[0];
-        }
-
-        if (!file_exists($arguments[0]))
-        {
-            cli_error("Input file '" . $arguments[0] . "' does not exist.");
-        }
-
-        if (!is_readable($arguments[0])) {
-            cli_error("Input file '" . $arguments[0] . "' is not readable.");
-        }
+        $this->checkFileArg($arguments[0]);
 
         $file = $arguments[0];
         $quiz = $arguments[1];
@@ -57,7 +36,6 @@ class QuestionImport extends MooshCommand
         $coursecontext = \context_course::instance($course->id);
         $coursemodule = get_coursemodule_from_instance('quiz',$quiz->id);
         $quizcontext = \context_module::instance($coursemodule->id,MUST_EXIST);
-        //var_dump($coursecontext); die();
 
         // Use existing questions category for quiz.
         $category = $DB->get_record('question_categories',array('contextid'=>$coursecontext->id));

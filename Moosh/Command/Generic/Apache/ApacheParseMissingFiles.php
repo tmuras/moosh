@@ -16,7 +16,7 @@ use Moosh\ApacheLogParser\Parser;
  * Class ApacheParseMissingFiles
  * @package Moosh\Command\Generic\Apache
  */
-class ParseMissingFiles extends MooshCommand
+class ApacheParseMissingFiles extends MooshCommand
 {
     public static $MAX_LINE_LENGTH = 8192;
 
