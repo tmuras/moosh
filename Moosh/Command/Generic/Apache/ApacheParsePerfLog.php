@@ -118,7 +118,6 @@ class ApacheParsePerfLog extends MooshCommand
 
             //serverload: 1.58
             $row['serverload'] = (int)($this->parse($line, 'serverload: (\d+.\d+)') * 100);
-
             //we assume that the row is unique if timestamp, url and time are unique. Therefore they are required values
             if (!$row['url'] || !$row['timestamp'] || !$row['time']) {
                 cli_problem('Invalid row: ' . $row['url']);
@@ -131,10 +130,9 @@ class ApacheParsePerfLog extends MooshCommand
             foreach ($row as $k => $v) {
                 if (isset($v)) {
                     $columns[] = $k;
-                    $values[] = "'" . mysql_real_escape_string($v) . "'";
+                    $values[] = "'" . @mysql_escape_string($v) . "'";
                 }
             }
-
             $sql = "INSERT IGNORE INTO " . $this->options['table'] . " (" . implode(',', $columns) . ') VALUES (' . implode(',', $values) . ');';
             echo "$sql\n";
         }
