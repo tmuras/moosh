@@ -101,6 +101,22 @@
                     "type":"zip"
                 }
             }
+        },
+        {
+            "type":"package",
+            "package":{
+                "version":"dev-master",
+                "name":"yetanotherape/diff-match-patch",
+                "source":{
+                    "url":"https://github.com/yetanotherape/diff-match-patch",
+                    "type":"git",
+                    "reference":"master"
+                },
+                "dist":{
+                    "url":"https://github.com/yetanotherape/diff-match-patch/archive/master.zip",
+                    "type":"zip"
+                }
+            }
         }
     ],
     "require":{
@@ -111,7 +127,8 @@
         "jamiepratt/moodle-qtype_TEMPLATE":"dev-master#bf2b7bc641c1db5c4889e4cc78ee3c2225398871",
         "danielneis/moodle-gradereport_newgradereport":"dev-master#691f53a15de352c3fe25da03c001a97a76b18358",
         "moodlehq/moodle-local_amos":"dev-master#8a1f8e6f1322a0f5c247e7092a763b3b5b27c022",
-        "moodlehq/moodle-local_wstemplate":"dev-master#add2ad0949e72f025c0aad36c4b822e8c6479d3b"
+        "moodlehq/moodle-local_wstemplate":"dev-master#add2ad0949e72f025c0aad36c4b822e8c6479d3b",
+        "yetanotherape/diff-match-patch":"dev-master#0726dbb4e59e68574326821c174013cf6fdfe20e"
     },
     "bin": ["moosh.php"]
 }
