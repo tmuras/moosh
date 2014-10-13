@@ -11,8 +11,6 @@
 namespace Moosh\Command\Generic\Tools;
 use Moosh\MooshCommand;
 
-define('NEW_LINE', "\n");
-
 class ToolsTop extends MooshCommand
 {
     public function __construct()
@@ -26,15 +24,8 @@ class ToolsTop extends MooshCommand
         global $DB;
         exec("tput lines", $lines);
         exec("tput cols", $cols);   
-        
-        $all_actions = $DB->get_records('log');
-
-        if ($lines[0] <= count($all_actions)) {
-            $actions = array_slice($all_actions, 0, $lines[0]-3);
-        }
-        else {
-            $actions = $all_actions;
-        }
+        $rows_to_render = (int)$lines[0] - 3;
+        $actions = $DB->get_records('log', null, '', '*', 0, $rows_to_render);
 
         $user_id_header     = "User ID";
         $user_name_header   = "User name";
@@ -81,7 +72,7 @@ class ToolsTop extends MooshCommand
 
         $header = str_pad($user_id_header, $user_id_len+1) . 
                   str_pad($user_name_header, $user_name_len+1) .
-                  $last_action_header . NEW_LINE; 
+                  $last_action_header . PHP_EOL; 
         
         echo $header;
         echo str_repeat("=", $longest_line) . "\n";
@@ -89,7 +80,7 @@ class ToolsTop extends MooshCommand
         foreach ($output as $line_raw) {
             $line = str_pad($line_raw[0], $user_id_len+1) .
                     str_pad($line_raw[1], $user_name_len+1) .
-                    $line_raw[2] . NEW_LINE;
+                    $line_raw[2] . PHP_EOL;
             echo $line;
         }
     }
