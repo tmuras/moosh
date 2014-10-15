@@ -22,6 +22,7 @@ if (file_exists(__DIR__ . '/Moosh')) {
 
 $loader = require $moosh_dir . '/vendor/autoload.php';
 $loader->add('Moosh\\', $moosh_dir);
+$loader->add('DiffMatchPatch\\', $moosh_dir . '/vendor/yetanotherape/diff-match-patch/src');
 
 $options = array('debug' => true, 'optimizations' => 0);
 

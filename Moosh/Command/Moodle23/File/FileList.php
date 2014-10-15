@@ -7,12 +7,11 @@
  */
 
 namespace Moosh\Command\Moodle23\File;
+
 use Moosh\MooshCommand;
 
-class FileList extends MooshCommand
-{
-    public function __construct()
-    {
+class FileList extends MooshCommand {
+    public function __construct() {
         parent::__construct('list', 'file');
 
         $this->addOption('i|id', 'display IDs only - used for piping into other file-related commands');
@@ -34,11 +33,9 @@ timemodified
 */
 
         $this->addArgument('expression');
-  //      $this->maxArguments = 3;
     }
 
-    protected function getArgumentsHelp()
-    {
+    protected function getArgumentsHelp() {
         $help = parent::getArgumentsHelp();
         $help .= "\n\n";
         $help .= "To get all files from course N use 'course=N' as an argument.";
@@ -47,17 +44,17 @@ timemodified
     }
 
 
-    public function execute()
-    {
+    public function execute() {
         global $CFG, $DB;
 
         $fs = get_file_storage();
 
         $query = trim($this->arguments[0]);
+        $output = array();
 
         //check if asking for course files: course=NNN
         $match = NULL;
-        if(preg_match('/course=(\d+)/',$query,$match)) {
+        if (preg_match('/course=(\d+)/', $query, $match)) {
             //get all context IDs
             $courseid = $match[1];
 
@@ -65,68 +62,112 @@ timemodified
             $context = \context_course::instance($courseid);
             $contexts = array($context->get_course_context()->id);
             $results = $DB->get_records_sql("SELECT * FROM {context} WHERE path LIKE '" . $context->get_course_context()->path . "/%'");
-            foreach($results as $result) {
+            foreach ($results as $result) {
                 $contexts[] = $result->id;
             }
             list($sql, $params) = $DB->get_in_or_equal($contexts);
 
             $rs = $DB->get_recordset_sql("SELECT id FROM {files} WHERE filename <> '.' AND contextid $sql", $params);
         } else {
-            $rs = $DB->get_recordset_sql("SELECT id FROM {files} WHERE ". $query);
+            $rs = $DB->get_recordset_sql("SELECT id FROM {files} WHERE " . $query);
 
         }
 
-        foreach($rs as $file) {
-            if($this->expandedOptions['id']) {
-                echo $file->id . "\n";
+        // Header.
+        $header = array('id', 'status', 'flags', 'hash', 'time of creation', 'Moodle IDs');
+        if ($this->expandedOptions['all']) {
+            array_push($header,'mime', 'size', 'user (id)', 'location');
+        }
+        $header[] = 'path';
+
+        $output[] = $header;
+
+        foreach ($rs as $file) {
+            if ($this->expandedOptions['id']) {
+                $output = array($file->id);
                 continue;
             }
+            $line = array();
+            /** @var \stored_file $fileobject */
             $fileobject = $fs->get_file_by_id($file->id);
 
-            echo $fileobject->get_id() . "\t";
+            $line[] = $fileobject->get_id();
 
-            echo $fileobject->get_status();
+            $line[] = $fileobject->get_status();
+            $flags = '';
             if ($fileobject->is_directory()) {
-                echo 'd';
+                $flags .= 'd';
             } else {
-                echo '.';
+                $flags .= '.';
             }
 
             if ($fileobject->is_external_file()) {
-                echo 'e';
+                $flags .= 'e';
             } else {
-                echo '.';
+                $flags .= '.';
             }
 
             if ($fileobject->is_valid_image()) {
-                echo 'i';
+                $flags .= 'i';
             } else {
-                echo '.';
+                $flags .= '.';
             }
-
-            if($fileobject->get_timecreated() != $fileobject->get_timemodified()) {
-                echo 'm';
+            if ($fileobject->get_timecreated() != $fileobject->get_timemodified()) {
+                $flags .= 'm';
             } else {
-                echo '.';
+                $flags .= '.';
             }
+            $line[] = $flags;
+            $line[] = $fileobject->get_contenthash();
+            $line[] = userdate($fileobject->get_timecreated());
+            $line[] = $fileobject->get_contextid() . ':' . $fileobject->get_component() . ':' . $fileobject->get_filearea() . ':' . $fileobject->get_itemid();
 
-            echo "\t" . $fileobject->get_contenthash();
-            echo "\t" . userdate($fileobject->get_timecreated());
-
-            echo "\t" . $fileobject->get_contextid() . ':' . $fileobject->get_component() . ':'. $fileobject->get_filearea() . ':' . $fileobject->get_itemid();
-
-            if($this->expandedOptions['all']) {
-                echo "\t" . $fileobject->get_mimetype();
-                echo "\t" . $fileobject->get_filesize();
-                echo "\t" . $fileobject->get_userid();
+            if ($this->expandedOptions['all']) {
+                $line[] = $fileobject->get_mimetype();
+                $line[] = $fileobject->get_filesize();
+                $user = $DB->get_record('user', array('id' => $fileobject->get_userid()));
+                $line[] = $user->username . " ({$user->id})";
+                $line[] = $this->getLocation($fileobject);
             }
-            echo "\t\t" . substr($fileobject->get_filepath(),1) . $fileobject->get_filename();
+            $line[] = substr($fileobject->get_filepath(), 1) . $fileobject->get_filename();
 
-            echo "\n\r";
+            //echo "\n\r";
+            // @TODO Optionally display line & force flush after each line?
+            /*
             echo chr(27) . "[0G";
             flush();
+            */
+            $output[] = $line;
         }
         $rs->close();
+
+        foreach ($output as $line) {
+            echo implode("\t", $line);
+            echo "\n";
+        }
+
+    }
+
+    /**
+     * Get location for given mdl_file.id entry
+     * @param $fileid
+     */
+    protected function getLocation(\stored_file $file) {
+        global $CFG, $DB;
+        // To handle atm:course:legacy, mod_folder:content, mod_resource:content
+        if ($file->get_component() == 'course' && $file->get_filearea() == 'legacy') {
+            return "Legacy course files: " . $CFG->wwwroot . "/files/index.php?contextid=" . $file->get_contextid();
+        }
+
+        if ($file->get_component() == 'mod_folder' && $file->get_filearea() == 'content') {
+            $context = $DB->get_record('context', array('id' => $file->get_contextid()));
+            return "Folder resource: " . $CFG->wwwroot . "/mod/folder/view.php?id=" . $context->instanceid;
+        }
+
+        if ($file->get_component() == 'mod_resource' && $file->get_filearea() == 'content') {
+            $context = $DB->get_record('context', array('id' => $file->get_contextid()));
+            return "Resource: " . $CFG->wwwroot . "/mod/resource/view.php?id=" . $context->instanceid;
+        }
 
     }
 }
