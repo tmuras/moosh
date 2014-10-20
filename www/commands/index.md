@@ -161,6 +161,19 @@ The same as "purge all caches" page.
 
     moosh cache-clear
 
+<a class="command-name" name="code-check">code-check</a>
+-----------
+
+Checks files if they are compatible with moodle code standards
+
+Example 1:
+
+    moosh code-check -p some/path/to/file.php
+
+Example 2:
+
+    moosh code-check -p some/path/to/dir
+
 <a class="command-name" name="cohort-create">cohort-create</a>
 -------------
 
@@ -817,6 +830,9 @@ Example 4: update all users
 
     moosh user-mod --email my@email.com --password newpwd --auth manual --all
 
+Example 4: set user as global super user
+
+    moosh user-mod -g 
 <a class="command-name" name="random-label">random-label</a>
 ------------
 
