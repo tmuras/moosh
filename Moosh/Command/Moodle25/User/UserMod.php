@@ -17,16 +17,16 @@ class UserMod extends MooshCommand
     {
         parent::__construct('mod', 'user');
 
-        $this->addOption('g|global', 'user will be set as super user.');
-
-        $this->addArgument('username');
+        $this->addOption('g|global:', 'user name to be set as super user.', false);
     }
 
     public function execute()
     {   
         global $CFG;
         $options = $this->expandedOptions;
-        $user = get_user_by_name($this->arguments[0]);
+        if ($username = $options['global']) {
+            $user = get_user_by_name($username);
+        }
 
         if ($user) {
             $user_id = $user->id;
