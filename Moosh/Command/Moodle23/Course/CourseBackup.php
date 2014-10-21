@@ -18,6 +18,7 @@ class CourseBackup extends MooshCommand
         parent::__construct('backup', 'course');
 
         $this->addOption('f|filename:', 'path to filename to save the course backup');
+        $this->addOption('F|fullbackup', 'do full backup instead of general');
 
         $this->addArgument('id');
     }
@@ -46,13 +47,27 @@ class CourseBackup extends MooshCommand
         }
 
         $bc = new backup_controller(\backup::TYPE_1COURSE, $this->arguments[0], backup::FORMAT_MOODLE,
-            backup::INTERACTIVE_NO, backup::MODE_GENERAL, $USER->id);
+            backup::INTERACTIVE_YES, backup::MODE_GENERAL, $USER->id);
 
+        if ($options['fullbackup']) {
+            $tasks = $bc->get_plan()->get_tasks();
+            foreach ($tasks as &$task) {
+                if ($task instanceof \backup_root_task) {
+                    $setting = $task->get_setting('logs');
+                    $setting->set_value('1');
+                    $setting = $task->get_setting('grade_histories');
+                    $setting->set_value('1');
+                } 
+            } 
+        }
+
+        $bc->set_status(backup::STATUS_AWAITING);
         $bc->execute_plan();
         $result = $bc->get_results();
         $file = $result['backup_destination'];
         /** @var $file stored_file */
 
         $file->copy_content_to($options['filename']);
+        printf("%s\n", $options['filename']);
     }
 }
