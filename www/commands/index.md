@@ -791,6 +791,15 @@ Example 2: delete user testuser1 and user testuser2
     
     moosh user delete testuser1 testuser2
 
+<a class="command-name" name="user-export">user-export</a>
+-----------
+
+Exports user with given username to csv file.
+
+Example 1:
+
+    moosh user-export testuser
+    
 <a class="command-name" name="user-getidbyname">user-getidbyname</a>
 ----------------
 
