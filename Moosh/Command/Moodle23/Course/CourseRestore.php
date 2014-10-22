@@ -13,10 +13,8 @@ use restore_controller;
 use restore_dbops;
 use backup;
 
-class CourseRestore extends MooshCommand
-{
-    public function __construct()
-    {
+class CourseRestore extends MooshCommand {
+    public function __construct() {
         parent::__construct('restore', 'course');
 
         $this->addArgument('backup_file');
@@ -26,8 +24,7 @@ class CourseRestore extends MooshCommand
 
     }
 
-    public function execute()
-    {
+    public function execute() {
         global $CFG, $DB, $USER;
 
         require_once($CFG->dirroot . "/backup/util/includes/backup_includes.php");
@@ -132,6 +129,10 @@ class CourseRestore extends MooshCommand
         }
         $plan = $rc->get_plan();
         $tasks = $plan->get_tasks();
+        foreach ($tasks as &$task) {
+            $setting = $task->get_setting('enrol_migratetomanual');
+            $setting->set_value('1');
+        }
         $rc->execute_precheck();
         $rc->execute_plan();
         $rc->destroy();
