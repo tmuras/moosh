@@ -1,9 +1,5 @@
 <?php
 
-
-/**
-* 
-*/
 class CodeRepair
 {
     public $files = array();    
@@ -31,8 +27,22 @@ class CodeRepair
     public function start() {
         foreach ($this->files as $file) {
             $this->addHeadlines($file);
+            $this->fixInlineComments($file);
+
+            $file_lines = file($file);
+            $fixed_file_lines = array();
+            foreach ($file_lines as $line) {
+                $line = $this->fixUnderscoreVariables($line);
+
+                $fixed_file_lines[] = $line;
+            }
+
+            $fixed_file = implode(PHP_EOL, $fixed_file_lines);
+            file_put_contents($file, $fixed_file);
         }
     }
+
+    // Whole File fixers
 
     public function addHeadlines($file) {
         $file_content = file_get_contents($file);
@@ -40,7 +50,29 @@ class CodeRepair
         $file_fixed_headlines = preg_replace($pattern,
                      $this->headlines, $file_content, 1);
         file_put_contents($file, $file_fixed_headlines);
-        // var_dump($file_content);
-        // var_dump($file_fixed_headlines);
+
     } 
+
+    public function fixInlineComments($line) {
+        $f = file_get_contents($file);
+
+        $f = preg_replace_callback(
+            '!/\*(.+?)\*/!',
+            function($matches) {
+                $comment = $matches[1];
+                $comment = trim($comment);
+                $comment = rtrim($comment, '.');
+                return '// ' . ucfirst($comment) . '.';
+            },
+            $f
+        );
+
+        file_put_contents($file, $f);
+    }
+
+    // One code line fixers
+
+    public function fixUnderscoreVariables($line) {
+
+    }
 }

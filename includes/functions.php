@@ -430,15 +430,10 @@ function backup_size() {
 function get_user_by_name($username) {
     global $DB;
 
-    echo $username . "\n";
-
-    $users = get_users(true, $username);
-
-    foreach ($users as $user) {
-        if ($user->username == $username) {
-            return $user;
-        }
+    $user = $DB->get_record('user', array("username" => $username));
+    if ($user) {
+        return $user;
+    } else {
+        return false;
     }
-    return false;
-
 }
