@@ -4,9 +4,7 @@
  *
  * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @author     Kacper Golewski <k.golewski@gmail.com>
  */
-
 
 namespace Moosh\Command\Moodle25\User;
 use Moosh\MooshCommand;
@@ -17,42 +15,95 @@ class UserMod extends MooshCommand
     {
         parent::__construct('mod', 'user');
 
-        $this->addOption('g|global:', 'user name to be set as super user.', false);
+        $this->addOption('all', 'modify all users');
+        $this->addOption('i|id', 'use id to match a user');
+
+        $this->addOption('a|auth:', 'auth');
+        $this->addOption('p|password:', 'password');
+        $this->addOption('e|email:','email address');
+
+        $this->addOption('g|global', 'user(s) to be set as global admin.', false);
+
+        $this->addArgument('user');
+        $this->minArguments = 0;
+        $this->maxArguments = 255;
     }
 
     public function execute()
-    {   
-        global $CFG;
+    {
+        global $CFG, $DB;
+
+        require_once $CFG->dirroot . '/user/lib.php';
+        unset($CFG->passwordpolicy);
+
         $options = $this->expandedOptions;
-        if ($username = $options['global']) {
-            $user = get_user_by_name($username);
+        if($options['all']) {
+            //run on the whole mdl_user table
+
+            $sql = "UPDATE {user} SET ";
+            $sqlFragment = array();
+            $parameters = array();
+            //we want to use the options that were actually provided on the commandline
+            if($this->parsedOptions->has('password')) {
+                $sqlFragment[] = 'password = ?';
+                $parameters['password'] = md5($this->parsedOptions['password']->value);
+            }
+            if($this->parsedOptions->has('email')) {
+                $sqlFragment[] = 'email = ?';
+                $parameters['email'] = $this->parsedOptions['email']->value;
+            }
+            if($this->parsedOptions->has('auth')) {
+                $sqlFragment[] = 'auth = ?';
+                $parameters['auth'] = $this->parsedOptions['auth']->value;
+            }
+
+            if(count($sqlFragment) == 0) {
+                cli_error('You need to provide at least one option for updating a profile field (password or email)');
+            }
+            $sql .= implode(' , ',$sqlFragment);
+            $DB->execute($sql,$parameters);
+            exit(0);
         }
 
-        if ($user) {
-            $user_id = $user->id;
-        } else {
-            cli_error("No user found.");
-        }
+        foreach ($this->arguments as $argument) {
 
-        if ($options['global']) {
-            foreach(explode(',', $CFG->siteadmins) as $admin) {
-                $admin = (int)$admin;
-                if ($admin) {
-                    $admins[$admin] = $admin;
+            if($options['id']) {
+                $user = $DB->get_record('user',array('id'=>$argument));
+            } else {
+                $user = $DB->get_record('user',array('username'=>$argument));
+            }
+
+            if(!$user) {
+                cli_problem("User '$argument' not found'");
+                continue;
+            }
+
+            if($this->parsedOptions->has('password')) {
+                $user->password = md5($this->parsedOptions['password']->value);
+            }
+            if($this->parsedOptions->has('email')) {
+                $user->email = $this->parsedOptions['email']->value;
+            }
+            if($this->parsedOptions->has('auth')) {
+                $user->auth = $this->parsedOptions['auth']->value;
+            }
+
+            if ($this->parsedOptions->has('global')) {
+                foreach(explode(',', $CFG->siteadmins) as $admin) {
+                    $admin = (int)$admin;
+                    if ($admin) {
+                        $admins[$admin] = $admin;
+                    }
                 }
+
+                if (!isset($admins[$user->id])) {
+                    $admins[$user->id]=$user->id;
+                }
+                set_config('siteadmins', implode(',', $admins));
+                purge_all_caches();
             }
 
-            if (isset($admins[$user_id])) {
-                unset($admins[$user_id]);
-            }
-            array_unshift($admins, $user_id);
-            set_config('siteadmins', implode(',', $admins));
-            purge_all_caches();
-
-            echo "User $user->username is set as global super user.\n";
+            echo $DB->update_record('user',$user) . "\n";
         }
-
-
-        
     }
 }
