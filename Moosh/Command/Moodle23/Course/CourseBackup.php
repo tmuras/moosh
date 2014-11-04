@@ -36,7 +36,7 @@ class CourseBackup extends MooshCommand
 
         $options = $this->expandedOptions;
         if (!$options['filename']) {
-            $options['filename'] = $this->cwd . '/backup_' . $shortname . '_' . date('Y.m.d') . '.mbz';
+            $options['filename'] = $this->cwd . '/backup_' . $this->arguments[0] . "_". str_replace('/','_',$shortname) . '_' . date('Y.m.d') . '.mbz';
         } elseif ($options['filename'][0] != '/') {
             $options['filename'] = $this->cwd .'/' .$options['filename'];
         }
@@ -67,7 +67,10 @@ class CourseBackup extends MooshCommand
         $file = $result['backup_destination'];
         /** @var $file stored_file */
 
-        $file->copy_content_to($options['filename']);
-        printf("%s\n", $options['filename']);
+        if(!$file->copy_content_to($options['filename'])) {
+            cli_error("Problems copying final backup to '". $options['filename'] . "'");
+        } else {
+            printf("%s\n", $options['filename']);
+        }
     }
 }
