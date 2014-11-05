@@ -26,7 +26,7 @@ class QuestionImport extends MooshCommand
         require_once($CFG->dirroot . '/question/editlib.php');
         require_once($CFG->dirroot . '/question/import_form.php');
         require_once($CFG->dirroot . '/question/format.php');        
-
+        $arguments = $this->arguments;
         $this->checkFileArg($arguments[0]);
 
         $file = $arguments[0];
@@ -58,7 +58,6 @@ class QuestionImport extends MooshCommand
         $qformat->setRealfilename($file);
         $qformat->setMatchgrades('nearest');
         $qformat->setStoponerror(true);
-
         // Do anything before that we need to
         if (!$qformat->importpreprocess()) {
             print_error('cannotimport', '');
@@ -83,11 +82,5 @@ class QuestionImport extends MooshCommand
         $quiz = get_record('quiz', 'id', $quizid);
         $fileformat = 'xml'; //Moodle XML format
         $questioncat = null;
-
-
     }
-
-
-
 }
-

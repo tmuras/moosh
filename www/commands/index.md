@@ -754,6 +754,14 @@ Example:
 
     moosh plugin-list quickmail
 
+<a class="command-name" name="question-import">question-import</a>
+----------------
+
+Import quiz question from xml file to selected course.
+
+Example: import question from file path/to/question.xml to course with id 2
+
+    moosh question-import path/to/question.xml 2
 
 <a class="command-name" name="user-create">user-create</a>
 -----------
