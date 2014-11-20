@@ -90,6 +90,22 @@
             "type":"package",
             "package":{
                 "version":"dev-master",
+                "name":"danielneis/moodle-gradeexport_newgradeexport",
+                "source":{
+                    "url":"https://github.com/danielneis/moodle-gradeexport_newgradeexport",
+                    "type":"git",
+                    "reference":"master"
+                },
+                "dist":{
+                    "url":"https://github.com/danielneis/moodle-gradeexport_newgradeexport/archive/master.zip",
+                    "type":"zip"
+                }
+            }
+        },
+        {
+            "type":"package",
+            "package":{
+                "version":"dev-master",
                 "name":"danielneis/moodle-gradereport_newgradereport",
                 "source":{
                     "url":"https://github.com/danielneis/moodle-gradereport_newgradereport",

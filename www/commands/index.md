@@ -593,9 +593,20 @@ Creates new grade report under grade/report based on the template from https://g
 
     moosh generate-gradereport report_name
 
-Example: Create new module under grade/report/beststudents
+Example: Create new report under grade/report/beststudents
 
     moosh generate-gradereport beststudents
+
+<a class="command-name" name="generate-gradeexport">generate-gradeexport</a>
+--------------
+
+Creates new grade export under grade/export based on the template from https://github.com/danielneis/moodle-gradeexport_newgradeexport.
+
+    moosh generate-gradeexport export_name
+
+Example: Create new export under grade/export/mycustomsystem
+
+    moosh generate-gradeexport mycustomsystem
 
 <a class="command-name" name="generate-lang">generate-lang</a>
 -------------
