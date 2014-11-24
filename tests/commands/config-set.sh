@@ -5,9 +5,9 @@ install_db
 install_data
 cd $MOODLEDIR
 
-moosh config-set newconfig test user 
+$MOOSHCMD config-set newconfig test user 
 
-if moosh config-get user | grep newconfig ; then
+if $MOOSHCMD config-get user | grep newconfig ; then
   exit 0
 else
   exit 1

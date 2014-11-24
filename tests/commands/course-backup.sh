@@ -7,7 +7,7 @@ cd $MOODLEDIR
 
 export BACKUP=/tmp/mooshcoursebackup.mbz
 rm -f $BACKUP
-moosh course-backup -f $BACKUP 2
+$MOOSHCMD course-backup -f $BACKUP 2
 if ls $BACKUP; then
   rm $BACKUP
   exit 0

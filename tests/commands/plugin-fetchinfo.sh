@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-if moosh plugin-fetchinfo --limit=1 | grep "Fetching"; then
+if $MOOSHCMD plugin-fetchinfo --limit=1 | grep "Fetching"; then
   exit 0
 else
   exit 1

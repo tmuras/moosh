@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-moosh course-delete 2
+$MOOSHCMD course-delete 2
 if ! mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" -e \
     "SELECT * FROM mdl_course WHERE fullname = 'testcourse1'"\
     | grep testcourse1; then

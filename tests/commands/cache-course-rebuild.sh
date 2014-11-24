@@ -8,7 +8,7 @@ cd $MOODLEDIR
 cache_old=$(mysql --skip-column-names -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" -e \
     "SELECT cacherev FROM mdl_course WHERE id = 2")
 
-moosh cache-course-rebuild --all
+$MOOSHCMD cache-course-rebuild --all
 cache_new=$(mysql --skip-column-names -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" -e \
     "SELECT cacherev FROM mdl_course WHERE id = 2")
 

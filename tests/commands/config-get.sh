@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-if moosh config-get user | grep enablecourseinstances ; then
+if $MOOSHCMD config-get user | grep enablecourseinstances ; then
   exit 0
 else
   exit 1

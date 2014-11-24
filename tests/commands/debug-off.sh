@@ -6,7 +6,7 @@ install_data
 
 cd $MOODLEDIR
 
-moosh debug-on
+$MOOSHCMD debug-on
 if echo "SELECT * FROM mdl_config WHERE name='debug' AND value='0'" \
     | mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" | grep "debug"; then
   exit 0

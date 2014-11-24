@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-moosh block-manage hide badges
+$MOOSHCMD block-manage hide badges
 if echo "SELECT * FROM mdl_block WHERE name = 'badges' AND visible='0'" \
     | mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" | grep "badges"; then
   :
@@ -13,7 +13,7 @@ else
   exit 1
 fi
 
-moosh block-manage show badges
+$MOOSHCMD block-manage show badges
 if echo "SELECT * FROM mdl_block WHERE name = 'badges' AND visible='1'" \
     | mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" | grep "badges"; then
   exit 0

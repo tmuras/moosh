@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-if moosh module-reinstall assign | grep "Success" ; then
+if $MOOSHCMD module-reinstall assign | grep "Success" ; then
   exit 0
 else
   exit 1

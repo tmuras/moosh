@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
  
-if moosh generate-filemanager | grep "Code template for managing the form with filepicker" ; then
+if $MOOSHCMD generate-filemanager | grep "Code template for managing the form with filepicker" ; then
   exit 0
 else
   exit 1

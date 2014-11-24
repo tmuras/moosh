@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-if moosh file-list id=6 | grep -w "grumpycat"; then
+if $MOOSHCMD file-list id=6 | grep -w "grumpycat"; then
   exit 0
 else
   exit 1

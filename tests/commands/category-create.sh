@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-moosh category-create hyperion
+$MOOSHCMD category-create hyperion
 if echo "SELECT * FROM mdl_course_categories WHERE name = 'hyperion'" \
 	| mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" | grep "hyperion"; then
   exit 0

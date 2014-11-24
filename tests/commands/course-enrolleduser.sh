@@ -5,8 +5,8 @@ install_db
 install_data
 cd $MOODLEDIR
 
-moosh course-enrol 2 testuser
-if moosh course-enrolleduser student 2 \
+$MOOSHCMD course-enrol 2 testuser
+if $MOOSHCMD course-enrolleduser student 2 \
     | grep "5"; then
   exit 0
 else

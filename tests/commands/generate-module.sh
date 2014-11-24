@@ -6,7 +6,7 @@ install_data
 cd $MOODLEDIR
 
 rm -rf mod/testmodule
-moosh generate-module testmodule
+$MOOSHCMD generate-module testmodule
 if ls mod/testmodule ; then
   exit 0
 else

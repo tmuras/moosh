@@ -6,7 +6,7 @@ source functions.sh
 cd $MOODLEDIR
 IMPORTQUESTION="$MOODLEDATA/importquestion.xml"
 
-if moosh question-import $IMPORTQUESTION | grep "question" ; then
+if $MOOSHCMD question-import $IMPORTQUESTION | grep "question" ; then
   exit 0
 else
   exit 1

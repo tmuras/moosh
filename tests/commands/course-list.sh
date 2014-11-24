@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-if moosh course-list testcourse1 | grep testcourse ; then
+if $MOOSHCMD course-list test | grep test ; then
   exit 0
 else
   exit 1

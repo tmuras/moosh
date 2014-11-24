@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-if moosh auth-manage enable db | grep "Auth modules enabled"; then
+if $MOOSHCMD auth-manage enable db | grep "Auth modules enabled"; then
   exit 0
 else
   exit 1

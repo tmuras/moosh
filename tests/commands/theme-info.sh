@@ -6,7 +6,7 @@ install_data
 cd $MOODLEDIR
 
 
-if moosh theme-info | grep "Site themes" ; then
+if $MOOSHCMD theme-info | grep "Site themes" ; then
   exit 0
 else
   exit 1

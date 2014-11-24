@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-if moosh chkdatadir | grep "Checked dir" ; then
+if $MOOSHCMD chkdatadir | grep "Checked dir" ; then
   echo 0
 else
   echo 1

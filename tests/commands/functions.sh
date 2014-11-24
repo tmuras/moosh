@@ -34,7 +34,7 @@ if [ -z "${SOURCESQL}" ]; then
 fi
 
 function install_db {
-  cd ../data
+  cd ../../data
   bzip2 -dk $SOURCESQL.sql.bz2 || true #if bzip2 fails than most likely because it's already unpacked
   echo "DROP DATABASE $DBNAME" | mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME"
   echo "CREATE DATABASE $DBNAME" | mysql -u "$DBUSER" -p"$DBPASSWORD"

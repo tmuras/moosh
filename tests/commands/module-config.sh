@@ -5,10 +5,10 @@ install_db
 install_data
 cd $MOODLEDIR
 
-moosh module-config set dropbox dropbox_secret 123
-moosh module-config get dropbox dropbox_secret ?
+$MOOSHCMD module-config set dropbox dropbox_secret 123
+$MOOSHCMD module-config get dropbox dropbox_secret ?
 
-if moosh theme-info | grep "Site themes" ; then
+if $MOOSHCMD theme-info | grep "Site themes" ; then
   exit 0
 else
   exit 1

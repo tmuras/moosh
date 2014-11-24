@@ -5,9 +5,9 @@ install_db
 install_data
 cd $MOODLEDIR
 
-moosh activity-add assign 2
+$MOOSHCMD activity-add assign 2
 
-if moosh activity-delete 1 \
+if $MOOSHCMD activity-delete 1 \
     | grep "Deleted activity"; then
   exit 0
 else

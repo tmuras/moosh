@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-if moosh config-plugins quiz | grep -w "quiz"; then
+if $MOOSHCMD config-plugins quiz | grep -w "quiz"; then
   exit 0
 else
   exit 1

@@ -6,7 +6,7 @@ install_data
 
 cd $MOODLEDIR
 
-if moosh category-import "$MOODLEDATA/categoryimport.xml" | grep -w "TestCategory"; then
+if $MOOSHCMD category-import "$MOODLEDATA/categoryimport.xml" | grep -w "TestCategory"; then
   exit 0
 else
   exit 1

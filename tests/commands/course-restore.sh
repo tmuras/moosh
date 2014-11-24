@@ -5,8 +5,8 @@ install_db
 install_data
 cd $MOODLEDIR
 
-moosh course-backup -f testbackup.mbz 2
-moosh course-restore testbackup.mbz 3
+$MOOSHCMD course-backup -f testbackup.mbz 2
+$MOOSHCMD course-restore testbackup.mbz 3
 rm testbackup.mbz
 if echo "SELECT * FROM mdl_course WHERE category = '3'" \
     | mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME"; then

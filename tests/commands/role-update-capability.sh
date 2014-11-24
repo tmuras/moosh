@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-moosh role-update-capability student mod/forumn:viewrating allow 1
+$MOOSHCMD role-update-capability student mod/forumn:viewrating allow 1
 
 if echo "SELECT * FROM mdl_role_capabilities WHERE contextid='1' \
         AND capability='mod/forumn:viewrating' AND permission='1' AND roleid='5'"  \

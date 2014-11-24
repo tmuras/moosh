@@ -6,7 +6,7 @@ install_data
 cd $MOODLEDIR
 
 rm -rf blocks/testblock
-moosh generate-block testblock
+$MOOSHCMD generate-block testblock
 if ls blocks/testblock ; then
   exit 0
 else

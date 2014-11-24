@@ -3,7 +3,7 @@ source functions.sh
 
 cd $MOODLEDIR
 
-if moosh php-eval "echo 'test php eval'" | grep "tesst php eval"; then
+if $MOOSHCMD php-eval "echo 'test php eval'" | grep "tesst php eval"; then
   exit 0 
 else
   exit 1

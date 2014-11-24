@@ -6,7 +6,7 @@ install_data
 cd $MOODLEDIR
 
 rm -rf question/type/testqtype
-moosh generate-module testqtype
+$MOOSHCMD generate-module testqtype
 if ls question/type/testqtype ; then
   exit 0
 else

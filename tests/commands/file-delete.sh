@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-moosh file-delete 1
+$MOOSHCMD file-delete 1
 
 if SELECT * FROM mdl_files where id='1'; then
   echo 0

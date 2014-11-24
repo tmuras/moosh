@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-moosh category-config-set 2 visible 0
+$MOOSHCMD category-config-set 2 visible 0
 if echo "SELECT * FROM mdl_course_categories \
     WHERE id=2 AND visible=0" \
     | mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" ; then

@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-if moosh sql-dump | grep "Dump completed"; then
+if $MOOSHCMD sql-dump | grep "Dump completed"; then
   exit 0
 else
   exit 1
