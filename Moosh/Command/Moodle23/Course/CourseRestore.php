@@ -21,6 +21,7 @@ class CourseRestore extends MooshCommand {
         $this->addArgument('category_id');
 
         $this->addOption('d|directory', 'restore from extracted directory (1st param) under dataroot/temp/backup');
+        $this->addOption('e|existing', 'restore into existing course, id provided instead of category_id');
 
     }
 
@@ -30,11 +31,16 @@ class CourseRestore extends MooshCommand {
         require_once($CFG->dirroot . "/backup/util/includes/backup_includes.php");
         require_once($CFG->dirroot . "/backup/util/includes/restore_includes.php");
 
-        //check if category is OK
-        $category = $DB->get_record('course_categories', array('id' => $this->arguments[1]), '*', MUST_EXIST);
-
         $arguments = $this->arguments;
         $options = $this->expandedOptions;
+
+        // Check if category is OK.
+        if (!$options['existing']) {
+            $category = $DB->get_record('course_categories', array('id' => $this->arguments[1]), '*', MUST_EXIST);
+        } else {
+            $course = $DB->get_record('course', array('id' => $this->arguments[1]), '*', MUST_EXIST);
+            $category = $DB->get_record('course_categories', array('id' => $course->category), '*', MUST_EXIST);
+        }
 
         if (!$options['directory']) {
             if ($arguments[0][0] != '/') {
@@ -94,7 +100,6 @@ class CourseRestore extends MooshCommand {
         $shortname = (string)($shortname[0]);
 
         if (!$shortname) {
-
             cli_error('No shortname in the backup file.');
         }
 
@@ -102,8 +107,8 @@ class CourseRestore extends MooshCommand {
             $fullname = $shortname;
         }
 
-        //get unique shortname
-        if ($DB->get_record('course', array('category' => $category->id, 'shortname' => $shortname))) {
+        // Get unique shortname if creating new course.
+        if (!$options['existing'] && $DB->get_record('course', array('category' => $category->id, 'shortname' => $shortname))) {
             $matches = NULL;
             preg_match('/(.*)_(\d+)$/', $shortname, $matches);
             if ($matches) {
@@ -120,10 +125,18 @@ class CourseRestore extends MooshCommand {
             }
         }
 
-        $courseid = restore_dbops::create_new_course($fullname, $shortname, $category->id);
+        if ($options['existing']) {
+            $courseid = $arguments[1];
+            $rc = new restore_controller($backupdir, $courseid, backup::INTERACTIVE_NO,
+                backup::MODE_GENERAL, $USER->id, backup::TARGET_CURRENT_ADDING);
+        } else {
+            $courseid = restore_dbops::create_new_course($fullname, $shortname, $category->id);
+            $rc = new restore_controller($backupdir, $courseid, backup::INTERACTIVE_NO,
+                backup::MODE_GENERAL, $USER->id, backup::TARGET_NEW_COURSE);
+        }
+
         echo "Restoring (new course id,shortname,destination category): $courseid,$shortname," . $category->id . "\n";
-        $rc = new restore_controller($backupdir, $courseid, backup::INTERACTIVE_NO,
-            backup::MODE_GENERAL, $USER->id, backup::TARGET_NEW_COURSE);
+
         if ($rc->get_status() == backup::STATUS_REQUIRE_CONV) {
             $rc->convert();
         }

@@ -366,11 +366,15 @@ Example 1: Reset course with id=17
 <a class="command-name" name="course-restore">course-restore</a>
 --------------
 
-Restore course from path/to/backup.mbz to category with a given id.
+Restore course from path/to/backup.mbz to category or existig course.
 
 Example 1: Restore backup.mbz into category with id=1
 
     moosh course-restore backup.mbz 1
+
+Example 2: Restore backup.mbz into existing course with id=3
+
+    moosh course-restore -e backup.mbz 3
 
 <a class="command-name" name="course-unenrol">course-unenrol</a>
 ------------
