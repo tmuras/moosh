@@ -826,6 +826,15 @@ Example 2: list users with first name bruce and username batman
 
     moosh user-list "name = 'bruce' AND username = 'batman'"
 
+Example 3: list users enrolled in course id 2
+
+    moosh user-list --course 2
+
+Example 4: list teachers enrolled in course id 2 that never accessed that course
+
+    moosh user-list --course 2 --course-role editingteacher --course-inactive
+
+
 <a class="command-name" name="user-mod">user-mod</a>
 --------
 
