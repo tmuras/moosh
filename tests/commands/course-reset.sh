@@ -6,9 +6,11 @@ install_data
 cd $MOODLEDIR
 
 $MOOSHCMD course-reset 2
-if echo "SELECT * FROM mdl_course WHERE id='2' and shortname='tc1';" \
-    | mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" | grep "testcourse1"; then
-  exit 0
-else
+
+# Check if user got un-enrolled from the course reset
+if echo "SELECT userid FROM mdl_user_enrolments WHERE enrolid=1 and userid=4\G" \
+    | mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" | grep "userid: 4"; then
   exit 1
+else
+  exit 0
 fi
