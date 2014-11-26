@@ -51,12 +51,6 @@ class CourseEnrolByName extends MooshCommand
         $options = $this->expandedOptions;
         $arguments = $this->arguments;
 
-        //print_r($options);
-        //print_r($arguments);
-        //array_shift($arguments);
-        //print_r($arguments);
-        //return(0);
-
         //find role id for given role
         $role = $DB->get_record('role', array('shortname' => $options['role']), '*', MUST_EXIST);
 

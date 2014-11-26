@@ -20,7 +20,7 @@ class CourseReset extends MooshCommand
 
     public function execute()
     {
-        global $CFG, $DB, $COURSE;
+        global $DB, $COURSE;
 
         $course = $DB->get_record('course', array('id'=>$this->arguments[0]));
         $COURSE = $course;

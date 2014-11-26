@@ -26,32 +26,6 @@ class CourseEnrolledUser extends MooshCommand
 
     public function execute()
     {
-
-        global $CFG, $DB;
-
-        require_once($CFG->dirroot . '/enrol/locallib.php');
-
-        $options = $this->expandedOptions;
-        $arguments = $this->arguments;
-
-        //print_r($arguments);
-
-        try {
-            $course = $DB->get_record('course', array('id' => $arguments[1]), '*', MUST_EXIST);
-            $role = $DB->get_record('role', array('shortname' => $arguments[0]));
-            $context = context_course::instance($course->id);
-            $users = get_role_users($role->id, $context);
-            //$count = count($users);
-            //echo "count role_assigns: " . $count . "\n";
-            if ($users) {
-                foreach ($users as $user) {
-                    //print_r($user);
-                    echo $user->id . "\n";
-                }
-            }
-        } catch (Exception $e) {
-            print get_class($e)." thrown within the exception handler. Message: ".$e->getMessage()." on line ".$e->getLine();
-        }
-        return(0);
+        cli_error('This command has been deprecated. Use user-list instead.');
     }
 }
