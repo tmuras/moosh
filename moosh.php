@@ -8,6 +8,7 @@
  */
 
 use \Moosh\MooshCommand;
+use \Moosh\Performance;
 
 $cwd = getcwd();
 
@@ -43,6 +44,7 @@ $appspecs = new OptionSpecCollection;
 $spec_verbose = $appspecs->add('v|verbose', "be verbose");
 $spec_moodle_path = $appspecs->add('p|moodle-path:', "Moodle directory.");
 $spec_moodle_user = $appspecs->add('u|user:', "Moodle user, by default ADMIN");
+$spec_performance = $appspecs->add('t|performance', "Show performance infomation including timings");
 
 $parser = new ContinuousOptionParser($appspecs);
 $app_options = $parser->parse($argv);
@@ -194,8 +196,7 @@ if ($subcommand->bootstrapLevel()) {
     $CFG->debugdisplay = 1;
 
 
-    // by default set up $USER to admin user
-
+    // By default set up $USER to admin user.
     if ($app_options->has('user')) {
         $user = get_user_by_name($app_options['user']->value);
         if (!$user) {
@@ -221,17 +222,24 @@ $subcommand->cwd = $cwd;
 $subcommand->mooshDir = $moosh_dir;
 $subcommand->defaults = $options;
 
-
-//process the arguments
+// Process the arguments.
 $subcommand->setParsedOptions($subcommand_options[$subcommand->getName()]);
 $subcommand->setArguments($arguments);
 $subcommand->processOptions($options);
 $subcommand->expandOptions();
 
-//some more debug if requested
+// Some more debug if requested.
 if ($app_options->has('verbose')) {
     $subcommand->status();
 }
 
-//execute the actual logic
+// Execute the actual logic.
+if($app_options->has('performance')) {
+    $perf = new Performance();
+    $perf->start();
+}
 $subcommand->execute();
+if($app_options->has('performance')) {
+    $perf->stop();
+    echo $perf->summary();
+}
