@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 /**
  * moosh - Moodle Shell
@@ -5,13 +6,13 @@
  * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once '../includes/functions.php'; // everything is hardcoded for now
+require_once '../../includes/functions.php'; // everything is hardcoded for now
 
 function get_commands_list($moodle_ver) {
-    run_external_command("cp config$moodle_ver.sh config.sh", "Couldn't copy tests config file");
+    run_external_command("cp ../scripts/config$moodle_ver.sh config.sh", "Couldn't copy tests config file");
     $file = file_get_contents("config.sh");
 
-    $moosh = __DIR__ . '/../moosh.php';
+    $moosh = __DIR__ . '/../../moosh.php';
     preg_match("/(?<=MOODLEDIR=)(.*)/", $file, $moodledir);
     exec("cd $moodledir[0] && $moosh", $output);
 
@@ -58,6 +59,7 @@ function run_tests(array $commands) {
             $results[$command] = "fail";
             var_dump($output);
             echo "\n";
+            die();
             continue;
         }
     }
@@ -65,7 +67,8 @@ function run_tests(array $commands) {
 };
 
 
-$support_versions = array('25', '26');
+$support_versions = array('27');
+chdir('../commands');
 
 $out = '---
 title: CI
@@ -90,7 +93,7 @@ $out .='</tr>
     <tbody>
     ';
 
-$all_commands = get_commands_list("26"); // this is ugly, disregard
+$all_commands = get_commands_list("27"); // this is ugly, disregard
 
 $results = array();
 foreach($support_versions as $version) {
@@ -100,15 +103,23 @@ foreach($support_versions as $version) {
     }
 }
 
+/*
 echo "tests for moodle 2.6\n";
 $moodle26 = run_tests(get_commands_list("26"));
 foreach($moodle26 as $k=>$v) {
     $results['26'][$k] = $v;
 }
+
 echo "tests for moodle 2.5\n";
 $moodle25 = run_tests(get_commands_list("25"));
 foreach($moodle25 as $k=>$v) {
     $results['25'][$k] = $v;
+}
+*/
+echo "tests for moodle 2.7\n";
+$moodle27 = run_tests(get_commands_list("27"));
+foreach($moodle27 as $k=>$v) {
+    $results['27'][$k] = $v;
 }
 
 sort($all_commands);
@@ -162,4 +173,4 @@ Table legend:
 </table></div>
 ';
 
-file_put_contents("../www/ci/index.md", $out);
+file_put_contents("../../www/ci/index.md", $out);
