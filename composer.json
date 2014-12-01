@@ -90,6 +90,22 @@
             "type":"package",
             "package":{
                 "version":"dev-master",
+                "name":"danielneis/moodle-gradeexport_newgradeexport",
+                "source":{
+                    "url":"https://github.com/danielneis/moodle-gradeexport_newgradeexport",
+                    "type":"git",
+                    "reference":"master"
+                },
+                "dist":{
+                    "url":"https://github.com/danielneis/moodle-gradeexport_newgradeexport/archive/master.zip",
+                    "type":"zip"
+                }
+            }
+        },
+        {
+            "type":"package",
+            "package":{
+                "version":"dev-master",
                 "name":"danielneis/moodle-gradereport_newgradereport",
                 "source":{
                     "url":"https://github.com/danielneis/moodle-gradereport_newgradereport",
@@ -128,7 +144,8 @@
         "danielneis/moodle-gradereport_newgradereport":"dev-master#691f53a15de352c3fe25da03c001a97a76b18358",
         "moodlehq/moodle-local_amos":"dev-master#8a1f8e6f1322a0f5c247e7092a763b3b5b27c022",
         "moodlehq/moodle-local_wstemplate":"dev-master#add2ad0949e72f025c0aad36c4b822e8c6479d3b",
-        "yetanotherape/diff-match-patch":"dev-master#0726dbb4e59e68574326821c174013cf6fdfe20e"
+        "yetanotherape/diff-match-patch":"dev-master#0726dbb4e59e68574326821c174013cf6fdfe20e",
+        "danielneis/moodle-gradeexport_newgradeexport": "dev-master"
     },
     "bin": ["moosh.php"]
 }

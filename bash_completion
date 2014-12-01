@@ -44,6 +44,7 @@ _moosh()
          generate-block \
          generate-filemanager \
          generate-form \
+         generate-gradeexport \
          generate-gradereport \
          generate-lang \
          generate-module \

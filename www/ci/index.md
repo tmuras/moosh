@@ -246,6 +246,11 @@ CI
 		<td><i class="fa fa-check"></i></td>
 	</tr>
 	<tr>
+		<td><a href="/commands/#generate-gradeexport">generate-gradeexport</td>
+		<td><i class="fa fa-check"></i></td>
+		<td><i class="fa fa-check"></i></td>
+	</tr>
+	<tr>
 		<td><a href="/commands/#generate-gradereport ">generate-gradereport</td>
 		<td><i class="fa fa-check"></i></td>
 		<td><i class="fa fa-check"></i></td>
