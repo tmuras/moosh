@@ -60,13 +60,44 @@ class CourseUnenrol extends MooshCommand {
         array_shift($usersid);
         $users = array();
 
-        if ($usersid) {
+        if ($options['role'] && $usersid) {
+            $rolesid = array();
+            $roles = explode(',', $options['role']);
+            foreach ($roles as $role) {
+                $role = $DB->get_record('role', array('shortname' => $role));
+                $rolesid[] = $role->id;
+            }
+            // this can be shortened by combining the two functions above
+            // maybe?
+            foreach($usersid as $userid) {
+                foreach($rolesid as $singlerole) {
+                    $record = $DB->get_record('role_assignments', array('roleid' => $singlerole, 'userid' => $userid, 'contextid' => $context->id));
+                    if ($record) {
+                        $users[] = $record;
+                    }
+                }
+            }
+            foreach ($users as $user) {
+                $enrolments = $manager->get_user_enrolments($user->userid);
+
+                foreach ($enrolments as $enrolment) {
+                    list ($instance, $plugin) = $manager->get_user_enrolment_components($enrolment);
+                    /* var_dump($instance); */
+                    /* var_dump($plugin); */
+                    /* if ($instance && $plugin && $plugin->allow_unenrol_user($instance, $enrolment)) { */
+                    /*     $plugin->unenrol_user($instance, $enrolment->userid); */
+                    /*     echo "Succesfully unenroled user $enrolment->userid\n"; */
+                    /* } */
+                }
+            }
+            die();
+        } elseif ($usersid) {
             foreach($usersid as $singleuser) {
                 $user = $DB->get_record('user', array('id' => $singleuser));
                 $users[] = $user;
             }
         } elseif ($options['role']) {
-            $roles = explode(',', $options['role']); 
+            $roles = explode(',', $options['role']);
             foreach ($roles as $role) {
                 $role = $DB->get_record('role', array('shortname' => $role));
                 $users += get_role_users($role->id, $context);
