@@ -90,7 +90,6 @@ class CourseUnenrol extends MooshCommand {
                     /* } */
                 }
             }
-            die();
         } elseif ($usersid) {
             foreach($usersid as $singleuser) {
                 $user = $DB->get_record('user', array('id' => $singleuser));
