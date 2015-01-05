@@ -7,7 +7,6 @@
  */
 
 namespace Moosh\Command\Moodle23\Course;
-use ___PHPSTORM_HELPERS\object;
 use Moosh\MooshCommand;
 
 class CourseReset extends MooshCommand
@@ -21,7 +20,7 @@ class CourseReset extends MooshCommand
 
     public function execute()
     {
-        global $CFG, $DB, $COURSE;
+        global $DB, $COURSE;
 
         $course = $DB->get_record('course', array('id'=>$this->arguments[0]));
         $COURSE = $course;

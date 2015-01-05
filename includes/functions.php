@@ -426,3 +426,14 @@ function backup_size() {
     
     return $DB->get_records_sql($sql, array('filearea' => 'backup', 'component' => 'backup'));
 }
+
+function get_user_by_name($username) {
+    global $DB;
+
+    $user = $DB->get_record('user', array("username" => $username));
+    if ($user) {
+        return $user;
+    } else {
+        return false;
+    }
+}

@@ -35,7 +35,6 @@ class RandomLabel extends MooshCommand
         require_once($CFG->dirroot . '/course/lib.php');
         require_once($CFG->dirroot . '/course/modlib.php');
 
-        $USER = get_admin();
         $length = 64;
 
         if ($this->expandedOptions['include-text']) {

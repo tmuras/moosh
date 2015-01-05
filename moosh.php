@@ -8,6 +8,7 @@
  */
 
 use \Moosh\MooshCommand;
+use \Moosh\Performance;
 
 $cwd = getcwd();
 
@@ -22,22 +23,28 @@ if (file_exists(__DIR__ . '/Moosh')) {
 
 $loader = require $moosh_dir . '/vendor/autoload.php';
 $loader->add('Moosh\\', $moosh_dir);
+$loader->add('DiffMatchPatch\\', $moosh_dir . '/vendor/yetanotherape/diff-match-patch/src');
 
 $options = array('debug' => true, 'optimizations' => 0);
 
 require_once $moosh_dir . '/includes/functions.php';
 require_once $moosh_dir . '/includes/default_options.php';
 
+
 use GetOptionKit\ContinuousOptionParser;
 use GetOptionKit\OptionSpecCollection;
 
-error_reporting(E_ALL);
+@error_reporting(E_ALL | E_STRICT);
+@ini_set('display_errors', '1');
 
 define('MOOSH_VERSION', '0.15.2');
+define('MOODLE_INTERNAL', true);
 
 $appspecs = new OptionSpecCollection;
 $spec_verbose = $appspecs->add('v|verbose', "be verbose");
 $spec_moodle_path = $appspecs->add('p|moodle-path:', "Moodle directory.");
+$spec_moodle_user = $appspecs->add('u|user:', "Moodle user, by default ADMIN");
+$spec_performance = $appspecs->add('t|performance', "Show performance infomation including timings");
 
 $parser = new ContinuousOptionParser($appspecs);
 $app_options = $parser->parse($argv);
@@ -136,6 +143,11 @@ if (file_exists(home_dir() . DIRECTORY_SEPARATOR . ".mooshrc.php")) {
     $moodlerc = home_dir() . DIRECTORY_SEPARATOR . "mooshrc.php";
 }
 
+// Create directory for configuration if one is not there already.
+if(!file_exists(home_dir() . "/.moosh")) {
+    mkdir(home_dir() . "/.moosh");
+}
+
 $options = NULL;
 if ($moodlerc) {
     if (isset($app_options['verbose'])) {
@@ -180,14 +192,26 @@ if ($subcommand->bootstrapLevel()) {
     $subcommand->relativeDir = $relative_dir;
 
     //set up debugging
-    @error_reporting(E_ALL | E_STRICT);
-    @ini_set('display_errors', '1');
     $CFG->debug = (E_ALL | E_STRICT);
     $CFG->debugdisplay = 1;
 
-    //by default set up $USER to admin user
 
+    // By default set up $USER to admin user.
+    if ($app_options->has('user')) {
+        $user = get_user_by_name($app_options['user']->value);
+        if (!$user) {
+            echo "Error: No user account was found\n";
+            exit(1);
+        }
+    } else {
+        $user = get_admin();
+        if (!$user) {
+            echo "Error: No admin account was found\n";
+            exit(1);
+        }
 
+        complete_user_login($user);
+    }
 }
 
 if ($app_options->has('verbose')) {
@@ -198,16 +222,24 @@ $subcommand->cwd = $cwd;
 $subcommand->mooshDir = $moosh_dir;
 $subcommand->defaults = $options;
 
-//process the arguments
+// Process the arguments.
 $subcommand->setParsedOptions($subcommand_options[$subcommand->getName()]);
 $subcommand->setArguments($arguments);
 $subcommand->processOptions($options);
 $subcommand->expandOptions();
 
-//some more debug if requested
+// Some more debug if requested.
 if ($app_options->has('verbose')) {
     $subcommand->status();
 }
 
-//execute the actual logic
+// Execute the actual logic.
+if($app_options->has('performance')) {
+    $perf = new Performance();
+    $perf->start();
+}
 $subcommand->execute();
+if($app_options->has('performance')) {
+    $perf->stop();
+    echo $perf->summary();
+}

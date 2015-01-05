@@ -3,6 +3,26 @@ title: moosh Development
 layout: default
 ---
 
+Performance information
+=======================
+
+You can use global option -t (or long version --performance) to show extra performance information collected while the command runs:
+
+    % mooshdev -t course-backup 2
+    ... <output cut> ...
+    *** PERFORMANCE INFORMATION ***
+    Run from 2014-11-26T11:21:15+01:00 to 2014-11-26T11:21:16+01:00
+    Real time run 0.667 seconds
+    Server load before running the command: 0.14 0.16 0.16 1/584 6180
+    Server load after: 0.14 0.16 0.16 1/584 6180
+    Ticks: 67 user: 36 sys: 3 cuser: 0 csys: 0
+    Memory use before command run (internal/real): 19058864/19136512 (18.18 MB/18.25 MB)
+    Memory use after:  42252496/44040192 (40.30 MB/42.00 MB)
+    Memory peak: 43679224/45088768  (41.66 MB/43.00 MB)
+    *******************************
+
+
+
 Functional tests
 ================
 

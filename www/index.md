@@ -35,6 +35,12 @@ As a result you will get a list of all commands that contain string "user":
     user-list
     user-mod
 
+Moosh will always try to use Moodle's superuser. But you can change on what user you want to execute specific command. For example:
+
+    moosh -u testuser course-backup 1 
+
+will execute command `course-backup` for user with name `testuser`
+
 Requirements
 ============
 
@@ -63,7 +69,7 @@ Install composer - see http://getcomposer.org/download .
 
     git clone git://github.com/tmuras/moosh.git
     cd moosh
-    ./composer.phar update
+    ./composer.phar install
 
 Common steps for Moodle package and git
 ---------------------------------------

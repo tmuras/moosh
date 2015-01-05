@@ -11,16 +11,16 @@
  */
 
 namespace Moosh\Command\Moodle23\Course;
+
 use Moosh\MooshCommand;
 use context_course;
 use course_enrolment_manager;
 
-class CourseEnrol extends MooshCommand
-{
-    public function __construct()
-    {
+class CourseEnrol extends MooshCommand {
+    public function __construct() {
         parent::__construct('enrol', 'course');
         $this->addOption('i|id', 'use numeric IDs instead of user name(s)');
+        $this->addOption('s|shortname', 'use course short name instead of course ID as first argument');
         $this->addOption('r|role:', 'role short name');
 
         //possible other options
@@ -33,8 +33,7 @@ class CourseEnrol extends MooshCommand
         $this->maxArguments = 255;
     }
 
-    public function execute()
-    {
+    public function execute() {
         global $CFG, $DB, $PAGE;
 
         require_once($CFG->dirroot . '/enrol/locallib.php');
@@ -46,7 +45,12 @@ class CourseEnrol extends MooshCommand
         //find role id for given role
         $role = $DB->get_record('role', array('shortname' => $options['role']), '*', MUST_EXIST);
 
-        $course = $DB->get_record('course', array('id' => $arguments[0]), '*', MUST_EXIST);
+        if ($options['shortname']) {
+            $course = $DB->get_record('course', array('shortname' => $arguments[0]), '*', MUST_EXIST);
+        } else {
+            $course = $DB->get_record('course', array('id' => $arguments[0]), '*', MUST_EXIST);
+        }
+
         $context = context_course::instance($course->id);
         $manager = new course_enrolment_manager($PAGE, $course);
 
@@ -80,7 +84,7 @@ class CourseEnrol extends MooshCommand
             } else {
                 $user = $DB->get_record('user', array('username' => $argument), '*', MUST_EXIST);
             }
-            if(!$user) {
+            if (!$user) {
                 cli_problem("User '$user' not found");
                 continue;
             }

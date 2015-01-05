@@ -9,6 +9,17 @@ namespace Moosh;
 
 define('MOOSH_CODE_MARKER','/** MOOSH AUTO-GENERATED */');
 
+/**
+ * @var int Generic argument
+ */
+define('ARG_GENERIC', 0);
+
+/**
+ * @var int File or path to existing file
+ */
+define('ARG_EXISTING_FILENAME', 1);
+
+
 class MooshCommand
 {
 
@@ -26,6 +37,9 @@ class MooshCommand
      * @var int set CLI_SCRIPT and include config.php
      */
     public static $BOOTSTRAP_FULL = 2;
+
+
+
 
     /**
      * @var \GetOptionKit\OptionSpecCollection
@@ -143,11 +157,26 @@ class MooshCommand
      * Define required argument. Call function again to add another argument.
      * @param string $name
      */
-    public function addArgument($name)
+    public function addArgument($name, $type = ARG_GENERIC)
     {
-        $this->argumentNames[] = $name;
         $this->minArguments++;
         $this->maxArguments++;
+        $this->argumentNames[] = $name;
+
+        if($type == ARG_EXISTING_FILENAME) {
+            if ($name[0] != '/') {
+                $name = $this->cwd . DIRECTORY_SEPARATOR . $name;
+            }
+
+            if (!file_exists($name)) {
+                cli_error("Input file '" . $name . "' does not exist.");
+            }
+
+            if (!is_readable($name)) {
+                cli_error("Input file '" . $name . "' is not readable.");
+            }
+        }
+
     }
 
     public function addOption($optionSpec, $description = NULL, $default = NULL)
@@ -359,5 +388,11 @@ class MooshCommand
         }
 
         return $langCategory;
+    }
+
+    public function checkFileArg($name) {
+
+
+    
     }
 }

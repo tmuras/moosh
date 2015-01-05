@@ -18,21 +18,19 @@ class CourseBackup extends MooshCommand
         parent::__construct('backup', 'course');
 
         $this->addOption('f|filename:', 'path to filename to save the course backup');
+        $this->addOption('F|fullbackup', 'do full backup instead of general');
 
         $this->addArgument('id');
     }
 
     public function execute()
     {
-        global $CFG, $DB;
+        global $CFG, $DB, $USER;
 
-        require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
+        require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');        
 
-        $admin = get_admin();
-        if (!$admin) {
-            echo "Error: No admin account was found";
-            exit(1);
-        }
+	error_reporting(E_ALL);
+	ini_set('display_errors',true);
 
         //check if course id exists
         $course = $DB->get_record('course', array('id' => $this->arguments[0]), '*', MUST_EXIST);
@@ -41,7 +39,7 @@ class CourseBackup extends MooshCommand
 
         $options = $this->expandedOptions;
         if (!$options['filename']) {
-            $options['filename'] = $this->cwd . '/backup_' . $shortname . '_' . date('Y.m.d') . '.mbz';
+            $options['filename'] = $this->cwd . '/backup_' . $this->arguments[0] . "_". str_replace('/','_',$shortname) . '_' . date('Y.m.d') . '.mbz';
         } elseif ($options['filename'][0] != '/') {
             $options['filename'] = $this->cwd .'/' .$options['filename'];
         }
@@ -52,13 +50,35 @@ class CourseBackup extends MooshCommand
         }
 
         $bc = new backup_controller(\backup::TYPE_1COURSE, $this->arguments[0], backup::FORMAT_MOODLE,
-            backup::INTERACTIVE_NO, backup::MODE_GENERAL, $admin->id);
+            backup::INTERACTIVE_YES, backup::MODE_GENERAL, $USER->id);
 
+        if ($options['fullbackup']) {
+            $tasks = $bc->get_plan()->get_tasks();
+            foreach ($tasks as &$task) {
+                if ($task instanceof \backup_root_task) {
+                    $setting = $task->get_setting('logs');
+                    $setting->set_value('1');
+                    $setting = $task->get_setting('grade_histories');
+                    $setting->set_value('1');
+                } 
+            } 
+        }
+
+        $bc->set_status(backup::STATUS_AWAITING);
         $bc->execute_plan();
         $result = $bc->get_results();
-        $file = $result['backup_destination'];
-        /** @var $file stored_file */
 
-        $file->copy_content_to($options['filename']);
+        if(isset($result['backup_destination']) && $result['backup_destination']) {
+            $file = $result['backup_destination'];
+            /** @var $file stored_file */
+
+            if(!$file->copy_content_to($options['filename'])) {
+                cli_error("Problems copying final backup to '". $options['filename'] . "'");
+            } else {
+                printf("%s\n", $options['filename']);
+            }
+        } else {
+	    echo $bc->get_backupid();
+        }
     }
 }
