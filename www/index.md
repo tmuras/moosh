@@ -52,7 +52,7 @@ Installation
 Installation from Ubuntu package
 --------------------------------
 
-     sudo apt-add-repository 'deb http://ppa.launchpad.net/zabuch/ppa/ubuntu precise main'
+     sudo apt-add-repository 'deb http://ppa.launchpad.net/zabuch/ppa/ubuntu trusty main'
      sudo apt-get update
      sudo apt-get install moosh
 
