@@ -96,6 +96,13 @@ user-list
 user-mod
 </code></pre>
 
+<p>Moosh will always try to use Moodle's superuser. But you can change on what user you want to execute specific command. For example:</p>
+
+<pre><code>moosh -u testuser course-backup 1 
+</code></pre>
+
+<p>will execute command <code>course-backup</code> for user with name <code>testuser</code></p>
+
 <h1>Requirements</h1>
 
 <p>PHP 5.3+, Moodle 1.9, 2.2 or higher.</p>
@@ -104,7 +111,7 @@ user-mod
 
 <h2>Installation from Ubuntu package</h2>
 
-<pre><code> sudo apt-add-repository 'deb http://ppa.launchpad.net/zabuch/ppa/ubuntu precise main'
+<pre><code> sudo apt-add-repository 'deb http://ppa.launchpad.net/zabuch/ppa/ubuntu trusty main'
  sudo apt-get update
  sudo apt-get install moosh
 </code></pre>
@@ -120,7 +127,7 @@ Follow "common steps" below.</p>
 
 <pre><code>git clone git://github.com/tmuras/moosh.git
 cd moosh
-./composer.phar update
+./composer.phar install
 </code></pre>
 
 <h2>Common steps for Moodle package and git</h2>
