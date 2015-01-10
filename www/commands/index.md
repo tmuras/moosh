@@ -38,6 +38,7 @@ Example 1. Parse file `apache.log` and search for missing files
 
     moosh apache-parse-missing-files apache.log
 
+
 <a class="command-name" name="apache-parse-perflog">apache-parse-perflog</a>
 ---------------
 
@@ -46,6 +47,16 @@ Parse log file, and construct query with performance log.
 Example 1.
 
     moosh apache-parse-perflog apache.log
+
+
+<a class="command-name" name="audit-passwords">audit-passwords</a>
+---------------
+
+Audit hashed passwords - check if any one matches top 10 000 known passwords. With -r also show password matched.
+
+Example 1.
+
+    moosh audit-passwords -r
 
 
 <a class="command-name" name="auth-manage">auth-manage</a>

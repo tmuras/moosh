@@ -37,7 +37,7 @@ use GetOptionKit\OptionSpecCollection;
 @error_reporting(E_ALL | E_STRICT);
 @ini_set('display_errors', '1');
 
-define('MOOSH_VERSION', '0.16');
+define('MOOSH_VERSION', '0.17');
 define('MOODLE_INTERNAL', true);
 
 $appspecs = new OptionSpecCollection;
@@ -192,8 +192,10 @@ if ($subcommand->bootstrapLevel()) {
     $subcommand->relativeDir = $relative_dir;
 
     //set up debugging
-    $CFG->debug = (E_ALL | E_STRICT);
+    $CFG->debug = (E_ALL);
     $CFG->debugdisplay = 1;
+    @error_reporting(E_ALL);
+    @ini_set('display_errors', '1');
 
 
     // By default set up $USER to admin user.
