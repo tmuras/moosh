@@ -80,11 +80,15 @@ timemodified
         }
         $header[] = 'path';
 
-        $output[] = $header;
+        if ($this->expandedOptions['id']) {
+		$output = array();
+	} else {
+	        $output[] = $header;
+	}
 
         foreach ($rs as $file) {
             if ($this->expandedOptions['id']) {
-                $output = array($file->id);
+                $output[] = array($file->id);
                 continue;
             }
             $line = array();
