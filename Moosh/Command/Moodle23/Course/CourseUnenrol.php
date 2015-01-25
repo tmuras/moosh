@@ -90,12 +90,12 @@ class CourseUnenrol extends MooshCommand {
                     /* } */
                 }
             }
-        } elseif ($usersid) {
+        } elseif ($usersid && !$options['role']) {
             foreach($usersid as $singleuser) {
                 $user = $DB->get_record('user', array('id' => $singleuser));
                 $users[] = $user;
             }
-        } elseif ($options['role']) {
+        } elseif ($options['role'] && !$usersid) {
             $roles = explode(',', $options['role']);
             foreach ($roles as $role) {
                 $role = $DB->get_record('role', array('shortname' => $role));
