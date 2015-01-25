@@ -78,18 +78,10 @@ class CourseUnenrol extends MooshCommand {
                 }
             }
             foreach ($users as $user) {
-                $enrolments = $manager->get_user_enrolments($user->userid);
-
-                foreach ($enrolments as $enrolment) {
-                    list ($instance, $plugin) = $manager->get_user_enrolment_components($enrolment);
-                    /* var_dump($instance); */
-                    /* var_dump($plugin); */
-                    /* if ($instance && $plugin && $plugin->allow_unenrol_user($instance, $enrolment)) { */
-                    /*     $plugin->unenrol_user($instance, $enrolment->userid); */
-                    /*     echo "Succesfully unenroled user $enrolment->userid\n"; */
-                    /* } */
-                }
+                $DB->delete_records('role_assignments', array('userid' => $user->userid, 'roleid' => $user->roleid, 'contextid' => $user->contextid));
+                echo "Succesfully unenroled user $user->userid from role $user->roleid\n";
             }
+            exit();
         } elseif ($usersid && !$options['role']) {
             foreach($usersid as $singleuser) {
                 $user = $DB->get_record('user', array('id' => $singleuser));
