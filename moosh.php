@@ -32,7 +32,7 @@ require_once $moosh_dir . '/includes/default_options.php';
 
 
 use GetOptionKit\ContinuousOptionParser;
-use GetOptionKit\OptionSpecCollection;
+use GetOptionKit\OptionCollection;
 
 @error_reporting(E_ALL | E_STRICT);
 @ini_set('display_errors', '1');
@@ -40,7 +40,7 @@ use GetOptionKit\OptionSpecCollection;
 define('MOOSH_VERSION', '0.17');
 define('MOODLE_INTERNAL', true);
 
-$appspecs = new OptionSpecCollection;
+$appspecs = new OptionCollection;
 $spec_verbose = $appspecs->add('v|verbose', "be verbose");
 $spec_moodle_path = $appspecs->add('p|moodle-path:', "Moodle directory.");
 $spec_moodle_user = $appspecs->add('u|user:', "Moodle user, by default ADMIN");
@@ -113,7 +113,9 @@ if (!$subcommand && !$possible_matches) {
     echo implode("\n\t", array_keys($subcommands));
     echo "\n";
     echo "Global options:\n";
-    $appspecs->printOptions();
+    //$appspecs->printOptions();
+    $printer = new GetOptionKit\OptionPrinter\ConsoleOptionPrinter;
+    echo $printer->render($appspecs);
     echo "\n";
     exit(1);
 }

@@ -133,7 +133,7 @@ class MooshCommand
 
     public function __construct($name, $group = NULL)
     {
-        $this->spec = new \GetOptionKit\OptionSpecCollection();
+        $this->spec = new \GetOptionKit\OptionCollection();
         $this->addOption('h|help', 'help information');
         $this->name = $name;
         $this->group = $group;
