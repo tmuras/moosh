@@ -136,7 +136,7 @@
         }
     ],
     "require":{
-        "c9s/GetOptionKit":"1.2.*",
+        "corneltek/getoptionkit":"dev-master",
         "twig/twig":"1.*",
         "moodlehq/moodle-mod_newmodule":"dev-master#887786145a472e190eab3cc1dad29e22c948cb8f",
         "danielneis/moodle-block_newblock":"dev-master#1fc89fb0845ad282426140feeb6bc3653efd1d7f",
