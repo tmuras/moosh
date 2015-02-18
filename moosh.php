@@ -147,7 +147,7 @@ if (file_exists(home_dir() . DIRECTORY_SEPARATOR . ".mooshrc.php")) {
 
 // Create directory for configuration if one is not there already.
 if(!file_exists(home_dir() . "/.moosh")) {
-    mkdir(home_dir() . "/.moosh");
+    @mkdir(home_dir() . "/.moosh");
 }
 
 $options = NULL;
