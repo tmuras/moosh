@@ -169,8 +169,16 @@ if ($moodlerc) {
 $subcommand = $subcommands[$subcommand];
 
 
-if ($subcommand->bootstrapLevel()) {
-    define('CLI_SCRIPT', true);
+if ($bootstrap_level = $subcommand->bootstrapLevel()) {
+    if ($bootstrap_level == MooshCommand::$BOOTSTRAP_FULL_NOCLI) {
+        $_SERVER['REMOTE_ADDR'] = 'localhost';
+        $_SERVER['SERVER_PORT'] = 80;
+        $_SERVER['SERVER_PROTOCOL'] = 'HTTP 1.1';
+        $_SERVER['SERVER_SOFTWARE'] = 'PHP/'.phpversion() ;
+        $_SERVER['REQUEST_URI'] = '/';
+    } else {
+        define('CLI_SCRIPT', true);
+    }
     if ($subcommand->bootstrapLevel() == MooshCommand::$BOOTSTRAP_CONFIG) {
         define('ABORT_AFTER_CONFIG', true);
     }
