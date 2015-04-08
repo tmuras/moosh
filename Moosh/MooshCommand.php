@@ -38,7 +38,10 @@ class MooshCommand
      */
     public static $BOOTSTRAP_FULL = 2;
 
-
+    /**
+     * @var int no CLI_SCRIPT, include config.php
+     */
+    public static $BOOTSTRAP_FULL_NOCLI = 3;
 
 
     /**
