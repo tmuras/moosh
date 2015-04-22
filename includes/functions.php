@@ -202,8 +202,8 @@ function moosh_generate_version_list($upto, $from = 19)
         throw new Exception("Invalid from or upto value; they must both be > 0 and from must be <= upto");
     }
     $versions = array();
-    foreach( range($from, $upto) as $no) {
-        $versions[] = 'Moodle'.$no;
+    foreach (range($from, $upto) as $no) {
+        $versions[] = 'Moodle' . $no;
     }
     return $versions;
 }
@@ -250,13 +250,13 @@ function generate_paragraph($length)
     for ($i = 0; $i < $n - 1; $i++) {
         $target = array_rand($arr);
         $ngram[] = $target;
-        $arr = & $arr[$target];
+        $arr = &$arr[$target];
     }
     for ($i = 0; $i < $length; $i++) {
-        $arr = & $table;
+        $arr = &$table;
         for ($j = 0; $j < $n - 1; $j++) {
             $token = $ngram[$j];
-            $arr = & $arr[$token];
+            $arr = &$arr[$token];
         }
         $sum = array_sum($arr);
         $random = rand(0, $sum);
@@ -333,16 +333,18 @@ function run_external_command($command, $error)
     return $output;
 }
 
-function get_sub_context_ids($path) {
+function get_sub_context_ids($path)
+{
     global $DB;
 
     $sql = "SELECT ctx.id FROM {context} ctx WHERE ";
     $sql_like = $DB->sql_like('ctx.path', ':path');
-    $contextids = $DB->get_records_sql($sql.$sql_like, array('path' => $path.'%'));
+    $contextids = $DB->get_records_sql($sql . $sql_like, array('path' => $path . '%'));
     return $contextids;
 }
 
-function get_all_courses($sort="c.sortorder DESC", $fields="c.*") {
+function get_all_courses($sort = "c.sortorder DESC", $fields = "c.*")
+{
     global $CFG, $DB;
 
     require_once($CFG->dirroot . '/lib/accesslib.php');
@@ -365,7 +367,8 @@ function get_all_courses($sort="c.sortorder DESC", $fields="c.*") {
     return $DB->get_records_sql($sql, $param);
 }
 
-function get_files($contextid) {
+function get_files($contextid)
+{
     global $DB;
 
     $sql = 'SELECT f.id, f.contenthash, f.filesize FROM {files} f 
@@ -376,7 +379,8 @@ function get_files($contextid) {
     return $DB->get_records_sql($sql, $param);
 }
 
-function file_is_unique($contenthash, $contextid) {
+function file_is_unique($contenthash, $contextid)
+{
     global $DB;
 
     $unique = TRUE;
@@ -394,7 +398,8 @@ function file_is_unique($contenthash, $contextid) {
     return $unique;
 }
 
-function higher_size($filesbycourse) {
+function higher_size($filesbycourse)
+{
     $newarr = array();
     $sortarr = array();
     foreach ($filesbycourse as $courseid => $value) {
@@ -402,7 +407,7 @@ function higher_size($filesbycourse) {
     }
     arsort($newarr);
     $i = 0;
-    foreach ($newarr as  $key => $value) {
+    foreach ($newarr as $key => $value) {
         if ($i == 10) {
             break;
         } else {
@@ -414,7 +419,8 @@ function higher_size($filesbycourse) {
 }
 
 
-function backup_size() {
+function backup_size()
+{
     global $DB;
 
     $sql = "SELECT f.id, SUM(f.filesize) AS backupsize, f.userid, u.username
@@ -423,11 +429,12 @@ function backup_size() {
                 WHERE f.filearea = :filearea OR f.component = :component
                 GROUP BY f.userid
                 ORDER BY backupsize DESC";
-    
+
     return $DB->get_records_sql($sql, array('filearea' => 'backup', 'component' => 'backup'));
 }
 
-function get_user_by_name($username) {
+function get_user_by_name($username)
+{
     global $DB;
 
     $user = $DB->get_record('user', array("username" => $username));
@@ -435,5 +442,27 @@ function get_user_by_name($username) {
         return $user;
     } else {
         return false;
+    }
+}
+
+/**
+ * Detects the owner of the Moodle Data directory.
+ */
+function detect_moodledata_owner($dir)
+{
+    if (!is_dir($dir)) {
+        throw new RuntimeException("Not a directory: $dir");
+    }
+
+    if (!($dh = opendir($dir))) {
+        throw new RuntimeException("Could not open directory: $dir");
+    }
+
+    //check any subdirectory under moodle data
+    while (($file = readdir($dh)) !== false) {
+        if ($file == '.' || $file == '..' || !is_dir($dir . '/' . $file)) {
+            continue;
+        }
+        return array('user' => posix_getpwuid(fileowner($dir . '/' . $file)), 'dir' => $dir . '/' . $file);
     }
 }

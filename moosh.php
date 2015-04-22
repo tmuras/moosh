@@ -44,6 +44,7 @@ $appspecs = new OptionCollection;
 $spec_verbose = $appspecs->add('v|verbose', "be verbose");
 $spec_moodle_path = $appspecs->add('p|moodle-path:', "Moodle directory.");
 $spec_moodle_user = $appspecs->add('u|user:', "Moodle user, by default ADMIN");
+$spec_moodle_user = $appspecs->add('n|no-user-check', "Don't check if Moodle data is owned by the user running script");
 $spec_performance = $appspecs->add('t|performance', "Show performance infomation including timings");
 
 $parser = new ContinuousOptionParser($appspecs);
@@ -187,6 +188,17 @@ if ($bootstrap_level = $subcommand->bootstrapLevel()) {
         exit(1);
     }
     require_once($top_dir . '/config.php');
+
+    $shell_user = false;
+    if (!$app_options->has('no-user-check')) {
+        $shell_user = posix_getpwuid(posix_geteuid());
+        $moodledata_owner = detect_moodledata_owner($CFG->dataroot);
+        if($moodledata_owner && $shell_user['name'] != $moodledata_owner['user']['name']) {
+            cli_error("One of your Moodle data directories ({$moodledata_owner['dir']}) is owned by
+different user ({$moodledata_owner['user']['name']}) than the one that runs the script ({$shell_user['name']}).
+If you're sure you know what you're doing, run moosh with -n flag to skip that test.");
+        }
+    }
 
     //gather more info based on the directory where moosh was run
     $relative_dir = substr($cwd, strlen($top_dir));
