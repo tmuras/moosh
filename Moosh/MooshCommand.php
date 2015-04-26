@@ -38,7 +38,10 @@ class MooshCommand
      */
     public static $BOOTSTRAP_FULL = 2;
 
-
+    /**
+     * @var int no CLI_SCRIPT, include config.php
+     */
+    public static $BOOTSTRAP_FULL_NOCLI = 3;
 
 
     /**
@@ -133,7 +136,7 @@ class MooshCommand
 
     public function __construct($name, $group = NULL)
     {
-        $this->spec = new \GetOptionKit\OptionSpecCollection();
+        $this->spec = new \GetOptionKit\OptionCollection();
         $this->addOption('h|help', 'help information');
         $this->name = $name;
         $this->group = $group;

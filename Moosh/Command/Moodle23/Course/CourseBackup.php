@@ -19,7 +19,8 @@ class CourseBackup extends MooshCommand
 
         $this->addOption('f|filename:', 'path to filename to save the course backup');
         $this->addOption('F|fullbackup', 'do full backup instead of general');
-
+	$this->addOption('template', 'do template backup instead of general');
+	
         $this->addArgument('id');
     }
 
@@ -63,7 +64,29 @@ class CourseBackup extends MooshCommand
                 } 
             } 
         }
-
+	
+	if ($options['template']) {
+            $tasks = $bc->get_plan()->get_tasks();
+            foreach ($tasks as &$task) {
+                if ($task instanceof \backup_root_task) {
+                    $setting = $task->get_setting('users');
+                    $setting->set_value('0');
+                    $setting = $task->get_setting('anonymize');
+                    $setting->set_value('1');
+                    $setting = $task->get_setting('role_assignments');
+                    $setting->set_value('0');
+                    $setting = $task->get_setting('filters');
+                    $setting->set_value('0');
+                    $setting = $task->get_setting('comments');
+                    $setting->set_value('0');
+                    $setting = $task->get_setting('logs');
+                    $setting->set_value('0');
+                    $setting = $task->get_setting('grade_histories');
+                    $setting->set_value('0');
+                } 
+            } 
+        }
+        
         $bc->set_status(backup::STATUS_AWAITING);
         $bc->execute_plan();
         $result = $bc->get_results();
