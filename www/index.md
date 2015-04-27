@@ -46,8 +46,7 @@ Requirements
 
 PHP 5.3+, Moodle 1.9, 2.2 or higher.
 
-Installation
-============
+# <a name="installation"></a>Installation
 
 Installation from Ubuntu package
 --------------------------------
@@ -100,17 +99,23 @@ Change Mozilla Firefox to your preferred browser and you're good to go. Commands
     form-add
 
 
-moosh praise
-============
-
-_Fan-effing-tastic! Thank you. I've used Drush and it is so incredibly
-helpful. I just got this running on win 2k8 (not my choice) and it is
-useful as hell. Thanks!_
-
-_Jeff Masiello_
+# <a name="praise"></a>moosh praise
 
 
+> _Fan-effing-tastic! Thank you. I've used Drush and it is so incredibly
+> helpful. I just got this running on win 2k8 (not my choice) and it is
+> useful as hell. Thanks!_
+>
+> Jeff Masiello
 
-_Soooo beautiful :-) Thank you!_
+<br />
 
-_Nadav Kavalerchik_
+> _Soooo beautiful :-) Thank you!_
+>
+> Nadav Kavalerchik
+
+<br />
+
+> _Using moosh, we have cut the number of hours required to prepare for each quarter from 120 to about 12.  Thanks for the awesome tool!_
+>
+> Kevin Metcalf
