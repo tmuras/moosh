@@ -881,11 +881,21 @@ moosh module-manage show scorm
 
 <h2><a class="command-name" name="plugin-list">plugin-list</a></h2>
 
-<p>List Moodle plugins filtered on given query. Returns plugin full name, short name, available Moodle versions and short decription.</p>
+<p>List Moodle plugins filtered on given query. Returns plugin full name, short name, available Moodle versions and short description.</p>
 
 <p>Example:</p>
 
 <pre><code>moosh plugin-list quickmail
+</code></pre>
+
+<h2><a class="command-name" name="plugin-uninstall">plugin-uninstall</a></h2>
+
+<p>Removes given plugin from the DB and disk. It can remove plugins that have no folder on the disk and have some redundant data inside DB tables.
+If you do not have write permissions on the plugins' folder it will advice you with the command that will give the right permissions and then you are asked to run the command again.</p>
+
+<p>Example:</p>
+
+<pre><code>moosh plugin-uninstall theme_elegance
 </code></pre>
 
 <h2><a class="command-name" name="question-import">question-import</a></h2>

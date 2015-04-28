@@ -774,11 +774,21 @@ Example:
 <a class="command-name" name="plugin-list">plugin-list</a>
 ----------------
 
-List Moodle plugins filtered on given query. Returns plugin full name, short name, available Moodle versions and short decription.
+List Moodle plugins filtered on given query. Returns plugin full name, short name, available Moodle versions and short description.
 
 Example:
 
     moosh plugin-list quickmail
+
+<a class="command-name" name="plugin-uninstall">plugin-uninstall</a>
+----------------
+
+Removes given plugin from the DB and disk. It can remove plugins that have no folder on the disk and have some redundant data inside DB tables.
+If you do not have write permissions on the plugins' folder it will advice you with the command that will give the right permissions and then you are asked to run the command again.
+
+Example:
+
+    moosh plugin-uninstall theme_elegance
 
 <a class="command-name" name="question-import">question-import</a>
 ----------------
