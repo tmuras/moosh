@@ -23,17 +23,16 @@ class AdminLogin extends MooshCommand
     }
 
     public function execute() {
-        global $CFG, $DB;
+        global $CFG;
 
-        require_once("$CFG->libdir/authlib.php");
-        require_once("$CFG->dirroot/login/lib.php");
-        $user = get_complete_user_data('username', $CFG->admin, $CFG->mnet_localhost_id);
+        require_once("$CFG->libdir/datalib.php");
+        $user = get_admin();
         if (!$user) {
-          cli_error(sprintf("Unable to find admin user in DB. Check config.php for correct \$CFG->admin. Current value is: '%s'", $CFG->admin));
+          cli_error("Unable to find admin user in DB.");
         }
         $auth = empty($user->auth) ? 'manual' : $user->auth;
         if ($auth=='nologin' or !is_enabled_auth($auth)) {
-          cli_error(sprintf("User authentication is either 'nologin' or disabled. Check config.php for correct \$CFG->admin or change in Moodle authentication method for '%s'", $user->username));
+          cli_error(sprintf("User authentication is either 'nologin' or disabled. Check Moodle authentication method for '%s'", $user->username));
         }
         $authplugin = get_auth_plugin($auth);
         $authplugin->sync_roles($user);
