@@ -261,6 +261,11 @@ CI
 		<td><i class="fa fa-ban"></i></td>
 	</tr>
 	<tr>
+		<td><a href="/commands/#generate-messageoutput">generate-messageoutput</td>
+		<td><i class="fa fa-check"></i></td>
+		<td><i class="fa fa-check"></i></td>
+	</tr>
+	<tr>
 		<td><a href="/commands/#generate-module ">generate-module</td>
 		<td><i class="fa fa-check"></i></td>
 		<td><i class="fa fa-check"></i></td>

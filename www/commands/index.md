@@ -631,6 +631,17 @@ Example 1: Extract lang strings from edit_form.php.
 
     moosh generate-lang edit_form.php
 
+<a class="command-name" name="generate-messageoutput">generate-messageoutput</a>
+---------------
+
+Creates new message output processor under message/output based on the template from https://github.com/danielneis/moodle-message_newprocessor.
+
+    moosh generate-messageoutput processor_name
+
+Example: Create new message output processor under message/output/flashcard
+
+    moosh generate-messageoutput flashcard
+
 <a class="command-name" name="generate-module">generate-module</a>
 ---------------
 
