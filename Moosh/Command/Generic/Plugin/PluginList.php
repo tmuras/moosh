@@ -12,6 +12,8 @@ use Moosh\MooshCommand;
 
 class PluginList extends MooshCommand
 {
+    static $APIURL = "https://download.moodle.org/api/1.3/pluglist.php";
+
     public function __construct()
     {
         parent::__construct('list', 'plugin');
@@ -22,40 +24,41 @@ class PluginList extends MooshCommand
 
     public function execute()
     {
-        $readablemoodleversions = array(
-            "17" => "2.7",
-            "15" => "2.6",
-            "13" => "2.5",
-            "11" => "2.4",
-            "10" => "2.3",
-            "8" => "2.2",
-            "1" => "2.1",
-            "2" => "2.0",
-            "3" => "1.9"
-        );
-        $found = array();
-        $json_path = $this->expandedOptions['path'];
+
+        $filepath = $this->expandedOptions['path'];
         $query = $this->arguments[0];
 
-        $json_file = file_get_contents($json_path);
+        $stat = stat($filepath);
+        if(!$stat || time() - $stat['mtime'] > DAYSECS || !$stat['size']) {
+            unlink($filepath);
+            file_put_contents($filepath, fopen(self::$APIURL, 'r'));
+        }
+        $jsonfile = file_get_contents($filepath);
 
-        if($json_file === false) {
+        if($jsonfile === false) {
             die("Can't read json file");
         }
 
-        $json_data = json_decode($json_file);
-        echo "\n";
-
-        foreach ($json_data as $name => $plugin_data) {
-            if (stristr($name, $query) !== false || stristr($plugin_data->full_name, $query) !== false) {
-                echo $plugin_data->full_name . " (" . $name . ")\n";
-                echo "\t" . $plugin_data->short_description . "\n";
-                echo "\t" . "Supported Moodle versions: ";
-                foreach ($plugin_data->moodle_versions as $version => $version_data) {
-                    echo $readablemoodleversions[$version] . " ";
+        $data = json_decode($jsonfile);
+        $fulllist = array();
+        foreach($data->plugins as $k=>$plugin) {
+            if(!$plugin->component) {
+                continue;
+            }
+            $fulllist[$plugin->component] = array();
+            foreach($plugin->versions as $v=>$version) {
+                foreach($version->supportedmoodles as $supportedmoodle) {
+                    $fulllist[$plugin->component][$supportedmoodle->release] = $version;
                 }
-                echo "\n\n";
-            } 
+            }
+        }
+
+        ksort($fulllist);
+        foreach($fulllist as $k => $plugin) {
+            $versions = array_keys($plugin);
+            sort($versions);
+
+            echo "$k," .implode(",",$versions) . "\n";
         }
     }
 }
