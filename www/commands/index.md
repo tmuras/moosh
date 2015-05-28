@@ -756,21 +756,6 @@ Example:
 
     moosh php-eval 'var_dump(get_object_vars($CFG))'
 
-<a class="command-name" name="plugin-fetchinfo">plugin-fetchinfo</a>
-----------------
-
-Parse moodle.org to get all info about available plugins, and stores data in json file. You can specity path to output file.
-
-Example 1: 
-
-    moosh plugin-fetchinfo -p /home/username/plugins.json
-
-For testing and other actions that do not require all plugins to be fetched, you can set limit. Download first 10 plugins (each version counts as one)
-
-Example 2:
-
-    moosh plugn-fetchingo -l 10
-
 
 <a class="command-name" name="plugin-install">plugin-install</a>
 ----------------
@@ -787,9 +772,13 @@ Example:
 
 List Moodle plugins filtered on given query. Returns plugin full name, short name, available Moodle versions and short description.
 
-Example:
+Example 1: list all plugins available on https://moodle.org/plugins
 
-    moosh plugin-list quickmail
+    moosh plugin-list
+
+Example 2: download all modules available for version 2.8 or later
+
+    moosh plugin-list  | grep '^mod_' | grep 2.8 | grep -o '[^,]*$' | wget -i -
 
 <a class="command-name" name="plugin-uninstall">plugin-uninstall</a>
 ----------------

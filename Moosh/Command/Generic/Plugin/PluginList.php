@@ -18,18 +18,16 @@ class PluginList extends MooshCommand
     {
         parent::__construct('list', 'plugin');
 
-        $this->addArgument('query');
-        $this->addOption('p|path:', 'path to plugins.json file', home_dir() . '/.moosh/plugins.json');    
+        $this->addOption('p|path:', 'path to plugins.json file', home_dir() . '/.moosh/plugins.json');
     }
 
     public function execute()
     {
 
         $filepath = $this->expandedOptions['path'];
-        $query = $this->arguments[0];
 
         $stat = stat($filepath);
-        if(!$stat || time() - $stat['mtime'] > DAYSECS || !$stat['size']) {
+        if(!$stat || time() - $stat['mtime'] > 60*60*24 || !$stat['size']) {
             unlink($filepath);
             file_put_contents($filepath, fopen(self::$APIURL, 'r'));
         }
@@ -48,17 +46,23 @@ class PluginList extends MooshCommand
             $fulllist[$plugin->component] = array();
             foreach($plugin->versions as $v=>$version) {
                 foreach($version->supportedmoodles as $supportedmoodle) {
-                    $fulllist[$plugin->component][$supportedmoodle->release] = $version;
+                    $fulllist[$plugin->component]['releases'][$supportedmoodle->release] = $version;
                 }
+                $fulllist[$plugin->component]['url'] = $version->downloadurl;
             }
         }
 
         ksort($fulllist);
         foreach($fulllist as $k => $plugin) {
-            $versions = array_keys($plugin);
+            $versions = array_keys($plugin['releases']);
             sort($versions);
 
-            echo "$k," .implode(",",$versions) . "\n";
+            echo "$k," .implode(",",$versions) . ",".$plugin['url'] ."\n";
         }
+    }
+
+    public function bootstrapLevel()
+    {
+        return self::$BOOTSTRAP_NONE;
     }
 }
