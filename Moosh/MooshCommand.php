@@ -325,7 +325,8 @@ class MooshCommand
     {
         echo '*** ' . $this->getName() . " ***\n";
         echo "OPTIONS:\n";
-        $this->spec->printOptions();
+        $printer = new \GetOptionKit\OptionPrinter\ConsoleOptionPrinter;
+        echo $printer->render($this->spec);
 
         echo $this->getArgumentsHelp();
 
@@ -396,6 +397,6 @@ class MooshCommand
     public function checkFileArg($name) {
 
 
-    
+
     }
 }
