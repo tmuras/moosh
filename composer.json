@@ -138,6 +138,22 @@
             "type":"package",
             "package":{
                 "version":"dev-master",
+                "name":"danielneis/moodle-availability_newavailability",
+                "source":{
+                    "url":"https://github.com/danielneis/moodle-availability_newavailability",
+                    "type":"git",
+                    "reference":"master"
+                },
+                "dist":{
+                    "url":"https://github.com/danielneis/moodle-availability_newavailability/archive/master.zip",
+                    "type":"zip"
+                }
+            }
+        },
+        {
+            "type":"package",
+            "package":{
+                "version":"dev-master",
                 "name":"yetanotherape/diff-match-patch",
                 "source":{
                     "url":"https://github.com/yetanotherape/diff-match-patch",
@@ -162,7 +178,8 @@
         "moodlehq/moodle-local_wstemplate":"dev-master#add2ad0949e72f025c0aad36c4b822e8c6479d3b",
         "yetanotherape/diff-match-patch":"dev-master#0726dbb4e59e68574326821c174013cf6fdfe20e",
         "danielneis/moodle-gradeexport_newgradeexport": "dev-master",
-        "danielneis/moodle-message_newprocessor": "dev-master"
+        "danielneis/moodle-message_newprocessor": "dev-master",
+        "danielneis/moodle-availability_newavailability": "dev-master"
     },
     "bin": ["moosh.php"]
 }

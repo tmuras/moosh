@@ -575,6 +575,17 @@ Example:
     moosh forum-newdiscussion 3 7 2
     moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 7 2
 
+<a class="command-name" name="generate-messageoutput">generate-messageoutput</a>
+---------------
+
+Creates new availability condition under availability/condition based on the template from https://github.com/danielneis/moodle-availability_newavailability.
+
+    moosh generate-messageoutput processor_name
+
+Example: Creates new availability condition under availability/condition/flashcard
+
+    moosh generate-availability flashcard
+
 <a class="command-name" name="generate-filepicker">generate-filepicker</a>
 -------------------
 

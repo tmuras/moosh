@@ -41,6 +41,7 @@ _moosh()
          debug-on \
          dev-versionbump \
          form-add \
+         generate-availability \
          generate-block \
          generate-filemanager \
          generate-form \

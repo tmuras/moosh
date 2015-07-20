@@ -230,6 +230,11 @@ CI
 		<td><i class="fa fa-check"></i></td>
 		<td><i class="fa fa-check"></i></td>
 	</tr>
+ 	<tr>
+		<td><a href="/commands/#generate-availability">generate-messageoutput</td>
+		<td><i class="fa fa-check"></i></td>
+		<td><i class="fa fa-check"></i></td>
+	</tr>
 	<tr>
 		<td><a href="/commands/#generate-block ">generate-block</td>
 		<td><i class="fa fa-check"></i></td>
