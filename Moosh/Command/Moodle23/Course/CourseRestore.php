@@ -20,7 +20,7 @@ class CourseRestore extends MooshCommand {
         $this->addArgument('backup_file');
         $this->addArgument('category_id');
 
-        $this->addOption('d|directory', 'restore from extracted directory (1st param) under dataroot/temp/backup');
+        $this->addOption('d|directory', 'restore from extracted directory (1st param) under tempdir/backup');
         $this->addOption('e|existing', 'restore into existing course, id provided instead of category_id');
 
     }
@@ -33,6 +33,10 @@ class CourseRestore extends MooshCommand {
 
         $arguments = $this->arguments;
         $options = $this->expandedOptions;
+
+        if (empty($CFG->tempdir)) {
+            $CFG->tempdir = $CFG->dataroot . DIRECTORY_SEPARATOR . 'temp';
+        }
 
         // Check if category is OK.
         if (!$options['existing']) {
@@ -56,7 +60,7 @@ class CourseRestore extends MooshCommand {
             }
 
         } else {
-            $path = $CFG->dataroot . DIRECTORY_SEPARATOR . "temp" . DIRECTORY_SEPARATOR . "backup" . DIRECTORY_SEPARATOR . $arguments[0];
+            $path = $CFG->tempdir . DIRECTORY_SEPARATOR . "backup" . DIRECTORY_SEPARATOR . $arguments[0];
             if (!file_exists($path) || !is_dir($path) || !is_readable($path)) {
                 cli_error("Directory '$path' does not exist, not a directory or not readable.");
             }
@@ -64,9 +68,9 @@ class CourseRestore extends MooshCommand {
 
 
         if (!$options['directory']) {
-            //unzip into $CFG->dataroot / "temp" / "backup" / "auto_restore_" . $split[1];
+            //unzip into $CFG->tempdir / "backup" / "auto_restore_" . $split[1];
             $backupdir = "moosh_restore_" . uniqid();
-            $path = $CFG->dataroot . DIRECTORY_SEPARATOR . "temp" . DIRECTORY_SEPARATOR . "backup" . DIRECTORY_SEPARATOR . $backupdir;
+            $path = $CFG->tempdir . DIRECTORY_SEPARATOR . "backup" . DIRECTORY_SEPARATOR . $backupdir;
             if ($this->verbose) {
                 echo "Extracting Moode backup file to: '" . $path . "'\n";
             }
