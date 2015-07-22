@@ -129,7 +129,12 @@ if (!$subcommand && $possible_matches) {
 }
 
 $parser->setSpecs($subcommand_specs[$subcommand]);
-$subcommand_options[$subcommand] = $parser->continueParse();
+try {
+    $subcommand_options[$subcommand] = $parser->continueParse();
+} catch (Exception $e) {
+    echo $e->getMessage() . "\n";
+    die("Moosh options should be passed before commands.\n");
+}
 
 while (!$parser->isEnd()) {
     $arguments[] = $parser->advance();
