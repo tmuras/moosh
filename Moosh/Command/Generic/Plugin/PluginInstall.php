@@ -27,32 +27,33 @@ class PluginInstall extends MooshCommand
         require_once($CFG->libdir.'/adminlib.php');       // various admin-only functions
         require_once($CFG->libdir.'/upgradelib.php');     // general upgrade/install related functions
         require_once($CFG->libdir.'/environmentlib.php');
-        require_once($CFG->libdir.'/pluginlib.php');
         require_once($CFG->dirroot.'/course/lib.php');
+        require_once($CFG->libdir.'/classes/plugin_manager.php');
 
         $pluginname = $this->arguments[0];
-
         $moodleversion = $this->arguments[1];
+        $pluginsdata = file_get_contents(home_dir() . '/.moosh/plugins.json');
 
-        $pluginurl = "https://moodle.org/plugins/view.php?plugin=" . $pluginname . "&moodle_version=" . $moodleversion;
-
-        $page = file_get_contents($pluginurl);
-        // check if website exists
-        try {
-            $doc = new \DOMDocument();
-            $doc->loadHTML($page);
+        $decodeddata = json_decode($pluginsdata);
+        foreach($decodeddata->plugins as $k=>$plugin) {
+            if(!$plugin->component) {
+                continue;
+            }
+            if($plugin->component == $pluginname) {
+                foreach($plugin->versions as $j) {
+                    foreach($j->supportedmoodles as $v) {
+                        if($v->release == $moodleversion) {
+                            $downloadurl = $j->downloadurl;
+                        }
+                    }
+                }
+            }
         }
-        catch(Exception $e) {
-            die("Failed to load plugin web info\n");
-        }
 
-        $xpath = new \DOMXpath($doc);
+        /* echo "Couldn't find $pluginname\n"; */
+        /* die(); */
 
-        $elements = $xpath->query("//a[@class='download btn latest']");
-        $downloadlink = $elements->item(0)->getAttribute('href');
-        
         $split = explode('_',$this->arguments[0],2);
-
         $tempdir = home_dir() . '/.moosh/moodleplugins/';
 
         if (!fopen($tempdir . $split[1] . ".zip", 'w')) {
@@ -60,7 +61,7 @@ class PluginInstall extends MooshCommand
             return;
         }
         try {
-            file_put_contents($tempdir . $split[1] . ".zip", file_get_contents($downloadlink));
+            file_put_contents($tempdir . $split[1] . ".zip", file_get_contents($downloadurl));
         }
         catch (Exception $e) {
             echo "Failed to download plugin. " . $e . "\n";
