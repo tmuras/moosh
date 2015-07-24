@@ -67,10 +67,12 @@ class PluginInstall extends MooshCommand
         if(!file_exists($tempdir)) {
             mkdir($tempdir);
         }
+
         if (!fopen($tempdir . $split[1] . ".zip", 'w')) {
             echo "Failed to save plugin.\n";
             return;
         }
+
         try {
             file_put_contents($tempdir . $split[1] . ".zip", file_get_contents($downloadurl));
         }
@@ -81,14 +83,14 @@ class PluginInstall extends MooshCommand
 
         try {
             shell_exec("unzip " . $tempdir . $split[1] . ".zip -d " . home_dir() . "/.moosh/moodleplugins/");
-
             shell_exec("cp -r " . $tempdir . $split[1] . "/ " . $CFG->dirroot.  "/" . $split[0]);
         } catch (Exception $e) {
             echo "Failed to unzip plugin. " . $e . "\n";
             return;
         }
 
+        echo "Installing $pluginname $moodleversion\n";
         upgrade_noncore(true);
+        echo "Done\n";
     }
-
 }
