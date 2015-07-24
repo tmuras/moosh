@@ -36,7 +36,7 @@ class PluginInstall extends MooshCommand
 
         $stat = @stat($pluginsfile);
         if(!$stat || time() - $stat['mtime'] > 60*60*24 || !$stat['size']) {
-            die("plugins.json file not found or too old. Run moosh file-list to download newest plugins.json file\n");
+            die("plugins.json file not found or too old. Run moosh plugin-list to download newest plugins.json file\n");
         }
 
         $pluginsdata = file_get_contents($pluginsfile);
