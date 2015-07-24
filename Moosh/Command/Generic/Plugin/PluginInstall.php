@@ -62,6 +62,9 @@ class PluginInstall extends MooshCommand
         $split = explode('_',$this->arguments[0],2);
         $tempdir = home_dir() . '/.moosh/moodleplugins/';
 
+        if(!file_exists($tempdir)) {
+            mkdir($tempdir);
+        }
         if (!fopen($tempdir . $split[1] . ".zip", 'w')) {
             echo "Failed to save plugin.\n";
             return;
