@@ -32,8 +32,14 @@ class PluginInstall extends MooshCommand
 
         $pluginname = $this->arguments[0];
         $moodleversion = $this->arguments[1];
-        $pluginsdata = file_get_contents(home_dir() . '/.moosh/plugins.json');
+        $pluginsfile = home_dir() . '/.moosh/plugins.json';
 
+        $stat = @stat($pluginsfile);
+        if(!$stat || time() - $stat['mtime'] > 60*60*24 || !$stat['size']) {
+            die("plugins.json file not found or too old. Run moosh file-list to download newest plugins.json file\n");
+        }
+
+        $pluginsdata = file_get_contents($pluginsfile);
         $decodeddata = json_decode($pluginsdata);
         foreach($decodeddata->plugins as $k=>$plugin) {
             if(!$plugin->component) {
