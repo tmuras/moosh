@@ -41,6 +41,7 @@ class PluginInstall extends MooshCommand
 
         $pluginsdata = file_get_contents($pluginsfile);
         $decodeddata = json_decode($pluginsdata);
+        $downloadurl = NULL;
         foreach($decodeddata->plugins as $k=>$plugin) {
             if(!$plugin->component) {
                 continue;
@@ -56,8 +57,9 @@ class PluginInstall extends MooshCommand
             }
         }
 
-        /* echo "Couldn't find $pluginname\n"; */
-        /* die(); */
+        if(!$downloadurl) {
+            die("Couldn't find $pluginname $moodleversion\n");
+        }
 
         $split = explode('_',$this->arguments[0],2);
         $tempdir = home_dir() . '/.moosh/moodleplugins/';
