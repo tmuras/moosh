@@ -854,22 +854,6 @@ moosh module-manage show scorm
 <pre><code>moosh php-eval 'var_dump(get_object_vars($CFG))'
 </code></pre>
 
-<h2><a class="command-name" name="plugin-fetchinfo">plugin-fetchinfo</a></h2>
-
-<p>Parse moodle.org to get all info about available plugins, and stores data in json file. You can specity path to output file.</p>
-
-<p>Example 1:</p>
-
-<pre><code>moosh plugin-fetchinfo -p /home/username/plugins.json
-</code></pre>
-
-<p>For testing and other actions that do not require all plugins to be fetched, you can set limit. Download first 10 plugins (each version counts as one)</p>
-
-<p>Example 2:</p>
-
-<pre><code>moosh plugn-fetchingo -l 10
-</code></pre>
-
 <h2><a class="command-name" name="plugin-install">plugin-install</a></h2>
 
 <p>Download and install plugin. Requires plugin short name, and moodle version. You can obtain those data by using `plugin-list' command.</p>
