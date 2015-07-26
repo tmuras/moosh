@@ -41,6 +41,7 @@ class CourseDelete extends MooshCommand
                 print "Course not found\n";
             }
         }
+        fix_course_sortorder();
     }
 
 }
