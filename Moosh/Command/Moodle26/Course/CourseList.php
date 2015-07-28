@@ -10,10 +10,8 @@ namespace Moosh\Command\Moodle26\Course;
 
 use Moosh\MooshCommand;
 
-class CourseList extends MooshCommand
-{
-    public function __construct()
-    {
+class CourseList extends MooshCommand {
+    public function __construct() {
         parent::__construct('list', 'course');
 
         $this->addArgument('search');
@@ -29,8 +27,7 @@ class CourseList extends MooshCommand
         $this->maxArguments = 255;
     }
 
-    public function execute()
-    {
+    public function execute() {
         global $CFG, $DB;
 
 
@@ -60,7 +57,7 @@ class CourseList extends MooshCommand
         }
 
         if ($options['categorysearch'] !== null) {
-            $category = \coursecat::get($options['category']);
+            $category = \coursecat::get($options['categorysearch']);
 
             $categories = $this->get_categories($category);
 
@@ -68,7 +65,9 @@ class CourseList extends MooshCommand
 
             $sql .= "WHERE c.category $where";
         }
-
+        if ($this->arguments[0]) {
+            $sql .= " AND (" . $this->arguments[0] . ")";
+        }
         if ($options['empty'] == 'yes') {
             $sql .= " GROUP BY c.id HAVING modules < 2";
         }
@@ -82,9 +81,9 @@ class CourseList extends MooshCommand
         // Filter out any that have any section information (summary)
         if ($options['empty'] == 'yes') {
             $sql = "SELECT COUNT(*) AS C FROM {course_sections} WHERE course = ? AND summary <> ''";
-            foreach ($courses as $k=>$course) {
+            foreach ($courses as $k => $course) {
                 $sections = $DB->get_record_sql($sql, array($course->id));
-                if($sections->c > 0) {
+                if ($sections->c > 0) {
                     unset($courses[$k]);
                 }
             }
@@ -97,8 +96,7 @@ class CourseList extends MooshCommand
 
     }
 
-    private function get_parent($id, $parentname = NULL)
-    {
+    private function get_parent($id, $parentname = NULL) {
         global $DB;
 
         if ($parentcategory = $DB->get_record('course_categories', array("id" => $id))) {
@@ -114,8 +112,7 @@ class CourseList extends MooshCommand
     }
 
 
-    protected function get_categories(\coursecat $category)
-    {
+    protected function get_categories(\coursecat $category) {
         static $categories = array();
 
         $categories[$category->id] = $category->name;
@@ -127,8 +124,7 @@ class CourseList extends MooshCommand
         return $categories;
     }
 
-    protected function display($courses)
-    {
+    protected function display($courses) {
         $options = $this->expandedOptions;
         $fields = NULL;
         if ($options['fields']) {
