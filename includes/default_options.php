@@ -29,7 +29,7 @@ $defaultOptions['course']['category'] = 1;
 
 $defaultOptions['course']['role'] = '';
 
-$defaultOptions['download']['version'] = '25';
+$defaultOptions['download']['version'] = '2.9';
 
 //use xdotool to automate some of the tasks
 $defaultOptions['global']['xdotool'] = false;
