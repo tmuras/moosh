@@ -57,7 +57,7 @@ class ActivityAdd extends MooshCommand
             unset($options['name']);
         }
 
-        $record = $generator->create_module($this->arguments[0], $moduledata, $this->expandedOptions);
+        $record = $generator->create_module($this->arguments[0], $moduledata, $options);
 
         if ($this->verbose) {
             echo "Activity {$this->arguments[0]} created successfully\n";
