@@ -443,13 +443,13 @@ Example:
 
 Download latest Moodle version from the latest branch (default) or previous one if -v given.
 
-Example 1: Download latest Moodle.
+Example 1: Download latest Moodle (as set up in default_options.php).
 
     moosh download-moodle
 
 Example 2: Download latest Moodle 2.3.
 
-        moosh download-moodle -v 23
+        moosh download-moodle -v 2.3
 
 <a class="command-name" name="file-delete">file-delete</a>
 -----------
