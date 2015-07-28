@@ -10,17 +10,14 @@ namespace Moosh\Command\Moodle23\Course;
 
 use Moosh\MooshCommand;
 
-class CourseReset extends MooshCommand
-{
-    public function __construct()
-    {
+class CourseReset extends MooshCommand {
+    public function __construct() {
         parent::__construct('reset', 'course');
 
         $this->addArgument('id');
     }
 
-    public function execute()
-    {
+    public function execute() {
         global $DB;
 
         if (!$this->course = $DB->get_record('course', array('id' => $this->arguments[0]))) {
@@ -36,10 +33,14 @@ class CourseReset extends MooshCommand
         print_r($status);
     }
 
-    protected function loadDefaults()
-    {
-        global $DB, $CFG;
+    protected function loadDefaults() {
+        global $DB;
 
+        if (!$course = $DB->get_record('course', array('id' => $this->arguments[0]))) {
+            print_error("invalidcourseid");
+        }
+
+        require_login($course);
         $defaults = array('reset_events' => 1, 'reset_logs' => 1, 'reset_roles_local' => 1, 'reset_gradebook_grades' => 1, 'reset_notes' => 1);
         if ($allmods = $DB->get_records('modules')) {
             foreach ($allmods as $mod) {
