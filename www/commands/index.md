@@ -844,7 +844,7 @@ Example 1: delete user testuser
 
 Example 2: delete user testuser1 and user testuser2
     
-    moosh user delete testuser1 testuser2
+    moosh user-delete testuser1 testuser2
 
 <a class="command-name" name="user-export">user-export</a>
 -----------
