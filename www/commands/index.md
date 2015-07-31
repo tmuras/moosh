@@ -443,13 +443,13 @@ Example:
 
 Download latest Moodle version from the latest branch (default) or previous one if -v given.
 
-Example 1: Download latest Moodle.
+Example 1: Download latest Moodle (as set up in default_options.php).
 
     moosh download-moodle
 
 Example 2: Download latest Moodle 2.3.
 
-        moosh download-moodle -v 23
+        moosh download-moodle -v 2.3
 
 <a class="command-name" name="file-delete">file-delete</a>
 -----------
@@ -575,6 +575,17 @@ Example:
     moosh forum-newdiscussion 3 7 2
     moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 7 2
 
+<a class="command-name" name="generate-messageoutput">generate-messageoutput</a>
+---------------
+
+Creates new availability condition under availability/condition based on the template from https://github.com/danielneis/moodle-availability_newavailability.
+
+    moosh generate-messageoutput processor_name
+
+Example: Creates new availability condition under availability/condition/flashcard
+
+    moosh generate-availability flashcard
+
 <a class="command-name" name="generate-filepicker">generate-filepicker</a>
 -------------------
 
@@ -630,6 +641,17 @@ necessary.
 Example 1: Extract lang strings from edit_form.php.
 
     moosh generate-lang edit_form.php
+
+<a class="command-name" name="generate-messageoutput">generate-messageoutput</a>
+---------------
+
+Creates new message output processor under message/output based on the template from https://github.com/danielneis/moodle-message_newprocessor.
+
+    moosh generate-messageoutput processor_name
+
+Example: Create new message output processor under message/output/flashcard
+
+    moosh generate-messageoutput flashcard
 
 <a class="command-name" name="generate-module">generate-module</a>
 ---------------
@@ -745,21 +767,6 @@ Example:
 
     moosh php-eval 'var_dump(get_object_vars($CFG))'
 
-<a class="command-name" name="plugin-fetchinfo">plugin-fetchinfo</a>
-----------------
-
-Parse moodle.org to get all info about available plugins, and stores data in json file. You can specity path to output file.
-
-Example 1: 
-
-    moosh plugin-fetchinfo -p /home/username/plugins.json
-
-For testing and other actions that do not require all plugins to be fetched, you can set limit. Download first 10 plugins (each version counts as one)
-
-Example 2:
-
-    moosh plugn-fetchingo -l 10
-
 
 <a class="command-name" name="plugin-install">plugin-install</a>
 ----------------
@@ -774,11 +781,25 @@ Example:
 <a class="command-name" name="plugin-list">plugin-list</a>
 ----------------
 
-List Moodle plugins filtered on given query. Returns plugin full name, short name, available Moodle versions and short decription.
+List Moodle plugins filtered on given query. Returns plugin full name, short name, available Moodle versions and short description.
+
+Example 1: list all plugins available on https://moodle.org/plugins
+
+    moosh plugin-list
+
+Example 2: download all modules available for version 2.8 or later
+
+    moosh plugin-list  | grep '^mod_' | grep 2.8 | grep -o '[^,]*$' | wget -i -
+
+<a class="command-name" name="plugin-uninstall">plugin-uninstall</a>
+----------------
+
+Removes given plugin from the DB and disk. It can remove plugins that have no folder on the disk and have some redundant data inside DB tables.
+If you do not have write permissions on the plugins' folder it will advice you with the command that will give the right permissions and then you are asked to run the command again.
 
 Example:
 
-    moosh plugin-list quickmail
+    moosh plugin-uninstall theme_elegance
 
 <a class="command-name" name="question-import">question-import</a>
 ----------------

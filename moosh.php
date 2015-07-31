@@ -129,7 +129,12 @@ if (!$subcommand && $possible_matches) {
 }
 
 $parser->setSpecs($subcommand_specs[$subcommand]);
-$subcommand_options[$subcommand] = $parser->continueParse();
+try {
+    $subcommand_options[$subcommand] = $parser->continueParse();
+} catch (Exception $e) {
+    echo $e->getMessage() . "\n";
+    die("Moosh options should be passed before commands.\n");
+}
 
 while (!$parser->isEnd()) {
     $arguments[] = $parser->advance();
@@ -191,6 +196,10 @@ if ($bootstrap_level = $subcommand->bootstrapLevel()) {
 
     $shell_user = false;
     if (!$app_options->has('no-user-check')) {
+    	// make sure the PHP POSIX library is installed before using it
+    	if(!(function_exists('posix_getpwuid') && function_exists('posix_geteuid'))){
+    		cli_error("The PHP POSIX extension is not installed - see http://php.net/manual/en/book.posix.php (on CentOS/RHEL the package php-process provides this extension)");
+    	}
         $shell_user = posix_getpwuid(posix_geteuid());
         $moodledata_owner = detect_moodledata_owner($CFG->dataroot);
         if($moodledata_owner && $shell_user['name'] != $moodledata_owner['user']['name']) {

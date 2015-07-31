@@ -18,7 +18,7 @@ class DataStats extends MooshCommand
         $this->addOption('j|json', 'generate output using json format');
     }
 
-    public function execute() 
+    public function execute()
     {
         global $CFG, $DB;
 
@@ -35,8 +35,19 @@ class DataStats extends MooshCommand
         $all_files = $DB->get_record_sql($sql_query);
 
         $sql_query = "SELECT DISTINCT contenthash, SUM(filesize) AS total FROM {files}";
-        $distinct_contenthash = $DB->get_record_sql($sql_query);
-        
+        if (is_a($DB, 'pgsql_native_moodle_database')) {
+            $sql_query .= " GROUP BY contenthash";
+            $distinct_contenthash = $DB->get_records_sql($sql_query);
+            $total = 0;
+            foreach ($distinct_contenthash as $k=>$v) {
+                 $total += $v->total;
+            }
+            $distinctfilestotal = $total;
+        } else {
+            $distinct_contenthash = $DB->get_record_sql($sql_query);
+            $distinctfilestotal = $distinct_contenthash->total;
+        }
+
         $filesbycourse = array();
         if ($courses = get_all_courses()) {
             foreach ($courses as $course) {
@@ -58,7 +69,7 @@ class DataStats extends MooshCommand
         $data = array('dataroot' => $matches[0],
             'filedir' => $dir_matches[0],
             'files total' => $all_files->total,
-            'distinct files total' => $distinct_contenthash->total);
+            'distinct files total' => $distinctfilestotal);
         foreach ($sortarray as $courseid => $values) {
             $data["Course $courseid files total"] = strval($values['all']);
             $data["Course $courseid files unique"] = strval($values['unique']);

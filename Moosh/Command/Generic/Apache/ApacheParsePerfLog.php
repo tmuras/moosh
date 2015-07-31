@@ -13,9 +13,41 @@ use Moosh\ApacheLogParser\Parser;
 
 /**
  * The DB table:
- *
- *
- *
+CREATE TABLE perflog (
+id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+timestamp datetime NOT NULL,
+time int(10) unsigned NOT NULL,
+url varchar(255) NOT NULL,
+memory_peak int(10) unsigned NOT NULL,
+includecount int(10) unsigned NOT NULL,
+contextswithfilters int(10) unsigned NOT NULL,
+filterscreated int(10) unsigned NOT NULL,
+textsfiltered int(10) unsigned NOT NULL,
+stringsfiltered int(10) unsigned NOT NULL,
+langcountgetstring int(10) unsigned NOT NULL,
+db_reads int(10) unsigned NOT NULL,
+db_writes int(10) unsigned NOT NULL,
+ticks int(10) unsigned NOT NULL,
+user int(10) unsigned NOT NULL,
+sys int(10) unsigned NOT NULL,
+cuser int(10) unsigned NOT NULL,
+csys int(10) unsigned NOT NULL,
+serverload int(10) unsigned NOT NULL,
+cache_mondodb_sets int(10) unsigned NOT NULL,
+cache_mondodb_misses int(10) unsigned NOT NULL,
+cache_mondodb_hits int(10) unsigned NOT NULL,
+cache_static_sets int(10) unsigned NOT NULL,
+cache_static_misses int(10) unsigned NOT NULL,
+cache_static_hits int(10) unsigned NOT NULL,
+cache_staticpersist_sets int(10) unsigned NOT NULL,
+cache_staticpersist_misses int(10) unsigned NOT NULL,
+cache_staticpersist_hits int(10) unsigned NOT NULL,
+cache_file_sets int(10) unsigned NOT NULL,
+cache_file_misses int(10) unsigned NOT NULL,
+cache_file_hits int(10) unsigned NOT NULL,
+PRIMARY KEY (id),
+UNIQUE KEY uniquerow (timestamp,time,url)
+);
  * Class ParseApacheLog
  * @package Moosh\Command\Generic\Dev
  */
@@ -58,7 +90,10 @@ class ApacheParsePerfLog extends MooshCommand
             $row['time'] = (int)($this->parse($line, 'time: (\d+.\d+)s') * 1000000);
 
             //[Sun Dec 22 06:29:01 2013]
+            //[Sun Dec 22 06:29:01.731010 2013]
             $row['timestamp'] = $this->parse($line, ' (.*?)\]');
+            $row['timestamp'] = preg_replace('/\.\d+/','',$row['timestamp']);
+
             $tmp = date_parse($row['timestamp']);
 
             if ($tmp['year'] < 10) {
@@ -124,6 +159,15 @@ class ApacheParsePerfLog extends MooshCommand
                 continue;
             }
 
+            // Cache stores
+            // cachestore_mongodb(0/1/1)
+            // cachestore_static(0/1/1)
+            // ** static persist **(6/107/0)
+            list($row['cache_mondodb_hits'],$row['cache_mondodb_misses'],$row['cache_mondodb_sets']) = $this->parseCaches($line,'cachestore_mongodb');
+            list($row['cache_static_hits'],$row['cache_static_misses'],$row['cache_static_sets']) = $this->parseCaches($line,'cachestore_static');
+            list($row['cache_staticpersist_hits'],$row['cache_staticpersist_misses'],$row['cache_staticpersist_sets']) = $this->parseCaches($line,'\*\* static persist \*\*');
+            list($row['cache_file_hits'],$row['cache_file_misses'],$row['cache_file_sets']) = $this->parseCaches($line,'cachestore_file');
+
             //construct SQL statement
             $columns = array();
             $values = array();
@@ -136,7 +180,6 @@ class ApacheParsePerfLog extends MooshCommand
             $sql = "INSERT IGNORE INTO " . $this->options['table'] . " (" . implode(',', $columns) . ') VALUES (' . implode(',', $values) . ');';
             echo "$sql\n";
         }
-
     }
 
     private function parse($line, $regexp)
@@ -146,5 +189,18 @@ class ApacheParsePerfLog extends MooshCommand
             return NULL;
         }
         return $matches[1];
+    }
+
+    private function parseCaches($line, $regexp)
+    {
+        $matches = NULL;
+        if (!preg_match_all("|$regexp\((\d+)/(\d+)/(\d+)\)|", $line, $matches)) {
+            return array(0,0,0);
+        }
+        $hits = array_sum($matches[1]);
+        $misses = array_sum($matches[2]);
+        $sets = array_sum($matches[3]);
+
+        return array($hits,$misses,$sets);
     }
 }

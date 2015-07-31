@@ -7,32 +7,30 @@
  */
 
 namespace Moosh\Command\Generic\Download;
+
 use Moosh\MooshCommand;
 
-class DownloadMoodle extends MooshCommand
-{
-    const downloadUrl = "http://download.moodle.org/download.php/direct/stable<major>/moodle-latest-<major>.tgz";
+class DownloadMoodle extends MooshCommand {
+    const downloadUrl = "https://download.moodle.org/download.php/direct/stable<version>/moodle-<major>.<minor>.tgz";
 
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct('moodle', 'download');
 
         $this->addOption('v|version:', 'version');
     }
 
-    public function bootstrapLevel()
-    {
+    public function bootstrapLevel() {
         return self::$BOOTSTRAP_NONE;
     }
 
-    public function execute()
-    {
+    public function execute() {
         $options = $this->expandedOptions;
-        var_dump($options);
         $version = str_replace('.', '', $options['version']);
-        $url = str_replace('<major>',$version,self::downloadUrl);
+        list($major, $minor) = explode('.', $options['version']);
+        $url = str_replace('<version>', $version, self::downloadUrl);
+        $url = str_replace('<major>', $major, $url);
+        $url = str_replace('<minor>', $minor, $url);
 
-        //rename lang/en/newmodule.php
         run_external_command("wget --continue --timestamping '$url'", "Fetching file failed");
     }
 }

@@ -41,12 +41,14 @@ _moosh()
          debug-on \
          dev-versionbump \
          form-add \
+         generate-availability \
          generate-block \
          generate-filemanager \
          generate-form \
          generate-gradeexport \
          generate-gradereport \
          generate-lang \
+         generate-messageoutput
          generate-module \
          generate-qtype \
          generate-ws \

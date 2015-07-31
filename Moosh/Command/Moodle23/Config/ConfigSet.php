@@ -35,6 +35,12 @@ class ConfigSet extends MooshCommand
         if (isset($this->arguments[2])) {
             $plugin = trim($this->arguments[2]);
         }
+        
+        // if the plugin is 'moodle' or 'core', set to NULL, otherwise call to 
+        // set_config will not behave as expected
+        if($plugin == 'moodle' || $plugin == 'core'){
+        	$plugin = NULL;
+        }
 
         set_config($name, $value, $plugin);
 

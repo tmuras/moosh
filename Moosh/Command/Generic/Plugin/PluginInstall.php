@@ -27,40 +27,54 @@ class PluginInstall extends MooshCommand
         require_once($CFG->libdir.'/adminlib.php');       // various admin-only functions
         require_once($CFG->libdir.'/upgradelib.php');     // general upgrade/install related functions
         require_once($CFG->libdir.'/environmentlib.php');
-        require_once($CFG->libdir.'/pluginlib.php');
         require_once($CFG->dirroot.'/course/lib.php');
+        require_once($CFG->libdir.'/classes/plugin_manager.php');
 
         $pluginname = $this->arguments[0];
-
         $moodleversion = $this->arguments[1];
+        $pluginsfile = home_dir() . '/.moosh/plugins.json';
 
-        $pluginurl = "https://moodle.org/plugins/view.php?plugin=" . $pluginname . "&moodle_version=" . $moodleversion;
-
-        $page = file_get_contents($pluginurl);
-        // check if website exists
-        try {
-            $doc = new \DOMDocument();
-            $doc->loadHTML($page);
-        }
-        catch(Exception $e) {
-            die("Failed to load plugin web info\n");
+        $stat = @stat($pluginsfile);
+        if(!$stat || time() - $stat['mtime'] > 60*60*24 || !$stat['size']) {
+            die("plugins.json file not found or too old. Run moosh plugin-list to download newest plugins.json file\n");
         }
 
-        $xpath = new \DOMXpath($doc);
+        $pluginsdata = file_get_contents($pluginsfile);
+        $decodeddata = json_decode($pluginsdata);
+        $downloadurl = NULL;
+        foreach($decodeddata->plugins as $k=>$plugin) {
+            if(!$plugin->component) {
+                continue;
+            }
+            if($plugin->component == $pluginname) {
+                foreach($plugin->versions as $j) {
+                    foreach($j->supportedmoodles as $v) {
+                        if($v->release == $moodleversion) {
+                            $downloadurl = $j->downloadurl;
+                        }
+                    }
+                }
+            }
+        }
 
-        $elements = $xpath->query("//a[@class='download btn latest']");
-        $downloadlink = $elements->item(0)->getAttribute('href');
-        
+        if(!$downloadurl) {
+            die("Couldn't find $pluginname $moodleversion\n");
+        }
+
         $split = explode('_',$this->arguments[0],2);
-
         $tempdir = home_dir() . '/.moosh/moodleplugins/';
+
+        if(!file_exists($tempdir)) {
+            mkdir($tempdir);
+        }
 
         if (!fopen($tempdir . $split[1] . ".zip", 'w')) {
             echo "Failed to save plugin.\n";
             return;
         }
+
         try {
-            file_put_contents($tempdir . $split[1] . ".zip", file_get_contents($downloadlink));
+            file_put_contents($tempdir . $split[1] . ".zip", file_get_contents($downloadurl));
         }
         catch (Exception $e) {
             echo "Failed to download plugin. " . $e . "\n";
@@ -69,14 +83,14 @@ class PluginInstall extends MooshCommand
 
         try {
             shell_exec("unzip " . $tempdir . $split[1] . ".zip -d " . home_dir() . "/.moosh/moodleplugins/");
-
             shell_exec("cp -r " . $tempdir . $split[1] . "/ " . $CFG->dirroot.  "/" . $split[0]);
         } catch (Exception $e) {
             echo "Failed to unzip plugin. " . $e . "\n";
             return;
         }
 
+        echo "Installing $pluginname $moodleversion\n";
         upgrade_noncore(true);
+        echo "Done\n";
     }
-
 }
