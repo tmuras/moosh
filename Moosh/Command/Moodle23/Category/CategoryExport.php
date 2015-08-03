@@ -20,30 +20,46 @@ class CategoryExport extends MooshCommand
 
     public function execute()
     {
-        global $CFG, $DB;
+        global $CFG;
 
         require_once $CFG->dirroot . '/course/lib.php';
+        require_once $CFG->dirroot . '/course/classes/management/helper.php';
+        require_once $CFG->libdir . '/coursecatlib.php';
 
         $categoryid = intval($this->arguments[0]);
-        $category = $DB->get_record('course_categories', array('id' => $categoryid));
-        if ($categoryid && !$category) {
-            cli_error("Wrong category '$categoryid'");
-        } elseif (!$categoryid) {
+
+        $categories = $this->get_category_tree($categoryid);
+        echo "<categories>\n";
+        $this->categories2xml(array($categories));
+        echo "</categories>\n";
+    }
+
+    private function get_category_tree($id) {
+        global $DB;
+
+        $category = $DB->get_record('course_categories', array('id' => $id));
+        if ($id && !$category) {
+            cli_error("Wrong category '$id'");
+        } elseif (!$id) {
             $category = NULL;
         }
 
-        $categories = get_course_category_tree($categoryid);
-        //add top lever category as well
-        if ($category) {
-            $category->categories = $categories;
-            $categories = array($category);
+        $parentcategory = \coursecat::get($id);
+        if ($parentcategory->has_children()) {
+            $dupa = $parentcategory->get_children();
+            foreach($dupa as $singlecategory) {
+                if ($singlecategory->has_children()) {
+                    $childcategories = $this->get_category_tree($singlecategory->id);
+                    $category->categories[] = $childcategories;
+                } else {
+                // coursecat variables are protected, need to get data from db
+                    $singlecategory = $DB->get_record('course_categories', array('id' => $singlecategory->id));
+                    $category->categories[] = $singlecategory;
+                }
+            }
         }
 
-        echo "<categories>\n";
-        $this->categories2xml($categories);
-        echo "</categories>\n";
-
-
+        return $category;
     }
 
     private function categories2xml($categories)
@@ -69,12 +85,12 @@ class CategoryExport extends MooshCommand
 
             echo "name='$name'>";
 
-            foreach ($category->categories as $categories2) {
-                //var_dump($categories2);.
-                $this->categories2xml(array($categories2));
+            if (property_exists($category, 'categories')) {
+                foreach($category->categories as $categories2) {
+                    $this->categories2xml(array($categories2));
+                }
             }
             echo "</category>\n";
         }
     }
-
 }
