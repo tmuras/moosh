@@ -357,11 +357,11 @@ Example 2: Enable self enrolment on a course with an enrolment key
 
 Lists courses with given short or full name.
 
-Example 1: List all courses with shor or full name containing phrase 'student'
+Example 1: List all courses with short or full name containing phrase 'student'
 
     moosh course-list student
 
-Example 2: List all courses with shor or full name containing phrase 'course' and display only id's of courses.
+Example 2: List all courses with short or full name containing phrase 'course' and display only id's of courses.
 
     moosh course-list course -i
 
