@@ -368,12 +368,79 @@ Example 2: List all courses with short or full name containing phrase 'course' a
 <a class="command-name" name="course-reset">course-reset</a>
 --------------
 
-Reset course by ID, using default settings.
+Reset course by ID. With -s or --settings option you can provide any supported setting for the restore. The value for
+ -s option is a string with each setting in format key=value separated by space. This means you'll need to quote this
+  string with double or single quotes when running the command. unenrol_users setting requires an array as a value -
+  put at least one comma character (,) as a value to make moosh convert that into an array. Example:
 
-Example 1: Reset course with id=17
+    moosh course-reset -s "reset_forum_all=1 reset_data=0 unenrol_users=6," 17
+
+Add -n or --no-action to display all reset setting that would be used on course restore. When -n is used, no action is
+  actually performed.
+
+All posible backup settings I've found in Moodle 2.9 are listed below. Most of them is set to eiher 0 or 1.
+
+* delete_blog_associations
+* reset_assign_submissions
+* reset_chat
+* reset_choice
+* reset_comments
+* reset_completion
+* reset_data
+* reset_data_comments
+* reset_data_notenrolled
+* reset_data_ratings
+* reset_events
+* reset_forum_all
+* reset_forum_digests
+* reset_forum_ratings
+* reset_forum_subscriptions
+* reset_forum_track_prefs
+* reset_forum_types
+* reset_glossary_all
+* reset_glossary_comments
+* reset_glossary_notenrolled
+* reset_glossary_ratings
+* reset_glossary_types
+* reset_gradebook_grades
+* reset_gradebook_items
+* reset_groupings_members
+* reset_groupings_remove
+* reset_groups_members
+* reset_groups_remove
+* reset_lesson
+* reset_lesson_group_overrides
+* reset_lesson_user_overrides
+* reset_notes
+* reset_quiz_attempts
+* reset_quiz_group_overrides
+* reset_quiz_user_overrides
+* reset_roles_local
+* reset_roles_overrides
+* reset_scorm
+* reset_start_date (timestamp as a value)
+* reset_survey_analysis
+* reset_survey_answers
+* reset_wiki_comments
+* reset_wiki_tags
+* reset_workshop_assessments
+* reset_workshop_phase
+* reset_workshop_submissions
+* unenrol_users (array of user roles to unenrol)
+
+
+Example 1: Reset course with id=17 using default settings.
 
     moosh course-reset 17
 
+Example 2: Show default settings  when resetting course id=17
+
+    moosh course-reset -n 17
+    
+Example 3: Set unenrolment of participants with role id 5 and 6, and reset course with id=17
+
+    moosh course-reset -s "unenrol_users=5,6" 17
+        
 <a class="command-name" name="course-restore">course-restore</a>
 --------------
 

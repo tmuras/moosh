@@ -432,23 +432,95 @@ Use -i for providing username IDs.</p>
 
 <p>Lists courses with given short or full name.</p>
 
-<p>Example 1: List all courses with shor or full name containing phrase 'student'</p>
+<p>Example 1: List all courses with short or full name containing phrase 'student'</p>
 
 <pre><code>moosh course-list student
 </code></pre>
 
-<p>Example 2: List all courses with shor or full name containing phrase 'course' and display only id's of courses.</p>
+<p>Example 2: List all courses with short or full name containing phrase 'course' and display only id's of courses.</p>
 
 <pre><code>moosh course-list course -i
 </code></pre>
 
 <h2><a class="command-name" name="course-reset">course-reset</a></h2>
 
-<p>Reset course by ID, using default settings.</p>
+<p>Reset course by ID. With -s or --settings option you can provide any supported setting for the restore. The value for
+ -s option is a string with each setting in format key=value separated by space. This means you'll need to quote this
+  string with double or single quotes when running the command. unenrol_users setting requires an array as a value -
+  put at least one comma character (,) as a value to make moosh convert that into an array. Example:</p>
 
-<p>Example 1: Reset course with id=17</p>
+<pre><code>moosh course-reset -s "reset_forum_all=1 reset_data=0 unenrol_users=6," 17
+</code></pre>
+
+<p>Add -n or --no-action to display all reset setting that would be used on course restore. When -n is used, no action is
+  actually performed.</p>
+
+<p>All posible backup settings I've found in Moodle 2.9 are listed below. Most of them is set to eiher 0 or 1.</p>
+
+<ul>
+<li>delete_blog_associations</li>
+<li>reset_assign_submissions</li>
+<li>reset_chat</li>
+<li>reset_choice</li>
+<li>reset_comments</li>
+<li>reset_completion</li>
+<li>reset_data</li>
+<li>reset_data_comments</li>
+<li>reset_data_notenrolled</li>
+<li>reset_data_ratings</li>
+<li>reset_events</li>
+<li>reset_forum_all</li>
+<li>reset_forum_digests</li>
+<li>reset_forum_ratings</li>
+<li>reset_forum_subscriptions</li>
+<li>reset_forum_track_prefs</li>
+<li>reset_forum_types</li>
+<li>reset_glossary_all</li>
+<li>reset_glossary_comments</li>
+<li>reset_glossary_notenrolled</li>
+<li>reset_glossary_ratings</li>
+<li>reset_glossary_types</li>
+<li>reset_gradebook_grades</li>
+<li>reset_gradebook_items</li>
+<li>reset_groupings_members</li>
+<li>reset_groupings_remove</li>
+<li>reset_groups_members</li>
+<li>reset_groups_remove</li>
+<li>reset_lesson</li>
+<li>reset_lesson_group_overrides</li>
+<li>reset_lesson_user_overrides</li>
+<li>reset_notes</li>
+<li>reset_quiz_attempts</li>
+<li>reset_quiz_group_overrides</li>
+<li>reset_quiz_user_overrides</li>
+<li>reset_roles_local</li>
+<li>reset_roles_overrides</li>
+<li>reset_scorm</li>
+<li>reset_start_date (timestamp as a value)</li>
+<li>reset_survey_analysis</li>
+<li>reset_survey_answers</li>
+<li>reset_wiki_comments</li>
+<li>reset_wiki_tags</li>
+<li>reset_workshop_assessments</li>
+<li>reset_workshop_phase</li>
+<li>reset_workshop_submissions</li>
+<li>unenrol_users (array of user roles to unenrol)</li>
+</ul>
+
+
+<p>Example 1: Reset course with id=17 using default settings.</p>
 
 <pre><code>moosh course-reset 17
+</code></pre>
+
+<p>Example 2: Show default settings  when resetting course id=17</p>
+
+<pre><code>moosh course-reset -n 17
+</code></pre>
+
+<p>Example 3: Set unenrolment of participants with role id 5 and 6, and reset course with id=17</p>
+
+<pre><code>moosh course-reset -s "unenrol_users=5,6" 17
 </code></pre>
 
 <h2><a class="command-name" name="course-restore">course-restore</a></h2>
