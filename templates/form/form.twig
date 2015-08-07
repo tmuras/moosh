@@ -18,19 +18,19 @@ require_once($CFG->libdir . '/formslib.php');
 
 class {{ formName }}_form extends moodleform {
 
-  // Define the form
-  function definition() {
-    global $USER, $CFG, $COURSE;
+    // Define the form
+    function definition() {
+        global $USER, $CFG, $COURSE;
 
-    $mform = $this->_form;
-    $userid = $USER->id;
-    $strrequired = get_string('required');
+        $mform = $this->_form;
+        $userid = $USER->id;
+        $strrequired = get_string('required');
 
-    // Uncomment to disable "Are you sure?" alrert if someone tries to leave the page.
-    // $mform->disable_form_change_checker();
+        // Uncomment to disable "Are you sure?" alrert if someone tries to leave the page.
+        // $mform->disable_form_change_checker();
 
 /** MOOSH AUTO-GENERATED */
 
-    $this->add_action_buttons();
-  }
+        $this->add_action_buttons();
+    }
 }

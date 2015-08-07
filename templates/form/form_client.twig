@@ -4,12 +4,12 @@ require_once($CFG->dirroot . '/{{ formRelativePath }}/{{ fileName }}');
 $mform = new {{ formName }}_form();
 
 if ($mform->is_cancelled()) {
-  // form cancelled, redirect
-  redirect(new moodle_url('view.php',array()));
-  return;
+    // form cancelled, redirect
+    redirect(new moodle_url('view.php',array()));
+    return;
 } else if (($data = $mform->get_data())) {
-  // form has been submitted
+    // form has been submitted
 } else {
-  // form has not been submitted, just display it
-  $mform->display();
+    // form has not been submitted, just display it
+    $mform->display();
 }
