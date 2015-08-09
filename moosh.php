@@ -133,7 +133,6 @@ try {
     $subcommand_options[$subcommand] = $parser->continueParse();
 } catch (Exception $e) {
     echo $e->getMessage() . "\n";
-    die("Moosh options should be passed before commands.\n");
 }
 
 while (!$parser->isEnd()) {
