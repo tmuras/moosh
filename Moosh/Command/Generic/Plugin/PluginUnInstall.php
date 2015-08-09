@@ -82,17 +82,21 @@ class PluginUnInstall extends MooshCommand
                 $pluginfo->rootdir = $pluginfo->typerootdir.'/'.$pluginfo->name; //$CFG->dirroot.'/'.$pluginfo->type;
             }
 
-            // Make sure the folder is removable.
-            if (!$pluginman->is_plugin_folder_removable($pluginfo->component)) {
-                echo 'plugin root folder is not removable as expected '. PHP_EOL;
-                echo ' Use CLI "sudo chmod -R +w '.$pluginfo->rootdir.'" to enable write (delete) permission on that folder'. PHP_EOL;
-                if ($CFG->debugdisplay) {
-                    throw new moodle_exception('err_removing_unremovable_folder', 'core_plugin', '',
-                        array('plugin' => $pluginfo->component, 'rootdir' => $pluginfo->rootdir),
-                        'plugin root folder is not removable as expected'. PHP_EOL.
-                        ' Use CLI "sudo chmod -R +w '.$pluginfo->rootdir.'" to enable write (delete) permission on that folder');
+            if (file_exists($pluginfo->rootdir)) {
+                // Make sure the folder is removable.
+                if (!$pluginman->is_plugin_folder_removable($pluginfo->component)) {
+                    echo 'plugin root folder is not removable as expected '. PHP_EOL;
+                    echo ' Use CLI "sudo chmod -R +w '.$pluginfo->rootdir.'" to enable write (delete) permission on that folder'. PHP_EOL;
+                    if ($CFG->debugdisplay) {
+                        throw new moodle_exception('err_removing_unremovable_folder', 'core_plugin', '',
+                            array('plugin' => $pluginfo->component, 'rootdir' => $pluginfo->rootdir),
+                            'plugin root folder is not removable as expected'. PHP_EOL.
+                            ' Use CLI "sudo chmod -R +w '.$pluginfo->rootdir.'" to enable write (delete) permission on that folder');
+                    }
+                    die;
                 }
-                die;
+            } else {
+                echo 'Plugin folder ('.$pluginfo->rootdir.') does not exist, skipping...'. PHP_EOL;
             }
 
             // Make sure the folder is within Moodle installation tree.
@@ -116,7 +120,7 @@ class PluginUnInstall extends MooshCommand
                 print_r($pluginfo);
             }
 
-            echo "Deleting folder: {$pluginfo->rootdir}". PHP_EOL ;
+            echo "Deleting folder: {$pluginfo->rootdir} (if exists)". PHP_EOL ;
             fulldelete($pluginfo->rootdir);
 
             // Reset op code caches.
