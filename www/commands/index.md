@@ -457,22 +457,13 @@ Example 2: Restore backup.mbz into existing course with id=3
 <a class="command-name" name="course-unenrol">course-unenrol</a>
 ------------
 
-Unerol user(s) from a course id provided. First argument is a course ID, possible options:
+Unerol user(s) from a course id provided. First argument is a course ID then list of users.
 
---roles : comma separated list of user roles
---cohort: boolean 1 remove all cohort sync enrolments
 
-Possible arguments:
-userid
+Example 1: Unenrol users with id 7, 9, 12 and 16 from course with id 2.
 
-Example 1:
-
-    moosh course-unenrol --role editingteacher --cohort 1 144
-
-Example 2:
     moosh course-unenrol 2 7 9 12 16
 
-This will unenrol users with id 7, 9, 12 and 16 from course with id 2.
 
 <a class="command-name" name="data-stats">data-stats</a>
 ----------
