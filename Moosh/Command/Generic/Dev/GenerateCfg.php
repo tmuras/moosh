@@ -71,20 +71,50 @@ class GenerateCfg extends MooshCommand
         foreach ($cfg as $name => $values) {
             $values['short'] = '';
             $values['long'] = '';
+            $found = false;
             if (strpos($this->langfiles, "\$string['$name']") !== false && strpos($this->langfiles, "\$string['{$name}_help']")) {
                 $values['short'] = $this->extract_help($name);
                 $values['long'] = $this->extract_help($name . '_help');
+                $found = true;
             }
 
-            if (strpos($this->langfiles, "\$string['$name']") !== false && strpos($this->langfiles, "\$string['config{$name}']")) {
+            if (!$found && strpos($this->langfiles, "\$string['$name']") !== false && strpos($this->langfiles, "\$string['config{$name}']")) {
                 $values['short'] = $this->extract_help($name);
                 $values['long'] = $this->extract_help("config$name");
+                $found = true;
             }
 
-            if (strpos($this->langfiles, "\$string['$name']") !== false && strpos($this->langfiles, "\$string['{$name}_desc']")) {
+            if (!$found && strpos($this->langfiles, "\$string['$name']") !== false && strpos($this->langfiles, "\$string['{$name}_desc']")) {
                 $values['short'] = $this->extract_help($name);
                 $values['long'] = $this->extract_help($name . '_desc');
+                $found = true;
             }
+
+            if (!$found && strpos($name, '_') !== false) {
+                $exploded = explode('_',$name);
+                array_shift($exploded);
+                $name2 = implode('_',$exploded);
+
+                if (strpos($this->langfiles, "\$string['$name2']") !== false && strpos($this->langfiles, "\$string['config{$name2}']")) {
+                    $values['short'] = $this->extract_help($name2);
+                    $values['long'] = $this->extract_help("config$name2");
+                    $found = true;
+                }
+
+                if (!$found && strpos($this->langfiles, "\$string['$name2']") !== false && strpos($this->langfiles, "\$string['{$name2}_help']")) {
+                    $values['short'] = $this->extract_help($name2);
+                    $values['long'] = $this->extract_help($name2 . '_help');
+                    $found = true;
+                }
+
+                if (!$found && strpos($this->langfiles, "\$string['$name2']") !== false && strpos($this->langfiles, "\$string['{$name2}_desc']")) {
+                    $values['short'] = $this->extract_help($name2);
+                    $values['long'] = $this->extract_help($name2 . '_desc');
+                    $found = true;
+                }
+
+            }
+
             $cfg[$name] = $values;
         }
 
@@ -100,7 +130,7 @@ class GenerateCfg extends MooshCommand
   */
         echo "<?php\n";
         var_export($cfg);
-
+        echo ';';
         /* if verbose mode was requested, show some more information/debug messages
         if($this->verbose) {
             echo "Say what you're doing now";
