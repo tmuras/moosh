@@ -162,7 +162,8 @@
         "yetanotherape/diff-match-patch":"dev-master#0726dbb4e59e68574326821c174013cf6fdfe20e",
         "danielneis/moodle-gradeexport_newgradeexport": "dev-master#4d13e3f6e9f4f53d54d6e8ad348278248968412d",
         "danielneis/moodle-message_newprocessor": "dev-master#e2b82f0776b13a30a79f4f20de89d597a15f58c5",
-        "danielneis/moodle-availability_newavailability": "dev-master#43198d6736931213ad223c8fd05881749baac22c"
+        "danielneis/moodle-availability_newavailability": "dev-master#43198d6736931213ad223c8fd05881749baac22c",
+        "symfony/finder": "^2.7"
     },
     "bin": ["moosh.php"]
 }
