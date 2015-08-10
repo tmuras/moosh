@@ -31,6 +31,60 @@ class GenerateCfg extends MooshCommand
         //$this->pluginInfo - array with information about the current plugin (based on cwd), keys:'type','name','dir'
 
         $options = $this->expandedOptions;
+
+        // Simply iterate $CFG.
+
+        // Find in source code to find usages.
+        $cfg = $this->find_cfg_in_code();
+        require_once($this->mooshDir . '/includes/cfg_documentation.php');
+
+        echo <<<HEREDOC
+<?php
+class moodle_config {
+HEREDOC;
+        foreach ($cfg as $name => $values) {
+            if (isset($template[$name])) {
+                $short = $template[$name]['short'];
+                $longraw = $template[$name]['long'];
+                $longraw = explode("\n", $longraw);
+                $long = array();
+                foreach ($longraw as $line) {
+                    $line = str_replace('*/', '* /', $line);
+                    $long[] = "     * $line";
+                }
+                $long = implode("\n", $long);
+            } else {
+                $short = '';
+                $long = '';
+            }
+            echo <<<HEREDOC
+
+    /**
+$long
+     *
+     * @var string $name $short
+     */
+    public \$$name;
+
+HEREDOC;
+        }
+        echo "}\n\$CFG = new moodle_config();";
+
+    }
+
+    private function extract_help($key)
+    {
+        $matches = NULL;
+        preg_match("/\\\$string\['$key'\] =\s*'(.*)';/sU", $this->langfiles, $matches);
+        if (!$matches[1]) {
+            cli_problem("Couldn't parse string for $key");
+        }
+
+        return $matches[1];
+    }
+
+    private function find_cfg_in_code()
+    {
         $finder = new Finder();
         $iterator = $finder
             ->files()
@@ -50,8 +104,16 @@ class GenerateCfg extends MooshCommand
             }
         }
 
+        return $cfg;
+    }
 
-        // Find help strings.
+    private function find_cfg_in_db()
+    {
+        return get_config('core');
+    }
+
+    private function find_help_strings($cfg)
+    {
         $finder = new Finder();
         $iterator = $finder
             ->files()
@@ -61,8 +123,8 @@ class GenerateCfg extends MooshCommand
 
         $this->langfiles = '';
         foreach ($iterator as $file) {
-            if($this->verbose) {
-                 print $file->getRealpath() . "\n";
+            if ($this->verbose) {
+                print $file->getRealpath() . "\n";
             }
             $this->langfiles .= file_get_contents($file->getRealpath());
 
@@ -91,9 +153,9 @@ class GenerateCfg extends MooshCommand
             }
 
             if (!$found && strpos($name, '_') !== false) {
-                $exploded = explode('_',$name);
+                $exploded = explode('_', $name);
                 array_shift($exploded);
-                $name2 = implode('_',$exploded);
+                $name2 = implode('_', $exploded);
 
                 if (strpos($this->langfiles, "\$string['$name2']") !== false && strpos($this->langfiles, "\$string['config{$name2}']")) {
                     $values['short'] = $this->extract_help($name2);
@@ -118,34 +180,14 @@ class GenerateCfg extends MooshCommand
             $cfg[$name] = $values;
         }
 
-        $cfg['usecomments']['short_help'] = array('enablecomments', 'admin');
-        $cfg['usecomments']['long_help'] = array('configenablecomments', 'admin');
-/*
-        $localcfg = get_config('core');
-        foreach ($localcfg as $name => $value) {
-            if(!isset($cfg[$name])) {
-                echo $name . "\n";
-            }
-        }
-  */
+        return $cfg;
+    }
+
+    private function export_template($cfg)
+    {
         echo "<?php\n";
         var_export($cfg);
         echo ';';
-        /* if verbose mode was requested, show some more information/debug messages
-        if($this->verbose) {
-            echo "Say what you're doing now";
-        }
-        */
     }
 
-    private function extract_help($key)
-    {
-        $matches = NULL;
-        preg_match("/\\\$string\['$key'\] =\s*'(.*)';/sU", $this->langfiles, $matches);
-        if (!$matches[1]) {
-            cli_problem("Couldn't parse string for $key");
-        }
-
-        return $matches[1];
-    }
 }
