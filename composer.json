@@ -138,6 +138,22 @@
             "type":"package",
             "package":{
                 "version":"dev-master",
+                "name":"danielneis/moodle-local_newlocal",
+                "source":{
+                    "url":"https://github.com/danielneis/moodle-local_newlocal",
+                    "type":"git",
+                    "reference":"master"
+                },
+                "dist":{
+                    "url":"https://github.com/danielneis/moodle-local_newlocal/archive/master.zip",
+                    "type":"zip"
+                }
+            }
+        },
+        {
+            "type":"package",
+            "package":{
+                "version":"dev-master",
                 "name":"yetanotherape/diff-match-patch",
                 "source":{
                     "url":"https://github.com/yetanotherape/diff-match-patch",
@@ -163,7 +179,8 @@
         "danielneis/moodle-gradeexport_newgradeexport": "dev-master#4d13e3f6e9f4f53d54d6e8ad348278248968412d",
         "danielneis/moodle-message_newprocessor": "dev-master#e2b82f0776b13a30a79f4f20de89d597a15f58c5",
         "danielneis/moodle-availability_newavailability": "dev-master#43198d6736931213ad223c8fd05881749baac22c",
-        "symfony/finder": "^2.7"
+        "symfony/finder": "^2.7",
+        "danielneis/moodle-local_newlocal": "dev-master"
     },
     "bin": ["moosh.php"]
 }

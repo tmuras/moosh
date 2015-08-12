@@ -48,6 +48,7 @@ _moosh()
          generate-gradeexport \
          generate-gradereport \
          generate-lang \
+         generate-local \
          generate-messageoutput
          generate-module \
          generate-qtype \
