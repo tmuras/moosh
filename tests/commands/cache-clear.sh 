@@ -1,9 +1,11 @@
 #!/bin/bash 
-source functions.sh
 
+source functions.sh
+install_db
+install_data
 cd $MOODLEDIR
 
-if moosh cache-clear ; then
+if $MOOSHCMD cache-clear ; then
   exit 0
 else
   exit 1

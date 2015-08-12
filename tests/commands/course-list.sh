@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 source functions.sh
 
 install_db

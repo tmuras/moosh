@@ -8,7 +8,7 @@ if [ -z "${DBNAME}" ]; then
     exit 1
 fi
 
-if [[ ! $(echo "select 1 | mysql -u $DBUSER -p$DBPASSWORD $DBNAME") ]]; then
+if [[ ! $(echo "select 1 | mysql -u $DBUSER -p$DBPASSWORD $DBNAME -h $DBHOST") ]]; then
     echo Could not connect to the database, check \$DBUSER, \$DBNAME and \$DBPASSWORD
     exit 1
 fi
@@ -36,9 +36,9 @@ fi
 function install_db {
   cd ../../data
   bzip2 -dk $SOURCESQL.sql.bz2 || true #if bzip2 fails than most likely because it's already unpacked
-  echo "DROP DATABASE $DBNAME" | mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME"
-  echo "CREATE DATABASE $DBNAME" | mysql -u "$DBUSER" -p"$DBPASSWORD"
-  mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" < $SOURCESQL.sql
+  echo "DROP DATABASE $DBNAME" | mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" -h "$DBHOST"
+  echo "CREATE DATABASE $DBNAME" | mysql -u "$DBUSER" -p"$DBPASSWORD" -h "$DBHOST"
+  mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" -h "$DBHOST" < $SOURCESQL.sql
 }
 
 function install_data {

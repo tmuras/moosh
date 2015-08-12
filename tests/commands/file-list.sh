@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-if $MOOSHCMD file-list id=6 | grep -w "grumpycat"; then
+if $MOOSHCMD file-list -a id=1 | grep "background"; then
   exit 0
 else
   exit 1
