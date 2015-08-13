@@ -180,7 +180,7 @@
         "danielneis/moodle-message_newprocessor": "dev-master#e2b82f0776b13a30a79f4f20de89d597a15f58c5",
         "danielneis/moodle-availability_newavailability": "dev-master#43198d6736931213ad223c8fd05881749baac22c",
         "symfony/finder": "^2.7",
-        "danielneis/moodle-local_newlocal": "dev-master"
+        "danielneis/moodle-local_newlocal": "dev-master#b9596bdd37963d312069a048c8d315c7592c1c24"
     },
     "bin": ["moosh.php"]
 }
