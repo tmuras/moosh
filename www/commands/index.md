@@ -700,6 +700,17 @@ Example 1: Extract lang strings from edit_form.php.
 
     moosh generate-lang edit_form.php
 
+<a class="command-name" name="generate-lang">generate-lang</a>
+-------------
+
+Creates new local plugin under local/ based on template from https://github.com/danielneis/moodle-local_newlocal
+
+    moosh generate-local name
+
+Example 1: Generate new plugin under local/mynewlocal
+
+    moosh generate-local mynewlocal
+
 <a class="command-name" name="generate-messageoutput">generate-messageoutput</a>
 ---------------
 
