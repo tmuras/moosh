@@ -35,7 +35,6 @@ class ApacheParseExtendedLog extends MooshCommand
 
     public function execute()
     {
-        cli_error('Not implemented yet');
         $logfile = $this->arguments[0];
 
         if (!is_file($logfile) || !is_readable($logfile)) {
@@ -45,7 +44,7 @@ class ApacheParseExtendedLog extends MooshCommand
         require_once($this->mooshDir . '/includes/ApacheLogParser/Parser.class.php');
 
         /*
-         LogFormat "H: %v U: %{MOODLEUSER}n T: %Ts / %Dµs | %{X-Forwarded-For}i %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" time_taken
+         LogFormat "H: %v U: %{MOODLEUSER}n T: %Ts / %Dus | %{X-Forwarded-For}i %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" moodle_log
            H: www,example.com U: 10164391 T: 0s / 20500µs | 192.198.151.44 - - [22/Dec/2013:08:20:35 +0000] "GET /login/index.php?testsession=1164 HTTP/1.1"
            303 904 "http://www,example.com/login/index.php" "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko"
          */
@@ -69,7 +68,7 @@ class ApacheParseExtendedLog extends MooshCommand
         $parser = new Parser($re, $elements);
         $parser->setFile($logfile);
         while (($line = $parser->next()) != -1) {
-            var_dump($line['moodle_user']);
+            var_dump($line);
             if (!count($line)) {
                 die();
             }

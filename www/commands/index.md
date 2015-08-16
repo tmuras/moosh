@@ -30,6 +30,26 @@ Example
 
     moosh activity-delete 2
 
+
+<span class="anchor" id="apache-parse-extendedlog"></span>
+<a class="command-name">apache-parse-extendedlog</a>
+---------------
+
+Parse Apache log that was configured to capture extra Moodle & timings information. To configure it for your Apache server:
+ 
+1. Add new LogFormat to apache2.conf:
+  
+    LogFormat "H: %v U: %{MOODLEUSER}n T: %Ts / %Dµs | %{X-Forwarded-For}i %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" moodle_log
+
+2. Add new log in your virtual host configuration:
+
+    CustomLog ${APACHE_LOG_DIR}/moodle.log moodle_log
+    
+You can then parse resulting moodle.log file with moosh:    
+
+    moosh apache-parse-extendedlog /var/log/apache2/moodle.log
+
+
 <span class="anchor" id="apache-parse-missing-files"></span>
 <a class="command-name">apache-parse-missing-files</a>
 ---------------
