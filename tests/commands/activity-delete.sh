@@ -7,11 +7,14 @@ cd $MOODLEDIR
 
 
 
-if $MOOSHCMD activity-delete 2 \
-    | grep "Deleted activity"; then
-  exit 0
-else
-  exit 1
-fi
+$MOOSHCMD activity-delete 5
 
+
+if  echo "SELECT * FROM mdl_forum WHERE name='testactivityname'"\
+        | mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME"\
+| grep testactivityname; then
+  exit 1 
+else
+  exit 0
+fi
 
