@@ -98,7 +98,23 @@ Change Mozilla Firefox to your preferred browser and you're good to go. Commands
 
     form-add
 
+<span class="anchor" id="cfg-auto-completion"></span>
+$CFG auto-completion
+====================
 
+You can use moosh to generate fake class moodle_config which will contain public properties extracted from your current
+ Moodle. Properties will have PHP doc based on Moodle's documentation. If you're lazy, simply 
+ <a href="https://raw.githubusercontent.com/tmuras/moosh/master/includes/config.class.php">download</a> <a href="https://github.com/tmuras/moosh/blob/master/includes/config.class.php">config class for Moodle 2.9</a>.
+  
+To get it to work with PHP Storm, simply drop that file somewhere into your Moodle project files.
+![$CFG autocompletion in PHP Storm](/images/cfg_autocompletion_phpstorm.png)
+
+With NetBeans, add line in your code:
+     
+     /* @var $CFG moodle_config */
+     
+![$CFG autocompletion in PHP Storm](/images/cfg_autocompletion_netbeans.png)
+     
 # <a name="praise"></a>moosh praise
 
 
