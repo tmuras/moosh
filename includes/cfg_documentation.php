@@ -1,5 +1,5 @@
 <?php
-
+$template =
 array(
     'libdir' =>
     array(
@@ -2016,7 +2016,7 @@ Note: For recipient verification purposes, please avoid changing this setting on
         'long' => '',
         'long_help' =>
         array(
-            0 => $prefix . '_version',
+            0 => 'mdl_version',
             1 => 'cache',
         ),
     ),
@@ -2877,7 +2877,7 @@ For most mono-lingual sites the most efficient setting is "firstname lastname", 
         'long' => '',
         'short_help' =>
         array(
-            0 => 'smtpass',
+            0 => 'smtppass',
             1 => 'message_email',
         ),
         'long_help' =>
