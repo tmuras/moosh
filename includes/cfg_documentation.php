@@ -1,6 +1,6 @@
 <?php
 
-$template = array(
+array(
     'libdir' =>
     array(
         'count' => 1648,
@@ -94,12 +94,32 @@ $template = array(
         'count' => 2,
         'short' => '',
         'long' => '',
+        'short_help' =>
+        array(
+            0 => 'enablecomments',
+            1 => 'admin',
+        ),
+        'long_help' =>
+        array(
+            0 => 'configenablecomments',
+            1 => 'admin',
+        ),
     ),
     'blogshowcommentscount' =>
     array(
         'count' => 1,
         'short' => '',
         'long' => '',
+        'short_help' =>
+        array(
+            0 => 'showcommentscount',
+            1 => 'admin',
+        ),
+        'long_help' =>
+        array(
+            0 => 'configshowcommentscount',
+            1 => 'admin',
+        ),
     ),
     'maxbytes' =>
     array(
@@ -130,6 +150,16 @@ $template = array(
         'count' => 28,
         'short' => '',
         'long' => '',
+        'short_help' =>
+        array(
+            0 => 'net',
+            1 => 'mnet',
+        ),
+        'long_help' =>
+        array(
+            0 => 'configmnet',
+            1 => 'mnet',
+        ),
     ),
     'mnet_localhost_id' =>
     array(
@@ -1167,7 +1197,7 @@ $CFG->somecoresetting = \'value\';',
     'behat_wwwroot' =>
     array(
         'count' => 36,
-        'short' => '',
+        'short' => 'Behat WWWROOT',
         'long' => '',
     ),
     'behat_prefix' =>
@@ -1333,6 +1363,16 @@ $CFG->somecoresetting = \'value\';',
         'count' => 14,
         'short' => 'Default site license',
         'long' => '',
+        'short_help' =>
+        array(
+            0 => 'configsitedefaultlicense',
+            1 => 'admin',
+        ),
+        'long_help' =>
+        array(
+            0 => 'configsitedefaultlicensehelp',
+            1 => 'admin',
+        ),
     ),
     'httpswwwroot' =>
     array(
@@ -1343,7 +1383,7 @@ $CFG->somecoresetting = \'value\';',
     'repository_no_delete' =>
     array(
         'count' => 4,
-        'short' => '',
+        'short' => 'Repository no delete',
         'long' => '',
     ),
     'navshowmycoursecategories' =>
@@ -1388,6 +1428,16 @@ $CFG->somecoresetting = \'value\';',
         'count' => 6,
         'short' => '',
         'long' => '',
+        'short_help' =>
+        array(
+            0 => 'licensesettings',
+            1 => 'admin',
+        ),
+        'long_help' =>
+        array(
+            0 => 'availablelicenses',
+            1 => 'admin',
+        ),
     ),
     'filepermissions' =>
     array(
@@ -1398,8 +1448,13 @@ $CFG->somecoresetting = \'value\';',
     'block_tags_showcoursetags' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Show course tags',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'showcoursetags',
+            1 => 'block_tags',
+        ),
     ),
     'enablebadges' =>
     array(
@@ -1410,14 +1465,24 @@ $CFG->somecoresetting = \'value\';',
     'tagsort' =>
     array(
         'count' => 11,
-        'short' => '',
+        'short' => 'Tag sort',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'tagsort',
+            1 => 'blog',
+        ),
     ),
     'block_online_users_timetosee' =>
     array(
         'count' => 6,
-        'short' => '',
+        'short' => 'Online users time to see',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'timetosee',
+            1 => 'block_online_users',
+        ),
     ),
     'messaging' =>
     array(
@@ -1440,37 +1505,62 @@ $CFG->somecoresetting = \'value\';',
     'block_html_allowcssclasses' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Allow css classes in HTML',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'allowadditionalcssclasses',
+            1 => 'block_html',
+        ),
     ),
     'block_rss_client_num_entries' =>
     array(
         'count' => 4,
-        'short' => '',
+        'short' => 'RSS client num entries',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'numentries',
+            1 => 'block_rss_client',
+        ),
     ),
     'block_rss_client_timeout' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'RSS client timeout',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'timeout2',
+            1 => 'block_rss_client',
+        ),
     ),
     'debugdeveloper' =>
     array(
         'count' => 71,
-        'short' => '',
+        'short' => 'Debug developer',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'debugdeveloper',
+            1 => 'admin',
+        ),
     ),
     'block_course_list_adminview' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Course list admin view',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'adminview',
+            1 => 'block_course_list',
+        ),
     ),
     'disablemycourses' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Disable my courses',
         'long' => '',
     ),
     'navsortmycoursessort' =>
@@ -1482,8 +1572,13 @@ $CFG->somecoresetting = \'value\';',
     'block_course_list_hideallcourseslink' =>
     array(
         'count' => 3,
-        'short' => '',
+        'short' => 'Hide all courses link',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'hideallcourseslink',
+            1 => 'block_course_list',
+        ),
     ),
     'forum_enablerssfeeds' =>
     array(
@@ -1502,6 +1597,16 @@ $CFG->somecoresetting = \'value\';',
         'count' => 16,
         'short' => 'Register authorization',
         'long' => '',
+        'short_help' =>
+        array(
+            0 => 'selfregistration',
+            1 => 'auth',
+        ),
+        'long_help' =>
+        array(
+            0 => 'selfregistration_help',
+            1 => 'auth',
+        ),
     ),
     'loginpasswordautocomplete' =>
     array(
@@ -1532,12 +1637,32 @@ $CFG->somecoresetting = \'value\';',
         'count' => 6,
         'short' => 'Calendar look ahead',
         'long' => '',
+        'short_help' =>
+        array(
+            0 => 'configlookahead',
+            1 => 'admin',
+        ),
+        'long_help' =>
+        array(
+            0 => 'helpupcominglookahead',
+            1 => 'admin',
+        ),
     ),
     'calendar_maxevents' =>
     array(
         'count' => 6,
         'short' => 'Calendar max events',
         'long' => '',
+        'short_help' =>
+        array(
+            0 => 'configmaxevents',
+            1 => 'admin',
+        ),
+        'long_help' =>
+        array(
+            0 => 'helpupcomingmaxevents',
+            1 => 'admin',
+        ),
     ),
     'commentsperpage' =>
     array(
@@ -1600,7 +1725,7 @@ Note: For recipient verification purposes, please avoid changing this setting on
     'theme' =>
     array(
         'count' => 13,
-        'short' => '',
+        'short' => 'Theme',
         'long' => '',
     ),
     'alternateloginurl' =>
@@ -1608,12 +1733,22 @@ Note: For recipient verification purposes, please avoid changing this setting on
         'count' => 4,
         'short' => 'Alternate login URL',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'alternateloginurl',
+            1 => 'auth',
+        ),
     ),
     'auth_instructions' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Auth instructions',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'auth_shib_instructions',
+            1 => 'auth_shibboleth',
+        ),
     ),
     'dbsessions' =>
     array(
@@ -1663,12 +1798,32 @@ Note: For recipient verification purposes, please avoid changing this setting on
         'count' => 23,
         'short' => '',
         'long' => '',
+        'short_help' =>
+        array(
+            0 => 'stripalltitletags',
+            1 => 'admin',
+        ),
+        'long_help' =>
+        array(
+            0 => 'configstripalltitletags',
+            1 => 'admin',
+        ),
     ),
     'enableportfolios' =>
     array(
         'count' => 25,
         'short' => 'Enable portfolios',
         'long' => '',
+        'short_help' =>
+        array(
+            0 => 'enabled',
+            1 => 'portfolio',
+        ),
+        'long_help' =>
+        array(
+            0 => 'enableddesc',
+            1 => 'portfolio',
+        ),
     ),
     'texteditors' =>
     array(
@@ -1687,18 +1842,33 @@ Note: For recipient verification purposes, please avoid changing this setting on
         'count' => 12,
         'short' => 'Chat old ping',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'oldping',
+            1 => 'chat',
+        ),
     ),
     'chat_refresh_userlist' =>
     array(
         'count' => 3,
         'short' => 'Chat refresh userlist',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'refreshuserlist',
+            1 => 'chat',
+        ),
     ),
     'chat_refresh_room' =>
     array(
         'count' => 6,
         'short' => 'Chat refresh room',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'refreshroom',
+            1 => 'chat',
+        ),
     ),
     'stylesheets' =>
     array(
@@ -1711,6 +1881,11 @@ Note: For recipient verification purposes, please avoid changing this setting on
         'count' => 3,
         'short' => 'Chat normal update mode',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'updatemethod',
+            1 => 'chat',
+        ),
     ),
     'chat_serverhost' =>
     array(
@@ -1753,12 +1928,22 @@ Note: For recipient verification purposes, please avoid changing this setting on
         'count' => 7,
         'short' => 'Glossary enteries by page',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'entbypage',
+            1 => 'glossary',
+        ),
     ),
     'glossary_dupentries' =>
     array(
         'count' => 3,
         'short' => 'Glossary duplicate entries',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'allowduplicatedentries',
+            1 => 'glossary',
+        ),
     ),
     'glossary_allowcomments' =>
     array(
@@ -1771,6 +1956,11 @@ Note: For recipient verification purposes, please avoid changing this setting on
         'count' => 7,
         'short' => 'Glossary link entries',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'usedynalink',
+            1 => 'glossary',
+        ),
     ),
     'glossary_defaultapproval' =>
     array(
@@ -1807,6 +1997,11 @@ Note: For recipient verification purposes, please avoid changing this setting on
         'count' => 4,
         'short' => 'Glossary link by default',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'usedynalink',
+            1 => 'glossary',
+        ),
     ),
     'mod_lti_forcessl' =>
     array(
@@ -1819,6 +2014,11 @@ Note: For recipient verification purposes, please avoid changing this setting on
         'count' => 73,
         'short' => 'Version',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => $prefix . '_version',
+            1 => 'cache',
+        ),
     ),
     'mod_lti_institution_name' =>
     array(
@@ -1861,18 +2061,33 @@ Note: For recipient verification purposes, please avoid changing this setting on
         'count' => 32,
         'short' => 'Relase',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'siterelease',
+            1 => 'hub',
+        ),
     ),
     'lesson_maxanswers' =>
     array(
         'count' => 2,
         'short' => 'Lesson max answers',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'maximumnumberofanswersbranches',
+            1 => 'lesson',
+        ),
     ),
     'lesson_defaultnextpage' =>
     array(
         'count' => 2,
         'short' => 'Lesson default next page',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'actionaftercorrectanswer',
+            1 => 'lesson',
+        ),
     ),
     'lesson_slideshowwidth' =>
     array(
@@ -1933,12 +2148,22 @@ Note: For recipient verification purposes, please avoid changing this setting on
         'count' => 22,
         'short' => 'Enable timed posts on forum',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'timedposts',
+            1 => 'forum',
+        ),
     ),
     'forum_trackreadposts' =>
     array(
         'count' => 6,
         'short' => 'Track read posts on forum',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'trackforum',
+            1 => 'forum',
+        ),
     ),
     'messageinbound_domain' =>
     array(
@@ -1963,6 +2188,11 @@ Note: For recipient verification purposes, please avoid changing this setting on
         'count' => 26,
         'short' => 'Forum allow forced read tracking',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'forcedreadtracking',
+            1 => 'forum',
+        ),
     ),
     'digestmailtimelast' =>
     array(
@@ -2065,6 +2295,11 @@ Note: For recipient verification purposes, please avoid changing this setting on
         'count' => 10,
         'short' => 'Show only active enrol',
         'long' => 'Shows only active enrols on grade report',
+        'long_help' =>
+        array(
+            0 => 'showonlyactiveenrol',
+            1 => 'grade',
+        ),
     ),
     'commentsenabled' =>
     array(
@@ -2078,6 +2313,11 @@ Note: For recipient verification purposes, please avoid changing this setting on
         'count' => 4,
         'short' => 'Show user image',
         'long' => 'Shows user image on grade report',
+        'long_help' =>
+        array(
+            0 => 'showuserimage',
+            1 => 'grade',
+        ),
     ),
     'enablesafebrowserintegration' =>
     array(
@@ -2096,6 +2336,11 @@ Note: For recipient verification purposes, please avoid changing this setting on
         'count' => 3,
         'short' => 'Repository',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'repositories',
+            1 => 'repository',
+        ),
     ),
     'scorm_updatetimelast' =>
     array(
@@ -2138,6 +2383,11 @@ Note: For recipient verification purposes, please avoid changing this setting on
         'count' => 5,
         'short' => 'Default preference mail display',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'emaildisplay',
+            1 => 'NULL',
+        ),
     ),
     'defaultcity' =>
     array(
@@ -2194,18 +2444,33 @@ For most mono-lingual sites the most efficient setting is "firstname lastname", 
         'count' => 5,
         'short' => 'Default preference mail digest',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'emaildigest',
+            1 => 'NULL',
+        ),
     ),
     'defaultpreference_autosubscribe' =>
     array(
         'count' => 5,
-        'short' => 'default preference autosubscribe',
+        'short' => 'Default preference autosubscribe',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'autosubscribe',
+            1 => 'NULL',
+        ),
     ),
     'defaultpreference_trackforums' =>
     array(
         'count' => 4,
-        'short' => 'default preference track forums',
+        'short' => 'Default preference track forums',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'trackforums',
+            1 => 'NULL',
+        ),
     ),
     'passwordpolicy' =>
     array(
@@ -2216,8 +2481,13 @@ For most mono-lingual sites the most efficient setting is "firstname lastname", 
     'defaultpreference_mailformat' =>
     array(
         'count' => 4,
-        'short' => 'default preference mail format',
+        'short' => 'Default preference mail format',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'emailformat',
+            1 => 'NULL',
+        ),
     ),
     'moodlewstextformatlinkstoimagesfile' =>
     array(
@@ -2252,14 +2522,24 @@ For most mono-lingual sites the most efficient setting is "firstname lastname", 
     'grade_mygrades_report' =>
     array(
         'count' => 6,
-        'short' => '',
+        'short' => 'Grade my grades report',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'mygrades',
+            1 => 'grade',
+        ),
     ),
     'gradereport_mygradeurl' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Grade my grade URL',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'externalurl',
+            1 => 'grade',
+        ),
     ),
     'showuseridentity' =>
     array(
@@ -2312,7 +2592,7 @@ For most mono-lingual sites the most efficient setting is "firstname lastname", 
     'filter_mediaplugin_enable_swf' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Filter media plugin enable SWF',
         'long' => '',
     ),
     'opentogoogle' =>
@@ -2324,8 +2604,13 @@ For most mono-lingual sites the most efficient setting is "firstname lastname", 
     'guestloginbutton' =>
     array(
         'count' => 5,
-        'short' => '',
+        'short' => 'Guest login button',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'guestloginbutton',
+            1 => 'auth',
+        ),
     ),
     'allowemailaddresses' =>
     array(
@@ -2354,14 +2639,24 @@ For most mono-lingual sites the most efficient setting is "firstname lastname", 
     'defaultfrontpageroleid' =>
     array(
         'count' => 27,
-        'short' => '',
+        'short' => 'Default front page role ID',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'frontpagedefaultrole',
+            1 => 'admin',
+        ),
     ),
     'siteadmins' =>
     array(
         'count' => 24,
-        'short' => '',
+        'short' => 'Site admins',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'administrationsite',
+            1 => 'NULL',
+        ),
     ),
     'cronclionly' =>
     array(
@@ -2392,19 +2687,24 @@ For most mono-lingual sites the most efficient setting is "firstname lastname", 
     'siteidentifier' =>
     array(
         'count' => 8,
-        'short' => '',
+        'short' => 'Site iidentifier',
         'long' => '',
     ),
     'dbpersist' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Database presist',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'databasepersist',
+            1 => 'NULL',
+        ),
     ),
     'dbfamily' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Database family',
         'long' => '',
     ),
     'curltimeoutkbitrate' =>
@@ -2416,20 +2716,33 @@ For most mono-lingual sites the most efficient setting is "firstname lastname", 
     'disablebyteserving' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Disable byte serving',
         'long' => '',
     ),
     'ostype' =>
     array(
         'count' => 22,
-        'short' => '',
-        'long' => '',
+        'short' => 'OS type',
+        'long' => ' Calculate and set $CFG->ostype to be used everywhere. Possible values are:
+   $CFG->ostype = \'WINDOWS\';
+   $CFG->ostype = \'UNIX\';
+',
     ),
     'repositorycacheexpire' =>
     array(
         'count' => 4,
         'short' => '',
         'long' => '',
+        'short_help' =>
+        array(
+            0 => 'cacheexpire',
+            1 => 'repository',
+        ),
+        'long_help' =>
+        array(
+            0 => 'configcacheexpire',
+            1 => 'repository',
+        ),
     ),
     'curlcache' =>
     array(
@@ -2446,14 +2759,15 @@ For most mono-lingual sites the most efficient setting is "firstname lastname", 
     'config_php_settings' =>
     array(
         'count' => 23,
-        'short' => '',
+        'short' => 'Config PHP settings',
         'long' => '',
     ),
     'localcachedirpurged' =>
     array(
         'count' => 5,
-        'short' => '',
-        'long' => '',
+        'short' => 'Local cached dir purged',
+        'long' => ' The $CFG->localcachedirpurged flag forces local directories to be purged on cluster nodes.
+',
     ),
     'autologinguests' =>
     array(
@@ -2476,8 +2790,13 @@ For most mono-lingual sites the most efficient setting is "firstname lastname", 
     'auth' =>
     array(
         'count' => 13,
-        'short' => '',
+        'short' => 'Authentication',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'authentication',
+            1 => 'admin',
+        ),
     ),
     'authpreventaccountcreation' =>
     array(
@@ -2556,6 +2875,16 @@ For most mono-lingual sites the most efficient setting is "firstname lastname", 
         'count' => 1,
         'short' => '',
         'long' => '',
+        'short_help' =>
+        array(
+            0 => 'smtpass',
+            1 => 'message_email',
+        ),
+        'long_help' =>
+        array(
+            0 => 'configsmtpuser',
+            1 => 'message_email',
+        ),
     ),
     'emailonlyfromnoreplyaddress' =>
     array(
@@ -2596,7 +2925,7 @@ For most mono-lingual sites the most efficient setting is "firstname lastname", 
     'pwresettime' =>
     array(
         'count' => 7,
-        'short' => '',
+        'short' => 'Password reset time',
         'long' => '',
     ),
     'denyemailaddresses' =>
@@ -2608,13 +2937,13 @@ For most mono-lingual sites the most efficient setting is "firstname lastname", 
     'trashdir' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Trash directory',
         'long' => '',
     ),
     'early_install_lang' =>
     array(
         'count' => 11,
-        'short' => '',
+        'short' => 'Early install language',
         'long' => '',
     ),
     'langlist' =>
@@ -2626,13 +2955,13 @@ For most mono-lingual sites the most efficient setting is "firstname lastname", 
     'langotherroot' =>
     array(
         'count' => 13,
-        'short' => '',
+        'short' => 'Language other root',
         'long' => '',
     ),
     'langlocalroot' =>
     array(
         'count' => 9,
-        'short' => '',
+        'short' => 'Language local root',
         'long' => '',
     ),
     'debugstringids' =>
@@ -2662,7 +2991,7 @@ For example:  standard,orangewhite.',
     'allversionshash' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'All versions hash',
         'long' => '',
     ),
     'locale' =>
@@ -2674,8 +3003,13 @@ For example:  standard,orangewhite.',
     'wordlist' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Word list',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'spamresult',
+            1 => 'tool_spamcleaner',
+        ),
     ),
     'getremoteaddrconf' =>
     array(
@@ -2704,8 +3038,8 @@ For example:  standard,orangewhite.',
     'undeletableblocktypes' =>
     array(
         'count' => 12,
-        'short' => '',
-        'long' => '',
+        'short' => 'Undeletable block types',
+        'long' => 'List of undeletable block types',
     ),
     'statsfirstrun' =>
     array(
@@ -2716,13 +3050,13 @@ For example:  standard,orangewhite.',
     'statslastdaily' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Stats last daily',
         'long' => '',
     ),
     'statslastexecution' =>
     array(
         'count' => 3,
-        'short' => '',
+        'short' => 'Stats last execution',
         'long' => '',
     ),
     'statsruntimestarthour' =>
@@ -2730,12 +3064,32 @@ For example:  standard,orangewhite.',
         'count' => 3,
         'short' => '',
         'long' => '',
+        'short_help' =>
+        array(
+            0 => 'statsruntimestart',
+            1 => 'admin',
+        ),
+        'long_help' =>
+        array(
+            0 => 'configstatsruntimestart',
+            1 => 'admin',
+        ),
     ),
     'statsruntimestartminute' =>
     array(
         'count' => 3,
         'short' => '',
         'long' => '',
+        'short_help' =>
+        array(
+            0 => 'statsruntimestart',
+            1 => 'admin',
+        ),
+        'long_help' =>
+        array(
+            0 => 'configstatsruntimestart',
+            1 => 'admin',
+        ),
     ),
     'devicedetectregex' =>
     array(
@@ -2765,7 +3119,7 @@ For example:  standard,orangewhite.',
     'themerev' =>
     array(
         'count' => 8,
-        'short' => '',
+        'short' => 'Theme rev',
         'long' => '',
     ),
     'gravatardefaulturl' =>
@@ -2795,14 +3149,14 @@ For example:  standard,orangewhite.',
     'unittestprefix' =>
     array(
         'count' => 4,
-        'short' => '',
+        'short' => 'Unit test prefix',
         'long' => '',
     ),
     'stringfilters' =>
     array(
         'count' => 12,
-        'short' => '',
-        'long' => '',
+        'short' => 'String filters',
+        'long' => ' These one is managed in a strange way by the filters setting page, so have to be initialised in install.php.',
     ),
     'filterall' =>
     array(
@@ -2813,74 +3167,74 @@ For example:  standard,orangewhite.',
     'core_media_enable_html5video' =>
     array(
         'count' => 10,
-        'short' => '',
-        'long' => '',
+        'short' => 'Core media enable HTML5 video',
+        'long' => 'Set to \'true\' to enable HTML5 videos',
     ),
     'core_media_enable_html5audio' =>
     array(
         'count' => 6,
-        'short' => '',
-        'long' => '',
+        'short' => 'Core media enable HTML5 audio',
+        'long' => 'Set to \'true\' to enable HTML5 audios',
     ),
     'core_media_enable_mp3' =>
     array(
         'count' => 6,
-        'short' => '',
-        'long' => '',
+        'short' => 'Core media enable MP3',
+        'long' => 'Set to \'true\' to enable MP3 support',
     ),
     'core_media_enable_flv' =>
     array(
         'count' => 5,
-        'short' => '',
-        'long' => '',
+        'short' => 'Core media enable FLV',
+        'long' => 'Set to \'true\' to enable FLV support',
     ),
     'core_media_enable_wmp' =>
     array(
         'count' => 5,
-        'short' => '',
-        'long' => '',
+        'short' => 'Core media enable WMP',
+        'long' => 'Set to \'true\' to enable WMP support',
     ),
     'core_media_enable_qt' =>
     array(
         'count' => 6,
-        'short' => '',
-        'long' => '',
+        'short' => 'Core media enable GT',
+        'long' => 'Set to \'true\' to enable GT support',
     ),
     'core_media_enable_rm' =>
     array(
         'count' => 4,
-        'short' => '',
-        'long' => '',
+        'short' => 'Core media enable RM',
+        'long' => 'Set to \'true\' to enable RM support',
     ),
     'core_media_enable_youtube' =>
     array(
         'count' => 5,
-        'short' => '',
-        'long' => '',
+        'short' => 'Core media enable youtube',
+        'long' => 'Set to \'true\' to enable youtube support',
     ),
     'core_media_enable_vimeo' =>
     array(
         'count' => 4,
-        'short' => '',
-        'long' => '',
+        'short' => 'Core media enable vimeo',
+        'long' => 'Set to \'true\' to enable vimeo support',
     ),
     'core_media_enable_swf' =>
     array(
         'count' => 4,
-        'short' => '',
-        'long' => '',
+        'short' => 'Core media enable SWF',
+        'long' => 'Set to \'true\' to enable SWF support',
     ),
     'core_media_enable_test' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Core media enable test',
         'long' => '',
     ),
     'enablegroupmembersonly' =>
     array(
         'count' => 4,
-        'short' => '',
-        'long' => '',
+        'short' => 'Enable group members only',
+        'long' => '$CFG->enablegroupmembersonly no longer exists.',
     ),
     'grade_minmaxtouse' =>
     array(
@@ -2891,13 +3245,13 @@ For example:  standard,orangewhite.',
     'phpunit_test_get_config_5' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'PHP unit test get config 5',
         'long' => '',
     ),
     'phpunit_test_get_config_1' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'PHP unit test get config 1',
         'long' => '',
     ),
     'strictformsrequired' =>
@@ -2909,19 +3263,24 @@ For example:  standard,orangewhite.',
     'behat_' =>
     array(
         'count' => 5,
-        'short' => '',
+        'short' => 'Behat',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'errorbehatcommand',
+            1 => 'tool_behat',
+        ),
     ),
     'portfolio_moderate_dbsize_threshold' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Portfolio moderate database size threshold',
         'long' => '',
     ),
     'portfolio_high_dbsize_threshold' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Portfolio high databaze size threshold',
         'long' => '',
     ),
     'statsmaxruntime' =>
@@ -2935,6 +3294,16 @@ For example:  standard,orangewhite.',
         'count' => 3,
         'short' => '',
         'long' => '',
+        'short_help' =>
+        array(
+            0 => 'configstartwday',
+            1 => 'admin',
+        ),
+        'long_help' =>
+        array(
+            0 => 'helpstartofweek',
+            1 => 'admin',
+        ),
     ),
     'statsuserthreshold' =>
     array(
@@ -2945,55 +3314,56 @@ For example:  standard,orangewhite.',
     'umaskpermissions' =>
     array(
         'count' => 9,
-        'short' => '',
+        'short' => 'Umask permissions',
         'long' => '',
     ),
     'X' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'X',
         'long' => '',
     ),
     'behat_X' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Behat X',
         'long' => '',
     ),
     'yui2version' =>
     array(
         'count' => 6,
-        'short' => '',
+        'short' => 'YUI 2 version',
         'long' => '',
     ),
     'yui3version' =>
     array(
         'count' => 12,
-        'short' => '',
+        'short' => 'YUI 3 version',
         'long' => '',
     ),
     'yuipatchlevel' =>
     array(
         'count' => 5,
-        'short' => '',
-        'long' => '',
+        'short' => 'YUI patch level',
+        'long' => 'If we need to patch a YUI modules between official YUI releases, the yuipatchlevel will need to be manually
+',
     ),
     'yuipatchedmodules' =>
     array(
         'count' => 3,
-        'short' => '',
-        'long' => '',
+        'short' => 'YUI patched modules',
+        'long' => 'List of YUI patched modules',
     ),
     'upgraderunning' =>
     array(
         'count' => 8,
-        'short' => '',
+        'short' => 'Upgrade running',
         'long' => '',
     ),
     'os' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'OS',
         'long' => '',
     ),
     'profilingenabled' =>
@@ -3019,24 +3389,49 @@ For example:  standard,orangewhite.',
         'count' => 1,
         'short' => '',
         'long' => '',
+        'short_help' =>
+        array(
+            0 => 'allowbeforeblock',
+            1 => 'admin',
+        ),
+        'long_help' =>
+        array(
+            0 => 'allowbeforeblockdesc',
+            1 => 'admin',
+        ),
     ),
     'allowedip' =>
     array(
         'count' => 6,
-        'short' => '',
+        'short' => 'Allowed IP',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'allowediplist',
+            1 => 'admin',
+        ),
     ),
     'blockedip' =>
     array(
         'count' => 4,
-        'short' => '',
+        'short' => 'Blocked IP',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'blockediplist',
+            1 => 'admin',
+        ),
     ),
     'maintenance_later' =>
     array(
         'count' => 7,
-        'short' => '',
+        'short' => 'Maintenance later',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'clistatusenabledlater',
+            1 => 'admin',
+        ),
     ),
     'additionalhtmlhead' =>
     array(
@@ -3053,8 +3448,13 @@ For example:  standard,orangewhite.',
     'maintenance_message' =>
     array(
         'count' => 7,
-        'short' => '',
+        'short' => 'Maintenance message',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'optionalmaintenancemessage',
+            1 => 'admin',
+        ),
     ),
     'doctonewwindow' =>
     array(
@@ -3065,14 +3465,19 @@ For example:  standard,orangewhite.',
     'errordocroot' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Error doc root',
         'long' => '',
     ),
     'branch' =>
     array(
         'count' => 8,
-        'short' => '',
+        'short' => 'Branch',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'branch',
+            1 => 'lesson',
+        ),
     ),
     'doclang' =>
     array(
@@ -3083,13 +3488,13 @@ For example:  standard,orangewhite.',
     'rolesactive' =>
     array(
         'count' => 7,
-        'short' => '',
+        'short' => 'Roles active',
         'long' => '',
     ),
     'adminsetuppending' =>
     array(
         'count' => 4,
-        'short' => '',
+        'short' => 'Admin set up pending',
         'long' => '',
     ),
     'additionalhtmltopofbody' =>
@@ -3115,6 +3520,16 @@ For example:  standard,orangewhite.',
         'count' => 14,
         'short' => '',
         'long' => '',
+        'short_help' =>
+        array(
+            0 => 'cliinstallheader',
+            1 => 'install',
+        ),
+        'long_help' =>
+        array(
+            0 => 'installation',
+            1 => 'install',
+        ),
     ),
     'langmenu' =>
     array(
@@ -3159,7 +3574,7 @@ Moodle.com|http://moodle.com/
     'xx' =>
     array(
         'count' => 4,
-        'short' => '',
+        'short' => 'XX',
         'long' => '',
     ),
     'phpunit_dbtype' =>
@@ -3171,7 +3586,7 @@ Moodle.com|http://moodle.com/
     'phpunit_dblibrary' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'PHP unit database library',
         'long' => '',
     ),
     'phpunit_dbhost' =>
@@ -3189,31 +3604,31 @@ Moodle.com|http://moodle.com/
     'phpunit_dbuser' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'PHP unit database user',
         'long' => '',
     ),
     'phpunit_dbpass' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'PHP unit database password',
         'long' => '',
     ),
     'phpunit_dboptions' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'PHP unit database options',
         'long' => '',
     ),
     'jsrev' =>
     array(
         'count' => 11,
-        'short' => '',
-        'long' => '',
+        'short' => 'JS rev',
+        'long' => 'When jsrev is positive, the function is minified and stored in a MUC cache for subsequent uses',
     ),
     'phpunit_extra_drivers' =>
     array(
         'count' => 12,
-        'short' => '',
+        'short' => 'PHP unit extra drivers',
         'long' => '',
     ),
     'allowcategorythemes' =>
@@ -3237,13 +3652,13 @@ Moodle.com|http://moodle.com/
     'CSV_DELIMITER' =>
     array(
         'count' => 8,
-        'short' => '',
+        'short' => 'CSV delimiter',
         'long' => '',
     ),
     'CSV_ENCODE' =>
     array(
         'count' => 4,
-        'short' => '',
+        'short' => 'CSV encode',
         'long' => '',
     ),
     'sessioncookie' =>
@@ -3273,13 +3688,13 @@ Moodle.com|http://moodle.com/
     'restrictmodulesfor' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Restric modules for',
         'long' => '',
     ),
     'defaultallowedmodules' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Default allowed modules',
         'long' => '',
     ),
     'frontpage' =>
@@ -3297,43 +3712,46 @@ Moodle.com|http://moodle.com/
     'numcoursesincombo' =>
     array(
         'count' => 4,
-        'short' => '',
-        'long' => '',
+        'short' => 'Num courses in combo',
+        'long' => 'In 2.4 combo list was not displayed if there are more than $CFG->numcoursesincombo courses in the system.
+         $CFG->numcoursesincombo no longer affects whether the combo list is displayed. Setting is deprecated.
+',
     ),
     'filesrootrecordsfixed' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Files root records fixed',
         'long' => '',
     ),
     'movingmoduleupgradescriptwasrun' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Moving module upgrade descript was run',
         'long' => '',
     ),
     'upgrade_minmaxgradestepignored' =>
     array(
         'count' => 1,
-        'short' => '',
-        'long' => '',
+        'short' => 'Upgrade min/max grade step ignored',
+        'long' => 'New installs should not run this upgrade step.',
     ),
     'upgrade_extracreditweightsstepignored' =>
     array(
         'count' => 1,
-        'short' => '',
-        'long' => '',
+        'short' => 'Upgrade extrac r edit weights step ignored',
+        'long' => 'New installs should not run this upgrade step.
+',
     ),
     'upgrade_calculatedgradeitemsignored' =>
     array(
         'count' => 1,
-        'short' => '',
-        'long' => '',
+        'short' => 'Upgrade calculated grade items ignored',
+        'long' => 'New installs should not run this upgrade step.',
     ),
     'upgrade_calculatedgradeitemsonlyregrade' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Upgrade calculate grade items only regrade',
         'long' => '',
     ),
     'lockoutthreshold' =>
@@ -3359,6 +3777,16 @@ Moodle.com|http://moodle.com/
         'count' => 6,
         'short' => '',
         'long' => '',
+        'short_help' =>
+        array(
+            0 => 'configsitemaxcategorydepth',
+            1 => 'admin',
+        ),
+        'long_help' =>
+        array(
+            0 => 'configsitemaxcategorydepthhelp',
+            1 => 'admin',
+        ),
     ),
     'navshowallcourses' =>
     array(
@@ -3423,19 +3851,20 @@ Moodle.com|http://moodle.com/
     'fileslastcleanup' =>
     array(
         'count' => 3,
-        'short' => '',
-        'long' => '',
+        'short' => 'files last cleanup',
+        'long' => 'if you want to disable purging of trash put $CFG->fileslastcleanup=time(); into config.php
+',
     ),
     'wwwdir' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'WWW directory',
         'long' => '',
     ),
     'mysetting' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'My setting',
         'long' => '',
     ),
     'gradepointmax' =>
@@ -3447,8 +3876,13 @@ Moodle.com|http://moodle.com/
     'webserviceprotocols' =>
     array(
         'count' => 17,
-        'short' => '',
+        'short' => 'Web service protocols',
         'long' => '',
+        'long_help' =>
+        array(
+            0 => 'manageprotocols',
+            1 => 'webservice',
+        ),
     ),
     'keeptagnamecase' =>
     array(
@@ -3519,13 +3953,13 @@ Moodle.com|http://moodle.com/
     'langrev' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Language rev',
         'long' => '',
     ),
     'apachemaxmem' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Apache max memory',
         'long' => '',
     ),
     'deleteincompleteusers' =>
@@ -3561,7 +3995,7 @@ Moodle.com|http://moodle.com/
     'lastnotifyfailure' =>
     array(
         'count' => 10,
-        'short' => '',
+        'short' => 'Last notify failure',
         'long' => '',
     ),
     'notifyloginthreshold' =>
@@ -3591,14 +4025,15 @@ Moodle.com|http://moodle.com/
     'enrol_plugins_enabled' =>
     array(
         'count' => 13,
-        'short' => '',
+        'short' => 'Enrol plugins enabled',
         'long' => '',
     ),
     'alternativeupdateproviderurl' =>
     array(
         'count' => 1,
-        'short' => '',
-        'long' => '',
+        'short' => 'Alternative update provide URL',
+        'long' => ' During the development or testing, you can set $CFG->alternativeupdateproviderurl
+',
     ),
     'updateautocheck' =>
     array(
@@ -3609,7 +4044,7 @@ Moodle.com|http://moodle.com/
     'updatecronoffset' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Update cron offset',
         'long' => '',
     ),
     'updatenotifybuilds' =>
@@ -3627,13 +4062,13 @@ Moodle.com|http://moodle.com/
     'file_lock_root' =>
     array(
         'count' => 4,
-        'short' => '',
+        'short' => 'File lock root ',
         'long' => '',
     ),
     'alternative_component_cache' =>
     array(
         'count' => 10,
-        'short' => '',
+        'short' => 'Alternative component cache',
         'long' => '',
     ),
     'notloggedinroleid' =>
@@ -3645,13 +4080,13 @@ Moodle.com|http://moodle.com/
     'custom_context_classes' =>
     array(
         'count' => 3,
-        'short' => '',
+        'short' => 'Custom context classes',
         'long' => '',
     ),
     'adminsassignrolesincourse' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Admins assign roles in course',
         'long' => '',
     ),
     'recovergradesdefault' =>
@@ -3675,19 +4110,19 @@ Moodle.com|http://moodle.com/
     'skiplangupgrade' =>
     array(
         'count' => 5,
-        'short' => '',
+        'short' => 'Skip language upgrade',
         'long' => '',
     ),
     'behatrunprocess' =>
     array(
         'count' => 13,
-        'short' => '',
+        'short' => 'Behat run process',
         'long' => '',
     ),
     'gdversion' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'GD version',
         'long' => '',
     ),
     'grade_includescalesinaggregation' =>
@@ -3738,7 +4173,7 @@ This setting determines whether empty grades are not included in the aggregation
     'gradeoverhundredprocentmax' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Grade over hundred procent max',
         'long' => '',
     ),
     'unlimitedgrades' =>
@@ -3750,8 +4185,13 @@ This setting determines whether empty grades are not included in the aggregation
     'grade_displaytype' =>
     array(
         'count' => 4,
-        'short' => '',
+        'short' => 'Grade display type',
         'long' => '',
+                'long_help' =>
+        array(
+            0 => 'gradedisplaytype',
+            1 => 'grades',
+        ),
     ),
     'grade_decimalpoints' =>
     array(
@@ -3762,8 +4202,13 @@ This setting determines whether empty grades are not included in the aggregation
     'pagepath' =>
     array(
         'count' => 6,
-        'short' => '',
+        'short' => 'Page patch',
         'long' => '',
+                'long_help' =>
+        array(
+            0 => 'pagepath',
+            1 => 'NULL',
+        ),
     ),
     'allowcoursethemes' =>
     array(
@@ -3774,7 +4219,7 @@ This setting determines whether empty grades are not included in the aggregation
     'blocksdrag' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Blocks drag',
         'long' => '',
     ),
     'mobilecssurl' =>
@@ -3786,80 +4231,90 @@ This setting determines whether empty grades are not included in the aggregation
     'amf_introspection' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'AMF introspection',
         'long' => '',
     ),
     'filter_censor_badwords' =>
     array(
         'count' => 3,
-        'short' => '',
+        'short' => 'Filter censor bad words',
         'long' => '',
+                'long_help' =>
+        array(
+            0 => 'badwordslist',
+            1 => 'admin',
+        ),
     ),
     'filter_mediaplugin_enable_youtube' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Filter media plugin enable youtube',
         'long' => '',
     ),
     'filter_mediaplugin_enable_vimeo' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Filter media plugin enable vimeo',
         'long' => '',
     ),
     'filter_mediaplugin_enable_mp3' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Filter media plugin enable MP3',
         'long' => '',
     ),
     'filter_mediaplugin_enable_flv' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Filter media plugin enable FLV',
         'long' => '',
     ),
     'filter_mediaplugin_enable_html5audio' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Filter media plugin enable HTML5 audio',
         'long' => '',
     ),
     'filter_mediaplugin_enable_html5video' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Filter media plugin enable HTML5 video',
         'long' => '',
     ),
     'filter_mediaplugin_enable_qt' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Filter media plugin enable GT',
         'long' => '',
     ),
     'filter_mediaplugin_enable_wmp' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Filter media plugin enable windows media player',
         'long' => '',
     ),
     'filter_mediaplugin_enable_rm' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Filter media plugin enable RM',
         'long' => '',
     ),
     'filter_multilang_force_old' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Filter multilang force old',
         'long' => '',
     ),
     'filter_multilang_converted' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Filter multilang converted',
         'long' => '',
+                'long_help' =>
+        array(
+            0 => 'pluginname',
+            1 => 'tool_multilangupgrade',
+        ),
     ),
     'groupenrolmentkeypolicy' =>
     array(
@@ -3954,55 +4409,55 @@ This setting determines whether empty grades are not included in the aggregation
     'backup_file_logger_level' =>
     array(
         'count' => 12,
-        'short' => '',
+        'short' => 'Backup file logger level',
         'long' => '',
     ),
     'backup_version' =>
     array(
         'count' => 3,
-        'short' => '',
+        'short' => 'Backup version',
         'long' => '',
     ),
     'backup_release' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Backup relase',
         'long' => '',
     ),
     'backup_error_log_logger_level' =>
     array(
         'count' => 14,
-        'short' => '',
+        'short' => 'Backup error log logger level',
         'long' => '',
     ),
     'backup_output_indented_logger_level' =>
     array(
         'count' => 7,
-        'short' => '',
+        'short' => 'Backup output indented logger level',
         'long' => '',
     ),
     'backup_database_logger_level' =>
     array(
         'count' => 10,
-        'short' => '',
+        'short' => 'Backup database logger level',
         'long' => '',
     ),
     'backup_file_logger_level_extra' =>
     array(
         'count' => 8,
-        'short' => '',
+        'short' => 'Backup file logger level extra',
         'long' => '',
     ),
     'backup_file_logger_extra' =>
     array(
         'count' => 7,
-        'short' => '',
+        'short' => 'Backup file logger extra',
         'long' => '',
     ),
     'backup_file_logger_extra_level' =>
     array(
         'count' => 3,
-        'short' => '',
+        'short' => 'Backup file logger extra level',
         'long' => '',
     ),
     'enablecalendarexport' =>
@@ -4016,23 +4471,53 @@ This setting determines whether empty grades are not included in the aggregation
         'count' => 5,
         'short' => '',
         'long' => '',
+         'short_help' =>
+        array(
+            0 => 'calendarexportsalt',
+            1 => 'admin',
+        ),
+        'long_help' =>
+        array(
+            0 => 'configcalendarexportsalt',
+            1 => 'admin',
+        ),
     ),
     'calendar_exportlookback' =>
     array(
         'count' => 2,
         'short' => '',
         'long' => '',
+         'short_help' =>
+        array(
+            0 => 'configexportlookback',
+            1 => 'admin',
+        ),
+        'long_help' =>
+        array(
+            0 => 'helpexportlookback',
+            1 => 'admin',
+        ),
     ),
     'calendar_exportlookahead' =>
     array(
         'count' => 2,
         'short' => '',
         'long' => '',
+           'short_help' =>
+        array(
+            0 => 'configexportlookahead',
+            1 => 'admin',
+        ),
+        'long_help' =>
+        array(
+            0 => 'helpexportlookahead',
+            1 => 'admin',
+        ),
     ),
     'nofixhour' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'No fix hour',
         'long' => '',
     ),
     'calendar_showicalsource' =>
@@ -4040,30 +4525,67 @@ This setting determines whether empty grades are not included in the aggregation
         'count' => 2,
         'short' => '',
         'long' => '',
+         'short_help' =>
+        array(
+            0 => 'configshowicalsource',
+            1 => 'admin',
+        ),
+        'long_help' =>
+        array(
+            0 => 'helpshowicalsource',
+            1 => 'admin',
+        ),
     ),
     'calendar_weekend' =>
     array(
         'count' => 6,
-        'short' => '',
+        'short' => 'Calendar weekend',
         'long' => '',
+              'long_help' =>
+        array(
+            0 => 'calendar_weekend',
+            1 => 'admin',
+        ),
     ),
     'calendar_adminseesall' =>
     array(
         'count' => 3,
-        'short' => '',
+        'short' => 'Calendar admin see sall',
         'long' => '',
+          'long_help' =>
+        array(
+            0 => 'adminseesall',
+            1 => 'admin',
+        ),
+
     ),
     'calendar' =>
     array(
         'count' => 6,
-        'short' => '',
+        'short' => 'Calendar',
         'long' => '',
+              'long_help' =>
+        array(
+            0 => 'calendartypes',
+            1 => 'calendar',
+        ),
     ),
     'calendar_customexport' =>
     array(
         'count' => 1,
         'short' => '',
         'long' => '',
+         'short_help' =>
+        array(
+            0 => 'configcalendarcustomexport',
+            1 => 'admin',
+        ),
+        'long_help' =>
+        array(
+            0 => 'helpcalendarcustomexport',
+            1 => 'admin',
+        ),
+
     ),
     'legacyfilesinnewcourses' =>
     array(
@@ -4124,6 +4646,16 @@ This setting determines whether empty grades are not included in the aggregation
         'count' => 4,
         'short' => '',
         'long' => '',
+         'short_help' =>
+        array(
+            0 => 'configfrontpagecourselimit',
+            1 => 'admin',
+        ),
+        'long_help' =>
+        array(
+            0 => 'configfrontpagecourselimithelp',
+            1 => 'admin',
+        ),
     ),
     'requestcategoryselection' =>
     array(
@@ -4140,7 +4672,7 @@ This setting determines whether empty grades are not included in the aggregation
     'format_plugins_sortorder' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Format plugins sort order',
         'long' => '',
     ),
     'grade_profilereport' =>
@@ -4152,7 +4684,7 @@ This setting determines whether empty grades are not included in the aggregation
     'usepaypalsandbox' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Use paypal sandbox',
         'long' => '',
     ),
     'mnetprofileimportfields' =>
@@ -4160,17 +4692,37 @@ This setting determines whether empty grades are not included in the aggregation
         'count' => 2,
         'short' => '',
         'long' => '',
+         'short_help' =>
+        array(
+            0 => 'profileimportfields',
+            1 => 'mnet',
+        ),
+        'long_help' =>
+        array(
+            0 => 'profilefielddesc',
+            1 => 'mnet',
+        ),
     ),
     'mnetprofileexportfields' =>
     array(
         'count' => 2,
         'short' => '',
         'long' => '',
+             'short_help' =>
+        array(
+            0 => 'profileexportfields',
+            1 => 'mnet',
+        ),
+        'long_help' =>
+        array(
+            0 => 'profilefielddesc',
+            1 => 'mnet',
+        ),
     ),
     'running_installer' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Running installer',
         'long' => '',
     ),
     'profilingimportprefix' =>
@@ -4188,37 +4740,37 @@ This setting determines whether empty grades are not included in the aggregation
     'messageinbound_host' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Message in bound host',
         'long' => '',
     ),
     'messageinbound_hostuser' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Message in bound host user',
         'long' => '',
     ),
     'messageinbound_hostpass' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Message in bound host pass',
         'long' => '',
     ),
     'messageinbound_hostssl' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Message in bound host ssl',
         'long' => '',
     ),
     'tool_dbransfer_migration_running' =>
     array(
         'count' => 4,
-        'short' => '',
+        'short' => 'Tool dbransfer migration running',
         'long' => '',
     ),
     'prefix_dataroot' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Prefix data root',
         'long' => '',
     ),
     'forgottenpasswordurl' =>
@@ -4226,6 +4778,11 @@ This setting determines whether empty grades are not included in the aggregation
         'count' => 2,
         'short' => '',
         'long' => '',
+                'long_help' =>
+        array(
+            0 => 'forgottenpasswordurl',
+            1 => 'auth',
+        ),
     ),
     'protectusernames' =>
     array(
@@ -4242,13 +4799,13 @@ This setting determines whether empty grades are not included in the aggregation
     'customfrontpageinclude' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Custom front page include',
         'long' => '',
     ),
     'forcedefaultmymoodle' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Force default my moodle',
         'long' => '',
     ),
     'allowguestmymoodle' =>
@@ -4268,72 +4825,167 @@ This setting determines whether empty grades are not included in the aggregation
         'count' => 2,
         'short' => '',
         'long' => '',
+         'short_help' =>
+        array(
+            0 => 'showrank',
+            1 => 'grades',
+        ),
+        'long_help' =>
+        array(
+            0 => 'showrank_help',
+            1 => 'grades',
+        ),
     ),
     'grade_report_user_showpercentage' =>
     array(
         'count' => 2,
         'short' => '',
         'long' => '',
+             'short_help' =>
+        array(
+            0 => 'showpercentage',
+            1 => 'grades',
+        ),
+        'long_help' =>
+        array(
+            0 => 'showpercentage_help',
+            1 => 'grades',
+        ),
     ),
     'grade_report_user_showhiddenitems' =>
     array(
         'count' => 3,
         'short' => '',
         'long' => '',
+                'short_help' =>
+        array(
+            0 => 'showhiddenitems',
+            1 => 'grades',
+        ),
+        'long_help' =>
+        array(
+            0 => 'showhiddenitems_help',
+            1 => 'grades',
+        ),
     ),
     'grade_report_user_showtotalsifcontainhidden' =>
     array(
         'count' => 3,
-        'short' => '',
+        'short' => 'Grade report user show totals if contain hidden',
         'long' => '',
+         'long_help' =>
+        array(
+            0 => 'hidetotalifhiddenitems',
+            1 => 'grades',
+        ),
     ),
     'grade_report_user_showgrade' =>
     array(
         'count' => 2,
         'short' => '',
         'long' => '',
+         'short_help' =>
+        array(
+            0 => 'showgrade',
+            1 => 'grades',
+        ),
+        'long_help' =>
+        array(
+            0 => 'showgrade_help',
+            1 => 'grades',
+        ),
     ),
     'grade_report_user_showrange' =>
     array(
         'count' => 2,
         'short' => '',
         'long' => '',
+             'short_help' =>
+        array(
+            0 => 'showrange',
+            1 => 'grades',
+        ),
+        'long_help' =>
+        array(
+            0 => 'showrange_help',
+            1 => 'grades',
+        ),
     ),
     'grade_report_user_showfeedback' =>
     array(
         'count' => 2,
         'short' => '',
         'long' => '',
+                'short_help' =>
+        array(
+            0 => 'showfeedback',
+            1 => 'grades',
+        ),
+        'long_help' =>
+        array(
+            0 => 'showfeedback_help',
+            1 => 'grades',
+        ),
     ),
     'grade_report_user_showweight' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Grade report user show weight',
         'long' => '',
     ),
     'grade_report_user_showcontributiontocoursetotal' =>
     array(
         'count' => 3,
-        'short' => '',
+        'short' => 'Grade report user show contribution to course total',
         'long' => '',
+                'long_help' =>
+        array(
+            0 => 'defaultprev',
+            1 => 'grades',
+        ),
     ),
     'grade_report_user_showlettergrade' =>
     array(
         'count' => 2,
         'short' => '',
         'long' => '',
+         'short_help' =>
+        array(
+            0 => 'showlettergrade',
+            1 => 'grades',
+        ),
+        'long_help' =>
+        array(
+            0 => 'showlettergrade_help',
+            1 => 'grades',
+        ),
     ),
     'grade_report_user_showaverage' =>
     array(
         'count' => 2,
         'short' => '',
         'long' => '',
+            'short_help' =>
+        array(
+            0 => 'showaverage',
+            1 => 'grades',
+        ),
+        'long_help' =>
+        array(
+            0 => 'showaverage_help',
+            1 => 'grades',
+        ),
     ),
     'grade_report_user_rangedecimals' =>
     array(
         'count' => 3,
-        'short' => '',
+        'short' => 'Grade report user range decimals',
         'long' => '',
+            'long_help' =>
+        array(
+            0 => 'rangedecimals',
+            1 => 'grades',
+        ),
     ),
     'grade_aggregationposition' =>
     array(
@@ -4350,13 +5002,19 @@ This setting determines whether empty grades are not included in the aggregation
     'grade_report_overview_showrank' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Grade report overview show rank',
         'long' => '',
+                   'long_help' =>
+        array(
+            0 => 'showrank',
+            1 => 'grades',
+        ),
+        
     ),
     'grade_report_overview_showtotalsifcontainhidden' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Grade report overview show totals if contain hidden',
         'long' => '',
     ),
     'gradepublishing' =>
@@ -4370,6 +5028,16 @@ This setting determines whether empty grades are not included in the aggregation
         'count' => 2,
         'short' => '',
         'long' => '',
+         'short_help' =>
+        array(
+            0 => 'gradeexportcustomprofilefields',
+            1 => 'grades',
+        ),
+        'long_help' =>
+        array(
+            0 => 'gradeexportcustomprofilefields_desc',
+            1 => 'grades',
+        ),
     ),
     'grade_navmethod' =>
     array(
@@ -4382,35 +5050,45 @@ This setting determines whether empty grades are not included in the aggregation
         'count' => 1,
         'short' => '',
         'long' => '',
+           'short_help' =>
+        array(
+            0 => 'gradeexportuserprofilefields',
+            1 => 'grades',
+        ),
+        'long_help' =>
+        array(
+            0 => 'gradeexportuserprofilefields_desc',
+            1 => 'grades',
+        ),
     ),
     'grade_aggregation_flag' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Grade aggregation flag',
         'long' => '',
     ),
     'grade_aggregateonlygraded_flag' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Grade aggregate only graded flag',
         'long' => '',
     ),
     'grade_aggregateoutcomes_flag' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Grade aggregate out comes flag',
         'long' => '',
     ),
     'grade_keephigh_flag' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Grade keep high flag',
         'long' => '',
     ),
     'grade_droplow_flag' =>
     array(
         'count' => 1,
-        'short' => '',
+        'short' => 'Grade drop low flag',
         'long' => '',
     ),
     'grade_item_advanced' =>
@@ -4418,6 +5096,16 @@ This setting determines whether empty grades are not included in the aggregation
         'count' => 6,
         'short' => '',
         'long' => '',
+         'short_help' =>
+        array(
+            0 => 'gradeitemadvanced',
+            1 => 'grades',
+        ),
+        'long_help' =>
+        array(
+            0 => 'gradeitemadvanced_help',
+            1 => 'grades',
+        ),
     ),
     'grade_hideforcedsettings' =>
     array(
@@ -4428,20 +5116,35 @@ This setting determines whether empty grades are not included in the aggregation
     'grade_aggregations_visible' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Grade aggregations visible',
         'long' => '',
+            'long_help' =>
+        array(
+            0 => 'aggregationsvisible',
+            1 => 'grades',
+        ),
     ),
     'grade_export_displaytype' =>
     array(
         'count' => 12,
-        'short' => '',
+        'short' => 'Grade export display type',
         'long' => '',
+             'long_help' =>
+        array(
+            0 => 'gradeexportdisplaytype',
+            1 => 'grades',
+        ),
     ),
     'grade_export_decimalpoints' =>
     array(
         'count' => 6,
-        'short' => '',
+        'short' => 'Grade export decimal points',
         'long' => '',
+               'long_help' =>
+        array(
+            0 => 'gradeexportdecimalpoints',
+            1 => 'grades',
+        ),
     ),
     'gradeexport' =>
     array(
@@ -4470,7 +5173,7 @@ This setting determines whether empty grades are not included in the aggregation
     'questionbankcolumns' =>
     array(
         'count' => 2,
-        'short' => '',
+        'short' => 'Qestion bank columns',
         'long' => '',
     ),
 );
