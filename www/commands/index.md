@@ -77,10 +77,15 @@ Example 1.
 ---------------
 
 Audit hashed passwords - check if any one matches top 10 000 known passwords. With -r also show password matched.
+ -u <userid> will check only user with given id.
 
-Example 1.
+Example 1. Check all users for easily crackable passwords and show them.
 
     moosh audit-passwords -r
+
+Example 2. Check if user with id 17 has a weak password.
+
+    moosh audit-passwords -u 17
 
 
 <span class="anchor" id="auth-manage"></span>
