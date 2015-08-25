@@ -5,8 +5,9 @@ install_db
 install_data
 cd $MOODLEDIR
 
-if $MOOSHCMD report-concurrency -f 2014-07-27 -t 2016-07-29 ; then
-  exit 0
+if  $MOOSHCMD admin-login | grep "MoodleSession"; then
+  exit 0 
 else
   exit 1
 fi
+

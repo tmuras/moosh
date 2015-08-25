@@ -4,7 +4,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-if $MOOSHCMD php-eval "echo 'test php eval'" | grep "tesst php eval"; then
+if $MOOSHCMD php-eval 'var_dump(get_object_vars($CFG))' | head -n 3 | grep "dbtype"; then
   exit 0 
 else
   exit 1

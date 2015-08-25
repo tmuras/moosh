@@ -5,8 +5,8 @@ install_db
 install_data
 cd $MOODLEDIR
 
-if $MOOSHCMD report-concurrency -f 2014-07-27 -t 2016-07-29 ; then
+if $MOOSHCMD auth-list | grep "List of enabled auth plugins:"; then
   exit 0
-else
+else 
   exit 1
-fi
+fi 

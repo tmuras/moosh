@@ -5,7 +5,7 @@ install_db
 install_data
 cd $MOODLEDIR
 
-$MOOSHCMD course-enrolbyname -c test -f testteacher -l testteacher
+$MOOSHCMD course-enrolbyname -c reset -f testteacher -l testteacher
 if echo "SELECT userid FROM mdl_enrol LEFT JOIN mdl_user_enrolments \
     ON mdl_enrol.id = mdl_user_enrolments.enrolid \
     WHERE courseid=2 AND userid=3\G" \

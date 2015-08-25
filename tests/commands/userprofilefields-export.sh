@@ -5,7 +5,8 @@ install_db
 install_data
 cd $MOODLEDIR
 
-if $MOOSHCMD report-concurrency -f 2014-07-27 -t 2016-07-29 ; then
+$MOOSHCMD userprofilefields-export
+if ls $MOODLEDIR | grep "user_profile_fields.csv"; then
   exit 0
 else
   exit 1

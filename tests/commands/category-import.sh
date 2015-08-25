@@ -6,8 +6,12 @@ install_data
 
 cd $MOODLEDIR
 
-if $MOOSHCMD category-import "$MOODLEDATA/categoryimport.xml" | grep -w "TestCategory"; then
-  exit 0
+$MOOSHCMD category-import "$MOODLEDATA/categoryimport.xml" 
+
+if echo "SELECT * FROM mdl_course_categories \
+    WHERE name='testimport'" \
+    | mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" ; then
+    exit 0
 else
-  exit 1
+    exit 1
 fi

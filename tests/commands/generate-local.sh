@@ -5,13 +5,13 @@ install_db
 install_data
 cd $MOODLEDIR
 
-if $MOOSHCMD course-list; then
-  :
-else
-  exit 1
-fi
-if $MOOSHCMD course-list student; then
+rm -rf local/polpol
+$MOOSHCMD generate-local polpol
+
+if ls local/polpol ; then
+rm -rf local/polpol
   exit 0
 else
   exit 1
 fi
+
