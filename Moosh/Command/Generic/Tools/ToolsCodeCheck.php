@@ -38,7 +38,8 @@ class ToolsCodeCheck extends MooshCommand
         $interactive = $options['interactive'];
 
         if (isset($options['path'])) {
-            $path = $this->checkFileArg($options['path']);
+            $this->checkFileArg($options['path']);
+            $path = $options['path'];
         } else {
             $path = $this->cwd;
         }
