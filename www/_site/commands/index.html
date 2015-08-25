@@ -103,6 +103,27 @@ moosh activity-add --name "Easy assignent" --section 2 --idnumber "ASD123" assig
 <pre><code>moosh activity-delete 2
 </code></pre>
 
+<p><span class="anchor" id="apache-parse-extendedlog"></span></p>
+
+<h2><a class="command-name">apache-parse-extendedlog</a></h2>
+
+<p>Parse Apache log that was configured to capture extra Moodle &amp; timings information. To configure it for your Apache server:</p>
+
+<ol>
+<li><p>Add new LogFormat to apache2.conf:</p>
+
+<p> LogFormat "H: %v U: %{MOODLEUSER}n T: %Ts / %Dµs | %{X-Forwarded-For}i %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" moodle_log</p></li>
+<li><p>Add new log in your virtual host configuration:</p>
+
+<p> CustomLog ${APACHE_LOG_DIR}/moodle.log moodle_log</p></li>
+</ol>
+
+
+<p>You can then parse resulting moodle.log file with moosh:</p>
+
+<pre><code>moosh apache-parse-extendedlog /var/log/apache2/moodle.log
+</code></pre>
+
 <p><span class="anchor" id="apache-parse-missing-files"></span></p>
 
 <h2><a class="command-name">apache-parse-missing-files</a></h2>
@@ -129,11 +150,17 @@ moosh activity-add --name "Easy assignent" --section 2 --idnumber "ASD123" assig
 
 <h2><a class="command-name">audit-passwords</a></h2>
 
-<p>Audit hashed passwords - check if any one matches top 10 000 known passwords. With -r also show password matched.</p>
+<p>Audit hashed passwords - check if any one matches top 10 000 known passwords. With -r also show password matched.
+ -u <userid> will check only user with given id.</p>
 
-<p>Example 1.</p>
+<p>Example 1. Check all users for easily crackable passwords and show them.</p>
 
 <pre><code>moosh audit-passwords -r
+</code></pre>
+
+<p>Example 2. Check if user with id 17 has a weak password.</p>
+
+<pre><code>moosh audit-passwords -u 17
 </code></pre>
 
 <p><span class="anchor" id="auth-manage"></span></p>
@@ -829,18 +856,14 @@ generator one.</p>
 moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 7 2
 </code></pre>
 
-<p><span class="anchor" id="generate-messageoutput"></span></p>
+<p><span class="anchor" id="generate-cfg"></span></p>
 
-<h2><a class="command-name">generate-messageoutput</a></h2>
+<h2><a class="command-name">generate-cfg</a></h2>
 
-<p>Creates new availability condition under availability/condition based on the template from https://github.com/danielneis/moodle-availability_newavailability.</p>
+<p>Generate fake class to get auto-completion for $CFG object. Properties genertated extracted from the current source code.
+ See <a href="http://moosh-online.com/#cfg-auto-completion">setup instructions</a>.</p>
 
-<pre><code>moosh generate-messageoutput processor_name
-</code></pre>
-
-<p>Example: Creates new availability condition under availability/condition/flashcard</p>
-
-<pre><code>moosh generate-availability flashcard
+<pre><code>moosh generate-cfg &gt; config.class.php
 </code></pre>
 
 <p><span class="anchor" id="generate-filepicker"></span></p>

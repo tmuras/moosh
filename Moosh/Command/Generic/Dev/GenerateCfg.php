@@ -103,7 +103,7 @@ HEREDOC;
                 $cfg[$match]['count']++;
             }
         }
-
+        ksort($cfg);
         return $cfg;
     }
 
@@ -186,8 +186,27 @@ HEREDOC;
     private function export_template($cfg)
     {
         echo "<?php\n";
+        echo "\$template = ";
         var_export($cfg);
         echo ';';
+    }
+
+    /**
+     * @param $template
+     * @throws \coding_exception
+     */
+    private function fill_help($template) {
+        foreach ($template as $k => $v) {
+            if (!@$v['short'] && @$v['short_help']) {
+                $template[$k]['short'] = get_string($v['short_help'][0], $v['short_help'][1]);
+            }
+            if (!@$v['long'] && @$v['long_help']) {
+                $template[$k]['long'] = get_string($v['long_help'][0], $v['long_help'][1]);
+            }
+        }
+        ksort($template);
+
+        return $template;
     }
 
 }

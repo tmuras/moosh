@@ -77,10 +77,15 @@ Example 1.
 ---------------
 
 Audit hashed passwords - check if any one matches top 10 000 known passwords. With -r also show password matched.
+ -u <userid> will check only user with given id.
 
-Example 1.
+Example 1. Check all users for easily crackable passwords and show them.
 
     moosh audit-passwords -r
+
+Example 2. Check if user with id 17 has a weak password.
+
+    moosh audit-passwords -u 17
 
 
 <span class="anchor" id="auth-manage"></span>
@@ -696,18 +701,15 @@ Example:
     moosh forum-newdiscussion 3 7 2
     moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 7 2
 
-<span class="anchor" id="generate-messageoutput"></span>
-<a class="command-name">generate-messageoutput</a>
----------------
+<span class="anchor" id="generate-cfg"></span>
+<a class="command-name">generate-cfg</a>
+-------------
 
-Creates new availability condition under availability/condition based on the template from https://github.com/danielneis/moodle-availability_newavailability.
+Generate fake class to get auto-completion for $CFG object. Properties genertated extracted from the current source code.
+ See [setup instructions](http://moosh-online.com/#cfg-auto-completion).
 
-    moosh generate-messageoutput processor_name
-
-Example: Creates new availability condition under availability/condition/flashcard
-
-    moosh generate-availability flashcard
-
+    moosh generate-cfg > config.class.php
+    
 <span class="anchor" id="generate-filepicker"></span>
 <a class="command-name">generate-filepicker</a>
 -------------------
@@ -780,6 +782,7 @@ Creates new local plugin under local/ based on template from https://github.com/
 Example 1: Generate new plugin under local/mynewlocal
 
     moosh generate-local mynewlocal
+
 
 <span class="anchor" id="generate-messageoutput"></span>
 <a class="command-name">generate-messageoutput</a>
