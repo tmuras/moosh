@@ -5,14 +5,8 @@ install_db
 install_data
 cd $MOODLEDIR
 
-if $MOOSHCMD code-check | head -n 5 | grep "Registering sniffs in the moodle standard"; then
-  :
+if $MOOSHCMD code-check -p mod/quiz/classes/output | grep "0 errors, 0 warnings"; then
+  exit 0
 else
   exit 1
-fi
-
-if $MOOSHCMD code-check -p webservice/lib.php  ; then
-  :
-else
-  exit 2
 fi
