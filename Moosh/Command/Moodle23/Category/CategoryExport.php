@@ -71,25 +71,30 @@ class CategoryExport extends MooshCommand
                 die();
             }
 
-            echo "<category oldid='{$category->id}' ";
-            if ($category->idnumber) {
+            if(isset($category->id)) {
+                echo "<category oldid='{$category->id}' ";
+            }
+            if (isset($category->idnumber) && !empty($category->idnumber)) {
                 echo "idnumber='{$category->idnumber}' ";
             }
 
-            $name = str_replace(
-                array("&",     "<",    ">",    '"',      "'"),
-                array("&amp;", "&lt;", "&gt;", "&quot;", "&apos;"),
-                $category->name
-            );
-
-            echo "name='$name'>";
+            if(isset($category->id)) {
+                $name = str_replace(
+                    array("&", "<", ">", '"', "'"),
+                    array("&amp;", "&lt;", "&gt;", "&quot;", "&apos;"),
+                    $category->name
+                );
+                echo "name='$name'>";
+            }
 
             if (property_exists($category, 'categories')) {
                 foreach($category->categories as $categories2) {
                     $this->categories2xml(array($categories2));
                 }
             }
-            echo "</category>\n";
+            if(isset($category->id)) {
+                echo "</category>\n";
+            }
         }
     }
 }

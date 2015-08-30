@@ -147,11 +147,15 @@ Example 2: Add category "mycat" under category id 6, set to visible and descript
 <a class="command-name">category-export</a>
 -------------
 
-Export category structure to XML.
+Export category structure to XML starting from given category ID. Give 0 to export all categories.
 
 Example 1: Export all categories to XML.
 
-    moosh category-export 1
+    moosh category-export 0
+
+Example 2: Export category with id 3 and all its sub categiries.
+
+    moosh category-export 3
 
 <span class="anchor" id="category-import"></span>
 <a class="command-name">category-import</a>
