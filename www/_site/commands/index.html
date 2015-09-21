@@ -228,11 +228,16 @@ moosh block-manage show calendar
 
 <h2><a class="command-name">category-export</a></h2>
 
-<p>Export category structure to XML.</p>
+<p>Export category structure to XML starting from given category ID. Give 0 to export all categories.</p>
 
 <p>Example 1: Export all categories to XML.</p>
 
-<pre><code>moosh category-export 1
+<pre><code>moosh category-export 0
+</code></pre>
+
+<p>Example 2: Export category with id 3 and all its sub categiries.</p>
+
+<pre><code>moosh category-export 3
 </code></pre>
 
 <p><span class="anchor" id="category-import"></span></p>
