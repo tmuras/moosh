@@ -674,6 +674,18 @@ Example 2: Upload file /home/user/file and change its name for moodle.
 
     moosh file-upload --filename="new file name" /home/user/file 2 
 
+<span class="anchor" id="filter-set"></span>
+<a class="command-name">filter-set</a>
+--------
+
+Enable/disable global filter, equivalent to admin/filters.php settings page. First argument is a filter name without filter_ prefix.
+Second argument is a state, use On = 1 , Off/but available per course = -1 , Off = -9999 .
+
+
+Example 1: Disable multimedia filter completely.
+    
+    moosh filter-set mediaplugin -9999 
+    
 <span class="anchor" id="form-add"></span>
 <a class="command-name">form-add</a>
 --------

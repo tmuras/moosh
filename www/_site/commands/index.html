@@ -826,6 +826,18 @@ contextid, component, filearea, itemid, filepath, filename, userid, filesize, mi
 <pre><code>moosh file-upload --filename="new file name" /home/user/file 2 
 </code></pre>
 
+<p><span class="anchor" id="filter-set"></span></p>
+
+<h2><a class="command-name">filter-set</a></h2>
+
+<p>Enable/disable global filter, equivalent to admin/filters.php settings page. First argument is a filter name without filter_ prefix.
+Second argument is a state, use On = 1 , Off/but available per course = -1 , Off = -9999 .</p>
+
+<p>Example 1: Disable multimedia filter completely.</p>
+
+<pre><code>moosh filter-set mediaplugin -9999 
+</code></pre>
+
 <p><span class="anchor" id="form-add"></span></p>
 
 <h2><a class="command-name">form-add</a></h2>
