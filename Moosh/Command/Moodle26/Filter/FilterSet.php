@@ -7,7 +7,7 @@
  * @author     Nadav Kavalerchik <nadavkav@gmail.com>
  */
 
-namespace Moosh\Command\Generic\Plugin;
+namespace Moosh\Command\Moodle26\Filter;
 use Moosh\MooshCommand;
 use core_plugin_manager;
 
@@ -17,7 +17,7 @@ class FilterSet extends MooshCommand
     {
         parent::__construct('set', 'filter');
 
-        $this->addArgument('filter_name');
+        $this->addArgument('name');
         $this->addArgument('newstate'); // On = 1 , Off/but available per course = -1 , Off = -9999
         // TODO: Add proper string flags instead of state numbers, for newstate.
     }
@@ -31,6 +31,10 @@ class FilterSet extends MooshCommand
 
         $filtername = $this->arguments[0];
         $newstate = $this->arguments[1];
+
+        if($newstate != 1 && $newstate != -1 && $newstate != -9999) {
+            cli_error("Invalid filter value, use: 1 for on, -1 per course, -9999 for off");
+        }
 
         // Clean up bogus filter states first.
         $plugininfos = core_plugin_manager::instance()->get_plugins_of_type('filter');
@@ -47,11 +51,13 @@ class FilterSet extends MooshCommand
             }
         }
 
-        if (isset($filters[$filtername])) {
-            filter_set_global_state($filtername, $newstate);
-            if ($newstate == TEXTFILTER_DISABLED) {
-                filter_set_applies_to_strings($filtername, false);
-            }
+        if (!isset($filters[$filtername])) {
+            cli_error("Invalid filter name: '$filtername''. Possible values: " . implode(",", array_keys($filters)) . '.');
+        }
+
+        filter_set_global_state($filtername, $newstate);
+        if ($newstate == TEXTFILTER_DISABLED) {
+            filter_set_applies_to_strings($filtername, false);
         }
 
         reset_text_filters_cache();
