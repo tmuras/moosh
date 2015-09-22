@@ -37,7 +37,7 @@ use GetOptionKit\OptionCollection;
 @error_reporting(E_ALL | E_STRICT);
 @ini_set('display_errors', '1');
 
-define('MOOSH_VERSION', '0.19');
+define('MOOSH_VERSION', '0.20');
 define('MOODLE_INTERNAL', true);
 
 $appspecs = new OptionCollection;
@@ -133,7 +133,7 @@ try {
     $subcommand_options[$subcommand] = $parser->continueParse();
 } catch (Exception $e) {
     echo $e->getMessage() . "\n";
-    die("Moosh options should be passed before commands.\n");
+    die("Moosh global options should be passed before command not after it.");
 }
 
 while (!$parser->isEnd()) {

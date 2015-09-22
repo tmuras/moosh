@@ -5,13 +5,16 @@ install_db
 install_data
 cd $MOODLEDIR
 
-$MOOSHCMD activity-add assign 2
 
-if $MOOSHCMD activity-delete 1 \
-    | grep "Deleted activity"; then
-  exit 0
+
+$MOOSHCMD activity-delete 5
+
+
+if  echo "SELECT * FROM mdl_forum WHERE name='testactivityname'"\
+        | mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME"\
+| grep testactivityname; then
+  exit 1 
 else
-  exit 1
+  exit 0
 fi
-
 

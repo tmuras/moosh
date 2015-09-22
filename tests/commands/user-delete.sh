@@ -5,10 +5,10 @@ install_db
 install_data
 cd $MOODLEDIR
 
-$MOOSHCMD user-delete testuser
-if ! mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" -e \
-    "SELECT * FROM mdl_user WHERE email='newemail@example.com'"\
-    | grep newemail@example.com; then
+$MOOSHCMD user-delete testteacher
+if  !(mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" -e \
+    "SELECT * FROM mdl_user WHERE email='testteacher@moodle.org'"\
+    | grep testteacher@moodle.org); then
   exit 0
 else
   exit 1

@@ -7,7 +7,8 @@ cd $MOODLEDIR
 
 $MOOSHCMD file-delete 1
 
-if SELECT * FROM mdl_files where id='1'; then
+if mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" -e \
+"SELECT * FROM mdl_files WHERE id='1'"; then
   echo 0
 else
   echo 1

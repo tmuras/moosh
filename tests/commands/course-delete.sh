@@ -7,8 +7,8 @@ cd $MOODLEDIR
 
 $MOOSHCMD course-delete 2
 if ! mysql -u "$DBUSER" -p"$DBPASSWORD" "$DBNAME" -e \
-    "SELECT * FROM mdl_course WHERE fullname = 'testcourse1'"\
-    | grep testcourse1; then
+    "SELECT * FROM mdl_course WHERE fullname = 'test'"\
+    | grep test; then
   exit 0
 else
   exit 1

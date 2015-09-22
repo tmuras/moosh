@@ -65,7 +65,7 @@ class CourseList extends MooshCommand {
 
             $sql .= "WHERE c.category $where";
         }
-        if ($this->arguments[0]) {
+        if (isset($this->arguments[0]) && $this->arguments[0]) {
             $sql .= " AND (" . $this->arguments[0] . ")";
         }
         if ($options['empty'] == 'yes') {

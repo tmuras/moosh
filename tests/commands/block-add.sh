@@ -6,7 +6,7 @@ install_data
 cd $MOODLEDIR
 
 
-$MOOSHCMD block-add category 2 test_block admin-course-category side-pre -1
+$MOOSHCMD block-add category 1 test_block admin-course-category side-pre -1
 
 if echo "SELECT * FROM mdl_block_instances WHERE blockname='test_block' \
         AND pagetypepattern='admin-course-category' \
