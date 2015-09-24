@@ -154,6 +154,22 @@
             "type":"package",
             "package":{
                 "version":"dev-master",
+                "name":"danielneis/moodle-enrol_newenrol",
+                "source":{
+                    "url":"https://github.com/danielneis/moodle-enrol_newenrol",
+                    "type":"git",
+                    "reference":"master"
+                },
+                "dist":{
+                    "url":"https://github.com/danielneis/moodle-enrol_newenrol/archive/master.zip",
+                    "type":"zip"
+                }
+            }
+        },
+        {
+            "type":"package",
+            "package":{
+                "version":"dev-master",
                 "name":"yetanotherape/diff-match-patch",
                 "source":{
                     "url":"https://github.com/yetanotherape/diff-match-patch",
@@ -180,7 +196,8 @@
         "danielneis/moodle-message_newprocessor": "dev-master#e2b82f0776b13a30a79f4f20de89d597a15f58c5",
         "danielneis/moodle-availability_newavailability": "dev-master#43198d6736931213ad223c8fd05881749baac22c",
         "symfony/finder": "^2.7",
-        "danielneis/moodle-local_newlocal": "dev-master#b9596bdd37963d312069a048c8d315c7592c1c24"
+        "danielneis/moodle-local_newlocal": "dev-master#b9596bdd37963d312069a048c8d315c7592c1c24",
+        "danielneis/moodle-enrol_newenrol": "dev-master"
     },
     "bin": ["moosh.php"]
 }
