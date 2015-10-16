@@ -43,6 +43,7 @@ _moosh()
          form-add \
          generate-availability \
          generate-block \
+         generate-enrol \
          generate-filemanager \
          generate-form \
          generate-gradeexport \
