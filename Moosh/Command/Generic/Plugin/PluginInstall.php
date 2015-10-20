@@ -28,7 +28,6 @@ class PluginInstall extends MooshCommand
         require_once($CFG->libdir.'/upgradelib.php');     // general upgrade/install related functions
         require_once($CFG->libdir.'/environmentlib.php');
         require_once($CFG->dirroot.'/course/lib.php');
-        require_once($CFG->libdir.'/classes/plugin_manager.php');
 
         $pluginname = $this->arguments[0];
         $moodleversion = $this->arguments[1];
