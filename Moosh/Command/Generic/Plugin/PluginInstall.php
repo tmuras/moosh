@@ -83,7 +83,7 @@ class PluginInstall extends MooshCommand
 
         try {
             shell_exec("unzip " . $tempdir . $split[1] . ".zip -d " . home_dir() . "/.moosh/moodleplugins/");
-            shell_exec("cp -r " . $tempdir . $split[1] . "/ " . $CFG->dirroot.  "/" . $split[0]);
+            shell_exec("cp -r " . $tempdir . $split[1] . "/ " . $this->get_install_path($split[0], $moodleversion));
         } catch (Exception $e) {
             echo "Failed to unzip plugin. " . $e . "\n";
             return;
@@ -92,5 +92,47 @@ class PluginInstall extends MooshCommand
         echo "Installing $pluginname $moodleversion\n";
         upgrade_noncore(true);
         echo "Done\n";
+    }
+    
+    /**
+     * Get the relative path for a plugin given it's type
+     * 
+     * @param string $type
+     *   The plugin type (example: 'auth', 'block')
+     * @param string $moodleversion
+     *   The version of moodle we are running (example: '1.9', '2.9')
+     * @return string
+     *   The installation path relative to dirroot (example: 'auth', 'blocks', 
+     *   'course/format')
+     */
+    private function get_install_path($type, $moodleversion)
+    {
+        global $CFG;
+        
+        // Convert moodle version to a float for more acurate comparison
+        if (!is_float($moodleversion)) {
+            $moodleversion = floatval($moodleversion);
+        }        
+        
+        if ($moodleversion >= 2.6) {
+            $types = \core_component::get_plugin_types();
+        } else if ($moodleversion >= 2.0) {
+            $types = get_plugin_types();
+        } else {
+            // Moodle 1.9 does not give us a way to determine plugin 
+            // installation paths.
+            $types = array();
+        }
+        
+        if (empty($types) || !array_key_exists($type, $types)) {
+            // Either the moodle version is lower than 2.0, in which case we
+            // don't have a reliable way of determining the install path, or the
+            // plugin is of an unknown type.
+            // 
+            // Let's fall back to make our best guess.
+            return $CFG->dirroot . '/' . $type; 
+        }
+        
+        return $types[$type];
     }
 }
