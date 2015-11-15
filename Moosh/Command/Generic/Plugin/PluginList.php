@@ -26,9 +26,12 @@ class PluginList extends MooshCommand
 
         $filepath = $this->expandedOptions['path'];
 
-        $stat = stat($filepath);
+        $stat = NULL;
+        if(file_exists($filepath)) {
+            $stat = stat($filepath);
+        }
         if(!$stat || time() - $stat['mtime'] > 60*60*24 || !$stat['size']) {
-            unlink($filepath);
+            @unlink($filepath);
             file_put_contents($filepath, fopen(self::$APIURL, 'r'));
         }
         $jsonfile = file_get_contents($filepath);
@@ -38,6 +41,10 @@ class PluginList extends MooshCommand
         }
 
         $data = json_decode($jsonfile);
+        if(!$data) {
+            unlink($filepath);
+            cli_error("Invalid JSON file, deleted $filepath. Run command again.");
+        }
         $fulllist = array();
         foreach($data->plugins as $k=>$plugin) {
             if(!$plugin->component) {
