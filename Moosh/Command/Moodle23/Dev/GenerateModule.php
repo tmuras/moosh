@@ -45,11 +45,11 @@ class GenerateModule extends MooshCommand
         run_external_command("mv '$modPath/lang/en/newmodule.php' '$modPath/lang/en/{$this->arguments[0]}.php'", "Renaming lang file failed");
 
         //rename backup files
-        run_external_command("mv '$modPath/backup/moodle2/backup_newmodule_activity_task.php' '$modPath/backup/moodle2/backup_{$this->arguments[0]}_activity_task.php'", "Renaming backup activity task file failed");
+        run_external_command("mv '$modPath/backup/moodle2/backup_newmodule_activity_task.class.php' '$modPath/backup/moodle2/backup_{$this->arguments[0]}_activity_task.class.php'", "Renaming backup activity task file failed");
         run_external_command("mv '$modPath/backup/moodle2/backup_newmodule_stepslib.php' '$modPath/backup/moodle2/backup_{$this->arguments[0]}_stepslib.php'", "Renaming backup stepslib file failed");
 
         //rename restore files
-        run_external_command("mv '$modPath/backup/moodle2/restore_newmodule_activity_task.php' '$modPath/backup/moodle2/restore_{$this->arguments[0]}_activity_task.php'", "Renaming restore activity task file failed");
+        run_external_command("mv '$modPath/backup/moodle2/restore_newmodule_activity_task.class.php' '$modPath/backup/moodle2/restore_{$this->arguments[0]}_activity_task.class.php'", "Renaming restore activity task file failed");
         run_external_command("mv '$modPath/backup/moodle2/restore_newmodule_stepslib.php' '$modPath/backup/moodle2/restore_{$this->arguments[0]}_stepslib.php'", "Renaming restore stepslib file failed");
     }
 }
