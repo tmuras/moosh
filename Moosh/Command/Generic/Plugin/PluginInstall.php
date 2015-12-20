@@ -18,6 +18,9 @@ class PluginInstall extends MooshCommand
 
         $this->addArgument('plugin_name');
         $this->addArgument('moodle_version');
+        $this->addArgument('plugin_version');
+        
+        $this->minArguments = 2;
     }
 
     public function execute()
@@ -31,6 +34,12 @@ class PluginInstall extends MooshCommand
 
         $pluginname = $this->arguments[0];
         $moodleversion = $this->arguments[1];
+        $pluginversion = NULL;
+        
+        if (isset($this->arguments[2])) {
+            $pluginversion = trim($this->arguments[2]);
+        }
+        
         $pluginsfile = home_dir() . '/.moosh/plugins.json';
 
         $stat = @stat($pluginsfile);
@@ -49,7 +58,9 @@ class PluginInstall extends MooshCommand
                 foreach($plugin->versions as $j) {
                     foreach($j->supportedmoodles as $v) {
                         if($v->release == $moodleversion) {
-                            $downloadurl = $j->downloadurl;
+                            if(!$pluginversion || $pluginversion == $j->version) {
+                                $downloadurl = $j->downloadurl;
+                            }
                         }
                     }
                 }
