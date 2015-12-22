@@ -42,7 +42,7 @@ class CourseBackup extends MooshCommand
         $options = $this->expandedOptions;
 
         $cwd=$this->cwd;
-        if (isset($options['path'])) {
+        if (trim($options['path'])!="") {
             $cwd=$options['path'];
         }
 
