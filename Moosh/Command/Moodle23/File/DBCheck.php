@@ -22,7 +22,7 @@ class DBCheck extends MooshCommand {
     protected function getArgumentsHelp() {
         $help = parent::getArgumentsHelp();
         $help .= "\n\n";
-        $help .= "Check moodledata files for coruption.";
+        $help .= "Check moodledata files present on disk but not in DB.";
 
         return $help;
     }
@@ -40,9 +40,7 @@ class DBCheck extends MooshCommand {
             if (is_dir($dir.$entry)) {
                 // Recursive call on directories
                 $this->checkDirectory($dir.$entry, $errors);
-            }
-            
-            else {
+            } else {
                 if (!$this->checkFile($entry)) {
                     $errors[] = $dir.$entry;
                 }
@@ -53,14 +51,13 @@ class DBCheck extends MooshCommand {
     }
     
     private function checkFile($file) {
-	global $DB;
-	
-	$sql = "SELECT id
+        global $DB;
+
+        $sql = "SELECT id
                 FROM {files} f
                 WHERE f.contenthash = ?";
                 
-//         if ($filerecord = $DB->get_record_sql($sql, array($file))) {
-    if ($DB->count_records("files", array("contenthash"=>$file))!=0) {
+        if ($DB->count_records("files", array("contenthash"=>$file))!=0) {
              return true;
         } else {
              return false;
@@ -80,10 +77,8 @@ class DBCheck extends MooshCommand {
         
         if (empty($errors)) {
             if (!$this->quiet) echo "The contents of moodledata appear to be OK.\n";
-        }
-        
-        else {
-	    echo "List of files on disk but not in DB:\n";
+        } else {
+            echo "List of files on disk but not in DB:\n";
             foreach ($errors as $file) {
                 // Could write this to STDERR.
                 echo $file . "\n";
