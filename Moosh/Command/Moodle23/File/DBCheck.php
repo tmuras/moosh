@@ -53,10 +53,6 @@ class DBCheck extends MooshCommand {
     private function checkFile($file) {
         global $DB;
 
-        $sql = "SELECT id
-                FROM {files} f
-                WHERE f.contenthash = ?";
-                
         if ($DB->count_records("files", array("contenthash"=>$file))!=0) {
              return true;
         } else {
