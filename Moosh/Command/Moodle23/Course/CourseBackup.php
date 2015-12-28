@@ -18,9 +18,10 @@ class CourseBackup extends MooshCommand
         parent::__construct('backup', 'course');
 
         $this->addOption('f|filename:', 'path to filename to save the course backup');
+        $this->addOption('p|path:', 'path to save the course backup');
         $this->addOption('F|fullbackup', 'do full backup instead of general');
-	$this->addOption('template', 'do template backup instead of general');
-	
+        $this->addOption('template', 'do template backup instead of general');
+
         $this->addArgument('id');
     }
 
@@ -30,8 +31,8 @@ class CourseBackup extends MooshCommand
 
         require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');        
 
-	error_reporting(E_ALL);
-	ini_set('display_errors',true);
+        error_reporting(E_ALL);
+        ini_set('display_errors',true);
 
         //check if course id exists
         $course = $DB->get_record('course', array('id' => $this->arguments[0]), '*', MUST_EXIST);
@@ -39,10 +40,16 @@ class CourseBackup extends MooshCommand
         $shortname = str_replace(' ', '_', $course->shortname);
 
         $options = $this->expandedOptions;
+
+        $cwd=$this->cwd;
+        if (trim($options['path'])!="") {
+            $cwd=$options['path'];
+        }
+
         if (!$options['filename']) {
-            $options['filename'] = $this->cwd . '/backup_' . $this->arguments[0] . "_". str_replace('/','_',$shortname) . '_' . date('Y.m.d') . '.mbz';
+            $options['filename'] = $cwd . '/backup_' . $this->arguments[0] . "_". str_replace('/','_',$shortname) . '_' . date('Y.m.d') . '.mbz';
         } elseif ($options['filename'][0] != '/') {
-            $options['filename'] = $this->cwd .'/' .$options['filename'];
+            $options['filename'] = $cwd .'/' .$options['filename'];
         }
 
         //check if destination file does not exist and can be created
@@ -64,8 +71,8 @@ class CourseBackup extends MooshCommand
                 } 
             } 
         }
-	
-	if ($options['template']) {
+
+        if ($options['template']) {
             $tasks = $bc->get_plan()->get_tasks();
             foreach ($tasks as &$task) {
                 if ($task instanceof \backup_root_task) {
