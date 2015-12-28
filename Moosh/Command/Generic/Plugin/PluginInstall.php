@@ -18,6 +18,7 @@ class PluginInstall extends MooshCommand
 
         $this->addArgument('plugin_name');
         $this->addArgument('moodle_version');
+        $this->addArgument('plugin_version');
     }
 
     public function execute()
@@ -31,6 +32,7 @@ class PluginInstall extends MooshCommand
 
         $pluginname = $this->arguments[0];
         $moodleversion = $this->arguments[1];
+        $pluginversion = $this->arguments[2];
         $pluginsfile = home_dir() . '/.moosh/plugins.json';
 
         $stat = @stat($pluginsfile);
@@ -41,20 +43,8 @@ class PluginInstall extends MooshCommand
         $pluginsdata = file_get_contents($pluginsfile);
         $decodeddata = json_decode($pluginsdata);
         $downloadurl = NULL;
-        foreach($decodeddata->plugins as $k=>$plugin) {
-            if(!$plugin->component) {
-                continue;
-            }
-            if($plugin->component == $pluginname) {
-                foreach($plugin->versions as $j) {
-                    foreach($j->supportedmoodles as $v) {
-                        if($v->release == $moodleversion) {
-                            $downloadurl = $j->downloadurl;
-                        }
-                    }
-                }
-            }
-        }
+
+        $downloadurl = $this->get_plugin_url($decodeddata, $pluginname, $moodleversion, $pluginversion);
 
         if(!$downloadurl) {
             die("Couldn't find $pluginname $moodleversion\n");
@@ -134,4 +124,24 @@ class PluginInstall extends MooshCommand
         
         return $types[$type];
     }
+
+    function get_plugin_url($pluginlist, $pluginname, $moodleversion, $pluginversion) {
+        foreach($pluginlist->plugins as $k=>$plugin) {
+            if(!$plugin->component) {
+                continue;
+            }
+            if($plugin->component == $pluginname) {
+                foreach($plugin->versions as $j) {
+                    foreach($j->supportedmoodles as $v) {
+                        if($v->release == $moodleversion && $v->version == $pluginversion) {
+                            $downloadurl = $j->downloadurl;
+
+                            return $downloadurl;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
+
