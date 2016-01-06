@@ -236,6 +236,8 @@ class ApacheParsePerfLog extends MooshCommand
             $type = 'download';
         } elseif (preg_match('/download=zip$/', $row['url']) || preg_match('/action=downloadall$/', $row['url'])) {
             $type = 'download';
+        } elseif (preg_match('/repository_ajax.php\?action=upload/', $row['url'])) {
+            $type = 'upload';
         } else {
             $type = 'script';
         }
