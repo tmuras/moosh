@@ -31,9 +31,6 @@ class CourseBackup extends MooshCommand
 
         require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');        
 
-        error_reporting(E_ALL);
-        ini_set('display_errors',true);
-
         //check if course id exists
         $course = $DB->get_record('course', array('id' => $this->arguments[0]), '*', MUST_EXIST);
 
