@@ -138,7 +138,6 @@ class PluginInstall extends MooshCommand
                 $downloadurl = null;
                 foreach($plugin->versions as $j) {
                     foreach($j->supportedmoodles as $v) {
-                        print "XXX {$v->version} vs $pluginversion\n";
                         if($v->release == $moodleversion) {
                             # Record the url for the most recent (assumed to be highest) 
                             # version of plugin that is compatible with the given Moodle 
@@ -156,7 +155,6 @@ class PluginInstall extends MooshCommand
                 # Negative pluginversion indicates we should return the latest version
                 # compatible with the given version of Moodle (recorded above)
                 if ($pluginversion < 0 and ! is_null($downloadurl)) {
-                    print "XXX returning $downloadurl\n";
                     return $downloadurl;
                 }
             }
