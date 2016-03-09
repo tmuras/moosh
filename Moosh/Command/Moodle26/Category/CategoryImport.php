@@ -29,7 +29,7 @@ class CategoryImport extends MooshCommand
 
         $options = $this->expandedOptions;
         $arguments = $this->arguments;
-        $this->checkFileArg($arguments[0]);
+        $file = $this->checkFileArg($arguments[0]);
 
         $this->categorystack = array();
         if ($options['parent']) {
@@ -49,7 +49,7 @@ class CategoryImport extends MooshCommand
         );
 
 
-        if (!($fp = fopen($arguments[0], "r"))) {
+        if (!($fp = fopen($file, "r"))) {
             die("could not open XML input");
         }
 
@@ -81,7 +81,9 @@ class CategoryImport extends MooshCommand
             $category->parent = $current;
 
             $newcat = $this->create_category($category);
-            $this->coursesmap[$attrs['OLDID']] = $newcat->id;
+            if(isset($attrs['OLDID'])) {
+                $this->coursesmap[$attrs['OLDID']] = $newcat->id;
+            }
             $this->categorystack[] = $newcat->id;
         }
     }
