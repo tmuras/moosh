@@ -6,11 +6,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle27\Info;
+namespace Moosh\Command\Moodle29\Cache;
 
 use Moosh\MooshCommand;
 
-class DevContext extends MooshCommand
+class MemcacheTest extends MooshCommand
 {
     public function __construct()
     {
@@ -26,6 +26,7 @@ class DevContext extends MooshCommand
 
     public function execute()
     {
+        cli_error('Not implemented yet');
         global $CFG, $DB;
         require_once($CFG->wwwdir . '/cache/stores/memcache/lib.php');
 
