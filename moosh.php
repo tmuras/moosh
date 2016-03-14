@@ -42,10 +42,11 @@ define('MOODLE_INTERNAL', true);
 
 $appspecs = new OptionCollection;
 $spec_verbose = $appspecs->add('v|verbose', "be verbose");
-$spec_moodle_path = $appspecs->add('p|moodle-path:', "Moodle directory.");
-$spec_moodle_user = $appspecs->add('u|user:', "Moodle user, by default ADMIN");
-$spec_moodle_user = $appspecs->add('n|no-user-check', "Don't check if Moodle data is owned by the user running script");
-$spec_performance = $appspecs->add('t|performance', "Show performance infomation including timings");
+$appspecs->add('p|moodle-path:', "Moodle directory.");
+$appspecs->add('u|user:', "Moodle user, by default ADMIN");
+$appspecs->add('n|no-user-check', "Don't check if Moodle data is owned by the user running script");
+$appspecs->add('t|performance', "Show performance infomation including timings");
+$appspecs->add('h|help', "Show global help.");
 
 $parser = new ContinuousOptionParser($appspecs);
 $app_options = $parser->parse($argv);
@@ -108,7 +109,7 @@ if (!isset($subcommand_specs[$subcommand])) {
     }
 }
 
-if (!$subcommand && !$possible_matches) {
+if ($app_options->has('help') || (!$subcommand && !$possible_matches)) {
     echo "moosh version " . MOOSH_VERSION . "\n";
     echo "No command provided, possible commands:\n\t";
     echo implode("\n\t", array_keys($subcommands));
