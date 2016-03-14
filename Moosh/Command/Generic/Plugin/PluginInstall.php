@@ -70,13 +70,8 @@ class PluginInstall extends MooshCommand
             return;
         }
 
-        try {
-            shell_exec("unzip -o " . $tempdir . $split[1] . ".zip -d " . home_dir() . "/.moosh/moodleplugins/");
-            shell_exec("cp -r " . $tempdir . $split[1] . "/ " . $this->get_install_path($split[0], $moodleversion));
-        } catch (Exception $e) {
-            echo "Failed to unzip plugin. " . $e . "\n";
-            return;
-        }
+        run_external_command("unzip -o " . $tempdir . $split[1] . ".zip -d " . home_dir() . "/.moosh/moodleplugins/");
+        run_external_command("cp -r " . $tempdir . $split[1] . "/ " . $this->get_install_path($split[0], $moodleversion));
 
         echo "Installing $pluginname $moodleversion\n";
         upgrade_noncore(true);

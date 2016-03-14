@@ -322,12 +322,16 @@ function get_data_generator()
     return new testing_data_generator();
 }
 
-function run_external_command($command, $error)
+function run_external_command($command, $error=NULL)
 {
     exec($command, $output, $ret);
 
     if ($ret != 0) {
-        cli_error($error);
+        if($error) {
+            cli_error($error);
+        } else {
+            cli_error("Error when running:\n$command\n");
+        }
     }
 
     return $output;
