@@ -247,7 +247,7 @@ class CourseInfo extends MooshCommand
         echo "Number of grades: {$this->gradesnumber}\n";
         echo "Number of log entries: {$this->logsnumber}\n";
         echo "Number of files: {$this->filesnumber}\n";
-        echo "Total file size: " . display_size($this->filesize});
+        echo "Total file size: " . display_size($this->filesize);
 
     }
 }
