@@ -476,3 +476,17 @@ function detect_moodledata_owner($dir)
         return array('user' => posix_getpwuid(fileowner($dir . '/' . $file)), 'dir' => $dir . '/' . $file);
     }
 }
+
+/**
+ * Convert context level (e.g. 10,20,30) to name
+ */
+function context_level_to_name($level) {
+    static $levels = array(CONTEXT_SYSTEM => 'CONTEXT_SYSTEM',
+        CONTEXT_USER => 'CONTEXT_USER',
+        CONTEXT_COURSECAT => 'CONTEXT_COURSECAT',
+        CONTEXT_COURSE => 'CONTEXT_COURSE',
+        CONTEXT_MODULE => 'CONTEXT_MODULE',
+        CONTEXT_BLOCK => 'CONTEXT_BLOCK');
+
+    return $levels[$level];
+}
