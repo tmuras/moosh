@@ -103,6 +103,12 @@ class UserList extends MooshCommand {
         if($extralimit !== false) {
             $users = array_intersect_key($users,$extralimit);
         }
+
+        // Apply original $options['limit'] at the end.
+        if($options['limit']) {
+            $users = array_splice($users,0,$options['limit']);
+        }
+        
         foreach ($users as $user) {
             if ($options['id']) {
                 echo "$user->id \n";
