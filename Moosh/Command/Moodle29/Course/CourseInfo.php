@@ -56,6 +56,7 @@ class CourseInfo extends MooshCommand
         $this->addArgument('courseid');
 
         $this->addOption('j|json', 'export as json array');
+        $this->addOption('c|csv', 'export as csv');
         //$this->addOption('o|option:', 'option with value and default', 'default');
 
     }
@@ -125,6 +126,8 @@ class CourseInfo extends MooshCommand
         }
 
         // Get users enrolled.
+        $enrolledtotal = $DB->get_record_sql("SELECT COUNT(DISTINCT userid) AS c FROM {role_assignments} WHERE contextid = ? ", array($coursecontext->id));
+        $this->enrolledtotal = $enrolledtotal->c;
         $usersbyrole = $DB->get_records_sql("SELECT roleid, COUNT(*) AS c FROM {role_assignments} WHERE contextid = ?", array($coursecontext->id));
         foreach ($usersbyrole as $u) {
             $this->usersbyrole[$u->roleid] = $u->c;
@@ -194,6 +197,13 @@ class CourseInfo extends MooshCommand
         $files = $DB->get_record_sql("SELECT SUM(filesize) s FROM {files} WHERE filename <> '.' AND contextid IN (SELECT id FROM {context} WHERE path LIKE '{$coursecontext->path}/%' )");
         $this->filesize = $files->s;
 
+        $this->aggregateData();
+
+        // Cache build time.
+        $start = microtime(true);
+        rebuild_course_cache($courseid);
+        $this->data['Cache build time'] = microtime(true) - $start;
+
         $this->display();
     }
 
@@ -204,50 +214,96 @@ class CourseInfo extends MooshCommand
         }
         $array[$key]++;
     }
-
     private function display()
+    {
+
+        if($this->expandedOptions['csv']) {
+            foreach ($this->data as $k => $v) {
+                if (!is_array($v)) {
+                    echo "'$k',";
+                }
+            }
+            echo "\n";
+            foreach ($this->data as $k => $v) {
+                if (!is_array($v)) {
+                    echo "'$v',";
+                }
+            }
+            echo "\n";
+        } else {
+            foreach ($this->data as $k => $v) {
+                if (is_array($v)) {
+                    echo "$k:\n";
+                    foreach ($v as $k2 => $v2) {
+                        if (is_numeric($k2)) {
+                            echo "\t$v2\n";
+                        } else {
+                            echo "\t$k2:\t$v2\n";
+                        }
+                    }
+                } else {
+                    echo "$k: $v\n";
+                }
+            }
+        }
+
+    }
+
+
+    private function aggregateData()
     {
         $meta = new MoodleMetaData();
 
-        echo "Course ID: " . $this->course->id . "\n";
-        echo "No of contexts: " . count($this->contexts) . "\n";
-        echo "Context by level:\n";
+        $this->data = array();
+        $this->data['Course ID'] = $this->course->id;
+        $this->data["No of contexts"] = count($this->contexts);
+        $this->data["Context by level"] = array();
         foreach ($this->contextbylevel as $level => $count) {
-            echo "\t" . context_level_to_name($level) . " ($level):\t$count\n";
+            $this->data["Context by level"][] = context_level_to_name($level) . " ($level):\t$count";
         }
-        echo "Context by module:\n";
+        $this->data["Context by module"] = array();
         foreach ($this->contextbymodule as $module => $count) {
-            echo "\t" . $meta->moduleName($module) . " ($module):\t$count\n";
+            $this->data["Context by module"][]= $meta->moduleName($module) . " ($module):\t$count";
         }
-        echo "Role capability overwrites by context:\n";
+        
+        $this->data["Number of role capability overwrites"] = count($this->capabilityoverwrites);
+        $this->data["Role capability overwrites by context"] = array();
         foreach ($this->capabilityoverwrites as $contextid => $count) {
-            echo "\t" . $this->contexts[$contextid]->get_context_name() . " ($contextid):\t$count\n";
+            $this->data["Role capability overwrites by context"][] =  $this->contexts[$contextid]->get_context_name() . " ($contextid):\t$count";
         }
-        echo "Locally assigned roles by context:\n";
+
+        $this->data["Number of local role assignments"] = count($this->rolesassigned);
+        $this->data["Locally assigned roles by context"] = array();
         foreach ($this->rolesassigned as $contextid => $count) {
-            echo "\t" . $this->contexts[$contextid]->get_context_name() . " ($contextid):\t$count\n";
+            $this->data["Locally assigned roles by context"][] =  $this->contexts[$contextid]->get_context_name() . " ($contextid):\t$count";
         }
-        echo "Users enrolled by role:\n";
+
+        $this->data["Number of enrolled users"] = $this->enrolledtotal;
+
+        $this->data["Users enrolled by role"] = array();
         foreach ($this->usersbyrole as $roleid => $count) {
-            echo "\t" . $meta->roleName($roleid) . " ($roleid):\t$count\n";
+            $this->data["Users enrolled by role"][] = $meta->roleName($roleid) . " ($roleid):\t$count";
         }
 
-        echo "Number of groups: {$this->groupsnumber}\n";
-        echo "\tMin number of members in a group: {$this->groupsmin}\n";
-        echo "\tMax number of members in a group: {$this->groupsmax}\n";
-        echo "\tAvg number of members in a group: {$this->groupsavg}\n";
+        $this->data["Number of groups"] =  $this->groupsnumber;
+        $this->data["Group statistics"] =  array();
+        $this->data["Group statistics"]["Min number of members in a group"] = $this->groupsmin;
+        $this->data["Group statistics"]["Max number of members in a group"] = $this->groupsmax;
+        $this->data["Group statistics"]["Avg number of members in a group"] = $this->groupsavg;
 
-        echo "Course modinfo size: " . display_size($this->modinfosize) . "\n";
+        $this->data["Course modinfo size"] = $this->modinfosize;
 
-        echo "Sections: {$this->sectionsnumber} (visible:{$this->sectionsvisible}/hidden:{$this->sectionshidden})\n";
-        echo "\tMin number of modules in a section: {$this->sectionsmin}\n";
-        echo "\tMax number of modules in a section: {$this->sectionsmax}\n";
-        echo "\tAvg number of modules in a section: {$this->sectionsavg}\n";
+        $this->data["Number of sections"] = $this->sectionsnumber;
+        $this->data["Section statistics"] =  array();
+        $this->data["Section statistics"]['Sections visible'] = $this->sectionsvisible;
+        $this->data["Section statistics"]['Sections hidden'] = $this->sectionshidden;
+        $this->data["Section statistics"]["Min number of modules in a section"] = $this->sectionsmin;
+        $this->data["Section statistics"]["Max number of modules in a section"] = $this->sectionsmax;
+        $this->data["Section statistics"]["Avg number of modules in a section"] = $this->sectionsavg;
 
-        echo "Number of grades: {$this->gradesnumber}\n";
-        echo "Number of log entries: {$this->logsnumber}\n";
-        echo "Number of files: {$this->filesnumber}\n";
-        echo "Total file size: " . display_size($this->filesize);
-
+        $this->data["Number of grades"] = $this->gradesnumber;
+        $this->data["Number of log entries"] = $this->logsnumber;
+        $this->data["Number of files"] = $this->filesnumber;
+        $this->data["Total file size"] = $this->filesize;
     }
 }
