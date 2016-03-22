@@ -25,7 +25,7 @@ class CourseInfo extends MooshCommand
 
     private $course;
 
-    private $usersbyrole;
+    private $usersbyrole = array();
 
     private $rolesassigned = array();
 
@@ -97,14 +97,7 @@ class CourseInfo extends MooshCommand
             if (is_a($context, "context_module")) {
                 $cm = $DB->get_record('course_modules', array('id' => $context->instanceid));
                 $this->inc($this->contextbymodule, $cm->module);
-//                var_dump($context); var_dump($cm); die();
             }
-//            echo $this->context_info($context->id) . "\n";
-            // What is in mdl_role_capabilities for this context
-//            $capabilities = $DB->get_records('role_capabilities',array('contextid'=>$context->id));
-//            foreach($capabilities as $cap) {
-//                echo $cap->roleid . ' ' . $cap->capability . ' ' .$cap->permission . " | ";
-//            }
         }
         ksort($this->contextbylevel);
         ksort($this->contextbymodule);
@@ -130,7 +123,9 @@ class CourseInfo extends MooshCommand
         $this->enrolledtotal = $enrolledtotal->c;
         $usersbyrole = $DB->get_records_sql("SELECT roleid, COUNT(*) AS c FROM {role_assignments} WHERE contextid = ?", array($coursecontext->id));
         foreach ($usersbyrole as $u) {
-            $this->usersbyrole[$u->roleid] = $u->c;
+            if ($u->c > 0) {
+                $this->usersbyrole[$u->roleid] = $u->c;
+            }
         }
 
         // Get # of groups. Get min, max and avg number of users per group.
@@ -146,8 +141,16 @@ class CourseInfo extends MooshCommand
                 $this->groupsmin = $group->c;
             }
         }
-        $this->groupsavg = intval($sum / $this->groupsnumber);
+        if($this->groupsnumber > 0) {
+            $this->groupsavg = intval($sum / $this->groupsnumber);
+        } else {
+            $this->groupsavg = 0;
+        }
 
+        if($this->groupsmin === NULL) {
+            $this->groupsmin = 0;
+        }
+        
         // Get size of modinfo course structure.
         $modinfo = get_fast_modinfo($this->course);
         $this->modinfosize = strlen(serialize($modinfo));
