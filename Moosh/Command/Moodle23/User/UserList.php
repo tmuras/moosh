@@ -74,7 +74,11 @@ class UserList extends MooshCommand {
             }
         }
 
-        $users = $DB->get_records_sql($users, $params = null, $limit_from, $limit_to);
+        if($options['course']) {
+            $users = $DB->get_records_sql($users, array('deleted'=>0, 'suspended'=>0));
+        } else {
+            $users = $DB->get_records_sql($users, $params = null, $limit_from, $limit_to);
+        }
 
         // Possibly extra filtering.
         $extralimit = false;
