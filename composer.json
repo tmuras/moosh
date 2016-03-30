@@ -197,7 +197,9 @@
         "danielneis/moodle-availability_newavailability": "dev-master#43198d6736931213ad223c8fd05881749baac22c",
         "symfony/finder": "^2.7",
         "danielneis/moodle-local_newlocal": "dev-master#b9596bdd37963d312069a048c8d315c7592c1c24",
-        "danielneis/moodle-enrol_newenrol": "dev-master"
+        "danielneis/moodle-enrol_newenrol": "dev-master",
+        "moodlerooms/moodle-coding-standard": "^2.0",
+        "squizlabs/php_codesniffer": "^2.5"
     },
     "bin": ["moosh.php"]
 }
