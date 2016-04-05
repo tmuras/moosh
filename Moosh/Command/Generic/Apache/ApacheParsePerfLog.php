@@ -65,6 +65,7 @@ class ApacheParsePerfLog extends MooshCommand
 
         $this->addArgument('logfile');
         $this->addOption('t|table', 'table name', 'perflog');
+        $this->addOption('j|json', 'json');
 
     }
 
@@ -147,6 +148,7 @@ class ApacheParsePerfLog extends MooshCommand
             //db reads/writes: 62/30
             $row['db_reads'] = $this->parse($line, 'db reads\\/writes: (\d+)');
             $row['db_writes'] = $this->parse($line, 'db reads\\/writes: \d+\\/(\d+)');
+            $row['db_queries_time'] = (int)($this->parse($line, 'db queries time: (\d+.\d+)s') * 1000000);
 
             //ticks: 278 user: 60 sys: 4 cuser: 0 csys: 0
             $row['ticks'] = $this->parse($line, 'ticks: (\d+)');
@@ -181,10 +183,15 @@ class ApacheParsePerfLog extends MooshCommand
             foreach ($row as $k => $v) {
                 if (isset($v)) {
                     $columns[] = $k;
-                    $values[] = "'" . @mysql_escape_string($v) . "'";
+                    $values[] = "'" . $v . "'";
                 }
             }
-            $sql = "INSERT IGNORE INTO " . $this->options['table'] . " (" . implode(',', $columns) . ') VALUES (' . implode(',', $values) . ');';
+
+	    if ($this->expandedOptions['json']!='1')
+                $sql = "INSERT IGNORE INTO " . $this->options['table'] . " (" . implode(',', $columns) . ') VALUES (' . implode(',', $values) . ');';
+	    else {
+		$sql = json_encode($row);
+	    }
             echo "$sql\n";
         }
     }
