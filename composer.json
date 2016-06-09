@@ -184,7 +184,7 @@
         }
     ],
     "require":{
-        "corneltek/getoptionkit":"dev-master#13a146e0f7b9161977332279dff894fa28c53168",
+        "corneltek/getoptionkit":"dev-master#cc3bf134ff864d54700b044b30da845901c03131",
         "twig/twig":"1.18.2",
         "moodlehq/moodle-mod_newmodule":"dev-master#e1f112be8842291259ece87de3000cd5f0e18711",
         "danielneis/moodle-block_newblock":"dev-master#1fc89fb0845ad282426140feeb6bc3653efd1d7f",
