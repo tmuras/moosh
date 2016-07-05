@@ -159,17 +159,20 @@ class CourseRestore extends MooshCommand {
             $setting = $task->get_setting('enrol_migratetomanual');
             $setting->set_value('1');
         }
-        $rc->execute_precheck();
 
-        if ($options['existing'] && $options['overwrite']) {
-            // If existing course shall be overwritten, delete current content
-            $deletingoptions = array();
-            $deletingoptions['keep_roles_and_enrolments'] = 0;
-            $deletingoptions['keep_groups_and_groupings'] = 0;
-            restore_dbops::delete_course_content($courseid, $deletingoptions);
+        if ($rc->execute_precheck()) {
+            if ($options['existing'] && $options['overwrite']) {
+                // If existing course shall be overwritten, delete current content
+                $deletingoptions = array();
+                $deletingoptions['keep_roles_and_enrolments'] = 0;
+                $deletingoptions['keep_groups_and_groupings'] = 0;
+                restore_dbops::delete_course_content($courseid, $deletingoptions);
+            }
+            $rc->execute_plan();
+        } else {
+            cli_error('Error while restoring the course');
         }
 
-        $rc->execute_plan();
         $rc->destroy();
 
         echo "New course ID for '$shortname': $courseid in category {$category->id}\n";
