@@ -49,10 +49,10 @@ sudo mv composer.phar /usr/bin/composer
 
 echo "Install moosh - finally!"
 cd /home/vagrant
-git clone https://github.com/tmuras/moosh.git
-cd moosh
+git clone https://github.com/tmuras/moosh.git moosh-src
+cd moosh-src
 composer install
-ln -s /home/vagrant/moosh/moosh.php /usr/local/bin/moosh
+ln -s /home/vagrant/moosh-src/moosh.php /usr/local/bin/moosh
 
 echo "Fix permissions"
 chown vagrant:vagrant -R /home/vagrant
