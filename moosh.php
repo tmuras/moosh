@@ -243,9 +243,8 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
             echo "Error: No admin account was found\n";
             exit(1);
         }
-
-        complete_user_login($user);
     }
+    complete_user_login($user);
 }
 
 if ($app_options->has('verbose')) {
