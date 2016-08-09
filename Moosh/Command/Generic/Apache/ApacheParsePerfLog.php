@@ -96,7 +96,8 @@ class ApacheParsePerfLog extends MooshCommand
 
             //[Sun Dec 22 06:29:01 2013]
             //[Sun Dec 22 06:29:01.731010 2013]
-            $row['timestamp'] = $this->parse($line, ' (.*?)\]');
+            //[28-Jul-2016 13:54:36 Europe/Paris]
+            $row['timestamp'] = $this->parse($line, '\[(.*?)\]');
             $row['timestamp'] = preg_replace('/\.\d+/', '', $row['timestamp']);
 
             $tmp = date_parse($row['timestamp']);
