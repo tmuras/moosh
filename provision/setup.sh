@@ -7,7 +7,7 @@ sudo su
 apt-get update
 debconf-set-selections <<< "mysql-server mysql-server/root_password password $PASSWORD"
 debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $PASSWORD"
-apt-get -y install mysql-server apache2 libapache2-mod-php php php7.0-mysql php-xml php-curl php-zip php-gd php-mbstring php-soap php-xmlrpc php-intl php-mysql php-cli curl git mc vim
+apt-get -y install mysql-server apache2 libapache2-mod-php php php7.0-mysql php-xml php-curl php-zip php-gd php-mbstring php-soap php-xmlrpc php-intl php-mysql php-cli curl git mc vim ack-grep
 
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/dbconfig-install boolean true"
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/app-password-confirm password $PASSWORD"
@@ -54,6 +54,9 @@ git clone https://github.com/tmuras/moosh.git moosh-src
 cd moosh-src
 composer install
 ln -s /home/vagrant/moosh-src/moosh.php /usr/local/bin/moosh
+
+# Install moosh completions
+cp bash_completion /etc/bash_completion.d/moosh
 
 echo "Fix permissions"
 chown vagrant:vagrant -R /home/vagrant
