@@ -990,9 +990,9 @@ Example:
 <a class="command-name">question-import</a>
 ----------------
 
-Import quiz question from xml file to selected course.
+Import quiz question from xml file into selected quiz.
 
-Example: import question from file path/to/question.xml to course with id 2
+Example: import question from file path/to/question.xml to quiz with id 2
 
     moosh question-import path/to/question.xml 2
 
