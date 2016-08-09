@@ -8,6 +8,7 @@
  */
 
 namespace Moosh\Command\Generic\Tools;
+
 use Moosh\MooshCommand;
 
 class ToolsCodeCheck extends MooshCommand
@@ -28,11 +29,10 @@ class ToolsCodeCheck extends MooshCommand
     public function execute()
     {
 
-        require_once($this->mooshDir."/includes/codesniffer/CodeSniffer.php");
-        require_once($this->mooshDir."/includes/codesniffer/lib.php");
+        require_once($this->mooshDir."/includes/codesniffer_cli.php");
         require_once($this->mooshDir."/includes/coderepair/CodeRepair.php");
 
-        $moodle_sniffs = $this->mooshDir."/includes/codesniffer/moodle";
+        $moodle_sniffs = $this->mooshDir."/vendor/moodlerooms/moodle-coding-standard/moodle";
 
         $options = $this->expandedOptions;
         $interactive = $options['interactive'];
@@ -50,10 +50,13 @@ class ToolsCodeCheck extends MooshCommand
             $code_repair->drymode = false;
             $code_repair->start();
         }
+
+        $phpcscli = new \codesniffer_cli();
         $phpcs = new \PHP_CodeSniffer(1, 0, 'utf-8', (bool) $interactive);
-        $phpcs->setCli(new \codesniffer_cli());
-        $numerrors = $phpcs->process($files, $moodle_sniffs);
-        $phpcs->reporting->printReport('full', false, null);
+        $phpcs->setCli($phpcscli);
+        $phpcs->process($files, $moodle_sniffs);
+
+        $phpcs->reporting->printReport('full', false, $phpcscli->getCommandLineValues(), null);
 
     }
 
