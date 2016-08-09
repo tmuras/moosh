@@ -49,6 +49,7 @@ sudo mv composer.phar /usr/bin/composer
 
 echo "Install moosh - finally!"
 cd /home/vagrant
+rm moosh-src/.gitkeep
 git clone https://github.com/tmuras/moosh.git moosh-src
 cd moosh-src
 composer install
