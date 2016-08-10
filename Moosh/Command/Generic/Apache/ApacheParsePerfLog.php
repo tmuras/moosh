@@ -27,6 +27,7 @@ use Moosh\ApacheLogParser\Parser;
  langcountgetstring int(10) unsigned NOT NULL,
  db_reads int(10) unsigned NOT NULL,
  db_writes int(10) unsigned NOT NULL,
+ db_queries_time int(10) unsigned NOT NULL,
  ticks int(10) unsigned NOT NULL,
  user int(10) unsigned NOT NULL,
  sys int(10) unsigned NOT NULL,
