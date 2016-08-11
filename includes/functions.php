@@ -322,12 +322,16 @@ function get_data_generator()
     return new testing_data_generator();
 }
 
-function run_external_command($command, $error)
+function run_external_command($command, $error=NULL)
 {
     exec($command, $output, $ret);
 
     if ($ret != 0) {
-        cli_error($error);
+        if($error) {
+            cli_error($error);
+        } else {
+            cli_error("Error when running:\n$command\n");
+        }
     }
 
     return $output;
@@ -471,4 +475,46 @@ function detect_moodledata_owner($dir)
         }
         return array('user' => posix_getpwuid(fileowner($dir . '/' . $file)), 'dir' => $dir . '/' . $file);
     }
+}
+
+/**
+ * Convert context level (e.g. 10,20,30) to name
+ */
+function context_level_to_name($level) {
+    static $levels = array(CONTEXT_SYSTEM => 'CONTEXT_SYSTEM',
+        CONTEXT_USER => 'CONTEXT_USER',
+        CONTEXT_COURSECAT => 'CONTEXT_COURSECAT',
+        CONTEXT_COURSE => 'CONTEXT_COURSE',
+        CONTEXT_MODULE => 'CONTEXT_MODULE',
+        CONTEXT_BLOCK => 'CONTEXT_BLOCK');
+
+    return $levels[$level];
+}
+
+function admin_login($option=null) {
+    global $CFG;
+
+    require_once("$CFG->libdir/datalib.php");
+    $user = get_admin();
+
+    if (!$user) {
+      cli_error("Unable to find admin user in DB.");
+    }
+
+    $auth = empty($user->auth) ? 'manual' : $user->auth;
+    if ($auth=='nologin' or !is_enabled_auth($auth)) {
+      cli_error(sprintf("User authentication is either 'nologin' or disabled. Check Moodle authentication method for '%s'", $user->username));
+    }
+
+    $authplugin = get_auth_plugin($auth);
+    $authplugin->sync_roles($user);
+    login_attempt_valid($user);
+    complete_user_login($user);
+
+    if ($option == 'verbose') {
+        printf("%s:%s\n", session_name(), session_id());
+    }
+
+    $credentials = array('cookiename' => session_name(), 'cookie' => session_id());
+    return $credentials;
 }

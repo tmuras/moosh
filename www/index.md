@@ -68,7 +68,7 @@ Install composer - see http://getcomposer.org/download .
 
     git clone git://github.com/tmuras/moosh.git
     cd moosh
-    ./composer.phar install
+    composer install
 
 Common steps for Moodle package and git
 ---------------------------------------

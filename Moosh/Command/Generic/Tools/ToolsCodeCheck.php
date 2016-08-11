@@ -48,9 +48,9 @@ class ToolsCodeCheck extends MooshCommand
         if ($options['repair'] === true) {
             $code_repair = new \CodeRepair($files);
             $code_repair->drymode = false;
-            $code_repair->start();         
+            $code_repair->start();
         }
-        $phpcs = new \PHP_CodeSniffer(1, 0, 'utf-8', false);
+        $phpcs = new \PHP_CodeSniffer(1, 0, 'utf-8', (bool) $interactive);
         $phpcs->setCli(new \codesniffer_cli());
         $numerrors = $phpcs->process($files, $moodle_sniffs);
         $phpcs->reporting->printReport('full', false, null);

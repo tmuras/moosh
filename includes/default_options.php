@@ -27,9 +27,9 @@ $defaultOptions['course']['description'] = '%s';
 $defaultOptions['course']['visible'] = 1;
 $defaultOptions['course']['category'] = 1;
 
+
 $defaultOptions['course']['role'] = 'student';
 
-$defaultOptions['download']['version'] = '2.9';
 
 //use xdotool to automate some of the tasks
 $defaultOptions['global']['xdotool'] = false;

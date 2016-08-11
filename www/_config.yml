@@ -8,7 +8,7 @@ permalink: pretty
 highlighter: rouge
 
 # Deploy
-ftp_host: 'serwer1545937.home.pl'
+ftp_host: 'serwer1693244.home.pl'
 ftp_dir: '/public_html/moosh-online.com'
 ftp_passive: true
 ftp_port: 21

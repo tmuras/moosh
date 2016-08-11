@@ -18,6 +18,7 @@ class PluginInstall extends MooshCommand
 
         $this->addArgument('plugin_name');
         $this->addArgument('moodle_version');
+        $this->addArgument('plugin_version');
     }
 
     public function execute()
@@ -28,10 +29,10 @@ class PluginInstall extends MooshCommand
         require_once($CFG->libdir.'/upgradelib.php');     // general upgrade/install related functions
         require_once($CFG->libdir.'/environmentlib.php');
         require_once($CFG->dirroot.'/course/lib.php');
-        require_once($CFG->libdir.'/classes/plugin_manager.php');
 
         $pluginname = $this->arguments[0];
         $moodleversion = $this->arguments[1];
+        $pluginversion = $this->arguments[2];
         $pluginsfile = home_dir() . '/.moosh/plugins.json';
 
         $stat = @stat($pluginsfile);
@@ -42,20 +43,8 @@ class PluginInstall extends MooshCommand
         $pluginsdata = file_get_contents($pluginsfile);
         $decodeddata = json_decode($pluginsdata);
         $downloadurl = NULL;
-        foreach($decodeddata->plugins as $k=>$plugin) {
-            if(!$plugin->component) {
-                continue;
-            }
-            if($plugin->component == $pluginname) {
-                foreach($plugin->versions as $j) {
-                    foreach($j->supportedmoodles as $v) {
-                        if($v->release == $moodleversion) {
-                            $downloadurl = $j->downloadurl;
-                        }
-                    }
-                }
-            }
-        }
+
+        $downloadurl = $this->get_plugin_url($decodeddata, $pluginname, $moodleversion, $pluginversion);
 
         if(!$downloadurl) {
             die("Couldn't find $pluginname $moodleversion\n");
@@ -81,16 +70,73 @@ class PluginInstall extends MooshCommand
             return;
         }
 
-        try {
-            shell_exec("unzip " . $tempdir . $split[1] . ".zip -d " . home_dir() . "/.moosh/moodleplugins/");
-            shell_exec("cp -r " . $tempdir . $split[1] . "/ " . $CFG->dirroot.  "/" . $split[0]);
-        } catch (Exception $e) {
-            echo "Failed to unzip plugin. " . $e . "\n";
-            return;
-        }
+        run_external_command("unzip -o " . $tempdir . $split[1] . ".zip -d " . home_dir() . "/.moosh/moodleplugins/");
+        run_external_command("cp -r " . $tempdir . $split[1] . "/ " . $this->get_install_path($split[0], $moodleversion));
 
         echo "Installing $pluginname $moodleversion\n";
         upgrade_noncore(true);
         echo "Done\n";
     }
+    
+    /**
+     * Get the relative path for a plugin given it's type
+     * 
+     * @param string $type
+     *   The plugin type (example: 'auth', 'block')
+     * @param string $moodleversion
+     *   The version of moodle we are running (example: '1.9', '2.9')
+     * @return string
+     *   The installation path relative to dirroot (example: 'auth', 'blocks', 
+     *   'course/format')
+     */
+    private function get_install_path($type, $moodleversion)
+    {
+        global $CFG;
+        
+        // Convert moodle version to a float for more acurate comparison
+        if (!is_float($moodleversion)) {
+            $moodleversion = floatval($moodleversion);
+        }        
+        
+        if ($moodleversion >= 2.6) {
+            $types = \core_component::get_plugin_types();
+        } else if ($moodleversion >= 2.0) {
+            $types = get_plugin_types();
+        } else {
+            // Moodle 1.9 does not give us a way to determine plugin 
+            // installation paths.
+            $types = array();
+        }
+        
+        if (empty($types) || !array_key_exists($type, $types)) {
+            // Either the moodle version is lower than 2.0, in which case we
+            // don't have a reliable way of determining the install path, or the
+            // plugin is of an unknown type.
+            // 
+            // Let's fall back to make our best guess.
+            return $CFG->dirroot . '/' . $type; 
+        }
+        
+        return $types[$type];
+    }
+
+    function get_plugin_url($pluginlist, $pluginname, $moodleversion, $pluginversion) {
+        foreach($pluginlist->plugins as $k=>$plugin) {
+            if(!$plugin->component) {
+                continue;
+            }
+            if($plugin->component == $pluginname) {
+                foreach($plugin->versions as $j) {
+                    foreach($j->supportedmoodles as $v) {
+                        if($v->release == $moodleversion && $v->version == $pluginversion) {
+                            $downloadurl = $j->downloadurl;
+
+                            return $downloadurl;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
+

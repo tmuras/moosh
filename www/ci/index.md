@@ -240,6 +240,11 @@ CI
 		<td><i class="fa fa-check"></i></td>
 		<td><i class="fa fa-check"></i></td>
 	</tr>
+        <tr>
+                <td><a href="/commands/#generate-enrol">generate-enrol</td>
+                <td><i class="fa fa-check"></i></td>
+                <td><i class="fa fa-check"></i></td>
+        </tr>
 	<tr>
 		<td><a href="/commands/#generate-filemanager ">generate-filemanager</td>
 		<td><i class="fa fa-check"></i></td>

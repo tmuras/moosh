@@ -726,6 +726,18 @@ Generate fake class to get auto-completion for $CFG object. Properties genertate
 
     moosh generate-cfg > config.class.php
     
+<span class="anchor" id="generate-enrol"></span>
+<a class="command-name">generate-enrol</a>
+-------------
+
+Creates new local plugin under enrol/ based on template from https://github.com/danielneis/moodle-enrol_newenrol
+
+    moosh generate-enrol name
+
+Example 1: Generate new plugin under enrol/mynewenrol
+
+    moosh generate-local mynewenrol
+
 <span class="anchor" id="generate-filepicker"></span>
 <a class="command-name">generate-filepicker</a>
 -------------------

@@ -395,8 +395,24 @@ class MooshCommand
     }
 
     public function checkFileArg($name) {
+        $filepath = '';
+        if($name[0] == '/') {
+            $filepath = $name;
+        } else {
+            $filepath = $this->cwd . '/' . $name;
+        }
 
+        if(!file_exists($filepath)) {
+            cli_error("File '$filepath' does not exist");
+        }
 
+        if(!is_readable($filepath)) {
+            cli_error("File '$filepath' is not readable");
+        }
 
+        if(!is_file($filepath)) {
+            cli_error("'$filepath' is not a file");
+        }
+        return $filepath;
     }
 }
