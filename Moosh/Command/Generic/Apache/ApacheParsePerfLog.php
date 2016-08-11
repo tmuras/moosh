@@ -27,6 +27,7 @@ use Moosh\ApacheLogParser\Parser;
  langcountgetstring int(10) unsigned NOT NULL,
  db_reads int(10) unsigned NOT NULL,
  db_writes int(10) unsigned NOT NULL,
+ db_queries_time int(10) unsigned NOT NULL,
  ticks int(10) unsigned NOT NULL,
  user int(10) unsigned NOT NULL,
  sys int(10) unsigned NOT NULL,
@@ -96,7 +97,8 @@ class ApacheParsePerfLog extends MooshCommand
 
             //[Sun Dec 22 06:29:01 2013]
             //[Sun Dec 22 06:29:01.731010 2013]
-            $row['timestamp'] = $this->parse($line, ' (.*?)\]');
+            //[28-Jul-2016 13:54:36 Europe/Paris]
+            $row['timestamp'] = $this->parse($line, '\[(.*?)\]');
             $row['timestamp'] = preg_replace('/\.\d+/', '', $row['timestamp']);
 
             $tmp = date_parse($row['timestamp']);
