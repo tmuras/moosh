@@ -141,7 +141,7 @@ while (!$parser->isEnd()) {
     $arguments[] = $parser->advance();
 }
 
-//read config file if available
+// Read config file if available.
 $moodlerc = NULL;
 
 $home_dir = home_dir();
@@ -154,7 +154,7 @@ if (file_exists($home_dir . DIRECTORY_SEPARATOR . ".mooshrc.php")) {
     $moodlerc = $home_dir . DIRECTORY_SEPARATOR . "mooshrc.php";
 }
 
-// Check if home dir write-able
+// Check if home dir writable.
 if(!is_writeable($home_dir)) {
     cli_problem("Warning: my home directory: '$home_dir' is not writable!");
 }
@@ -230,7 +230,7 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
     $subcommand->topDir = $top_dir;
     $subcommand->relativeDir = $relative_dir;
 
-    //set up debugging
+    // Set up debugging.
     $CFG->debug = (E_ALL);
     $CFG->debugdisplay = 1;
     @error_reporting(E_ALL);
@@ -251,7 +251,7 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
             exit(1);
         }
     }
-    complete_user_login($user);
+    @complete_user_login($user);
 }
 
 if ($app_options->has('verbose')) {
