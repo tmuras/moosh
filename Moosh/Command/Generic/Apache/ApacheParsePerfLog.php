@@ -27,6 +27,7 @@ use Moosh\ApacheLogParser\Parser;
  langcountgetstring int(10) unsigned NOT NULL,
  db_reads int(10) unsigned NOT NULL,
  db_writes int(10) unsigned NOT NULL,
+ db_queries_time int(10) unsigned NOT NULL,
  ticks int(10) unsigned NOT NULL,
  user int(10) unsigned NOT NULL,
  sys int(10) unsigned NOT NULL,
@@ -65,6 +66,7 @@ class ApacheParsePerfLog extends MooshCommand
 
         $this->addArgument('logfile');
         $this->addOption('t|table', 'table name', 'perflog');
+        $this->addOption('j|json', 'json');
 
     }
 
@@ -95,7 +97,8 @@ class ApacheParsePerfLog extends MooshCommand
 
             //[Sun Dec 22 06:29:01 2013]
             //[Sun Dec 22 06:29:01.731010 2013]
-            $row['timestamp'] = $this->parse($line, ' (.*?)\]');
+            //[28-Jul-2016 13:54:36 Europe/Paris]
+            $row['timestamp'] = $this->parse($line, '\[(.*?)\]');
             $row['timestamp'] = preg_replace('/\.\d+/', '', $row['timestamp']);
 
             $tmp = date_parse($row['timestamp']);
@@ -147,6 +150,7 @@ class ApacheParsePerfLog extends MooshCommand
             //db reads/writes: 62/30
             $row['db_reads'] = $this->parse($line, 'db reads\\/writes: (\d+)');
             $row['db_writes'] = $this->parse($line, 'db reads\\/writes: \d+\\/(\d+)');
+            $row['db_queries_time'] = (int)($this->parse($line, 'db queries time: (\d+.\d+)s') * 1000000);
 
             //ticks: 278 user: 60 sys: 4 cuser: 0 csys: 0
             $row['ticks'] = $this->parse($line, 'ticks: (\d+)');
@@ -181,10 +185,15 @@ class ApacheParsePerfLog extends MooshCommand
             foreach ($row as $k => $v) {
                 if (isset($v)) {
                     $columns[] = $k;
-                    $values[] = "'" . @mysql_escape_string($v) . "'";
+                    $values[] = "'" . $v . "'";
                 }
             }
-            $sql = "INSERT IGNORE INTO " . $this->options['table'] . " (" . implode(',', $columns) . ') VALUES (' . implode(',', $values) . ');';
+
+	    if ($this->expandedOptions['json']!='1')
+                $sql = "INSERT IGNORE INTO " . $this->options['table'] . " (" . implode(',', $columns) . ') VALUES (' . implode(',', $values) . ');';
+	    else {
+		$sql = json_encode($row);
+	    }
             echo "$sql\n";
         }
     }

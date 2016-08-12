@@ -159,7 +159,12 @@ class CourseRestore extends MooshCommand {
             $setting = $task->get_setting('enrol_migratetomanual');
             $setting->set_value('1');
         }
-        $rc->execute_precheck();
+        if (!$rc->execute_precheck()){
+            $check = $rc->get_precheck_results();
+            cli_problem("Restore pre-check failed!");
+            var_dump($check);
+            die();
+        }
 
         if ($options['existing'] && $options['overwrite']) {
             // If existing course shall be overwritten, delete current content

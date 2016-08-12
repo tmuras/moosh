@@ -54,6 +54,10 @@ class CourseCreate extends MooshCommand
             }
             $course->visible = $visible;
             $course->category = $options['category'];
+            $course->summary = '';
+            $course->summaryformat = FORMAT_HTML;
+            $course->startdate = time();
+
             //either use API create_course
             $newcourse = create_course($course);
 

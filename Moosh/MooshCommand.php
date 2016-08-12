@@ -394,7 +394,7 @@ class MooshCommand
         return $langCategory;
     }
 
-    public function checkFileArg($name) {
+    public function checkPathArg($name) {
         $filepath = '';
         if($name[0] == '/') {
             $filepath = $name;
@@ -409,9 +409,21 @@ class MooshCommand
         if(!is_readable($filepath)) {
             cli_error("File '$filepath' is not readable");
         }
+        return $filepath;
+    }
 
+    public function checkFileArg($name) {
+        $filepath = $this->checkPathArg($name);
         if(!is_file($filepath)) {
             cli_error("'$filepath' is not a file");
+        }
+        return $filepath;
+    }
+
+    public function checkDirArg($name) {
+        $filepath = $this->checkPathArg($name);
+        if(!is_dir($filepath)) {
+            cli_error("'$filepath' is not a directory");
         }
         return $filepath;
     }
