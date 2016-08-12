@@ -144,16 +144,23 @@ while (!$parser->isEnd()) {
 //read config file if available
 $moodlerc = NULL;
 
-if (file_exists(home_dir() . DIRECTORY_SEPARATOR . ".mooshrc.php")) {
-    $moodlerc = home_dir() . DIRECTORY_SEPARATOR . ".mooshrc.php";
+$home_dir = home_dir();
+
+if (file_exists($home_dir . DIRECTORY_SEPARATOR . ".mooshrc.php")) {
+    $moodlerc = $home_dir . DIRECTORY_SEPARATOR . ".mooshrc.php";
 } elseif (file_exists("/etc/moosh/mooshrc.php")) {
     $moodlerc = "/etc/moosh/mooshrc.php";
-} elseif (file_exists(home_dir() . DIRECTORY_SEPARATOR . "mooshrc.php")) {
-    $moodlerc = home_dir() . DIRECTORY_SEPARATOR . "mooshrc.php";
+} elseif (file_exists($home_dir . DIRECTORY_SEPARATOR . "mooshrc.php")) {
+    $moodlerc = $home_dir . DIRECTORY_SEPARATOR . "mooshrc.php";
+}
+
+// Check if home dir write-able
+if(!is_writeable($home_dir)) {
+    cli_problem("Warning: my home directory: '$home_dir' is not writable!");
 }
 
 // Create directory for configuration if one is not there already.
-if(!file_exists(home_dir() . "/.moosh")) {
+if(!file_exists($home_dir . "/.moosh")) {
     @mkdir(home_dir() . "/.moosh");
 }
 
