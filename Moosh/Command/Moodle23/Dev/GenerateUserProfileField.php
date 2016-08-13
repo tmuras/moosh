@@ -21,7 +21,7 @@ class GenerateUserProfileField extends MooshCommand
     public function execute()
     {
         $userprofilename = $this->arguments[0];
-        if(!preg_match('/[^a-z_0-9]/i', $userprofilename)) {
+        if(!preg_match('/^[a-z0-9_]+$/  ', $userprofilename)) {
             cli_error('Agrument is not valid userprofile name');
         }
         $userprofilepath = $this->topDir . '/user/profile/field/' . $userprofilename;
