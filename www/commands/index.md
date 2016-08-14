@@ -13,8 +13,6 @@ Adds an activity instance to the specified course. The activity is specified by 
 without the plugin type prefix, so "forum", "assign" or "data" for example, and the course is specified
 by it's id.
 
-Example:
-
     moosh activity-add assign 2
     moosh activity-add --section 3 forum 4
     moosh activity-add --name "General course forum" --section 2 forum 3
@@ -26,10 +24,17 @@ Example:
 
 Deletes activity with given module id.
 
-Example
-
     moosh activity-delete 2
 
+
+<span class="anchor" id="admin-login"></span>
+<a class="command-name">admin-login</a>
+---------------
+
+Create a session (login) for admin user. Command returns session cookie name & value.
+
+    moosh admin-login
+    
 
 <span class="anchor" id="apache-parse-extendedlog"></span>
 <a class="command-name">apache-parse-extendedlog</a>
@@ -88,6 +93,17 @@ Example 2. Check if user with id 17 has a weak password.
     moosh audit-passwords -u 17
 
 
+<span class="anchor" id="auth-list"></span>
+<a class="command-name">auth-list</a>
+---------------
+
+List authentication plugins.
+
+Example 1. List enabled authentication plugins.
+
+    moosh auth-list
+
+
 <span class="anchor" id="auth-manage"></span>
 <a class="command-name">auth-manage</a>
 ---------------
@@ -128,6 +144,22 @@ Example:
 
     moosh block-manage hide calendar
     moosh block-manage show calendar
+
+
+<span class="anchor" id="category-config-set"></span>
+<a class="command-name">category-config-set</a>
+---------------
+
+Set category configuration. Arguments are: categoryid setting value. The setting should match one of the columns from mdl_course_categories table.
+
+Example 1. Set ID for category 1 to "id17".
+
+    moosh category-config-set 1 idnumber id17
+
+Example 2. Set description of category id 1 to "My Description".
+
+    moosh category-config-set 1 description "My Description" 
+
 
 <span class="anchor" id="category-create"></span>
 <a class="command-name">category-create</a>
@@ -214,6 +246,22 @@ Example:
 The same as "purge all caches" page.
 
     moosh cache-clear
+
+
+<span class="anchor" id="cache-course-rebuild"></span>
+<a class="command-name">cache-course-rebuild</a>
+-----------
+
+Rebuild course cache.
+
+Example 1: Rebuild cache for course with id 2
+
+    moosh cache-course-rebuild 2
+    
+Example 2: Rebuild cache for all the courses.
+
+    moosh cache-course-rebuild -a
+
 
 <span class="anchor" id="code-check"></span>
 <a class="command-name">code-check</a>
@@ -331,6 +379,19 @@ Example 2: Backup course id=3 and save it as /tmp/mybackup.mbz:
 
     moosh course-backup -f /tmp/mybackup.mbz 3
 
+
+<span class="anchor" id="course-cleanup"></span>
+<a class="command-name">course-cleanup</a>
+-------------
+
+The command will to though various pieces of HTML texts contained in the given course and run purify_html() function on them. The command does not actually do any changes - 
+it will only show which content could possibly be cleaned up.
+
+Example 1: Check if there is any HTML to be cleaned-up in course 3:
+
+    moosh course-cleanup 3
+
+
 <span class="anchor" id="course-create"></span>
 <a class="command-name">course-create</a>
 -------------
@@ -345,6 +406,7 @@ Example 2: Create new course
 
     moosh course-create --category 1 --fullname "full course name" --description "course description" --idnumber "course idnumber" shortname
 
+
 <span class="anchor" id="course-config-set"></span>
 <a class="command-name">course-config-set</a>
 -----------------
@@ -358,6 +420,18 @@ Example 1: set the shortname of a single course with id=42
 Example 2: set the format to topics for all courses in a category with id=7
 
     moosh course-config-set category 7 format topics
+
+
+<span class="anchor" id="course-delete"></span>
+<a class="command-name">course-delete</a>
+-----------------
+
+Delete course(s) with ID(s) given as argument(s).
+
+Example 1: delete courses id 2,3 and 4.
+
+    moosh course-delete 2 3 4
+
 
 <span class="anchor" id="course-enrol"></span>
 <a class="command-name">course-enrol</a>
@@ -575,6 +649,43 @@ Example 2: Download latest Moodle 2.3.
 
         moosh download-moodle -v 2.3
 
+
+<span class="anchor" id="event-fire"></span>
+<a class="command-name">event-fire</a>
+-----------
+
+Fire an event. Provide event name and JSON encoded data.
+
+    moosh event-fire report_log\\event\\report_viewed '{"contextid":1,"relateduserid":1,"other":{"groupid":1,"date":100,"modid":1,"modaction":"view","logformat":0}}' 
+
+
+<span class="anchor" id="event-list"></span>
+<a class="command-name">event-list</a>
+-----------
+
+List all events available in current Moodle installation.
+
+    moosh event-list
+
+
+<span class="anchor" id="file-datacheck"></span>
+<a class="command-name">file-datacheck</a>
+-----------
+
+Go through all files in Moodle data and check them for corruption. The check is to compare file's SHA to their file names.
+
+    moosh file-datacheck
+
+
+<span class="anchor" id="file-dbcheck"></span>
+<a class="command-name">file-dbcheck</a>
+-----------
+
+Check that all files in DB do exist in Moodle data.
+
+    moosh file-dbcheck
+
+
 <span class="anchor" id="file-delete"></span>
 <a class="command-name">file-delete</a>
 -----------
@@ -717,6 +828,27 @@ Example:
     moosh forum-newdiscussion 3 7 2
     moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 7 2
 
+
+<span class="anchor" id="generate-availability"></span>
+<a class="command-name">generate-availability</a>
+-------------
+
+Generate a code for new availability condition based on danielneis/moodle-availability_newavailability.
+
+    moosh generate-availability newcondition
+
+
+<span class="anchor" id="generate-block"></span>
+<a class="command-name">generate-block</a>
+-------------
+
+Generate a code for new block based on the template.
+
+Example: generate new block_abc
+
+    moosh generate-block abc
+
+
 <span class="anchor" id="generate-cfg"></span>
 <a class="command-name">generate-cfg</a>
 -------------
@@ -738,13 +870,13 @@ Example 1: Generate new plugin under enrol/mynewenrol
 
     moosh generate-local mynewenrol
 
-<span class="anchor" id="generate-filepicker"></span>
-<a class="command-name">generate-filepicker</a>
+<span class="anchor" id="generate-filemanager"></span>
+<a class="command-name">generate-filemanager</a>
 -------------------
 
 Shows how to code filepicker, based on https://github.com/AndyNormore/filemanager. Takes no arguments.
 
-    moosh generate-filepicker
+    moosh generate-filemanager
 
 <span class="anchor" id="generate-form"></span>
 <a class="command-name">generate-form</a>
@@ -836,6 +968,16 @@ Example: Create new module under mod/flashcard
 
     moosh generate-module flashcard
 
+
+<span class="anchor" id="generate-moosh"></span>
+<a class="command-name">generate-moosh</a>
+---------------
+
+Use moosh to create new moosh command.
+
+    moosh generate-moosh category-command
+
+
 <span class="anchor" id="generate-qtype"></span>
 <a class="command-name">generate-qtype</a>
 --------------
@@ -847,6 +989,25 @@ Creates new question type based on the NEWMODULE template from https://github.co
 Example: Create new module under question/type/myqtype
 
     moosh generate-qtype myqtype
+
+
+<span class="anchor" id="generate-userprofilefield"></span>
+<a class="command-name">generate-userprofilefield</a>
+--------------
+
+Creates new profile field based on a template.
+
+    moosh generate-userprofilefield newfield
+
+
+<span class="anchor" id="generate-ws"></span>
+<a class="command-name">generate-ws</a>
+--------------
+
+Creates new local plugin for WS development based on moodlehq/moodle-local_wstemplate.
+
+    moosh generate-ws newws
+
 
 <span class="anchor" id="gradebook-import"></span>
 <a class="command-name">gradebook-import</a>
@@ -938,6 +1099,26 @@ Example:
 
     moosh module-manage hide scorm
     moosh module-manage show scorm
+
+
+<span class="anchor" id="module-reinstall"></span>
+<a class="command-name">module-reinstall</a>
+
+Re-install any Moodle plugin. It will remove all the data related to the module and install it from clean.
+
+Example:
+
+    moosh module-reinstall block_html
+    moosh module-reinstall mod_book
+
+
+<span class="anchor" id="nagios-check"></span>
+<a class="command-name">nagios-check</a>
+
+Create session login and login to a site using curl. Return error in Nagios format if login was not successful. 
+
+    moosh nagios-check
+
 
 <span class="anchor" id="php-eval"></span>
 <a class="command-name">php-eval</a>
@@ -1121,6 +1302,7 @@ Get information about concurrent users online.
 Use: -f and -t with date in either YYYYMMDD or YYYY-MM-DD date. Add -p te specify period.
 
 Example 1: Get concurrent users between 20-01-2014 and 27-01-2014 with 30 minut periods.
+
     moosh report-concurrency -f 20140120 -t 20140127 -p 30
 
 <span class="anchor" id="role-create"></span>
@@ -1147,6 +1329,16 @@ Example 2: Delete role id 10.
 
     moosh role-delete -i 10
 
+
+<span class="anchor" id="role-reset"></span>
+<a class="command-name">role-reset</a>
+-----------
+
+Reset give role's permissions from the file.
+
+    moosh role-reset 1 definition_file.txt
+
+
 <span class="anchor" id="role-update-capability"></span>
 <a class="command-name">role-update-capability</a>
 ----------------------
@@ -1157,9 +1349,11 @@ Use: -i "roleid" or "role_short_name" with "role capability" and "capability set
 and finally, "contextid" (where 1 is system wide)
 
 Example 1: update "student" role (roleid=5) "mod/forumng:grade" capability, system wide (contextid=1)
+
     moosh student mod/forumng:grade allow 1
 
 Example 2: update "editingteacher" role (roleid=3) "mod/forumng:grade" capability, system wide (contextid=1)
+
     moosh -i 3 mod/forumng:grade prevent 1
 
 <span class="anchor" id="role-update-contextlevel"></span>
@@ -1172,10 +1366,34 @@ Use: "short role name" or -i "roleid" with relevant context level (system|user|c
 and add "-on" or "-off" to the caontext level name to turn it on or off.
 
 Example 1: Allow "student" role to be set on block level
+
     moosh student -block-on
 
 Example 2: Prevent "manager" role to be set on course level
+
     moosh manager -course-off
+
+<span class="anchor" id="sql-cli"></span>
+<a class="command-name">sql-cli</a>
+-------
+
+Open a connection to the Moodle DB using credentials in config.php. Currently supports PostgreSQL and MySQL.
+
+Example:
+
+    moosh sql-cli
+
+
+<span class="anchor" id="sql-dump"></span>
+<a class="command-name">sql-dump</a>
+-------
+
+Dump Moodle DB to sql file. Works for PostgreSQL and MySQL.
+
+Example 1: dump database to backup.sql file
+
+    moosh sql-dump > backup.sql
+
 
 <span class="anchor" id="sql-run"></span>
 <a class="command-name">sql-run</a>
@@ -1191,15 +1409,6 @@ Example 2: Count the number of rows is log table
 
     moosh sql-run "select count(*) from {log}"
 
-<span class="anchor" id="sql-cli"></span>
-<a class="command-name">sql-cli</a>
--------
-
-Open a connection to the Moodle DB using credentials in config.php. Currently supports PostgreSQL and MySQL.
-
-Example:
-
-    moosh sql-cli
 
 <span class="anchor" id="theme-info"></span>
 <a class="command-name">theme-info</a>
