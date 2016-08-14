@@ -28,7 +28,7 @@ class ModuleReinstall extends MooshCommand
         require_once($CFG->libdir.'/adminlib.php');       // various admin-only functions
         require_once($CFG->libdir.'/upgradelib.php');     // general upgrade/install related functions
         require_once($CFG->libdir.'/environmentlib.php');
-        require_once($CFG->libdir.'/pluginlib.php');
+        @include_once($CFG->libdir.'/pluginlib.php');
         require_once($CFG->dirroot.'/course/lib.php');
 
         //some variables you may want to use
