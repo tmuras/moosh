@@ -3,6 +3,44 @@ title: moosh Development
 layout: default
 ---
 
+
+Vagrant
+=======
+
+moosh comes with vagrant setup, which will give you the following moosh development environment:
+ 
+ * Ubuntu 16.04 with PHP 7
+ * Apache configured to run as user vagrant (so no problems with the file permissions)
+ * MySQL
+ * Latest Moodle 3.1 installed
+ * composer and moosh installed from source
+ 
+Simply:
+
+    % git clone https://github.com/tmuras/moosh
+    % vagrant up
+ 
+Your Moodle 3.1 is now available at http://192.168.33.10/moodle/ (login "admin", password "a").
+ PhpMyAdmin URL is  http://192.168.33.10/phpmyadmin (MySQL login "root" and "mypassword).
+ 
+Once you SSH into your box with:
+ 
+     % vagrant ssh
+     
+You can run moosh inside the Moodle 3.1 installation:
+ 
+     % cd /var/www/html/moodle
+     % moosh user-list
+     
+The source code of moosh is under vagrant's home in /home/vagrant/moosh-src and calling "moosh" 
+ command will actually call /home/vagrant/moosh-src/moosh.php.
+  
+The directory /home/vagrant/moosh-src is shared with your host machine as "moosh-src", in directory
+ where you have cloned the git repository. This is so you can use your favourite IDE on your host PC.
+
+So - no excuses now - use pre-configured environment, develop some awesome moosh commands and send 
+ them to me! 
+
 Performance information
 =======================
 

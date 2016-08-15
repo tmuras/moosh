@@ -68,7 +68,49 @@
 
     <div class="container">
 
-     <h1>Performance information</h1>
+     <h1>Vagrant</h1>
+
+<p>moosh comes with vagrant setup, which will give you the following moosh development environment:</p>
+
+<ul>
+<li>Ubuntu 16.04 with PHP 7</li>
+<li>Apache configured to run as user vagrant (so no problems with the file permissions)</li>
+<li>MySQL</li>
+<li>Latest Moodle 3.1 installed</li>
+<li>composer and moosh installed from source</li>
+</ul>
+
+
+<p>Simply:</p>
+
+<pre><code>% git clone https://github.com/tmuras/moosh
+% vagrant up
+</code></pre>
+
+<p>Your Moodle 3.1 is now available at http://192.168.33.10/moodle/ (login "admin", password "a").
+ PhpMyAdmin URL is  http://192.168.33.10/phpmyadmin (MySQL login "root" and "mypassword).</p>
+
+<p>Once you SSH into your box with:</p>
+
+<pre><code> % vagrant ssh
+</code></pre>
+
+<p>You can run moosh inside the Moodle 3.1 installation:</p>
+
+<pre><code> % cd /var/www/html/moodle
+ % moosh user-list
+</code></pre>
+
+<p>The source code of moosh is under vagrant's home in /home/vagrant/moosh-src and calling "moosh"
+ command will actually call /home/vagrant/moosh-src/moosh.php.</p>
+
+<p>The directory /home/vagrant/moosh-src is shared with your host machine as "moosh-src", in directory
+ where you have cloned the git repository. This is so you can use your favourite IDE on your host PC.</p>
+
+<p>So - no excuses now - use pre-configured environment, develop some awesome moosh commands and send
+ them to me!</p>
+
+<h1>Performance information</h1>
 
 <p>You can use global option -t (or long version --performance) to show extra performance information collected while the command runs:</p>
 
