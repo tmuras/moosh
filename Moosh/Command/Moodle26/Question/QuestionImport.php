@@ -25,7 +25,8 @@ class QuestionImport extends MooshCommand
 
         require_once($CFG->dirroot . '/question/editlib.php');
         require_once($CFG->dirroot . '/question/import_form.php');
-        require_once($CFG->dirroot . '/question/format.php');        
+        require_once($CFG->dirroot . '/question/format.php');
+        require_once($CFG->dirroot . '/lib/questionlib.php');
         $arguments = $this->arguments;
         $this->checkFileArg($arguments[0]);
 
@@ -36,10 +37,12 @@ class QuestionImport extends MooshCommand
         $coursecontext = \context_course::instance($course->id);
         $coursemodule = get_coursemodule_from_instance('quiz',$quiz->id);
         $quizcontext = \context_module::instance($coursemodule->id,MUST_EXIST);
+        $contexts = new question_edit_contexts($quizcontext);
 
-        // Use existing questions category for quiz.
-        $category = $DB->get_record('question_categories',array('contextid'=>$coursecontext->id));
-        //$category = $DB->get_record("question_categories", array('id' => $category),MUST_EXIST);
+        // Use existing questions category for quiz or create the defaults.
+        if (!$category = $DB->get_record('question_categories',array('contextid'=>$coursecontext->id))) {
+            $category = question_make_default_categories($contexts->all());
+        }
 
         $formatfile = $CFG->dirroot .  '/question/format/xml/format.php';
         if (!is_readable($formatfile)) {
@@ -71,6 +74,14 @@ class QuestionImport extends MooshCommand
         // In case anything needs to be done after
         if (!$qformat->importpostprocess()) {
             print_error('cannotimport', '');
+        }
+        $addonpage = 1;
+        require_once($CFG->dirroot . '/mod/quiz/locallib.php');
+        foreach ($qformat->questionids as $addquestion) {
+            quiz_require_question_use($addquestion);
+            quiz_add_quiz_question($addquestion, $quiz, $addonpage);
+            quiz_delete_previews($quiz);
+            quiz_update_sumgrades($quiz);
         }
     }
 
