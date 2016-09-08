@@ -80,9 +80,11 @@ class FileHashDelete extends MooshCommand{
         if($safeDelete === true) {
             $DB->delete_records_select('files', $where);
             echo "Successfully deleted files." . PHP_EOL;
-            echo "File ID: {$file->id}, contenthash: {$file->contenthash}, "
-                . "itemid: {$file->itemid}, component {$file->component}, "
-                . "filearea {$file->filearea}, filename {$file->filename}" . PHP_EOL;
+            foreach ($files as $file) {
+                echo "File ID: {$file->id}, contenthash: {$file->contenthash}, "
+                    . "itemid: {$file->itemid}, component {$file->component}, "
+                    . "filearea {$file->filearea}, filename {$file->filename}" . PHP_EOL;
+            }
         } else {
             echo "safeDelete is not set. Refuse to remove any records in DB.";
         }
