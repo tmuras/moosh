@@ -26,47 +26,50 @@ class FileHashDelete extends MooshCommand{
         
         $hash = $this->arguments[0];
         
-        $result = $DB->get_record('files', array('contenthash' => $hash));
+        $results = $DB->get_records('files', array('contenthash' => $hash));
 
-        if ($result === false){
+        if ($results === false){
             cli_error("no file was found");
         }
         
-        $filesByItemIndex = $DB->get_records('files', array(
-                'itemid'    => $result->itemid,
-                'contextid' => $result->contextid,
-                'component' => $result->component,
-                'filearea'  => $result->filearea,
-            ));
-        
-        if (count($filesByItemIndex) <= 2) {
-            if (count($filesByItemIndex) === 1){
-                // there is just one file, delete it.
-                $this->deleteFiles($filesByItemIndex);
-            }
-            
-            if (count($filesByItemIndex) === 2) {
-                // there are 2 files. Check if one of them is '.'
-                $safeDelete = false;
-                
-                foreach ($filesByItemIndex as $file){
-                    if ($file->filename == ".") {
-                        $safeDelete = true;
+        foreach ($results as $result) {
+            $filesByItemIndex = $DB->get_records('files', array(
+                    'itemid'    => $result->itemid,
+                    'contextid' => $result->contextid,
+                    'component' => $result->component,
+                    'filearea'  => $result->filearea,
+                ));
+
+            if (count($filesByItemIndex) <= 2) {
+                if (count($filesByItemIndex) === 1){
+                    // there is just one file, delete it.
+                    $this->deleteFiles($filesByItemIndex);
+                }
+
+                if (count($filesByItemIndex) === 2) {
+                    // there are 2 files. Check if one of them is '.'
+                    $safeDelete = false;
+
+                    foreach ($filesByItemIndex as $file){
+                        if ($file->filename == ".") {
+                            $safeDelete = true;
+                        }
+                    }
+
+                    // If one of them is '.' delete both, otherwise inform user
+
+                    if ($safeDelete) {
+                        $this->deleteFiles($filesByItemIndex);
+                    } else {
+                    $this->tooManyFiles($filesByItemIndex);
                     }
                 }
-                
-                // If one of them is '.' delete both, otherwise inform user
-                
-                if ($safeDelete) {
-                    $this->deleteFiles($filesByItemIndex);
-                } else {
-                    $this->tooManyFiles($filesByItemIndex);
-                }
+            }else{
+                // give user info that there is too many files for safe deletion
+                $this->tooManyFiles($filesByItemIndex);
             }
-        }else{
-            // give user info that there is too many files for safe deletion
-            $this->tooManyFiles($filesByItemIndex);
         }
+        
     }
 
     private function deleteFiles(array $files) {
