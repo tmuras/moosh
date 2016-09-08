@@ -56,13 +56,7 @@ class FileHashDelete extends MooshCommand{
                         }
                     }
 
-                    // If one of them is '.' delete both, otherwise inform user
-
-                    if ($safeDelete) {
-                        $this->deleteFiles($filesByItemIndex);
-                    } else {
-                    $this->tooManyFiles($filesByItemIndex);
-                    }
+                    $this->deleteFiles($filesByItemIndex, $safeDelete);
                 }
             }else{
                 // give user info that there is too many files for safe deletion
@@ -72,7 +66,7 @@ class FileHashDelete extends MooshCommand{
         
     }
 
-    private function deleteFiles(array $files) {
+    private function deleteFiles(array $files, $safeDelete = false) {
         global $DB;
         
         $fileIds = [];
@@ -82,19 +76,20 @@ class FileHashDelete extends MooshCommand{
         }
         
         $where = "id IN (" . implode(',', $fileIds) . ")";
-        
-        $DB->delete_records_select('files', $where);
 
-        echo "Successfully deleted files." . PHP_EOL;
-    }
+        if($safeDelete === true) {
+            $DB->delete_records_select('files', $where);
+            echo "Successfully deleted files." . PHP_EOL;
+            echo "File ID: {$file->id}, contenthash: {$file->contenthash}, "
+                . "itemid: {$file->itemid}, component {$file->component}, "
+                . "filearea {$file->filearea}, filename {$file->filename}" . PHP_EOL;
+        } else {
+            echo "safeDelete is not set. Refuse to remove any records in DB.";
+        }
+}
     
     private function tooManyFiles($files) {
         echo "There are too many files for safe delete.".PHP_EOL;
-        
-        foreach ($files as $file) {
-            echo "File ID: {$file->id}, contenthash: {$file->contenthash}, itemid: {$file->itemid}".PHP_EOL;
-        }
-        
         echo "All files count: " . count($files) . PHP_EOL;
     }
 }
