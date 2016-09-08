@@ -27,14 +27,17 @@ class FileHashDelete extends MooshCommand{
         $hash = $this->arguments[0];
         
         $result = $DB->get_record('files', array('contenthash' => $hash));
-        
+
         if ($result === false){
             cli_error("no file was found");
         }
         
-        $itemindex = $result->itemid;
-        
-        $filesByItemIndex = $DB->get_records('files', array('itemid' => $itemindex));
+        $filesByItemIndex = $DB->get_records('files', array(
+                'itemid'    => $result->itemid,
+                'contextid' => $result->contextid,
+                'component' => $result->component,
+                'filearea'  => $result->filearea,
+            ));
         
         if (count($filesByItemIndex) <= 2) {
             if (count($filesByItemIndex) === 1){
@@ -78,7 +81,7 @@ class FileHashDelete extends MooshCommand{
         $where = "id IN (" . implode(',', $fileIds) . ")";
         
         $DB->delete_records_select('files', $where);
-        
+
         echo "Successfully deleted files." . PHP_EOL;
     }
     
@@ -86,7 +89,7 @@ class FileHashDelete extends MooshCommand{
         echo "There are too many files for safe delete.".PHP_EOL;
         
         foreach ($files as $file) {
-            echo "File ID: {$file->id}, file contenthash: {$file->contenthash}, file itemid: {$file->itemid}".PHP_EOL;
+            echo "File ID: {$file->id}, contenthash: {$file->contenthash}, itemid: {$file->itemid}".PHP_EOL;
         }
         
         echo "All files count: " . count($files) . PHP_EOL;
