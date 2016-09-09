@@ -20,50 +20,71 @@ class FileHashDelete extends MooshCommand{
         $this->addArgument('hash');
     }
     
-    public function execute()
-    {
+    public function execute() {
         global $DB;
-        
-        $hash = $this->arguments[0];
-        
-        $results = $DB->get_records('files', array('contenthash' => $hash));
 
-        if ($results === false){
+        $hash = $this->arguments[0];
+        $mainContentHash = $DB->get_records('files', array('contenthash' => $hash));
+
+        if (empty($mainContentHash)) {
             cli_error("no file was found");
         }
-        
-        foreach ($results as $result) {
-            $filesByItemIndex = $DB->get_records('files', array(
-                    'itemid'    => $result->itemid,
-                    'contextid' => $result->contextid,
-                    'component' => $result->component,
-                    'filearea'  => $result->filearea,
-                ));
 
-            if (count($filesByItemIndex) <= 2) {
-                if (count($filesByItemIndex) === 1){
-                    // there is just one file, delete it.
-                    $this->deleteFiles($filesByItemIndex);
+        foreach ($mainContentHash as $mainContentHashDetails) {
+            if ($mainContentHashDetails->filename == '.') {
+                echo 'There is: ' . count($mainContentHash) . ' results of this hash. ';
+                cli_error("You cant delete all dot '.' files.");
+            }
+            //get all elements in directory based on path up to contenthash-file
+            $mainContentHashElementsInPath = $DB->get_records('files', array(
+                'itemid'    => $mainContentHashDetails->itemid,
+                'contextid' => $mainContentHashDetails->contextid,
+                'component' => $mainContentHashDetails->component,
+                'filearea'  => $mainContentHashDetails->filearea,
+            ));
+            //var_dump($mainContentHashElementsInPath);
+            $countMainContentHashElementsInPath = count($mainContentHashElementsInPath);
+
+            if ($countMainContentHashElementsInPath > 2) {
+                //there are more than 2 files in path of mainContentHash
+                //check if one of the files in directory has the same id as initial content hash - delete it
+
+                if ($this->checkForDirRootDotFile($mainContentHashElementsInPath) !== true) {
+                    echo "For given directory there is no root dir '.' file";
+
+                }
+                
+                foreach ($mainContentHashElementsInPath as $file) {
+                    if ($file->id == $mainContentHashDetails->id) {
+                        $safeDelete = true;
+                        $this->deleteFiles($mainContentHash, $safeDelete);
+
+                    }
+                }
+            }
+
+            if ($countMainContentHashElementsInPath <= 2) {
+                if ($countMainContentHashElementsInPath === 1) {
+                    // there is just one file or empty dir, delete it.
+                    $this->deleteFiles($mainContentHashElementsInPath, true);
                 }
 
-                if (count($filesByItemIndex) === 2) {
-                    // there are 2 files. Check if one of them is '.'
+                if ($countMainContentHashElementsInPath === 2) {
+                    // there are 2 elements in given dir. Check if one of them is root dir entry '.'
                     $safeDelete = false;
 
-                    foreach ($filesByItemIndex as $file){
-                        if ($file->filename == ".") {
+                    if ($this->checkForDirRootDotFile($mainContentHashElementsInPath) === true) {
                             $safeDelete = true;
-                        }
+                    } else {
+                        echo "For given directory there is no root dir '.' file";
                     }
 
-                    $this->deleteFiles($filesByItemIndex, $safeDelete);
+                    if($safeDelete === true) {
+                        $this->deleteFiles($mainContentHashElementsInPath, $safeDelete);
+                    }
                 }
-            }else{
-                // give user info that there is too many files for safe deletion
-                $this->tooManyFiles($filesByItemIndex);
             }
         }
-        
     }
 
     private function deleteFiles(array $files, $safeDelete = false) {
@@ -90,8 +111,11 @@ class FileHashDelete extends MooshCommand{
         }
 }
     
-    private function tooManyFiles($files) {
-        echo "There are too many files for safe delete.".PHP_EOL;
-        echo "All files count: " . count($files) . PHP_EOL;
+    private function checkForDirRootDotFile($files) {
+        foreach($files as $file) {
+            if ($file->filename == ".") {
+                return true;
+            }
+        }
     }
 }
