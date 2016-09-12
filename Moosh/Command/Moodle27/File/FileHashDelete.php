@@ -42,23 +42,22 @@ class FileHashDelete extends MooshCommand{
                 'component' => $mainContentHashDetails->component,
                 'filearea'  => $mainContentHashDetails->filearea,
             ));
-            //var_dump($mainContentHashElementsInPath);
+
+            if ($this->checkForDirRootDotFile($mainContentHashElementsInPath) !== true) {
+                echo "For given directory there is no root dir '.' file.\n";
+            }
+
+
             $countMainContentHashElementsInPath = count($mainContentHashElementsInPath);
 
             if ($countMainContentHashElementsInPath > 2) {
                 //there are more than 2 files in path of mainContentHash
                 //check if one of the files in directory has the same id as initial content hash - delete it
 
-                if ($this->checkForDirRootDotFile($mainContentHashElementsInPath) !== true) {
-                    echo "For given directory there is no root dir '.' file";
-
-                }
-                
-                foreach ($mainContentHashElementsInPath as $file) {
-                    if ($file->id == $mainContentHashDetails->id) {
+                foreach ($mainContentHashElementsInPath as $mainContentHashElementsInPathDetails) {
+                    if ($mainContentHashElementsInPathDetails->id == $mainContentHashDetails->id) {
                         $safeDelete = true;
                         $this->deleteFiles($mainContentHash, $safeDelete);
-
                     }
                 }
             }
@@ -76,7 +75,8 @@ class FileHashDelete extends MooshCommand{
                     if ($this->checkForDirRootDotFile($mainContentHashElementsInPath) === true) {
                             $safeDelete = true;
                     } else {
-                        echo "For given directory there is no root dir '.' file";
+                        //Keep the entry for the user to be able to find broken dir in DB.
+                        echo "Error: Broken entry in DB. For given directory there is no root dir '.' file. Recreate it first. Not deleting this entry.";
                     }
 
                     if($safeDelete === true) {
