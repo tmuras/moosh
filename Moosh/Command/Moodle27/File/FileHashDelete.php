@@ -13,8 +13,7 @@ use Moosh\MooshCommand;
 
 class FileHashDelete extends MooshCommand{
     
-    public function __construct() 
-    {
+    public function __construct() {
         parent::__construct('hash-delete', 'file');
         
         $this->addArgument('hash');
@@ -29,12 +28,14 @@ class FileHashDelete extends MooshCommand{
         if (empty($mainContentHash)) {
             cli_error("no file was found");
         }
+        
+        echo 'There is: ' . count($mainContentHash) . ' results of this hash. '.PHP_EOL;
 
         foreach ($mainContentHash as $mainContentHashDetails) {
             if ($mainContentHashDetails->filename == '.') {
-                echo 'There is: ' . count($mainContentHash) . ' results of this hash. ';
                 cli_error("You cant delete all dot '.' files.");
             }
+            
             //get all elements in directory based on path up to contenthash-file
             $mainContentHashElementsInPath = $DB->get_records('files', array(
                 'itemid'    => $mainContentHashDetails->itemid,
@@ -44,50 +45,28 @@ class FileHashDelete extends MooshCommand{
             ));
 
             if ($this->checkForDirRootDotFile($mainContentHashElementsInPath) !== true) {
-                echo "For given directory there is no root dir '.' file.\n";
+                echo "Error: Broken entry in DB. For given directory there is no root dir '.' file. "
+                   . "Recreate it first. Not deleting this entry.".PHP_EOL;
+                continue;
             }
-
 
             $countMainContentHashElementsInPath = count($mainContentHashElementsInPath);
 
             if ($countMainContentHashElementsInPath > 2) {
                 //there are more than 2 files in path of mainContentHash
                 //check if one of the files in directory has the same id as initial content hash - delete it
-
                 foreach ($mainContentHashElementsInPath as $mainContentHashElementsInPathDetails) {
                     if ($mainContentHashElementsInPathDetails->id == $mainContentHashDetails->id) {
-                        $safeDelete = true;
-                        $this->deleteFiles($mainContentHash, $safeDelete);
+                        $this->deleteFiles([$mainContentHashElementsInPathDetails]);
                     }
                 }
-            }
-
-            if ($countMainContentHashElementsInPath <= 2) {
-                if ($countMainContentHashElementsInPath === 1) {
-                    // there is just one file or empty dir, delete it.
-                    $this->deleteFiles($mainContentHashElementsInPath, true);
-                }
-
-                if ($countMainContentHashElementsInPath === 2) {
-                    // there are 2 elements in given dir. Check if one of them is root dir entry '.'
-                    $safeDelete = false;
-
-                    if ($this->checkForDirRootDotFile($mainContentHashElementsInPath) === true) {
-                            $safeDelete = true;
-                    } else {
-                        //Keep the entry for the user to be able to find broken dir in DB.
-                        echo "Error: Broken entry in DB. For given directory there is no root dir '.' file. Recreate it first. Not deleting this entry.";
-                    }
-
-                    if($safeDelete === true) {
-                        $this->deleteFiles($mainContentHashElementsInPath, $safeDelete);
-                    }
-                }
+            } else {
+                $this->deleteFiles($mainContentHashElementsInPath);
             }
         }
     }
 
-    private function deleteFiles(array $files, $safeDelete = false) {
+    private function deleteFiles(array $files) {
         global $DB;
         
         $fileIds = [];
@@ -98,18 +77,14 @@ class FileHashDelete extends MooshCommand{
         
         $where = "id IN (" . implode(',', $fileIds) . ")";
 
-        if($safeDelete === true) {
-            $DB->delete_records_select('files', $where);
-            echo "Successfully deleted files." . PHP_EOL;
-            foreach ($files as $file) {
-                echo "File ID: {$file->id}, contenthash: {$file->contenthash}, "
-                    . "itemid: {$file->itemid}, component {$file->component}, "
-                    . "filearea {$file->filearea}, filename {$file->filename}" . PHP_EOL;
-            }
-        } else {
-            echo "safeDelete is not set. Refuse to remove any records in DB.";
+        $DB->delete_records_select('files', $where);
+        echo "Successfully deleted files." . PHP_EOL;
+        foreach ($files as $file) {
+            echo "File ID: {$file->id}, contenthash: {$file->contenthash}, "
+                . "itemid: {$file->itemid}, component: {$file->component}, "
+                . "filearea: {$file->filearea}, filename: {$file->filename}" . PHP_EOL;
         }
-}
+    }
     
     private function checkForDirRootDotFile($files) {
         foreach($files as $file) {
