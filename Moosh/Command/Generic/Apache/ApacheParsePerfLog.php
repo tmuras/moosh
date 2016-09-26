@@ -46,6 +46,15 @@ use Moosh\ApacheLogParser\Parser;
  cache_file_sets int(10) unsigned NOT NULL,
  cache_file_misses int(10) unsigned NOT NULL,
  cache_file_hits int(10) unsigned NOT NULL,
+ cache_memcache_sets int(10) unsigned NOT NULL,
+ cache_memcache_misses int(10) unsigned NOT NULL,
+ cache_memcache_hits int(10) unsigned NOT NULL,
+ cache_memcached_sets int(10) unsigned NOT NULL,
+ cache_memcached_misses int(10) unsigned NOT NULL,
+ cache_memcached_hits int(10) unsigned NOT NULL,
+ cache_redis_sets int(10) unsigned NOT NULL,
+ cache_redis_misses int(10) unsigned NOT NULL,
+ cache_redis_hits int(10) unsigned NOT NULL,
  query varchar(255) NULL,
  script varchar(255) NULL,
  path varchar(255) NULL,
@@ -84,11 +93,14 @@ class ApacheParsePerfLog extends MooshCommand
         }
 
         $handle = fopen($logfile, "r");
+        
+        $linecount = 0;
 
         while (($line = fgets($handle, self::$MAX_LINE_LENGTH)) !== false) {
             if (strpos($line, 'PERF:') === false) {
                 continue;
             }
+            $linecount++;
             $row = array();
             //echo $line;
             //time: 2.774779s
@@ -175,6 +187,9 @@ class ApacheParsePerfLog extends MooshCommand
             list($row['cache_static_hits'], $row['cache_static_misses'], $row['cache_static_sets']) = $this->parseCaches($line, 'cachestore_static');
             list($row['cache_staticpersist_hits'], $row['cache_staticpersist_misses'], $row['cache_staticpersist_sets']) = $this->parseCaches($line, '\*\* static persist \*\*');
             list($row['cache_file_hits'], $row['cache_file_misses'], $row['cache_file_sets']) = $this->parseCaches($line, 'cachestore_file');
+            list($row['cache_memcached_hits'], $row['cache_memcached_misses'], $row['cache_memcached_sets']) = $this->parseCaches($line, 'cachestore_memcached');
+            list($row['cache_memcache_hits'], $row['cache_memcache_misses'], $row['cache_memcache_sets']) = $this->parseCaches($line, 'cachestore_memcache');
+            list($row['cache_redis_hits'], $row['cache_redis_misses'], $row['cache_redis_sets']) = $this->parseCaches($line, 'cachestore_redis');
 
             // Analyze URL.
             list($row['script'], $row['query'], $row['path'], $row['type']) = $this->analyzeURL($row);
@@ -196,6 +211,9 @@ class ApacheParsePerfLog extends MooshCommand
 	    }
             echo "$sql\n";
         }
+        
+        if ($linecount == 0)
+            cli_error('No PERF info found. Is this the right log file?');
     }
 
     private function parse($line, $regexp)
