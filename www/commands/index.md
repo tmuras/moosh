@@ -76,6 +76,63 @@ Example 1.
 
     moosh apache-parse-perflog apache.log
 
+Sample line generated (INSERT):
+
+    INSERT IGNORE INTO perflog (time,timestamp,url,memory_peak,includecount,langcountgetstring,db_reads,db_writes,db_queries_time,ticks,user,sys,cuser,csys,serverload,cache_mondodb_hits,cache_mondodb_misses,cache_mondodb_sets,cache_static_hits,cache_static_misses,cache_static_sets,cache_staticpersist_hits,cache_staticpersist_misses,cache_staticpersist_sets,cache_file_hits,cache_file_misses,cache_file_sets,cache_memcached_hits,cache_memcached_misses,cache_memcached_sets,cache_memcache_hits,cache_memcache_misses,cache_memcache_sets,cache_redis_hits,cache_redis_misses,cache_redis_sets,script,query,type) VALUES ('2478271','2016-07-26 10:21:30','/course/view.php?id=139&section=4','16427592','1465','1586','1314','1','1041750','248','58','12','0','0','14','0','0','0','1819','17','27','0','0','0','0','2','0','73','161','163','0','0','0','0','0','0','/course/view.php','id=139&section=4','script')
+
+The DB table structure for the INSERTs generated:
+
+<pre><code>
+CREATE TABLE perflog (
+ id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+ timestamp datetime NOT NULL,
+ time int(10) unsigned NOT NULL,
+ url varchar(255) NOT NULL,
+ memory_peak int(10) unsigned NOT NULL,
+ includecount int(10) unsigned NOT NULL,
+ contextswithfilters int(10) unsigned NOT NULL,
+ filterscreated int(10) unsigned NOT NULL,
+ textsfiltered int(10) unsigned NOT NULL,
+ stringsfiltered int(10) unsigned NOT NULL,
+ langcountgetstring int(10) unsigned NOT NULL,
+ db_reads int(10) unsigned NOT NULL,
+ db_writes int(10) unsigned NOT NULL,
+ db_queries_time int(10) unsigned NOT NULL,
+ ticks int(10) unsigned NOT NULL,
+ user int(10) unsigned NOT NULL,
+ sys int(10) unsigned NOT NULL,
+ cuser int(10) unsigned NOT NULL,
+ csys int(10) unsigned NOT NULL,
+ serverload int(10) unsigned NOT NULL,
+ cache_mondodb_sets int(10) unsigned NOT NULL,
+ cache_mondodb_misses int(10) unsigned NOT NULL,
+ cache_mondodb_hits int(10) unsigned NOT NULL,
+ cache_static_sets int(10) unsigned NOT NULL,
+ cache_static_misses int(10) unsigned NOT NULL,
+ cache_static_hits int(10) unsigned NOT NULL,
+ cache_staticpersist_sets int(10) unsigned NOT NULL,
+ cache_staticpersist_misses int(10) unsigned NOT NULL,
+ cache_staticpersist_hits int(10) unsigned NOT NULL,
+ cache_file_sets int(10) unsigned NOT NULL,
+ cache_file_misses int(10) unsigned NOT NULL,
+ cache_file_hits int(10) unsigned NOT NULL,
+ cache_memcache_sets int(10) unsigned NOT NULL,
+ cache_memcache_misses int(10) unsigned NOT NULL,
+ cache_memcache_hits int(10) unsigned NOT NULL,
+ cache_memcached_sets int(10) unsigned NOT NULL,
+ cache_memcached_misses int(10) unsigned NOT NULL,
+ cache_memcached_hits int(10) unsigned NOT NULL,
+ cache_redis_sets int(10) unsigned NOT NULL,
+ cache_redis_misses int(10) unsigned NOT NULL,
+ cache_redis_hits int(10) unsigned NOT NULL,
+ query varchar(255) NULL,
+ script varchar(255) NULL,
+ path varchar(255) NULL,
+ type varchar(255) NULL,
+ PRIMARY KEY (id),
+ UNIQUE KEY uniquerow (timestamp,time,url)
+);
+</code></pre>
 
 <span class="anchor" id="audit-passwords"></span>
 <a class="command-name">audit-passwords</a>
