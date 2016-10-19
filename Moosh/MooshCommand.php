@@ -160,11 +160,15 @@ class MooshCommand
      * Define required argument. Call function again to add another argument.
      * @param string $name
      */
-    public function addArgument($name, $type = ARG_GENERIC)
+    public function addArgument($name, $type = ARG_GENERIC, $optional=false)
     {
-        $this->minArguments++;
         $this->maxArguments++;
-        $this->argumentNames[] = $name;
+        if ($optional) {
+            $this->minArguments++;
+            $this->argumentNames[] = $name;
+        } else {
+            $this->argumentNames[] = $name . " (optional)";
+        }
 
         if($type == ARG_EXISTING_FILENAME) {
             if ($name[0] != '/') {

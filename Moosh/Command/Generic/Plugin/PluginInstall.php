@@ -18,7 +18,7 @@ class PluginInstall extends MooshCommand
 
         $this->addArgument('plugin_name');
         $this->addArgument('moodle_version');
-        $this->addArgument('plugin_version');
+        $this->addArgument('plugin_version', ARG_GENERIC, true);
     }
 
     public function execute()
@@ -32,7 +32,11 @@ class PluginInstall extends MooshCommand
 
         $pluginname = $this->arguments[0];
         $moodleversion = $this->arguments[1];
-        $pluginversion = $this->arguments[2];
+        if (sizeof($this->arguments) >= 3) {
+            $pluginversion = $this->arguments[2];
+        } else {
+            $pluginversion = -1;                         // "use latest compatible version"
+        }
         $pluginsfile = home_dir() . '/.moosh/plugins.json';
 
         $stat = @stat($pluginsfile);
@@ -126,14 +130,27 @@ class PluginInstall extends MooshCommand
                 continue;
             }
             if($plugin->component == $pluginname) {
+                $downloadurl = null;
                 foreach($plugin->versions as $j) {
                     foreach($j->supportedmoodles as $v) {
-                        if($v->release == $moodleversion && $v->version == $pluginversion) {
+                        if($v->release == $moodleversion) {
+                            # Record the url for the most recent (assumed to be highest) 
+                            # version of plugin that is compatible with the given Moodle 
+                            # version...
                             $downloadurl = $j->downloadurl;
 
-                            return $downloadurl;
+                            # ...and return it if this version matches the given 
+                            # version.
+                            if ($pluginversion >= 0 && $v->version == $pluginversion) {
+                                return $downloadurl;
+                            } 
                         }
                     }
+                }
+                # Negative pluginversion indicates we should return the latest version
+                # compatible with the given version of Moodle (recorded above)
+                if ($pluginversion < 0 and ! is_null($downloadurl)) {
+                    return $downloadurl;
                 }
             }
         }
