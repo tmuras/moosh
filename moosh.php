@@ -154,16 +154,6 @@ if (file_exists($home_dir . DIRECTORY_SEPARATOR . ".mooshrc.php")) {
     $moodlerc = $home_dir . DIRECTORY_SEPARATOR . "mooshrc.php";
 }
 
-// Check if home dir writable.
-if(!is_writeable($home_dir)) {
-    cli_problem("Warning: my home directory: '$home_dir' is not writable!");
-}
-
-// Create directory for configuration if one is not there already.
-if(!file_exists($home_dir . "/.moosh")) {
-    @mkdir(home_dir() . "/.moosh");
-}
-
 $options = NULL;
 if ($moodlerc) {
     if (isset($app_options['verbose'])) {
@@ -271,6 +261,18 @@ $subcommand->expandOptions();
 // Some more debug if requested.
 if ($app_options->has('verbose')) {
     $subcommand->status();
+}
+
+// Create directory for configuration if one is not there already.
+if($subcommand->requireHomeWriteable() && !file_exists($local_dir)) {
+    if(!mkdir($local_dir)) {
+        cli_error("Could not create moosh directory in '$local_dir' and this command requires it.");
+    }
+}
+
+// Check if home dir writable.
+if($subcommand->requireHomeWriteable() && !is_writeable($local_dir)) {
+    cli_error("Warning: my home directory: '$local_dir' is not writable and the command requires write access there!");
 }
 
 // Execute the actual logic.

@@ -138,5 +138,9 @@ class PluginInstall extends MooshCommand
             }
         }
     }
+
+    public function requireHomeWriteable() {
+        return true;
+    }
 }
 

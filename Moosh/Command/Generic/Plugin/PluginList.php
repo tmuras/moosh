@@ -72,4 +72,8 @@ class PluginList extends MooshCommand
     {
         return self::$BOOTSTRAP_NONE;
     }
+
+    public function requireHomeWriteable() {
+        return true;
+    }
 }
