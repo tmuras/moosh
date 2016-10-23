@@ -1192,11 +1192,11 @@ Example:
 <a class="command-name">plugin-install</a>
 ----------------
 
-Download and install plugin. Requires plugin short name, and moodle version. You can obtain those data by using `plugin-list' command. 
+Download and install plugin. Requires plugin short name, and plugin version. You can obtain those data by using `plugin-list -v' command.
 
 Example:
 
-    moosh plugin-install mod_quickmail 10 
+    moosh plugin-install mod_quickmail 20160101
 
 
 <span class="anchor" id="plugin-list"></span>
