@@ -134,8 +134,7 @@ class PluginInstall extends MooshCommand
         return $types[$type];
     }
 
-    private function get_plugin_url($pluginname, $pluginversion)
-    {
+    private function get_plugin_url($pluginname, $pluginversion) {
         $pluginlist = $this->get_plugins_data();
 
         foreach ($pluginlist->plugins as $plugin) {
@@ -143,17 +142,28 @@ class PluginInstall extends MooshCommand
                 continue;
             }
             if ($plugin->component == $pluginname) {
+                $bestversion = false;
+                $altversion = false;
                 foreach ($plugin->versions as $version) {
                     if ($version->version == $pluginversion) {
-
-                        if (!$this->expandedOptions['force'] && !$this->is_supported_by_moodle($version)) {
-                            $message = "This plugin is not supported for your Moodle version (release $this->moodlerelease - version $this->moodleversion). ";
-                            $message .= "Specify a different plugin version, or use the -f flag to force installation of (this) unsupported version.\n";
-                            die($message);
+                        if ($this->is_supported_by_moodle($version)) {
+                            $bestversion = $version;
+                        } else {
+                            $altversion = $version;
                         }
-
-                        return $version->downloadurl;
                     }
+                }
+                if (!$this->expandedOptions['force'] && !$bestversion) {
+                    $message =
+                            "This plugin is not supported for your Moodle version (release $this->moodlerelease - version $this->moodleversion). ";
+                    $message .= "Specify a different plugin version, or use the -f flag to force installation of (this) unsupported version.\n";
+                    die($message);
+                }
+
+                if($bestversion) {
+                    return $bestversion->downloadurl;
+                } else {
+                    return $altversion->downloadurl;
                 }
             }
         }
