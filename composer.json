@@ -2,7 +2,6 @@
     "name": "tmuras/moosh",
     "description": "Moosh stands for MOOdle SHell. It is a command-line tool that will allow you to perform most common Moodle tasks.",
     "license": "GPL-3.0+",
-    "version": "0.18",
     "homepage": "http://moosh-online.com",
     "keywords": ["moodle", "shell", "cli"],
     "repositories":[
