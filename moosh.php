@@ -227,21 +227,23 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
     @ini_set('display_errors', '1');
 
 
-    // By default set up $USER to admin user.
-    if ($app_options->has('user')) {
-        $user = get_user_by_name($app_options['user']->value);
-        if (!$user) {
-            echo "Error: No user account was found\n";
-            exit(1);
+    if ($subcommand->bootstrapLevel() != MooshCommand::$BOOTSTRAP_CONFIG) {
+        // By default set up $USER to admin user.
+        if ($app_options->has('user')) {
+            $user = get_user_by_name($app_options['user']->value);
+            if (!$user) {
+                echo "Error: No user account was found\n";
+                exit(1);
+            }
+        } else {
+            $user = get_admin();
+            if (!$user) {
+                echo "Error: No admin account was found\n";
+                exit(1);
+            }
         }
-    } else {
-        $user = get_admin();
-        if (!$user) {
-            echo "Error: No admin account was found\n";
-            exit(1);
-        }
+        @complete_user_login($user);
     }
-    @complete_user_login($user);
 }
 
 if ($app_options->has('verbose')) {
