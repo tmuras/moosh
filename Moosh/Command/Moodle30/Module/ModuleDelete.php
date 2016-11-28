@@ -28,7 +28,6 @@ class ModuleDelete extends MooshCommand
         $plugininfo = $pluginmanager->get_plugins();
         foreach ($plugininfo as $type => $plugins) {
             foreach ($plugins as $pluginname => $plugin) {
-                $name = sprintf("%s_%s", $type, $plugin->name);
                 $status = $plugin->get_status();
                 if ($status === \core_plugin_manager::PLUGIN_STATUS_MISSING) {
                     if ($verbose) {
