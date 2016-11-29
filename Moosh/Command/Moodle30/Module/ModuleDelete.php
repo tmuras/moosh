@@ -9,8 +9,7 @@
 namespace Moosh\Command\Moodle30\Module;
 use Moosh\MooshCommand;
 
-class ModuleDelete extends MooshCommand
-{
+class ModuleDelete extends MooshCommand {
     public function __construct() {
         parent::__construct('missingplugins', 'delete');
         $this->addOption('v|verbose', 'verbose');
@@ -31,17 +30,13 @@ class ModuleDelete extends MooshCommand
                 $status = $plugin->get_status();
                 if ($status === \core_plugin_manager::PLUGIN_STATUS_MISSING) {
                     if ($verbose) {
-                        printf("uninstalling: %s\n",$plugin->component); 
+                        printf("uninstalling: %s\n",$plugin->component);
                     }
                     # code taken from admin/plugin.php lines 83 - 99
                     if (!$pluginmanager->can_uninstall_plugin($plugin->component)) {
-                        throw new moodle_\exception('err_cannot_uninstall_plugin', 
-                            'core_plugin', 
-                            '', 
-                            array('plugin' => $plugin->component), 
-                            'core_plugin_manager::can_uninstall_plugin() returned false'
-                        ); 
-                    } 
+                        cli_problem(sprintf("Warning: uninstall is not allowed for %s", $plugin->component));
+                        continue;
+                    }
                     $progress = new \progress_trace_buffer(new \text_progress_trace(), false);
                     $pluginmanager->uninstall_plugin($plugin->component, $progress);
                     $progress->finished();
