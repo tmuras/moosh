@@ -46,5 +46,8 @@ class ModuleDelete extends MooshCommand {
                 }
             }
         }
+        if ($verbose) {
+            printf("all done\n");
+        }   
     }
 }
