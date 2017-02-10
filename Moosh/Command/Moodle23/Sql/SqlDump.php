@@ -17,6 +17,11 @@ class SqlDump extends MooshCommand
         parent::__construct('dump', 'sql');
     }
 
+    public function bootstrapLevel()
+    {
+        return MooshCommand::$BOOTSTRAP_CONFIG;
+    }
+
     public function execute()
     {
         global $CFG, $DB;

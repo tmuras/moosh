@@ -42,8 +42,11 @@ class EventFire extends MooshCommand
         $data = $this->arguments[1];
 
         $data = json_decode($data,true);
-        //var_dump($data);
-//die();
+
+        if(!$data) {
+            cli_error("Could not decode json data.");
+        }
+
         //load cache file manually as there seems to be no way to get it using Moodle API
         $cachefile = "$CFG->cachedir/core_component.php";
         include($cachefile);
@@ -70,11 +73,16 @@ class EventFire extends MooshCommand
         }
 
         $class = $cache['classmap'][$fullname];
+
+        if(!$class) {
+            cli_error("Class '$fullname' not found");
+        }
+
         if($this->verbose) {
             cli_problem("Loading class $fullname");
         }
         $event = $fullname::create($data);
-        $event->set_legacy_logdata(array(666, "course", "report log", "report/log/index.php?id=666", 666));
+        //$event->set_legacy_logdata(array(666, "course", "report log", "report/log/index.php?id=666", 666));
         $event->trigger();
     }
 }

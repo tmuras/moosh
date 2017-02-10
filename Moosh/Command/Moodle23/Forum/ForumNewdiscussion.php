@@ -18,11 +18,8 @@ use Moosh\MooshCommand;
 class ForumNewdiscussion extends MooshCommand
 {
 
-    /**
-     * @var array Using subject as name attribute description (subject attr. is not really used).
-     */
     protected $discussionoptions = array(
-        'name' => array('s|subject:', 'discussion subject'),
+        'subject' => array('s|subject:', 'discussion subject'),
         'message' => array('m|message:', 'message'),
     );
 
@@ -65,6 +62,7 @@ class ForumNewdiscussion extends MooshCommand
                 $discussiondata->{$key} = $this->expandedOptions[$key];
             }
         }
+        $discussiondata->name = $discussiondata->subject;
 
         $forumgenerator = $generator->get_plugin_generator('mod_forum');
         $record = $forumgenerator->create_discussion($discussiondata);

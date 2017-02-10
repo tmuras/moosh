@@ -37,7 +37,7 @@ use GetOptionKit\OptionCollection;
 @error_reporting(E_ALL | E_STRICT);
 @ini_set('display_errors', '1');
 
-define('MOOSH_VERSION', '0.21');
+define('MOOSH_VERSION', '0.23');
 define('MOODLE_INTERNAL', true);
 
 $appspecs = new OptionCollection;
@@ -141,20 +141,17 @@ while (!$parser->isEnd()) {
     $arguments[] = $parser->advance();
 }
 
-//read config file if available
+// Read config file if available.
 $moodlerc = NULL;
 
-if (file_exists(home_dir() . DIRECTORY_SEPARATOR . ".mooshrc.php")) {
-    $moodlerc = home_dir() . DIRECTORY_SEPARATOR . ".mooshrc.php";
+$home_dir = home_dir();
+
+if (file_exists($home_dir . DIRECTORY_SEPARATOR . ".mooshrc.php")) {
+    $moodlerc = $home_dir . DIRECTORY_SEPARATOR . ".mooshrc.php";
 } elseif (file_exists("/etc/moosh/mooshrc.php")) {
     $moodlerc = "/etc/moosh/mooshrc.php";
-} elseif (file_exists(home_dir() . DIRECTORY_SEPARATOR . "mooshrc.php")) {
-    $moodlerc = home_dir() . DIRECTORY_SEPARATOR . "mooshrc.php";
-}
-
-// Create directory for configuration if one is not there already.
-if(!file_exists(home_dir() . "/.moosh")) {
-    @mkdir(home_dir() . "/.moosh");
+} elseif (file_exists($home_dir . DIRECTORY_SEPARATOR . "mooshrc.php")) {
+    $moodlerc = $home_dir . DIRECTORY_SEPARATOR . "mooshrc.php";
 }
 
 $options = NULL;
@@ -223,28 +220,30 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
     $subcommand->topDir = $top_dir;
     $subcommand->relativeDir = $relative_dir;
 
-    //set up debugging
+    // Set up debugging.
     $CFG->debug = (E_ALL);
     $CFG->debugdisplay = 1;
     @error_reporting(E_ALL);
     @ini_set('display_errors', '1');
 
 
-    // By default set up $USER to admin user.
-    if ($app_options->has('user')) {
-        $user = get_user_by_name($app_options['user']->value);
-        if (!$user) {
-            echo "Error: No user account was found\n";
-            exit(1);
+    if ($subcommand->bootstrapLevel() != MooshCommand::$BOOTSTRAP_CONFIG) {
+        // By default set up $USER to admin user.
+        if ($app_options->has('user')) {
+            $user = get_user_by_name($app_options['user']->value);
+            if (!$user) {
+                echo "Error: No user account was found\n";
+                exit(1);
+            }
+        } else {
+            $user = get_admin();
+            if (!$user) {
+                echo "Error: No admin account was found\n";
+                exit(1);
+            }
         }
-    } else {
-        $user = get_admin();
-        if (!$user) {
-            echo "Error: No admin account was found\n";
-            exit(1);
-        }
+        @complete_user_login($user);
     }
-    complete_user_login($user);
 }
 
 if ($app_options->has('verbose')) {
@@ -264,6 +263,18 @@ $subcommand->expandOptions();
 // Some more debug if requested.
 if ($app_options->has('verbose')) {
     $subcommand->status();
+}
+
+// Create directory for configuration if one is not there already.
+if($subcommand->requireHomeWriteable() && !file_exists($local_dir)) {
+    if(!mkdir($local_dir)) {
+        cli_error("Could not create moosh directory in '$local_dir' and this command requires it.");
+    }
+}
+
+// Check if home dir writable.
+if($subcommand->requireHomeWriteable() && !is_writeable($local_dir)) {
+    cli_error("Warning: my home directory: '$local_dir' is not writable and the command requires write access there!");
 }
 
 // Execute the actual logic.
