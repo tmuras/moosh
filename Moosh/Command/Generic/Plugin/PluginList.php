@@ -48,21 +48,28 @@ class PluginList extends MooshCommand
         }
         $fulllist = array();
         foreach($data->plugins as $k=>$plugin) {
-            if(!$plugin->component) {
+            $highestpluginversion = 0;
+            if (!$plugin->component) {
                 continue;
             }
-            $fulllist[$plugin->component] = array('releases' => array());
-            foreach($plugin->versions as $v=>$version) {
-                if ($this->expandedOptions['versions']) {
-                    $fulllist[$plugin->component]['releases'][$version->version] = $version;
-                } else {
-                    foreach($version->supportedmoodles as $supportedmoodle) {
-                        $fulllist[$plugin->component]['releases'][$supportedmoodle->release] = $version;
+            $fulllist[$plugin->component] = array('releases' => array(), 'latestversion' => "");
+            foreach ($plugin->versions as $v => $version) {
+                if ($version->version >= $highestpluginversion) {
+                    $highestpluginversion = $version->version;
+                    $fulllist[$plugin->component]['latestversion'] = $version;
+
+                    if($this->expandedOptions['versions']) {
+                        $fulllist[$plugin->component]['releases'][$version->version] = $version;
+                    } else {
+                        foreach ($version->supportedmoodles as $supportedmoodle) {
+                            $fulllist[$plugin->component]['releases'][$supportedmoodle->release] = $version;
+                        }
                     }
                 }
-                $fulllist[$plugin->component]['url'] = $version->downloadurl;
             }
+            $fulllist[$plugin->component]['url'] = $fulllist[$plugin->component]['latestversion']->downloadurl;
         }
+
 
         ksort($fulllist);
         foreach($fulllist as $k => $plugin) {
