@@ -19,6 +19,7 @@ class CategoryCreate extends MooshCommand
         $this->addOption('p|parent:', 'format');
         $this->addOption('i|idnumber:', 'idnumber');
         $this->addOption('v|visible:', 'visible');
+        $this->addOption('r|reuse', 'reuse existing category if it is the only matching one', false);
 
         $this->addArgument('name');
 
@@ -37,7 +38,11 @@ class CategoryCreate extends MooshCommand
             $category->parent = $options['parent'];
             $category->idnumber = $options['idnumber']; 
             $category->visible = $options['visible'];
-            $newcategory = $this->create_category($category);
+            if ($options['reuse'] && $existing = $this->find_category($category)) {
+                $newcategory = $existing;
+            } else {
+                $newcategory = $this->create_category($category);
+            }
 
             //either use API create_course
             echo $newcategory->id . "\n";
@@ -49,6 +54,23 @@ class CategoryCreate extends MooshCommand
         global $CFG;
         require_once $CFG->dirroot . '/course/lib.php';
         return create_course_category($category);
+    }
+
+    protected function find_category($category)
+    {
+        global $DB;
+        $params = array('name' => $category->name);
+        foreach (array('idnumber', 'parent', 'description') as $param) {
+            if ($category->$param) {
+                $params[$param] = $category->$param;
+            }
+        }
+        $categories = $DB->get_records('course_categories', $params);
+        if (count($categories) == 1) {
+            return array_pop($categories);
+        } else {
+            return null;
+        }
     }
 
 }
