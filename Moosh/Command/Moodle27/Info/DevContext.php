@@ -43,8 +43,11 @@ class DevContext extends MooshCommand
 
         // Get all contexts under given one
         $context = \context::instance_by_id($contextid, MUST_EXIST);
-        var_dump($context);
-        echo $context->get_context_name();
+
+        echo $this->context_info($contextid);
+        echo "\n";
+        //var_dump($context);
+        //echo $context->get_context_name();
         return ;
 
         $sql = "SELECT * FROM {context} WHERE path LIKE '$contextpath/%'";
@@ -70,8 +73,14 @@ class DevContext extends MooshCommand
 //var_dump($context);
         if (is_a($context, "context_module")) {
             /** @var \context_module $context */
-            $out .= "$contextid, module: " . $context->get_context_name() ;
-        }
+            $out .= "$contextid, module: " . $context->get_context_name() . "\n";
+            $coursemodule = $DB->get_record('course_modules', ['id'=>$context->instanceid]);
+            $out .= "Course: {$coursemodule->module}\n";
+            $out .= "Section: {$coursemodule->section}\n";
+            $out .= $context->get_url() . "\n";
+        } else {
+            $out .= $context->get_context_name(); 
+        }  
 
 
         return $out;
