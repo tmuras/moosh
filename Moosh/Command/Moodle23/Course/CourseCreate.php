@@ -21,6 +21,7 @@ class CourseCreate extends MooshCommand
         $this->addOption('F|format:', 'format (e.g. one of site, weeks, topics, etc.)');
         $this->addOption('i|idnumber:', 'id number');
         $this->addOption('v|visible:', 'visible (y or n, by default created visible)');
+        $this->addOption('r|reuse', 'reuse existing course if it is the only matching one', false);
 
         $this->addArgument('shortname');
 
@@ -58,10 +59,31 @@ class CourseCreate extends MooshCommand
             $course->summaryformat = FORMAT_HTML;
             $course->startdate = time();
 
-            //either use API create_course
-            $newcourse = create_course($course);
+            if ($options['reuse'] && $existing = $this->find_course($course)) {
+                $newcourse = $existing;
+            } else {
+                //either use API create_course
+                $newcourse = create_course($course);
+            }
 
             echo $newcourse->id . "\n";
+        }
+    }
+
+    public function find_course($course)
+    {
+        global $DB;
+        $params = array('shortname' => $course->shortname);
+        foreach (array('category', 'fullname', 'format', 'idnumber') as $param) {
+            if ($course->$param) {
+                $params[$param] = $course->$param;
+            }
+        }
+        $courses = $DB->get_records('course', $params);
+        if (count($courses) == 1) {
+            return array_pop($courses);
+        } else {
+            return null;
         }
     }
 }

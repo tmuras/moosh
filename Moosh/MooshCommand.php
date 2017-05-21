@@ -362,6 +362,15 @@ class MooshCommand
     }
 
     /**
+     * Does the command require writing to ~/.moosh/ directory?
+     * @return int
+     */
+    public function requireHomeWriteable()
+    {
+        return false;
+    }
+
+    /**
      * Loads temporary session information from the temp file.
      */
     protected function loadSession()

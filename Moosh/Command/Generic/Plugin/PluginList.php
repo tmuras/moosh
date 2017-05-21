@@ -19,6 +19,7 @@ class PluginList extends MooshCommand
         parent::__construct('list', 'plugin');
 
         $this->addOption('p|path:', 'path to plugins.json file', home_dir() . '/.moosh/plugins.json');
+        $this->addOption('v|versions', 'display plugin versions instead of supported moodle versions');
     }
 
     public function execute()
@@ -50,10 +51,14 @@ class PluginList extends MooshCommand
             if(!$plugin->component) {
                 continue;
             }
-            $fulllist[$plugin->component] = array();
+            $fulllist[$plugin->component] = array('releases' => array());
             foreach($plugin->versions as $v=>$version) {
-                foreach($version->supportedmoodles as $supportedmoodle) {
-                    $fulllist[$plugin->component]['releases'][$supportedmoodle->release] = $version;
+                if ($this->expandedOptions['versions']) {
+                    $fulllist[$plugin->component]['releases'][$version->version] = $version;
+                } else {
+                    foreach($version->supportedmoodles as $supportedmoodle) {
+                        $fulllist[$plugin->component]['releases'][$supportedmoodle->release] = $version;
+                    }
                 }
                 $fulllist[$plugin->component]['url'] = $version->downloadurl;
             }
@@ -71,5 +76,9 @@ class PluginList extends MooshCommand
     public function bootstrapLevel()
     {
         return self::$BOOTSTRAP_NONE;
+    }
+
+    public function requireHomeWriteable() {
+        return true;
     }
 }

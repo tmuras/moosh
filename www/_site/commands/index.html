@@ -59,7 +59,6 @@
             <li><a href="/commands">commands</a></li>
             <li><a href="/dev">dev</a></li>
             <li><a href="/tutorials">tutorials</a></li>
-            <li><a href="/ci">CI</a></li>
           </ul>
           <a href="https://github.com/tmuras/moosh"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
         </div><!--/.nav-collapse -->
@@ -72,9 +71,10 @@
 
       <div class="row row-offcanvas row-offcanvas-right">
 
-        <div class="col-xs-12 col-sm-9">
+
+          <div class="col-xs-12 col-sm-9">
           <div class="">
-            <p><h1>Commands</h1>
+            <h1>Commands</h1>
 
 <p><span class="anchor" id="activity-add"></span></p>
 
@@ -83,8 +83,6 @@
 <p>Adds an activity instance to the specified course. The activity is specified by it's component name
 without the plugin type prefix, so "forum", "assign" or "data" for example, and the course is specified
 by it's id.</p>
-
-<p>Example:</p>
 
 <pre><code>moosh activity-add assign 2
 moosh activity-add --section 3 forum 4
@@ -98,9 +96,16 @@ moosh activity-add --name "Easy assignent" --section 2 --idnumber "ASD123" assig
 
 <p>Deletes activity with given module id.</p>
 
-<p>Example</p>
-
 <pre><code>moosh activity-delete 2
+</code></pre>
+
+<p><span class="anchor" id="admin-login"></span></p>
+
+<h2><a class="command-name">admin-login</a></h2>
+
+<p>Create a session (login) for admin user. Command returns session cookie name &amp; value.</p>
+
+<pre><code>moosh admin-login
 </code></pre>
 
 <p><span class="anchor" id="apache-parse-extendedlog"></span></p>
@@ -146,6 +151,66 @@ moosh activity-add --name "Easy assignent" --section 2 --idnumber "ASD123" assig
 <pre><code>moosh apache-parse-perflog apache.log
 </code></pre>
 
+<p>Sample line generated (INSERT):</p>
+
+<pre><code>INSERT IGNORE INTO perflog (time,timestamp,url,memory_peak,includecount,langcountgetstring,db_reads,db_writes,db_queries_time,ticks,user,sys,cuser,csys,serverload,cache_mondodb_hits,cache_mondodb_misses,cache_mondodb_sets,cache_static_hits,cache_static_misses,cache_static_sets,cache_staticpersist_hits,cache_staticpersist_misses,cache_staticpersist_sets,cache_file_hits,cache_file_misses,cache_file_sets,cache_memcached_hits,cache_memcached_misses,cache_memcached_sets,cache_memcache_hits,cache_memcache_misses,cache_memcache_sets,cache_redis_hits,cache_redis_misses,cache_redis_sets,script,query,type) VALUES ('2478271','2016-07-26 10:21:30','/course/view.php?id=139&amp;section=4','16427592','1465','1586','1314','1','1041750','248','58','12','0','0','14','0','0','0','1819','17','27','0','0','0','0','2','0','73','161','163','0','0','0','0','0','0','/course/view.php','id=139&amp;section=4','script')
+</code></pre>
+
+<p>The DB table structure for the INSERTs generated:</p>
+
+<pre><code>
+CREATE TABLE perflog (
+ id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+ timestamp datetime NOT NULL,
+ time int(10) unsigned NOT NULL,
+ url varchar(255) NOT NULL,
+ memory_peak int(10) unsigned NOT NULL,
+ includecount int(10) unsigned NOT NULL,
+ contextswithfilters int(10) unsigned NOT NULL,
+ filterscreated int(10) unsigned NOT NULL,
+ textsfiltered int(10) unsigned NOT NULL,
+ stringsfiltered int(10) unsigned NOT NULL,
+ langcountgetstring int(10) unsigned NOT NULL,
+ db_reads int(10) unsigned NOT NULL,
+ db_writes int(10) unsigned NOT NULL,
+ db_queries_time int(10) unsigned NOT NULL,
+ ticks int(10) unsigned NOT NULL,
+ user int(10) unsigned NOT NULL,
+ sys int(10) unsigned NOT NULL,
+ cuser int(10) unsigned NOT NULL,
+ csys int(10) unsigned NOT NULL,
+ serverload int(10) unsigned NOT NULL,
+ cache_mondodb_sets int(10) unsigned NOT NULL,
+ cache_mondodb_misses int(10) unsigned NOT NULL,
+ cache_mondodb_hits int(10) unsigned NOT NULL,
+ cache_static_sets int(10) unsigned NOT NULL,
+ cache_static_misses int(10) unsigned NOT NULL,
+ cache_static_hits int(10) unsigned NOT NULL,
+ cache_staticpersist_sets int(10) unsigned NOT NULL,
+ cache_staticpersist_misses int(10) unsigned NOT NULL,
+ cache_staticpersist_hits int(10) unsigned NOT NULL,
+ cache_file_sets int(10) unsigned NOT NULL,
+ cache_file_misses int(10) unsigned NOT NULL,
+ cache_file_hits int(10) unsigned NOT NULL,
+ cache_memcache_sets int(10) unsigned NOT NULL,
+ cache_memcache_misses int(10) unsigned NOT NULL,
+ cache_memcache_hits int(10) unsigned NOT NULL,
+ cache_memcached_sets int(10) unsigned NOT NULL,
+ cache_memcached_misses int(10) unsigned NOT NULL,
+ cache_memcached_hits int(10) unsigned NOT NULL,
+ cache_redis_sets int(10) unsigned NOT NULL,
+ cache_redis_misses int(10) unsigned NOT NULL,
+ cache_redis_hits int(10) unsigned NOT NULL,
+ query varchar(255) NULL,
+ script varchar(255) NULL,
+ path varchar(255) NULL,
+ type varchar(255) NULL,
+ PRIMARY KEY (id),
+ UNIQUE KEY uniquerow (timestamp,time,url)
+);
+</code></pre>
+
+
 <p><span class="anchor" id="audit-passwords"></span></p>
 
 <h2><a class="command-name">audit-passwords</a></h2>
@@ -161,6 +226,17 @@ moosh activity-add --name "Easy assignent" --section 2 --idnumber "ASD123" assig
 <p>Example 2. Check if user with id 17 has a weak password.</p>
 
 <pre><code>moosh audit-passwords -u 17
+</code></pre>
+
+<p><span class="anchor" id="auth-list"></span></p>
+
+<h2><a class="command-name">auth-list</a></h2>
+
+<p>List authentication plugins.</p>
+
+<p>Example 1. List enabled authentication plugins.</p>
+
+<pre><code>moosh auth-list
 </code></pre>
 
 <p><span class="anchor" id="auth-manage"></span></p>
@@ -206,6 +282,22 @@ moosh block-add course 32 calendar_month course-view-* side-post 0
 
 <pre><code>moosh block-manage hide calendar
 moosh block-manage show calendar
+</code></pre>
+
+<p><span class="anchor" id="category-config-set"></span></p>
+
+<h2><a class="command-name">category-config-set</a></h2>
+
+<p>Set category configuration. Arguments are: categoryid setting value. The setting should match one of the columns from mdl_course_categories table.</p>
+
+<p>Example 1. Set ID for category 1 to "id17".</p>
+
+<pre><code>moosh category-config-set 1 idnumber id17
+</code></pre>
+
+<p>Example 2. Set description of category id 1 to "My Description".</p>
+
+<pre><code>moosh category-config-set 1 description "My Description" 
 </code></pre>
 
 <p><span class="anchor" id="category-create"></span></p>
@@ -302,6 +394,22 @@ You usually want to run the check as the same user that runs web server.</p>
 <p>The same as "purge all caches" page.</p>
 
 <pre><code>moosh cache-clear
+</code></pre>
+
+<p><span class="anchor" id="cache-course-rebuild"></span></p>
+
+<h2><a class="command-name">cache-course-rebuild</a></h2>
+
+<p>Rebuild course cache.</p>
+
+<p>Example 1: Rebuild cache for course with id 2</p>
+
+<pre><code>moosh cache-course-rebuild 2
+</code></pre>
+
+<p>Example 2: Rebuild cache for all the courses.</p>
+
+<pre><code>moosh cache-course-rebuild -a
 </code></pre>
 
 <p><span class="anchor" id="code-check"></span></p>
@@ -437,6 +545,18 @@ You usually want to run the check as the same user that runs web server.</p>
 <pre><code>moosh course-backup -f /tmp/mybackup.mbz 3
 </code></pre>
 
+<p><span class="anchor" id="course-cleanup"></span></p>
+
+<h2><a class="command-name">course-cleanup</a></h2>
+
+<p>The command will to though various pieces of HTML texts contained in the given course and run purify_html() function on them. The command does not actually do any changes -
+it will only show which content could possibly be cleaned up.</p>
+
+<p>Example 1: Check if there is any HTML to be cleaned-up in course 3:</p>
+
+<pre><code>moosh course-cleanup 3
+</code></pre>
+
 <p><span class="anchor" id="course-create"></span></p>
 
 <h2><a class="command-name">course-create</a></h2>
@@ -467,6 +587,17 @@ You usually want to run the check as the same user that runs web server.</p>
 <p>Example 2: set the format to topics for all courses in a category with id=7</p>
 
 <pre><code>moosh course-config-set category 7 format topics
+</code></pre>
+
+<p><span class="anchor" id="course-delete"></span></p>
+
+<h2><a class="command-name">course-delete</a></h2>
+
+<p>Delete course(s) with ID(s) given as argument(s).</p>
+
+<p>Example 1: delete courses id 2,3 and 4.</p>
+
+<pre><code>moosh course-delete 2 3 4
 </code></pre>
 
 <p><span class="anchor" id="course-enrol"></span></p>
@@ -705,6 +836,42 @@ moosh dev-versionbump
 <pre><code>    moosh download-moodle -v 2.3
 </code></pre>
 
+<p><span class="anchor" id="event-fire"></span></p>
+
+<h2><a class="command-name">event-fire</a></h2>
+
+<p>Fire an event. Provide event name and JSON encoded data.</p>
+
+<pre><code>moosh event-fire report_log\\event\\report_viewed '{"contextid":1,"relateduserid":1,"other":{"groupid":1,"date":100,"modid":1,"modaction":"view","logformat":0}}' 
+</code></pre>
+
+<p><span class="anchor" id="event-list"></span></p>
+
+<h2><a class="command-name">event-list</a></h2>
+
+<p>List all events available in current Moodle installation.</p>
+
+<pre><code>moosh event-list
+</code></pre>
+
+<p><span class="anchor" id="file-datacheck"></span></p>
+
+<h2><a class="command-name">file-datacheck</a></h2>
+
+<p>Go through all files in Moodle data and check them for corruption. The check is to compare file's SHA to their file names.</p>
+
+<pre><code>moosh file-datacheck
+</code></pre>
+
+<p><span class="anchor" id="file-dbcheck"></span></p>
+
+<h2><a class="command-name">file-dbcheck</a></h2>
+
+<p>Check that all files in DB do exist in Moodle data.</p>
+
+<pre><code>moosh file-dbcheck
+</code></pre>
+
 <p><span class="anchor" id="file-delete"></span></p>
 
 <h2><a class="command-name">file-delete</a></h2>
@@ -873,6 +1040,26 @@ generator one.</p>
 moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 7 2
 </code></pre>
 
+<p><span class="anchor" id="generate-availability"></span></p>
+
+<h2><a class="command-name">generate-availability</a></h2>
+
+<p>Generate a code for new availability condition based on danielneis/moodle-availability_newavailability.</p>
+
+<pre><code>moosh generate-availability newcondition
+</code></pre>
+
+<p><span class="anchor" id="generate-block"></span></p>
+
+<h2><a class="command-name">generate-block</a></h2>
+
+<p>Generate a code for new block based on the template.</p>
+
+<p>Example: generate new block_abc</p>
+
+<pre><code>moosh generate-block abc
+</code></pre>
+
 <p><span class="anchor" id="generate-cfg"></span></p>
 
 <h2><a class="command-name">generate-cfg</a></h2>
@@ -897,13 +1084,13 @@ moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 
 <pre><code>moosh generate-local mynewenrol
 </code></pre>
 
-<p><span class="anchor" id="generate-filepicker"></span></p>
+<p><span class="anchor" id="generate-filemanager"></span></p>
 
-<h2><a class="command-name">generate-filepicker</a></h2>
+<h2><a class="command-name">generate-filemanager</a></h2>
 
 <p>Shows how to code filepicker, based on https://github.com/AndyNormore/filemanager. Takes no arguments.</p>
 
-<pre><code>moosh generate-filepicker
+<pre><code>moosh generate-filemanager
 </code></pre>
 
 <p><span class="anchor" id="generate-form"></span></p>
@@ -1009,6 +1196,15 @@ necessary.</p>
 <pre><code>moosh generate-module flashcard
 </code></pre>
 
+<p><span class="anchor" id="generate-moosh"></span></p>
+
+<h2><a class="command-name">generate-moosh</a></h2>
+
+<p>Use moosh to create new moosh command.</p>
+
+<pre><code>moosh generate-moosh category-command
+</code></pre>
+
 <p><span class="anchor" id="generate-qtype"></span></p>
 
 <h2><a class="command-name">generate-qtype</a></h2>
@@ -1021,6 +1217,24 @@ necessary.</p>
 <p>Example: Create new module under question/type/myqtype</p>
 
 <pre><code>moosh generate-qtype myqtype
+</code></pre>
+
+<p><span class="anchor" id="generate-userprofilefield"></span></p>
+
+<h2><a class="command-name">generate-userprofilefield</a></h2>
+
+<p>Creates new profile field based on a template.</p>
+
+<pre><code>moosh generate-userprofilefield newfield
+</code></pre>
+
+<p><span class="anchor" id="generate-ws"></span></p>
+
+<h2><a class="command-name">generate-ws</a></h2>
+
+<p>Creates new local plugin for WS development based on moodlehq/moodle-local_wstemplate.</p>
+
+<pre><code>moosh generate-ws newws
 </code></pre>
 
 <p><span class="anchor" id="gradebook-import"></span></p>
@@ -1126,6 +1340,25 @@ moosh module-config get dropbox dropbox_secret ?
 moosh module-manage show scorm
 </code></pre>
 
+<p><span class="anchor" id="module-reinstall"></span>
+<a class="command-name">module-reinstall</a></p>
+
+<p>Re-install any Moodle plugin. It will remove all the data related to the module and install it from clean.</p>
+
+<p>Example:</p>
+
+<pre><code>moosh module-reinstall block_html
+moosh module-reinstall mod_book
+</code></pre>
+
+<p><span class="anchor" id="nagios-check"></span>
+<a class="command-name">nagios-check</a></p>
+
+<p>Create session login and login to a site using curl. Return error in Nagios format if login was not successful.</p>
+
+<pre><code>moosh nagios-check
+</code></pre>
+
 <p><span class="anchor" id="php-eval"></span></p>
 
 <h2><a class="command-name">php-eval</a></h2>
@@ -1141,11 +1374,11 @@ moosh module-manage show scorm
 
 <h2><a class="command-name">plugin-install</a></h2>
 
-<p>Download and install plugin. Requires plugin short name, and moodle version. You can obtain those data by using `plugin-list' command.</p>
+<p>Download and install plugin. Requires plugin short name, and plugin version. You can obtain those data by using `plugin-list -v' command.</p>
 
 <p>Example:</p>
 
-<pre><code>moosh plugin-install mod_quickmail 10 
+<pre><code>moosh plugin-install mod_quickmail 20160101
 </code></pre>
 
 <p><span class="anchor" id="plugin-list"></span></p>
@@ -1329,8 +1562,10 @@ If you do not have write permissions on the plugins' folder it will advice you w
 
 <p>Use: -f and -t with date in either YYYYMMDD or YYYY-MM-DD date. Add -p te specify period.</p>
 
-<p>Example 1: Get concurrent users between 20-01-2014 and 27-01-2014 with 30 minut periods.
-    moosh report-concurrency -f 20140120 -t 20140127 -p 30</p>
+<p>Example 1: Get concurrent users between 20-01-2014 and 27-01-2014 with 30 minut periods.</p>
+
+<pre><code>moosh report-concurrency -f 20140120 -t 20140127 -p 30
+</code></pre>
 
 <p><span class="anchor" id="role-create"></span></p>
 
@@ -1359,6 +1594,15 @@ If you do not have write permissions on the plugins' folder it will advice you w
 <pre><code>moosh role-delete -i 10
 </code></pre>
 
+<p><span class="anchor" id="role-reset"></span></p>
+
+<h2><a class="command-name">role-reset</a></h2>
+
+<p>Reset give role's permissions from the file.</p>
+
+<pre><code>moosh role-reset 1 definition_file.txt
+</code></pre>
+
 <p><span class="anchor" id="role-update-capability"></span></p>
 
 <h2><a class="command-name">role-update-capability</a></h2>
@@ -1368,11 +1612,15 @@ If you do not have write permissions on the plugins' folder it will advice you w
 <p>Use: -i "roleid" or "role_short_name" with "role capability" and "capability setting" (inherit|allow|prevent|prohibit)
 and finally, "contextid" (where 1 is system wide)</p>
 
-<p>Example 1: update "student" role (roleid=5) "mod/forumng:grade" capability, system wide (contextid=1)
-    moosh student mod/forumng:grade allow 1</p>
+<p>Example 1: update "student" role (roleid=5) "mod/forumng:grade" capability, system wide (contextid=1)</p>
 
-<p>Example 2: update "editingteacher" role (roleid=3) "mod/forumng:grade" capability, system wide (contextid=1)
-    moosh -i 3 mod/forumng:grade prevent 1</p>
+<pre><code>moosh student mod/forumng:grade allow 1
+</code></pre>
+
+<p>Example 2: update "editingteacher" role (roleid=3) "mod/forumng:grade" capability, system wide (contextid=1)</p>
+
+<pre><code>moosh -i 3 mod/forumng:grade prevent 1
+</code></pre>
 
 <p><span class="anchor" id="role-update-contextlevel"></span></p>
 
@@ -1383,11 +1631,37 @@ and finally, "contextid" (where 1 is system wide)</p>
 <p>Use: "short role name" or -i "roleid" with relevant context level (system|user|category|course|activity|block)
 and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 
-<p>Example 1: Allow "student" role to be set on block level
-    moosh student -block-on</p>
+<p>Example 1: Allow "student" role to be set on block level</p>
 
-<p>Example 2: Prevent "manager" role to be set on course level
-    moosh manager -course-off</p>
+<pre><code>moosh student -block-on
+</code></pre>
+
+<p>Example 2: Prevent "manager" role to be set on course level</p>
+
+<pre><code>moosh manager -course-off
+</code></pre>
+
+<p><span class="anchor" id="sql-cli"></span></p>
+
+<h2><a class="command-name">sql-cli</a></h2>
+
+<p>Open a connection to the Moodle DB using credentials in config.php. Currently supports PostgreSQL and MySQL.</p>
+
+<p>Example:</p>
+
+<pre><code>moosh sql-cli
+</code></pre>
+
+<p><span class="anchor" id="sql-dump"></span></p>
+
+<h2><a class="command-name">sql-dump</a></h2>
+
+<p>Dump Moodle DB to sql file. Works for PostgreSQL and MySQL.</p>
+
+<p>Example 1: dump database to backup.sql file</p>
+
+<pre><code>moosh sql-dump &gt; backup.sql
+</code></pre>
 
 <p><span class="anchor" id="sql-run"></span></p>
 
@@ -1403,17 +1677,6 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 <p>Example 2: Count the number of rows is log table</p>
 
 <pre><code>moosh sql-run "select count(*) from {log}"
-</code></pre>
-
-<p><span class="anchor" id="sql-cli"></span></p>
-
-<h2><a class="command-name">sql-cli</a></h2>
-
-<p>Open a connection to the Moodle DB using credentials in config.php. Currently supports PostgreSQL and MySQL.</p>
-
-<p>Example:</p>
-
-<pre><code>moosh sql-cli
 </code></pre>
 
 <p><span class="anchor" id="theme-info"></span></p>
@@ -1437,15 +1700,18 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 
 <pre><code>moosh webservice-call --token 4ac42118db3ee8d4b1ae78f2c1232afd --params userid=3 core_enrol_get_users_courses
 </code></pre>
-</p>
+
           </div>
-        </div><!--/span-->
+        </div>
 
         <div class="col-md-3">
           <div class="bs-sidebar hidden-print" data-spy="affix">
             <ul class="nav bs-sidenav accordion">
-            </li>
-            <div class="short-navbar"></div>
+            <li></li>
+                <p>Moodle development book:</p>
+                <a href="https://leanpub.com/moodle"><img src="/images/book.png" /></a>
+
+                <div class="short-navbar"></div>
              
             </ul>
           </div>
