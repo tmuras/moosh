@@ -8,7 +8,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Generic\User;
+namespace Moosh\Command\Moodle22\User;
 
 use Moosh\MooshCommand;
 
@@ -142,7 +142,7 @@ class ImportUserPictures extends MooshCommand
         }
 
         // load user by mapped field name
-        $user = $DB->get_record('user', array($this->userField => $basename));
+        $user = $DB->get_record('user', array($this->userField => $basename, 'deleted' => 0));
 
         if (!$user) {
             $this->logError(
