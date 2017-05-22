@@ -1288,6 +1288,27 @@ Example 1:
 
 This command has been deprecated. Use user-list instead.
 
+<span class="anchor" id="user-import-pictures"></span>
+<a class="command-name">user-import-pictures</a>
+
+--------
+
+Provides capability of importing user pictures from a specific directory (recursively including subdirectories). 
+Image filename can be mapped to user ID, idnumber or username database field. Supported image types are jpg, gif and png.
+--overwrite option flag can be used to force overwriting of existing user pictures.
+
+Example 1: import user pictures from directory and map file names to user's ID value. 
+
+    moosh user-import-pictures -i /path/to/import/dir
+
+Example 2: import user pictures from directory and map file names to user's idnumber value. 
+
+    moosh user-import-pictures -n /path/to/import/dir
+
+Example 3: import user pictures from directory and map file names to user's username value. 
+
+    moosh user-import-pictures -u /path/to/import/dir
+
 <span class="anchor" id="user-list"></span>
 <a class="command-name">user-list</a>
 --------
