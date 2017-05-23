@@ -10,7 +10,7 @@ Vcs-Browser: https://github.com/tmuras/moosh
 
 Package: moosh
 Architecture: all
-Depends: ${misc:Depends},php5-cli
+Depends: ${misc:Depends},php-cli
 Description: Commandline utility helper for Moodle
  Similar to drush for Drupal, moodle is a helper
  utility that can manage and help develop a Moodle
