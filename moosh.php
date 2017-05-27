@@ -119,7 +119,7 @@ if ($app_options->has('help') || (!$subcommand && !$possible_matches)) {
     $printer = new GetOptionKit\OptionPrinter\ConsoleOptionPrinter;
     echo $printer->render($appspecs);
     echo "\n";
-    exit(1);
+    exit(0);
 }
 
 if (!$subcommand && $possible_matches) {
