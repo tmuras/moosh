@@ -1481,6 +1481,30 @@ If you do not have write permissions on the plugins' folder it will advice you w
 
 <p>This command has been deprecated. Use user-list instead.</p>
 
+<p><span class="anchor" id="user-import-pictures"></span>
+<a class="command-name">user-import-pictures</a></p>
+
+<hr />
+
+<p>Provides capability of importing user pictures from a specific directory (recursively including subdirectories).
+Image filename can be mapped to user ID, idnumber or username database field. Supported image types are jpg, gif and png.
+--overwrite option flag can be used to force overwriting of existing user pictures.</p>
+
+<p>Example 1: import user pictures from directory and map file names to user's ID value.</p>
+
+<pre><code>moosh user-import-pictures -i /path/to/import/dir
+</code></pre>
+
+<p>Example 2: import user pictures from directory and map file names to user's idnumber value.</p>
+
+<pre><code>moosh user-import-pictures -n /path/to/import/dir
+</code></pre>
+
+<p>Example 3: import user pictures from directory and map file names to user's username value.</p>
+
+<pre><code>moosh user-import-pictures -u /path/to/import/dir
+</code></pre>
+
 <p><span class="anchor" id="user-list"></span></p>
 
 <h2><a class="command-name">user-list</a></h2>
