@@ -659,16 +659,26 @@ Use -i for providing username IDs.</p>
 
 <h2><a class="command-name">course-list</a></h2>
 
-<p>Lists courses with given short or full name.</p>
+<p>Lists courses that match your search criteria. As an argument you can provide an SQL fragment,
+that is simply injected after WHERE clause when searching for courses.
+All cli argument(s) will be concateneted together, so there is no need to
+quote SQL into single argument. But on the other hand, you need to escape quotes, so they are not eaten by your shell.
+Run command with global "-v" option to see the actual SQL used for search (<code>moosh -v course-list</code>).
+There are also quite a few options that modify the behaviour - see <code>moosh course-list --help</code> for complete list.</p>
 
-<p>Example 1: List all courses with short or full name containing phrase 'student'</p>
+<p>Example 1: List all courses with full name containing phrase 'student'</p>
 
-<pre><code>moosh course-list student
+<pre><code>moosh course-list "fullname like '%student%'"
 </code></pre>
 
-<p>Example 2: List all courses with short or full name containing phrase 'course' and display only id's of courses.</p>
+<p>Example 2: List above but as separate arguments - quotes are escaped</p>
 
-<pre><code>moosh course-list course -i
+<pre><code>moosh course-list fullname like \'%student%\'
+</code></pre>
+
+<p>Example 3: List only empty courses from category 1</p>
+
+<pre><code>moosh course-list -c 1 -e yes
 </code></pre>
 
 <p><span class="anchor" id="course-reset"></span></p>

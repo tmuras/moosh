@@ -56,17 +56,21 @@ class CourseList extends MooshCommand {
             $sql .= " LEFT JOIN {course_modules} m ON c.id=m.course ";
         }
 
-        if ($options['categorysearch'] !== null) {
+        $sql .= "WHERE 1 ";
+        if ($options['categorysearch'] ) {
             $category = \coursecat::get($options['categorysearch']);
 
             $categories = $this->get_categories($category);
 
             list($where, $params) = $DB->get_in_or_equal(array_keys($categories));
 
-            $sql .= "WHERE c.category $where";
+            $sql .= "AND c.category $where";
         }
+
+        // Glue arguments together, so end user does not need to provide single argument.
         if (isset($this->arguments[0]) && $this->arguments[0]) {
-            $sql .= " AND (" . $this->arguments[0] . ")";
+            $customwhere = implode(' ', $this->arguments);
+            $sql .= " AND ($customwhere)";
         }
         if ($options['empty'] == 'yes') {
             $sql .= " GROUP BY c.id HAVING modules < 2";
@@ -75,7 +79,12 @@ class CourseList extends MooshCommand {
             $sql .= " GROUP BY c.id HAVING modules > 1";
         }
 
-        //echo "$sql\n";        var_dump($params);
+        if($this->verbose) {
+           cli_problem("SQL query run: $sql");
+           cli_problem("Params:");
+           cli_problem(var_export($params, true));
+        }
+
         $courses = $DB->get_records_sql($sql, $params);
 
         // Filter out any that have any section information (summary)

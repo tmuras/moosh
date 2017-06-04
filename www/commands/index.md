@@ -544,15 +544,24 @@ Example 2: Enable self enrolment on a course with an enrolment key
 <a class="command-name">course-list</a>
 ----------------------
 
-Lists courses with given short or full name.
+Lists courses that match your search criteria. As an argument you can provide an SQL fragment, 
+that is simply injected after WHERE clause when searching for courses.
+All cli argument(s) will be concateneted together, so there is no need to 
+quote SQL into single argument. But on the other hand, you need to escape quotes, so they are not eaten by your shell.
+Run command with global "-v" option to see the actual SQL used for search (`moosh -v course-list`).
+There are also quite a few options that modify the behaviour - see `moosh course-list --help` for complete list.  
 
-Example 1: List all courses with short or full name containing phrase 'student'
+Example 1: List all courses with full name containing phrase 'student'
 
-    moosh course-list student
+    moosh course-list "fullname like '%student%'"
 
-Example 2: List all courses with short or full name containing phrase 'course' and display only id's of courses.
+Example 2: List above but as separate arguments - quotes are escaped
 
-    moosh course-list course -i
+    moosh course-list fullname like \'%student%\'
+    
+Example 3: List only empty courses from category 1
+
+    moosh course-list -c 1 -e yes
 
 <span class="anchor" id="course-reset"></span>
 <a class="command-name">course-reset</a>
