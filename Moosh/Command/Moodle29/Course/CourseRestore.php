@@ -39,7 +39,11 @@ class CourseRestore extends MooshCommand {
             $CFG->tempdir = $CFG->dataroot . DIRECTORY_SEPARATOR . 'temp';
         }
 
-        // Check if category is OK.
+        if ($options['overwrite']) {
+            $options['existing'] = true;
+        }
+
+            // Check if category is OK.
         if (!$options['existing']) {
             $category = $DB->get_record('course_categories', array('id' => $this->arguments[1]), '*', MUST_EXIST);
         } else {
