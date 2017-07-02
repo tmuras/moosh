@@ -30,8 +30,8 @@ echo "create database moodle default character set utf8" | mysql -u root -pmypas
 cd /var/www/html/
 
 echo "Downloading Moodle package"
-wget --quiet https://download.moodle.org/download.php/direct/stable31/moodle-latest-31.tgz
-tar -xf moodle-latest-31.tgz
+wget --quiet https://download.moodle.org/download.php/direct/stable33/moodle-latest-33.tgz
+tar -xf moodle-latest-33.tgz
 cd moodle
 cp config-dist.php config.php
 
