@@ -982,25 +982,28 @@ contextid, component, filearea, itemid, filepath, filename, userid, filesize, mi
 
 <h2><a class="command-name">file-upload</a></h2>
 
-<p>Upload selected file to user's private area. Must specify full path to filename.</p>
+<p>Upload selected file to Moodle data. Must specify full path to filename.</p>
 
 <ul>
-<li>-f|--filename - change name of file saved to moodle.</li>
-<li>-m|--mintype - set type of displayed miniature.</li>
-<li>-l|--license - set license of upload file.</li>
-<li>-c|--contextid - set context id.</li>
-<li>-r|--replace - replace existing file</li>
+<li>-c|--contextid - set context id. Defaults to 5, which is a context ID of admin user in standard installation.</li>
+<li>-f|--filearea - set filearea, defaults to 'private'</li>
+<li>-m|--component - component field, defaults to 'user'</li>
+<li>-i|--itemid itemid column, defaults to '0'</li>
+<li>-s|--sortorder sort order, '0' by default</li>
+<li>-n|--filename change name of file saved to moodle, defaults to full name of the file given in argument</li>
+<li>-p|--filepath change path of file saved to moodle, defaults to file full path</li>
 </ul>
 
 
-<p>Example 1: Upload file /home/user/file to private area of user with id 2.</p>
+<p>Example 1: Upload file file.txt to private area of a user with context id 5 - usually "admin" user.</p>
 
-<pre><code>moosh file-upload /home/user/file 2 
+<pre><code>moosh file-upload file.txt
 </code></pre>
 
-<p>Example 2: Upload file /home/user/file and change its name for moodle.</p>
+<p>Example 2: Upload to admin's private files a file file.txt, name in Moodle "myfile.txt" and
+place in directory "drop".</p>
 
-<pre><code>moosh file-upload --filename="new file name" /home/user/file 2 
+<pre><code>moosh file-upload --filepath=drop --filename=myfile.txt file.txt 
 </code></pre>
 
 <p><span class="anchor" id="filter-set"></span></p>

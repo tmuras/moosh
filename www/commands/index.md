@@ -835,21 +835,25 @@ Example 3: Like above but with no duplicates and show path relative to data root
 <a class="command-name">file-upload</a>
 --------
 
-Upload selected file to user's private area. Must specify full path to filename.
+Upload selected file to Moodle data. Must specify full path to filename.
 
-* -f|--filename - change name of file saved to moodle.
-* -m|--mintype - set type of displayed miniature.
-* -l|--license - set license of upload file.
-* -c|--contextid - set context id.
-* -r|--replace - replace existing file
+* -c|--contextid - set context id. Defaults to 5, which is a context ID of admin user in standard installation.
+* -f|--filearea - set filearea, defaults to 'private'
+* -m|--component - component field, defaults to 'user'
+* -i|--itemid itemid column, defaults to '0'
+* -s|--sortorder sort order, '0' by default
+* -n|--filename change name of file saved to moodle, defaults to full name of the file given in argument
+* -p|--filepath change path of file saved to moodle, defaults to file full path
 
-Example 1: Upload file /home/user/file to private area of user with id 2.
+
+Example 1: Upload file file.txt to private area of a user with context id 5 - usually "admin" user.
     
-    moosh file-upload /home/user/file 2 
+    moosh file-upload file.txt
 
-Example 2: Upload file /home/user/file and change its name for moodle.
+Example 2: Upload to admin's private files a file file.txt, name in Moodle "myfile.txt" and 
+place in directory "drop".
 
-    moosh file-upload --filename="new file name" /home/user/file 2 
+    moosh file-upload --filepath=drop --filename=myfile.txt file.txt 
 
 <span class="anchor" id="filter-set"></span>
 <a class="command-name">filter-set</a>

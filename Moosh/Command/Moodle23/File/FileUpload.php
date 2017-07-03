@@ -24,7 +24,7 @@ class FileUpload extends MooshCommand
         $this->addOption('i|itemid:', 'set item id, default 0', "0");
         $this->addOption('s|sortorder:', 'set sortorder, 0 by default', '0');
         $this->addOption('n|filename:', 'change name of file saved to moodle, default full name');
-        $this->addOption('n|filepath:', 'change path of file saved to moodle, default full path');
+        $this->addOption('p|filepath:', 'change path of file saved to moodle, default full path');
 
     }
 
@@ -39,7 +39,7 @@ class FileUpload extends MooshCommand
         if ($this->expandedOptions['filepath']) {
             $savedfilepath = $this->expandedOptions['filepath'];
         } else {
-            $savedfilepath = basename($this->arguments[0]);
+            $savedfilepath = dirname($this->arguments[0]);
         }
 
         if ($arguments[0][0] != '/') {
