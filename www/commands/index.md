@@ -1125,6 +1125,17 @@ Example 1:
     moosh group-create --description "group description" --key sesame --id "group idnumber" groupname courseid
 
 
+<span class="anchor" id="group-memberadd"></span>
+<a class="command-name">group-memberadd</a>
+-------------
+
+Add a member to a group.
+
+Example 1:
+
+    moosh group-memberadd groupname courseid membername
+
+
 <span class="anchor" id="info"></span>
 <a class="command-name">info</a>
 ---------------
