@@ -1114,6 +1114,17 @@ Possible column headers to us:
 * "email" user's email
 * one or more columns matching grade item name
 
+<span class="anchor" id="group-create"></span>
+<a class="command-name">group-create</a>
+-------------
+
+Create a new group.
+
+Example 1:
+
+    moosh group-create --description "group description" --key sesame --id "group idnumber" groupname courseid
+
+
 <span class="anchor" id="info"></span>
 <a class="command-name">info</a>
 ---------------
