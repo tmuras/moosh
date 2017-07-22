@@ -16,7 +16,7 @@ class GroupMemberadd extends MooshCommand
         parent::__construct('memberadd', 'group');
 
         $this->addOption('g|group:', 'id of group');
-        // $this->addOption('c|course:', 'id of course');
+        $this->addOption('c|course:', 'id of course');
 
         $this->addArgument('username');
         $this->maxArguments = 255;
@@ -43,15 +43,34 @@ class GroupMemberadd extends MooshCommand
             $options = $this->expandedOptions;
 
             $membership = new \stdClass();
-            // $membership->courseid = $options['course'];
+            $membership->courseid = $options['course'];
             $membership->groupid = $options['group'];
 
-            $groupupdate = groups_add_member($membership->groupid, $argument);
-            if ( $groupupdate ) {
-                echo $membership->groupid . ": " . $argument . "\n";
+            if ($membership->courseid) {
+                $context = \context_course::instance($membership->courseid);
+                $enrolledusers = get_enrolled_users($context);
+                foreach ($enrolledusers as $user) {
+                    $groupupdate = false;
+                    if ($argument == $user->firstname) {
+                        $groupupdate = groups_add_member($membership->groupid, $user->id);
+                    }
+                    if ( $groupupdate ) {
+                        echo $membership->groupid . ": " . $argument . "\n";
+                    }
+                    else {
+                        echo $membership->groupid . ": " . $argument . " not added.\n";
+                    }
+                    continue 2;
+                }
             }
             else {
-                echo $membership->groupid . ": " . $argument . " not added.\n";
+                $groupupdate = groups_add_member($membership->groupid, $argument);
+                if ( $groupupdate ) {
+                    echo $membership->groupid . ": " . $argument . "\n";
+                }
+                else {
+                    echo $membership->groupid . ": " . $argument . " not added.\n";
+                }
             }
         }
 
