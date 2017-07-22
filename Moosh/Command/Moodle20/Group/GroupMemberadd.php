@@ -15,13 +15,11 @@ class GroupMemberadd extends MooshCommand
     {
         parent::__construct('memberadd', 'group');
 
-        //$this->addArgument('name');
+        $this->addOption('g|group:', 'id of group');
+        // $this->addOption('c|course:', 'id of course');
 
-        $this->addArgument('groupname');
-        $this->addArgument('course');
         $this->addArgument('username');
-
-        $this->minArguments = 3;
+        $this->maxArguments = 255;
 
     }
 
@@ -30,11 +28,6 @@ class GroupMemberadd extends MooshCommand
         global $CFG, $DB;
 
         require_once $CFG->dirroot . '/group/lib.php';
-
-	$group = new \stdClass();
-        $group->courseid = $this->arguments[1];
-        $group->name = $this->arguments[0];
-        $group->member = $this->arguments[2];
 
         // Some variables you may want to use
         //  $this->cwd - the directory where moosh command was executed
@@ -45,16 +38,22 @@ class GroupMemberadd extends MooshCommand
         //  $this->pluginInfo - array with information about the current plugin (based on cwd), keys:'type','name','dir'
         //  $this->verbose - if set to true, then "moosh -v" was run - add more verbose / debug information
 
-        $options = $this->expandedOptions;
+        foreach ($this->arguments as $argument) {
+            $this->expandOptionsManually(array($argument));
+            $options = $this->expandedOptions;
 
-	$context = \context_course::instance($group->courseid);
-	$groupupdate = groups_add_member($group->name, $group->member);
-	if ( $groupupdate ) {
-	    echo $group->name . ": " . $group->member . "\n";
-	}
-	else {
-	    echo $group->name . ": " . $group->member . " not added.\n";
-	}
+            $membership = new \stdClass();
+            // $membership->courseid = $options['course'];
+            $membership->groupid = $options['group'];
+
+            $groupupdate = groups_add_member($membership->groupid, $argument);
+            if ( $groupupdate ) {
+                echo $membership->groupid . ": " . $argument . "\n";
+            }
+            else {
+                echo $membership->groupid . ": " . $argument . " not added.\n";
+            }
+        }
 
         // if verbose mode was requested, show some more information/debug messages
         if($this->verbose) {
