@@ -28,6 +28,7 @@ class GroupMemberadd extends MooshCommand
         global $CFG, $DB;
 
         require_once $CFG->dirroot . '/group/lib.php';
+        require_once $CFG->dirroot . '/user/lib.php';
 
         // Some variables you may want to use
         //  $this->cwd - the directory where moosh command was executed
@@ -38,29 +39,35 @@ class GroupMemberadd extends MooshCommand
         //  $this->pluginInfo - array with information about the current plugin (based on cwd), keys:'type','name','dir'
         //  $this->verbose - if set to true, then "moosh -v" was run - add more verbose / debug information
 
+        $options = $this->expandedOptions;
+
+        $membership = new \stdClass();
+        if (!empty($options['course'])) {
+            $membership->courseid = $options['course'];
+        }
+        $membership->groupid = $options['group'];
+
+        $useridlist = array();
+        if ($membership->courseid) {
+            $enrolledusers = user_get_participants( $membership->courseid, 0, 0, 0, '');
+            foreach ($enrolledusers as $user) {
+                $useridlist[$user->firstname] = $user->id;
+            }
+            $enrolledusers->close();
+        }
         foreach ($this->arguments as $argument) {
             $this->expandOptionsManually(array($argument));
             $options = $this->expandedOptions;
 
-            $membership = new \stdClass();
-            $membership->courseid = $options['course'];
-            $membership->groupid = $options['group'];
-
             if ($membership->courseid) {
-                $context = \context_course::instance($membership->courseid);
-                $enrolledusers = get_enrolled_users($context);
-                foreach ($enrolledusers as $user) {
-                    $groupupdate = false;
-                    if ($argument == $user->firstname) {
-                        $groupupdate = groups_add_member($membership->groupid, $user->id);
-                    }
-                    if ( $groupupdate ) {
-                        echo $membership->groupid . ": " . $argument . "\n";
-                    }
-                    else {
-                        echo $membership->groupid . ": " . $argument . " not added.\n";
-                    }
-                    continue 2;
+                $userfirstname = $argument;
+                $userid = $useridlist[$userfirstname];
+                $groupupdate = groups_add_member($membership->groupid, $userid);
+                if ( $groupupdate ) {
+                    echo $membership->groupid . ": " . $argument . "\n";
+                }
+                else {
+                    echo $membership->groupid . ": " . $argument . " not added.\n";
                 }
             }
             else {
