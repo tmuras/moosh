@@ -15,6 +15,8 @@ class FileList extends MooshCommand {
         parent::__construct('list', 'file');
 
         $this->addOption('i|id', 'display IDs only - used for piping into other file-related commands');
+        $this->addOption('m|missingfromdisk', 'Check for existing DB files which are missing from the file system.');
+        $this->addOption('r|removemissingfromdisk', 'Remove existing DB entries (files) which are missing from the file system.');
         $this->addOption('a|all', 'display all possible information');
 
         /*
@@ -71,6 +73,39 @@ timemodified
         } else {
             $rs = $DB->get_recordset_sql("SELECT id FROM {files} WHERE " . $query);
 
+        }
+
+        // Looking in {files} table for files that are missing from the file system.
+        // Use -r to remove them from the {files} table.
+        if ($this->expandedOptions['missingfromdisk']) {
+
+            foreach ($rs as $file) {
+                $line = array();
+                /** @var \stored_file $fileobject */
+                $fileobject = $fs->get_file_by_id($file->id);
+                try {
+                    $fileexists = $fs->content_exists($fileobject->get_contenthash());
+                } catch (Exception $e) {
+                    // no file
+                }
+                if (!$fileexists) {
+                    $contenthash = $fileobject->get_contenthash();
+                    $l1 = $contenthash[0].$contenthash[1];
+                    $l2 = $contenthash[2].$contenthash[3];
+                    $line[] = $CFG->dataroot.DIRECTORY_SEPARATOR.'filedir/' . $l1 . '/' . $l2 . '/' .$contenthash ;
+                    $output[] = $line;
+                    if ($this->expandedOptions['removemissingfromdisk']) {
+                        $DB->delete_records('files', array('id' => $file->id));
+                    }
+                }
+            }
+            $rs->close();
+
+            foreach ($output as $line) {
+                echo implode("\t", $line);
+                echo "\n";
+            }
+            return 0; //die;
         }
 
         // Header.

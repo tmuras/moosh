@@ -813,6 +813,9 @@ Example 4: Super-combo. Get all course files and tar/bzip2 them up.
 
     moosh file-list -i course=2 | moosh file-path -s -r | tar -C $(moosh config-get core dataroot) -T - -cjf files.tar.bz2
 
+Use the -m option to list files that exsist on the {files} DB table but are missing from the file system,
+and add -r option to remove them from the {file} DB table.
+
 <span class="anchor" id="file-path"></span>
 <a class="command-name">file-path</a>
 ---------
