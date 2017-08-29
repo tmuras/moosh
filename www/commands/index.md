@@ -1133,7 +1133,11 @@ Add a member to a group.
 
 Example 1:
 
-    moosh group-memberadd groupname courseid membername
+    moosh group-memberadd -c courseid -g groupid membername1 [membername2] ...
+
+Example 2:
+
+    moosh group-memberadd -g groupid memberid1 [memberid2] ...
 
 
 <span class="anchor" id="info"></span>
