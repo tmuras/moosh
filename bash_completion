@@ -59,6 +59,8 @@ _moosh()
          file-delete \
          file-list \
          file-path \
+	 group-create \
+	 group-memberadd \
          forum-newdiscussion \
          info \
          info-plugins \
