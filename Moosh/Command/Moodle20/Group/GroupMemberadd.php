@@ -48,7 +48,7 @@ class GroupMemberadd extends MooshCommand
         $membership->groupid = $options['group'];
 
         $useridlist = array();
-        if ($membership->courseid) {
+        if (!empty($membership->courseid)) {
             $enrolledusers = user_get_participants( $membership->courseid, 0, 0, 0, '');
             foreach ($enrolledusers as $user) {
                 $useridlist[$user->firstname] = $user->id;
@@ -59,7 +59,7 @@ class GroupMemberadd extends MooshCommand
             $this->expandOptionsManually(array($argument));
             $options = $this->expandedOptions;
 
-            if ($membership->courseid) {
+            if (!empty($membership->courseid)) {
                 $userfirstname = $argument;
                 $userid = $useridlist[$userfirstname];
                 $groupupdate = groups_add_member($membership->groupid, $userid);
