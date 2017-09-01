@@ -59,7 +59,7 @@ class GroupingCreate extends MooshCommand
 	}
         $grouping->descriptionformat = $options['format'];
 
-	$newgroupingid = groups_create_grouping($grouping, false, false);
+	$newgroupingid = groups_create_grouping($grouping, NULL);
 	echo "$newgroupingid\n";
 
 
