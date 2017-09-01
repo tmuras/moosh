@@ -9,20 +9,20 @@
 namespace Moosh\Command\Moodle20\Group;
 use Moosh\MooshCommand;
 
-class GroupCreate extends MooshCommand
+class GroupingCreate extends MooshCommand
 {
     public function __construct()
     {
-        parent::__construct('create', 'group');
+        parent::__construct('create', 'grouping');
 
         //$this->addArgument('name');
 
-        $this->addOption('i|id:', 'group idnumber', NULL);
-        $this->addOption('d|description:', 'meaningful explanation of group role', NULL);
+        $this->addOption('i|id:', 'grouping idnumber', NULL);
+        $this->addOption('d|description:', 'meaningful explanation of grouping role', NULL);
         $this->addOption('f|format:', 'description format', 4);
 	// lib/weblib.php defines FORMAT_MARKDOWN
         $this->addOption('k|key:', 'enrolment key', NULL);
-        $this->addArgument('groupname');
+        $this->addArgument('groupingname');
         $this->addArgument('course');
 
         $this->minArguments = 2;
@@ -35,9 +35,9 @@ class GroupCreate extends MooshCommand
 
         require_once $CFG->dirroot . '/group/lib.php';
 
-	$group = new \stdClass();
-        $group->courseid = $this->arguments[1];
-        $group->name = $this->arguments[0];
+	$grouping = new \stdClass();
+        $grouping->courseid = $this->arguments[1];
+        $grouping->name = $this->arguments[0];
 
         // Some variables you may want to use
         //  $this->cwd - the directory where moosh command was executed
@@ -51,16 +51,16 @@ class GroupCreate extends MooshCommand
         $options = $this->expandedOptions;
 
         if (!empty($options['id'])) {
-            $group->idnumber = $options['id'];
+            $grouping->idnumber = $options['id'];
         }
         if (!empty($options['description'])) {
-            $group->description = $options['description'];
+            $grouping->description = $options['description'];
 
 	}
-        $group->descriptionformat = $options['format'];
+        $grouping->descriptionformat = $options['format'];
 
-	$newgroupid = groups_create_group($group, false, false);
-	echo "$newgroupid\n";
+	$newgroupingid = groups_create_grouping($grouping, false, false);
+	echo "$newgroupingid\n";
 
 
         // if verbose mode was requested, show some more information/debug messages
