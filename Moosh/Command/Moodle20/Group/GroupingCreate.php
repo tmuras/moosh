@@ -21,7 +21,6 @@ class GroupingCreate extends MooshCommand
         $this->addOption('d|description:', 'meaningful explanation of grouping role', NULL);
         $this->addOption('f|format:', 'description format', 4);
 	// lib/weblib.php defines FORMAT_MARKDOWN
-        $this->addOption('k|key:', 'enrolment key', NULL);
         $this->addArgument('groupingname');
         $this->addArgument('course');
 
