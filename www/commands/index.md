@@ -1140,6 +1140,17 @@ Example 2:
     moosh group-memberadd -g groupid memberid1 [memberid2] ...
 
 
+<span class="anchor" id="group-create"></span>
+<a class="command-name">grouping-create</a>
+-------------
+
+Create a new grouping.
+
+Example 1:
+
+    moosh grouping-create --description "grouping description" --id "grouping idnumber" groupingname courseid
+
+
 <span class="anchor" id="info"></span>
 <a class="command-name">info</a>
 ---------------
