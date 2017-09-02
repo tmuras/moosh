@@ -34,14 +34,18 @@ class GroupList extends MooshCommand {
         }
 
         foreach ($this->arguments as $courseid) {
-	    echo "courseid: $courseid\n";
+	    echo "\t\tcourseid: $courseid\n";
 	    $groupings = $DB->get_records('groupings', array('courseid'=>$courseid) );
-	    foreach ($groupings as $grouping)
+	    foreach ($groupings as $grouping) {
 		echo "grouping " . $grouping->id . " \"" . $grouping->name . "\" " . $grouping->description . "\n";
-		$groups = $DB->get_records('groupings_groups', array('groupingid'=>$grouping->id) );
-		foreach ($groups as $group) {
-		    echo $group->groupid . "\n";
+		$grouping_groups = $DB->get_records('groupings_groups', array('groupingid'=>$grouping->id) );
+		foreach ($grouping_groups as $grouping_group) {
+		    $groups = $DB->get_records('groups', array('id'=>$grouping_group->groupid) );
+		    foreach ($groups as $group) {
+		    echo "\tgroup " . $group->id . " \"" . $group->name . "\" " . $group->description . "\n";
+		    }
 		}
+	    }
 	}
     }
 
