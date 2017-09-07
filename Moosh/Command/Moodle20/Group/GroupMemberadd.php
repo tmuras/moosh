@@ -49,7 +49,8 @@ class GroupMemberadd extends MooshCommand
 
         $useridlist = array();
         if (!empty($membership->courseid)) {
-            $enrolledusers = user_get_participants( $membership->courseid, 0, 0, 0, '');
+	    $enrolledusers = user_get_participants( $membership->courseid, 0, 0, 0, '',
+	    	0, '');
             foreach ($enrolledusers as $user) {
                 $useridlist[$user->firstname] = $user->id;
             }
