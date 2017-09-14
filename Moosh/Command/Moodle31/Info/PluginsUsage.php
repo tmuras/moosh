@@ -27,21 +27,21 @@ class PluginsUsage extends MooshCommand
     {
         global $CFG, $DB;
         require_once($CFG->libdir . '/questionlib.php');
-
         $result = array();
-        $plugininfos = core_plugin_manager::instance()->get_plugins_of_type('filter');
-        $states = filter_get_global_states();
-
 
         // filters
-        foreach ($states as $state) {
-            if ($state->active != TEXTFILTER_DISABLED) {
+        $plugininfos = core_plugin_manager::instance()->get_plugins_of_type('filter');
+        $states = filter_get_global_states();
+        $pluginNames = array_keys($plugininfos);
+
+        foreach ($pluginNames as $pluginName) {
+            if (isset($states[$pluginName]) && $states[$pluginName]->active != TEXTFILTER_DISABLED) {
                 $active = true;
             } else {
                 $active = false;
             }
 
-            $result['FILTER'][$plugininfos[$state->filter]->displayname][] = ($active ? 'ON' : 'disabled');
+            $result['FILTER'][$plugininfos[$pluginName]->displayname][] = ($active ? 'ON' : 'disabled');
 
         }
 
