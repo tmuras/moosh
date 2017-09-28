@@ -21,6 +21,7 @@ class PluginsUsage extends MooshCommand
     public function __construct()
     {
         parent::__construct('usage', 'plugins');
+        $this->addOption('c|contribonly:', 'returns only non standard plugins when ==1 and all plugins when ==0');
     }
 
     public function execute()
@@ -28,24 +29,35 @@ class PluginsUsage extends MooshCommand
         global $CFG, $DB;
         require_once($CFG->libdir . '/questionlib.php');
         $result = array();
+        $options = $this->expandedOptions;
 
         // filters
+        //filter - key
+        $standard = core_plugin_manager::standard_plugins_list('filter');
         $plugininfos = core_plugin_manager::instance()->get_plugins_of_type('filter');
         $states = filter_get_global_states();
-        $pluginNames = array_keys($plugininfos);
+        $pluginnames = array_keys($plugininfos);
+        $checkcontribonly = false;
+        if (isset($options['contribonly']) && (int)$options['contribonly'] > 0) {
+            $checkcontribonly = true;
+        }
 
-        foreach ($pluginNames as $pluginName) {
-            if (isset($states[$pluginName]) && $states[$pluginName]->active != TEXTFILTER_DISABLED) {
+        foreach ($pluginnames as $pluginname) {
+            if ($checkcontribonly && in_array($pluginname, $standard)) {
+                continue;
+            }
+            if (isset($states[$pluginname]) && $states[$pluginname]->active != TEXTFILTER_DISABLED) {
                 $active = true;
             } else {
                 $active = false;
             }
 
-            $result['FILTER'][$plugininfos[$pluginName]->displayname][] = ($active ? 'ON' : 'disabled');
-
+            $result['FILTER'][$plugininfos[$pluginname]->displayname][] = ($active ? 'ON' : 'disabled');
         }
 
         // question type
+        //qtype - key
+        $standard = core_plugin_manager::standard_plugins_list('qtype');
         $counts = $DB->get_records_sql("
         SELECT qtype, COUNT(1) as numquestions, SUM(hidden) as numhidden
         FROM {question} GROUP BY qtype", array());
@@ -56,6 +68,9 @@ class PluginsUsage extends MooshCommand
         }
 
         foreach ($qtypes as $qtypename => $qtype) {
+            if ($checkcontribonly && in_array($qtypename, $standard)) {
+                continue;
+            }
             if (!isset($counts[$qtypename])) {
                 $counts[$qtypename] = new \stdClass;
                 $counts[$qtypename]->numquestions = 0;
@@ -82,10 +97,11 @@ class PluginsUsage extends MooshCommand
                     $result['QUESTION TYPES'][$qtype->local_name()]['needed'] = implode(', ', $requiredBy);
                 }
             }
-
         }
 
         // course format
+        //format - key
+        $standard = core_plugin_manager::standard_plugins_list('format');
         $courseformats = get_sorted_course_formats(true);
         foreach ($courseformats as $courseformat) {
             $formcourseformats[$courseformat] = get_string('pluginname', "format_$courseformat");
@@ -94,12 +110,20 @@ class PluginsUsage extends MooshCommand
         SELECT format, count(*) as count
         FROM {course} WHERE id > 1 GROUP BY format", array());
         foreach ($formcourseformats as $formatKey => $formatName) {
+            if ($checkcontribonly && in_array($formatKey, $standard)) {
+                continue;
+            }
             $result['COURSE FORMATS'][$formatName][] = (isset($courseformatusages[$formatKey]) ? $courseformatusages[$formatKey]->count : 0);
         }
         // enrol plugins
+        //enrol - key
+        $standard = core_plugin_manager::standard_plugins_list('enrol');
         $all = enrol_get_plugins(false);
 
         foreach (array_keys($all) as $enrol) {
+            if ($checkcontribonly && in_array($enrol, $standard)) {
+                continue;
+            }
             $ci = $DB->count_records('enrol', array('enrol' => $enrol));
             $cp = $DB->count_records_select('user_enrolments', "enrolid IN (SELECT id FROM {enrol} WHERE enrol = ?)", array($enrol));
             $usage = "$ci / $cp";
@@ -111,10 +135,15 @@ class PluginsUsage extends MooshCommand
             $result['ENROLS (Instances / enrolments)'][$name][] = $usage;
         }
         //blocks
+        //block - key
+        $standard = core_plugin_manager::standard_plugins_list('block');
         $blocks = $DB->get_records('block', array(), 'name ASC');
         $blocknames = array();
         foreach ($blocks as $blockid => $block) {
             $blockname = $block->name;
+            if ($checkcontribonly && in_array($blockname, $standard)) {
+                continue;
+            }
             if (file_exists("$CFG->dirroot/blocks/$blockname/block_$blockname.php")) {
                 $blocknames[$blockid] = get_string('pluginname', 'block_' . $blockname);
             } else {
@@ -129,6 +158,8 @@ class PluginsUsage extends MooshCommand
             $result['BLOCKS'][$strblockname][] = $totalcount;
         }
         //authentication
+        //auth - key
+        $standard = core_plugin_manager::standard_plugins_list('auth');
         $authsavailable = core_component::get_plugin_list('auth');
         get_enabled_auth_plugins(true);
         if (empty($CFG->auth)) {
@@ -138,12 +169,18 @@ class PluginsUsage extends MooshCommand
         }
         $displayauths = array();
         foreach ($authsenabled as $auth) {
+            if ($checkcontribonly && in_array($auth, $standard)) {
+                continue;
+            }
             $authplugin = get_auth_plugin($auth);
             $authtitle = $authplugin->get_title();
             $displayauths[$auth] = $authtitle;
         }
 
         foreach ($authsavailable as $auth => $dir) {
+            if ($checkcontribonly && in_array($auth, $standard)) {
+                continue;
+            }
             if (array_key_exists($auth, $displayauths)) {
                 continue; //already in the list
             }
@@ -154,7 +191,6 @@ class PluginsUsage extends MooshCommand
 
         $tmpRet = array();
         foreach ($displayauths as $auth => $name) {
-
             $usercount = $DB->count_records('user', array('auth' => $auth, 'deleted' => 0));
             $displayname = $name;
 
@@ -163,12 +199,17 @@ class PluginsUsage extends MooshCommand
             } else {
                 $result['AUTHENTICATION'][$displayname][] = $usercount;
             }
+            $result['AUTHENTICATION'] = $tmpRet + $result['AUTHENTICATION'];
         }
-        $result['AUTHENTICATION'] = $tmpRet + $result['AUTHENTICATION'];
 
         //Activities
+        //mod - key
+        $standard = core_plugin_manager::standard_plugins_list('mod');
         $modules = $DB->get_records('modules', array(), 'name ASC');
         foreach ($modules as $module) {
+            if ($checkcontribonly && in_array($module->name, $standard)) {
+                continue;
+            }
             try {
                 $count = $DB->count_records_select($module->name, "course<>0");
             } catch (dml_exception $e) {
