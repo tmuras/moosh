@@ -18,6 +18,7 @@ class MaintenanceOff extends MooshCommand
 
     public function execute()
     {
+        set_config('maintenance_mesage', '');
         set_config('maintenance_enabled', 0);
         echo "Maintenance Mode Disabled\n";
     }
