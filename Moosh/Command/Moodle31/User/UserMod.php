@@ -2,11 +2,11 @@
 /**
  * moosh - Moodle Shell
  *
- * @copyright  2012 onwards Tomasz Muras
+ * @copyright  2017 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle25\User;
+namespace Moosh\Command\Moodle31\User;
 use Moosh\MooshCommand;
 
 class UserMod extends MooshCommand
@@ -23,6 +23,7 @@ class UserMod extends MooshCommand
         $this->addOption('e|email:','email address');
 
         $this->addOption('g|global', 'user(s) to be set as global admin.', false);
+        $this->addOption('d|ignorepolicy:', 'whether ignore password policy.', false);
 
         $this->addArgument('user');
         $this->minArguments = 0;
@@ -34,9 +35,17 @@ class UserMod extends MooshCommand
         global $CFG, $DB;
 
         require_once $CFG->dirroot . '/user/lib.php';
-        unset($CFG->passwordpolicy);
-
         $options = $this->expandedOptions;
+
+        if ($options['ignorepolicy'] === 'true') {
+            unset($CFG->passwordpolicy);
+        }
+
+        if ($this->parsedOptions->has('password') && !check_password_policy($this->parsedOptions['password']->value, $error)) {
+            echo strip_tags($error) . " \n";
+            exit(0);
+        }
+
         if($options['all']) {
             //run on the whole mdl_user table
 
@@ -45,8 +54,9 @@ class UserMod extends MooshCommand
             $parameters = array();
             //we want to use the options that were actually provided on the commandline
             if($this->parsedOptions->has('password')) {
+                require_once($CFG->libdir . '/moodlelib.php');
                 $sqlFragment[] = 'password = ?';
-                $parameters['password'] = md5($this->parsedOptions['password']->value);
+                $parameters['password'] = hash_internal_user_password($this->parsedOptions['password']->value, true);
             }
             if($this->parsedOptions->has('email')) {
                 $sqlFragment[] = 'email = ?';
@@ -79,7 +89,8 @@ class UserMod extends MooshCommand
             }
 
             if($this->parsedOptions->has('password')) {
-                $user->password = md5($this->parsedOptions['password']->value);
+                require_once($CFG->libdir . '/moodlelib.php');
+                $user->password = hash_internal_user_password($this->parsedOptions['password']->value, true);
             }
             if($this->parsedOptions->has('email')) {
                 $user->email = $this->parsedOptions['email']->value;
