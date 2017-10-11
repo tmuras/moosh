@@ -23,7 +23,7 @@ class UserMod extends MooshCommand
         $this->addOption('e|email:','email address');
 
         $this->addOption('g|global', 'user(s) to be set as global admin.', false);
-        $this->addOption('d|ignorepolicy:', 'whether ignore password policy.', false);
+        $this->addOption('n|ignorepolicy', 'ignore password policy.', false);
 
         $this->addArgument('user');
         $this->minArguments = 0;
@@ -37,7 +37,7 @@ class UserMod extends MooshCommand
         require_once $CFG->dirroot . '/user/lib.php';
         $options = $this->expandedOptions;
 
-        if ($options['ignorepolicy'] === 'true') {
+        if ($options['ignorepolicy']) {
             unset($CFG->passwordpolicy);
         }
 
@@ -56,7 +56,7 @@ class UserMod extends MooshCommand
             if($this->parsedOptions->has('password')) {
                 require_once($CFG->libdir . '/moodlelib.php');
                 $sqlFragment[] = 'password = ?';
-                $parameters['password'] = hash_internal_user_password($this->parsedOptions['password']->value, true);
+                $parameters['password'] = hash_internal_user_password($this->parsedOptions['password']->value);
             }
             if($this->parsedOptions->has('email')) {
                 $sqlFragment[] = 'email = ?';
@@ -90,7 +90,7 @@ class UserMod extends MooshCommand
 
             if($this->parsedOptions->has('password')) {
                 require_once($CFG->libdir . '/moodlelib.php');
-                $user->password = hash_internal_user_password($this->parsedOptions['password']->value, true);
+                $user->password = hash_internal_user_password($this->parsedOptions['password']->value);
             }
             if($this->parsedOptions->has('email')) {
                 $user->email = $this->parsedOptions['email']->value;
