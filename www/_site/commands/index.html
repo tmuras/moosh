@@ -659,16 +659,26 @@ Use -i for providing username IDs.</p>
 
 <h2><a class="command-name">course-list</a></h2>
 
-<p>Lists courses with given short or full name.</p>
+<p>Lists courses that match your search criteria. As an argument you can provide an SQL fragment,
+that is simply injected after WHERE clause when searching for courses.
+All cli argument(s) will be concateneted together, so there is no need to
+quote SQL into single argument. But on the other hand, you need to escape quotes, so they are not eaten by your shell.
+Run command with global "-v" option to see the actual SQL used for search (<code>moosh -v course-list</code>).
+There are also quite a few options that modify the behaviour - see <code>moosh course-list --help</code> for complete list.</p>
 
-<p>Example 1: List all courses with short or full name containing phrase 'student'</p>
+<p>Example 1: List all courses with full name containing phrase 'student'</p>
 
-<pre><code>moosh course-list student
+<pre><code>moosh course-list "fullname like '%student%'"
 </code></pre>
 
-<p>Example 2: List all courses with short or full name containing phrase 'course' and display only id's of courses.</p>
+<p>Example 2: List above but as separate arguments - quotes are escaped</p>
 
-<pre><code>moosh course-list course -i
+<pre><code>moosh course-list fullname like \'%student%\'
+</code></pre>
+
+<p>Example 3: List only empty courses from category 1</p>
+
+<pre><code>moosh course-list -c 1 -e yes
 </code></pre>
 
 <p><span class="anchor" id="course-reset"></span></p>
@@ -972,25 +982,28 @@ contextid, component, filearea, itemid, filepath, filename, userid, filesize, mi
 
 <h2><a class="command-name">file-upload</a></h2>
 
-<p>Upload selected file to user's private area. Must specify full path to filename.</p>
+<p>Upload selected file to Moodle data. Must specify full path to filename.</p>
 
 <ul>
-<li>-f|--filename - change name of file saved to moodle.</li>
-<li>-m|--mintype - set type of displayed miniature.</li>
-<li>-l|--license - set license of upload file.</li>
-<li>-c|--contextid - set context id.</li>
-<li>-r|--replace - replace existing file</li>
+<li>-c|--contextid - set context id. Defaults to 5, which is a context ID of admin user in standard installation.</li>
+<li>-f|--filearea - set filearea, defaults to 'private'</li>
+<li>-m|--component - component field, defaults to 'user'</li>
+<li>-i|--itemid itemid column, defaults to '0'</li>
+<li>-s|--sortorder sort order, '0' by default</li>
+<li>-n|--filename change name of file saved to moodle, defaults to full name of the file given in argument</li>
+<li>-p|--filepath change path of file saved to moodle, defaults to file full path</li>
 </ul>
 
 
-<p>Example 1: Upload file /home/user/file to private area of user with id 2.</p>
+<p>Example 1: Upload file file.txt to private area of a user with context id 5 - usually "admin" user.</p>
 
-<pre><code>moosh file-upload /home/user/file 2 
+<pre><code>moosh file-upload file.txt
 </code></pre>
 
-<p>Example 2: Upload file /home/user/file and change its name for moodle.</p>
+<p>Example 2: Upload to admin's private files a file file.txt, name in Moodle "myfile.txt" and
+place in directory "drop".</p>
 
-<pre><code>moosh file-upload --filename="new file name" /home/user/file 2 
+<pre><code>moosh file-upload --filepath=drop --filename=myfile.txt file.txt 
 </code></pre>
 
 <p><span class="anchor" id="filter-set"></span></p>
@@ -1480,6 +1493,30 @@ If you do not have write permissions on the plugins' folder it will advice you w
 <h2><a class="command-name">user-getidbyname</a></h2>
 
 <p>This command has been deprecated. Use user-list instead.</p>
+
+<p><span class="anchor" id="user-import-pictures"></span>
+<a class="command-name">user-import-pictures</a></p>
+
+<hr />
+
+<p>Provides capability of importing user pictures from a specific directory (recursively including subdirectories).
+Image filename can be mapped to user ID, idnumber or username database field. Supported image types are jpg, gif and png.
+--overwrite option flag can be used to force overwriting of existing user pictures.</p>
+
+<p>Example 1: import user pictures from directory and map file names to user's ID value.</p>
+
+<pre><code>moosh user-import-pictures -i /path/to/import/dir
+</code></pre>
+
+<p>Example 2: import user pictures from directory and map file names to user's idnumber value.</p>
+
+<pre><code>moosh user-import-pictures -n /path/to/import/dir
+</code></pre>
+
+<p>Example 3: import user pictures from directory and map file names to user's username value.</p>
+
+<pre><code>moosh user-import-pictures -u /path/to/import/dir
+</code></pre>
 
 <p><span class="anchor" id="user-list"></span></p>
 

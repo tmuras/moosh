@@ -37,7 +37,7 @@ use GetOptionKit\OptionCollection;
 @error_reporting(E_ALL | E_STRICT);
 @ini_set('display_errors', '1');
 
-define('MOOSH_VERSION', '0.24');
+define('MOOSH_VERSION', '0.25');
 define('MOODLE_INTERNAL', true);
 
 $appspecs = new OptionCollection;
@@ -119,7 +119,7 @@ if ($app_options->has('help') || (!$subcommand && !$possible_matches)) {
     $printer = new GetOptionKit\OptionPrinter\ConsoleOptionPrinter;
     echo $printer->render($appspecs);
     echo "\n";
-    exit(1);
+    exit(0);
 }
 
 if (!$subcommand && $possible_matches) {

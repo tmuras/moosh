@@ -7,7 +7,7 @@ sudo su
 apt-get update
 debconf-set-selections <<< "mysql-server mysql-server/root_password password $PASSWORD"
 debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $PASSWORD"
-apt-get -y install mysql-server apache2 libapache2-mod-php php php7.0-mysql php-xml php-curl php-zip php-gd php-mbstring php-soap php-xmlrpc php-intl php-mysql php-cli curl git mc vim ack-grep
+apt-get -y install mysql-server apache2 libapache2-mod-php php php7.0-mysql php-xml php-curl php-zip php-gd php-mbstring php-soap php-xmlrpc php-intl php-mysql php-cli curl git mc vim ack-grep zip
 
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/dbconfig-install boolean true"
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/app-password-confirm password $PASSWORD"
@@ -30,8 +30,8 @@ echo "create database moodle default character set utf8" | mysql -u root -pmypas
 cd /var/www/html/
 
 echo "Downloading Moodle package"
-wget --quiet https://download.moodle.org/download.php/direct/stable31/moodle-latest-31.tgz
-tar -xf moodle-latest-31.tgz
+wget --quiet https://download.moodle.org/download.php/direct/stable33/moodle-latest-33.tgz
+tar -xf moodle-latest-33.tgz
 cd moodle
 cp config-dist.php config.php
 

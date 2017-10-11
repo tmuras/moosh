@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle29\Course;
+namespace Moosh\Command\Moodle33\Course;
 
 use Moosh\MooshCommand;
 use restore_controller;
@@ -158,11 +158,6 @@ class CourseRestore extends MooshCommand {
             $rc->convert();
         }
         $plan = $rc->get_plan();
-        $tasks = $plan->get_tasks();
-        foreach ($tasks as &$task) {
-            $setting = $task->get_setting('enrol_migratetomanual');
-            $setting->set_value('1');
-        }
         if (!$rc->execute_precheck()){
             $check = $rc->get_precheck_results();
             cli_problem("Restore pre-check failed!");

@@ -544,15 +544,24 @@ Example 2: Enable self enrolment on a course with an enrolment key
 <a class="command-name">course-list</a>
 ----------------------
 
-Lists courses with given short or full name.
+Lists courses that match your search criteria. As an argument you can provide an SQL fragment, 
+that is simply injected after WHERE clause when searching for courses.
+All cli argument(s) will be concateneted together, so there is no need to 
+quote SQL into single argument. But on the other hand, you need to escape quotes, so they are not eaten by your shell.
+Run command with global "-v" option to see the actual SQL used for search (`moosh -v course-list`).
+There are also quite a few options that modify the behaviour - see `moosh course-list --help` for complete list.  
 
-Example 1: List all courses with short or full name containing phrase 'student'
+Example 1: List all courses with full name containing phrase 'student'
 
-    moosh course-list student
+    moosh course-list "fullname like '%student%'"
 
-Example 2: List all courses with short or full name containing phrase 'course' and display only id's of courses.
+Example 2: List above but as separate arguments - quotes are escaped
 
-    moosh course-list course -i
+    moosh course-list fullname like \'%student%\'
+    
+Example 3: List only empty courses from category 1
+
+    moosh course-list -c 1 -e yes
 
 <span class="anchor" id="course-reset"></span>
 <a class="command-name">course-reset</a>
@@ -826,21 +835,25 @@ Example 3: Like above but with no duplicates and show path relative to data root
 <a class="command-name">file-upload</a>
 --------
 
-Upload selected file to user's private area. Must specify full path to filename.
+Upload selected file to Moodle data. Must specify full path to filename.
 
-* -f|--filename - change name of file saved to moodle.
-* -m|--mintype - set type of displayed miniature.
-* -l|--license - set license of upload file.
-* -c|--contextid - set context id.
-* -r|--replace - replace existing file
+* -c|--contextid - set context id. Defaults to 5, which is a context ID of admin user in standard installation.
+* -f|--filearea - set filearea, defaults to 'private'
+* -m|--component - component field, defaults to 'user'
+* -i|--itemid itemid column, defaults to '0'
+* -s|--sortorder sort order, '0' by default
+* -n|--filename change name of file saved to moodle, defaults to full name of the file given in argument
+* -p|--filepath change path of file saved to moodle, defaults to file full path
 
-Example 1: Upload file /home/user/file to private area of user with id 2.
+
+Example 1: Upload file file.txt to private area of a user with context id 5 - usually "admin" user.
     
-    moosh file-upload /home/user/file 2 
+    moosh file-upload file.txt
 
-Example 2: Upload file /home/user/file and change its name for moodle.
+Example 2: Upload to admin's private files a file file.txt, name in Moodle "myfile.txt" and 
+place in directory "drop".
 
-    moosh file-upload --filename="new file name" /home/user/file 2 
+    moosh file-upload --filepath=drop --filename=myfile.txt file.txt 
 
 <span class="anchor" id="filter-set"></span>
 <a class="command-name">filter-set</a>

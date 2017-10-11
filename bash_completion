@@ -80,6 +80,7 @@ _moosh()
          generate-moosh \
          apachelog-parse \
          perflog-parse \
+         plugins-usage \
          download-moodle"
 
     if [[ ${cur} == * ]] ; then
