@@ -1410,6 +1410,25 @@ moosh module-reinstall mod_book
 <pre><code>moosh plugin-list  | grep '^mod_' | grep 2.8 | grep -o '[^,]*$' | wget -i -
 </code></pre>
 
+<p><span class="anchor" id="plugins-usage"></span></p>
+
+<h2><a class="command-name">plugins-usage</a></h2>
+
+<p>Shows the usage of the subset of the plugins used in Moodle installation.
+Plugin will show the usages, wherever it can figure out if the plugin is used.
+Currently supported plugins are: filters, question types, course formats, enrolments,
+blocks, authentication types, activities.</p>
+
+<p>Example 1: show all plugins and their usage</p>
+
+<pre><code>moosh plugins-usage 
+</code></pre>
+
+<p>Example 2: show only contrubuted (3-rd party) plugins</p>
+
+<pre><code>moosh plugins-usage -c 1
+</code></pre>
+
 <p><span class="anchor" id="plugin-uninstall"></span></p>
 
 <h2><a class="command-name">plugin-uninstall</a></h2>
@@ -1570,9 +1589,14 @@ Image filename can be mapped to user ID, idnumber or username database field. Su
 <pre><code>moosh user-mod --email my@email.com --password newpwd --auth manual --all
 </code></pre>
 
-<p>Example 4: set user as global super user</p>
+<p>Example 5: set user as global super user</p>
 
-<pre><code>moosh user-mod -g 
+<pre><code>moosh user-mod -g
+</code></pre>
+
+<p>Example 6: change admin's password while ignoring password's policy</p>
+
+<pre><code>moosh user-mod --password weakpassword admin
 </code></pre>
 
 <p><span class="anchor" id="random-label"></span></p>
@@ -1602,6 +1626,18 @@ Image filename can be mapped to user ID, idnumber or username database field. Su
 <p>Example 1: Get concurrent users between 20-01-2014 and 27-01-2014 with 30 minut periods.</p>
 
 <pre><code>moosh report-concurrency -f 20140120 -t 20140127 -p 30
+</code></pre>
+
+<p><span class="anchor" id="restore-settings"></span></p>
+
+<h2><a class="command-name">restore-settings</a></h2>
+
+<p>Returns all possible restore settings for the current Moodle. To figure them out,
+the command creates and then backes up an empty course with short name "moosh001" - unless it already exists.</p>
+
+<p>Example 1: Dump all possible restore settings</p>
+
+<pre><code>moosh restore-settings
 </code></pre>
 
 <p><span class="anchor" id="role-create"></span></p>
