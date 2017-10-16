@@ -58,6 +58,10 @@ if ($app_options->has('moodle-path')) {
 }
 
 $moodle_version = moosh_moodle_version($top_dir);
+if (isset($app_options['verbose'])) {
+    echo "Moodle version detected: $moodle_version\n";
+}
+
 $local_dir = home_dir() . DIRECTORY_SEPARATOR . '.moosh';
 $viable_versions = moosh_generate_version_list($moodle_version);
 $viable_versions[] = 'Generic';
