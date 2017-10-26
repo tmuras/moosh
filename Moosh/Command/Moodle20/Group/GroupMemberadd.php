@@ -64,7 +64,6 @@ class GroupMemberadd extends MooshCommand
 
             if (!empty($membership->courseid)) {
                 $userfirstname = $argument;
-                $names[] = $userfirstname;
                 $userid = $useridlist[$userfirstname];
                 $groupupdate = groups_add_member($membership->groupid, $userid);
                 if ( $groupupdate ) {
