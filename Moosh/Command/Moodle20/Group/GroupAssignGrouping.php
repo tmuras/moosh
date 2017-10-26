@@ -34,6 +34,8 @@ class GroupAssigngrouping extends MooshCommand
         $assignment->id = $options['grouping'];
         $grouping = $DB->get_record('groupings',
                 array('id'=>$assignment->id), '*', MUST_EXIST);
+        $group = $DB->get_record('groups',
+                array('id'=>$argument), '*', MUST_EXIST);
 
         if($this->verbose) {
             echo "Assigning to grouping: " . $grouping->description . "\n";
@@ -41,7 +43,7 @@ class GroupAssigngrouping extends MooshCommand
 
         foreach ($this->arguments as $argument) {
             $update = groups_assign_grouping($assignment->id, $argument);
-            echo $assignment->id . ": " . $argument . "\n";
+            echo $group->name ($group->id)\n";
         }
     }
 }
