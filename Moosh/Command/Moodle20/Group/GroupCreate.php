@@ -60,7 +60,7 @@ class GroupCreate extends MooshCommand
         $group->descriptionformat = $options['format'];
 
 	$newgroupid = groups_create_group($group, false, false);
-	echo "$newgroupid\n";
+	echo "$group->name ($newgroupid)\n";
 
 
         // if verbose mode was requested, show some more information/debug messages
