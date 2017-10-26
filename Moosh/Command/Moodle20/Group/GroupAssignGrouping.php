@@ -43,7 +43,7 @@ class GroupAssigngrouping extends MooshCommand
 
         foreach ($this->arguments as $argument) {
             $update = groups_assign_grouping($assignment->id, $argument);
-            echo $group->name ($group->id)\n";
+            echo "$group->name ($group->id)\n";
         }
     }
 }
