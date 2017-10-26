@@ -84,8 +84,8 @@ class GroupMemberadd extends MooshCommand
                     echo $membership->groupid . ": " . $user->firstname . " not added.\n";
                 }
             }
-            echo "$names\n";
         }
+        echo "$names\n";
 
         // if verbose mode was requested, show some more information/debug messages
         if($this->verbose) {
