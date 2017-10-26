@@ -49,37 +49,43 @@ class GroupMemberadd extends MooshCommand
 
         $useridlist = array();
         if (!empty($membership->courseid)) {
-	    $enrolledusers = user_get_participants( $membership->courseid, 0, 0, 0, '',
-	    	0, '');
+            $enrolledusers = user_get_participants( $membership->courseid, 0, 0, 0, '',
+                0, '');
             foreach ($enrolledusers as $user) {
                 $useridlist[$user->firstname] = $user->id;
             }
             $enrolledusers->close();
         }
+        $names = "";
         foreach ($this->arguments as $argument) {
+
             $this->expandOptionsManually(array($argument));
             $options = $this->expandedOptions;
 
             if (!empty($membership->courseid)) {
                 $userfirstname = $argument;
+                $names[] = $userfirstname;
                 $userid = $useridlist[$userfirstname];
                 $groupupdate = groups_add_member($membership->groupid, $userid);
                 if ( $groupupdate ) {
-                    echo $membership->groupid . ": " . $argument . "\n";
+                    $names .= "\t$userfirstname";
                 }
                 else {
-                    echo $membership->groupid . ": " . $argument . " not added.\n";
+                    echo $membership->groupid . ": " . $userfirstname . " not added.\n";
                 }
             }
             else {
                 $groupupdate = groups_add_member($membership->groupid, $argument);
+                $user = $DB->get_record('user',
+                        array('id'=>$argument), '*', MUST_EXIST);
                 if ( $groupupdate ) {
-                    echo $membership->groupid . ": " . $argument . "\n";
+                    $names .= "\t$user->firstname";
                 }
                 else {
-                    echo $membership->groupid . ": " . $argument . " not added.\n";
+                    echo $membership->groupid . ": " . $user->firstname . " not added.\n";
                 }
             }
+            echo "$names\n";
         }
 
         // if verbose mode was requested, show some more information/debug messages
