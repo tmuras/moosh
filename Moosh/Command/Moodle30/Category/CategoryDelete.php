@@ -14,45 +14,35 @@ class CategoryDelete extends MooshCommand
     public function __construct()
     {
         parent::__construct('delete', 'category');
-
-        $this->addArgument('catid');
-
-        //$this->addOption('t|test', 'option with no value');
-        //$this->addOption('o|option:', 'option with value and default', 'default');
-
+        $this->addArgument('categoryid');
     }
 
     public function execute()
     {
-        // Some variables you may want to use
-        //  $this->cwd - the directory where moosh command was executed
-        //  $this->mooshDir - moosh installation directory
-        //  $this->expandedOptions - commandline provided options, merged with defaults
-        //  $this->topDir - top Moodle directory
-        //  $this->arguments[0] - first argument passed
-        //  $this->pluginInfo - array with information about the current plugin (based on cwd), keys:'type','name','dir'
-        //  $this->verbose - if set to true, then "moosh -v" was run - add more verbose / debug information
-		
-		global $CFG;
+		global $CFG, $DB;
 
-        require_once $CFG->dirroot . '/course/lib.php';
 		require_once($CFG->libdir.'/coursecatlib.php');
 		
-        $options = $this->expandedOptions;
-
 		$catid = $this->arguments[0];
-		$category = \coursecat::get($catid);
 
-		$courses = $category->delete_full(false);
+		//Make sure the category exists
+		if ($DB->record_exists('course_categories', array('id' => $catid))) {
 
-		foreach ($courses as $course){
-			echo "Deleted course $course->shortname\n";
+			$category = \coursecat::get($catid);
+
+			//do a recursive delete of all courses and subcats
+			$courses = $category->delete_full(false);
+
+			//print out all of the deleted courses, if 'verbose' is set
+			if ($this->verbose) {
+				foreach ($courses as $course){
+					echo "Deleted course: $course->shortname\n";
+				}
+			}
+
+			echo 'Deleted '.sizeof($courses).' courses'."\n";
+		} else {
+			echo 'Category id '.$catid.' does not exist.'."\n";
 		}
-
-        /* if verbose mode was requested, show some more information/debug messages
-        if($this->verbose) {
-            echo "Say what you're doing now";
-        }
-        */
     }
 }
