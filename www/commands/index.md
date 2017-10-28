@@ -232,6 +232,18 @@ Example 2: Add category "mycat" under category id 6, set to visible and descript
 
     moosh category-create -p 6 -v 1 -d "My category" mycat
 
+
+<span class="anchor" id="category-delete"></span>
+<a class="command-name">category-delete</a>
+---------------
+
+Delete category, all sub-categories and all courses inside.
+
+Example 1: Delete recursively category with id=2
+
+    moosh category-delete 2
+
+
 <span class="anchor" id="category-export"></span>
 <a class="command-name">category-export</a>
 -------------
