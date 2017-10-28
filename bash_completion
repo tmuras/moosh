@@ -14,6 +14,7 @@ _moosh()
          category-create \
          category-list \
          category-move \
+         category-delete \
          cohort-create \
          cohort-enrol \
          config-get \
