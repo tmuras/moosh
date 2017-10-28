@@ -759,7 +759,7 @@ Go through all files in Moodle data and check them for corruption. The check is 
 <a class="command-name">file-dbcheck</a>
 -----------
 
-Check that all files in DB do exist in Moodle data.
+Check that all files recorder in the DB do exist in Moodle data directory.
 
     moosh file-dbcheck
 
@@ -809,6 +809,9 @@ The output will contain some defaults or nearly all possible file information if
 
 With "-i" option only IDs are returned. This can be used when pipe-ing into other file-related commands.
 
+Use the -m option to list files that exsist on the {files} DB table but are missing from the file system,
+and add -r option to remove them from the {file} DB table.
+
 Example 1: Show all legacy files for a course, which context id is 15
 
     moosh file-list "contextid=15 AND component='course' AND filearea='legacy'"
@@ -825,8 +828,6 @@ Example 4: Super-combo. Get all course files and tar/bzip2 them up.
 
     moosh file-list -i course=2 | moosh file-path -s -r | tar -C $(moosh config-get core dataroot) -T - -cjf files.tar.bz2
 
-Use the -m option to list files that exsist on the {files} DB table but are missing from the file system,
-and add -r option to remove them from the {file} DB table.
 
 <span class="anchor" id="file-path"></span>
 <a class="command-name">file-path</a>

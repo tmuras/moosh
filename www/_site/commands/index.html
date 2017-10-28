@@ -888,7 +888,7 @@ moosh dev-versionbump
 
 <h2><a class="command-name">file-dbcheck</a></h2>
 
-<p>Check that all files in DB do exist in Moodle data.</p>
+<p>Check that all files recorder in the DB do exist in Moodle data directory.</p>
 
 <pre><code>moosh file-dbcheck
 </code></pre>
@@ -947,6 +947,9 @@ contextid, component, filearea, itemid, filepath, filename, userid, filesize, mi
 
 
 <p>With "-i" option only IDs are returned. This can be used when pipe-ing into other file-related commands.</p>
+
+<p>Use the -m option to list files that exsist on the {files} DB table but are missing from the file system,
+and add -r option to remove them from the {file} DB table.</p>
 
 <p>Example 1: Show all legacy files for a course, which context id is 15</p>
 
