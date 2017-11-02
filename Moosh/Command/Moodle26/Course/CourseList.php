@@ -56,7 +56,7 @@ class CourseList extends MooshCommand {
             $sql .= " LEFT JOIN {course_modules} m ON c.id=m.course ";
         }
 
-        $sql .= "WHERE '1' ";
+        $sql .= "WHERE '1'='1' ";
         if ($options['categorysearch'] ) {
             $category = \coursecat::get($options['categorysearch']);
 
