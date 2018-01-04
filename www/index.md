@@ -103,8 +103,16 @@ $CFG auto-completion
 ====================
 
 You can use moosh to generate fake class moodle_config which will contain public properties extracted from your current
- Moodle. Properties will have PHP doc based on Moodle's documentation. If you're lazy, simply 
- <a href="https://raw.githubusercontent.com/tmuras/moosh/master/includes/config.class.php">download</a> <a href="https://github.com/tmuras/moosh/blob/master/includes/config.class.php">config class for Moodle 2.9</a>.
+ Moodle. Properties will have PHP doc based on Moodle's documentation. If you're lazy, simply download pre-generated config class:
+ 
+ * <a href="https://raw.githubusercontent.com/tmuras/moosh/master/includes/config.29.class.php">config class for Moodle 2.9</a>
+ * <a href="https://raw.githubusercontent.com/tmuras/moosh/master/includes/config.30.class.php">config class for Moodle 3.0</a>
+ * <a href="https://raw.githubusercontent.com/tmuras/moosh/master/includes/config.31.class.php">config class for Moodle 3.1</a>
+ * <a href="https://raw.githubusercontent.com/tmuras/moosh/master/includes/config.32.class.php">config class for Moodle 3.2</a>
+ * <a href="https://raw.githubusercontent.com/tmuras/moosh/master/includes/config.33.class.php">config class for Moodle 3.3</a>
+ * <a href="https://raw.githubusercontent.com/tmuras/moosh/master/includes/config.34.class.php">config class for Moodle 3.4</a>
+ * <a href="https://raw.githubusercontent.com/tmuras/moosh/master/includes/config.35.class.php">config class for Moodle 3.5</a>
+ 
   
 To get it to work with PHP Storm, simply drop that file somewhere into your Moodle project files.
 ![$CFG autocompletion in PHP Storm](/images/cfg_autocompletion_phpstorm.png)
