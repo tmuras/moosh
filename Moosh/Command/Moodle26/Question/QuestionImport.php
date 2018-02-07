@@ -40,6 +40,8 @@ class QuestionImport extends MooshCommand
         // Use existing questions category for quiz.
         $category = $DB->get_record('question_categories',array('contextid'=>$coursecontext->id));
         //$category = $DB->get_record("question_categories", array('id' => $category),MUST_EXIST);
+	$category->contextid = $coursecontext->id;
+	$category->id = 1185;
 
         $formatfile = $CFG->dirroot .  '/question/format/xml/format.php';
         if (!is_readable($formatfile)) {
