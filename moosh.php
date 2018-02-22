@@ -211,19 +211,6 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
         }
     }
 
-    //gather more info based on the directory where moosh was run
-    $relative_dir = substr($cwd, strlen($top_dir));
-    $relative_dir = trim($relative_dir, '/');
-    if ($app_options->has('verbose')) {
-        echo "Top Moodle dir: $top_dir\n";
-        echo "Current working dir: " . $cwd . "\n";
-        echo "Relative Moodle dir: $relative_dir\n";
-    }
-    $plugin_info = detect_plugin($relative_dir);
-    $subcommand->setPluginInfo($plugin_info);
-    $subcommand->topDir = $top_dir;
-    $subcommand->relativeDir = $relative_dir;
-
     // Set up debugging.
     $CFG->debug = (E_ALL);
     $CFG->debugdisplay = 1;
@@ -248,6 +235,21 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
         }
         @complete_user_login($user);
     }
+}
+
+if($top_dir) {
+    // Gather more info based on the directory where moosh was run
+    $relative_dir = substr($cwd, strlen($top_dir));
+    $relative_dir = trim($relative_dir, '/');
+    if ($app_options->has('verbose')) {
+        echo "Top Moodle dir: $top_dir\n";
+        echo "Current working dir: " . $cwd . "\n";
+        echo "Relative Moodle dir: $relative_dir\n";
+    }
+    $plugin_info = detect_plugin($relative_dir);
+    $subcommand->setPluginInfo($plugin_info);
+    $subcommand->topDir = $top_dir;
+    $subcommand->relativeDir = $relative_dir;
 }
 
 if ($app_options->has('verbose')) {
