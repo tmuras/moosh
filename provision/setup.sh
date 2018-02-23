@@ -22,26 +22,49 @@ sed 's/APACHE_RUN_GROUP=www-data/APACHE_RUN_GROUP=vagrant/' -i /etc/apache2/envv
 
 /etc/init.d/apache2 restart
 
-mkdir -p /opt/data/moodledata
-chown vagrant /opt/data/moodledata
+mkdir -p /opt/data/moodle33
+mkdir -p /opt/data/moodle35
+chown vagrant -R /opt/data
 
-echo "create database moodle default character set utf8" | mysql -u root -pmypassword
+echo "create database moodle33 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci" | mysql -u root -pmypassword
+echo "create database moodle35 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci" | mysql -u root -pmypassword
 
 cd /var/www/html/
 
-echo "Downloading Moodle package"
+echo "Downloading Moodle 3.3 package"
 wget --quiet https://download.moodle.org/download.php/direct/stable33/moodle-latest-33.tgz
 tar -xf moodle-latest-33.tgz
-cd moodle
+mv moodle moodle33
+cd moodle33
 cp config-dist.php config.php
 
+sed "s|http://example.com/moodle';|http://192.168.33.10/moodle33';|" -i config.php
 sed "s/pgsql';/mysqli';/" -i config.php
+sed "s/moodle';/moodle33';/" -i config.php
 sed "s/username';/root';/" -i config.php
 sed "s/password';/mypassword';/" -i config.php
-sed "s|http://example.com/moodle';|http://192.168.33.10/moodle';|" -i config.php
-sed "s|/home/example/moodledata';|/opt/data/moodledata';|" -i config.php
+sed "s|/home/example/moodledata';|/opt/data/moodle33';|" -i config.php
 
 php admin/cli/install_database.php --adminpass=a --fullname="moosh dev" --shortname="moosh dev" --adminemail=noreply@example.com --agree-license
+
+cd ..
+
+echo "Downloading the latest (dev) Moodle package"
+wget --quiet https://download.moodle.org/download.php/direct/moodle/moodle-latest.tgz
+tar -xf moodle-latest.tgz
+mv moodle moodle35
+cd moodle35
+cp config-dist.php config.php
+
+sed "s|http://example.com/moodle';|http://192.168.33.10/moodle35';|" -i config.php
+sed "s/pgsql';/mysqli';/" -i config.php
+sed "s/username';/root';/" -i config.php
+sed "s/moodle';/moodle35';/" -i config.php
+sed "s/password';/mypassword';/" -i config.php
+sed "s|/home/example/moodledata';|/opt/data/moodle35';|" -i config.php
+
+php admin/cli/install_database.php --adminpass=a --fullname="moosh dev" --shortname="moosh dev" --adminemail=noreply@example.com --agree-license
+
 
 echo "Install composer"
 curl -Ss https://getcomposer.org/installer | php
@@ -61,5 +84,5 @@ cp bash_completion /etc/bash_completion.d/moosh
 echo "Fix permissions"
 chown vagrant:vagrant -R /home/vagrant
 chown -R vagrant:vagrant /var/www
-chown vagrant -R /opt/data/moodledata
+chown vagrant -R /opt/data
 
