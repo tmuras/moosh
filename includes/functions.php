@@ -481,3 +481,16 @@ function admin_login($option = null) {
     $credentials = array('cookiename' => session_name(), 'cookie' => session_id());
     return $credentials;
 }
+
+
+function read_config($filepath) {
+
+    // Read content of the config file
+    $config = file_get_contents($filepath);
+    // Strip the require_once on setup.php at the end of the file
+    $config = str_replace('require_once', '//require_once', $config);
+    $config = str_replace('<?php', '', $config);
+    eval($config);
+
+    return $CFG;
+}
