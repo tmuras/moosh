@@ -18,7 +18,7 @@ class FileCheck extends MooshCommand
         //$this->addArgument('name');
 
         //$this->addOption('t|test', 'option with no value');
-        //$this->addOption('o|option:', 'option with value and default', 'default');
+        $this->addOption('s|stop:', 'Stop after this many missing files found. Set to 0 for no limit.', 100);
 
     }
 
@@ -86,6 +86,8 @@ class FileCheck extends MooshCommand
 
         setup_DB();
         $options = $this->expandedOptions;
+        $stopafter = (int)$options['stop'];
+        $missing = 0;
         $fs = get_file_storage();
         $rs = $DB->get_recordset_sql("SELECT MAX(id) AS id, contenthash FROM {files} GROUP BY contenthash");
         foreach ($rs as $file) {
@@ -98,15 +100,15 @@ class FileCheck extends MooshCommand
                 $contenthash = $fileobject->get_contenthash();
                 $l1 = $contenthash[0].$contenthash[1];
                 $l2 = $contenthash[2].$contenthash[3];
-                echo $CFG->dataroot.DIRECTORY_SEPARATOR.'filedir/' . $l1 . '/' . $l2 . '/' .$contenthash . "\n";
+                echo "Missing " . $CFG->dataroot.DIRECTORY_SEPARATOR.'filedir/' . $l1 . '/' . $l2 . '/' .$contenthash . "\n";
+                echo $fileobject->get_component() . ' / ' . $fileobject->get_filearea() . ' "' . $fileobject->get_filename() . '" ' .
+                        date('Y-m-d H:i' ,$fileobject->get_timecreated()) . ' / ' . date('Y-m-d H:i' ,$fileobject->get_timemodified()) . "\n";
+                $missing++;
+                if ($stopafter && $missing === $stopafter) {
+                    echo "Found $missing missing files, not searching anymore. Set -s 0 option to disable the limit.\n";
+                }
             }
         }
         $rs->close();
-
-        /* if verbose mode was requested, show some more information/debug messages
-        if($this->verbose) {
-            echo "Say what you're doing now";
-        }
-        */
     }
 }
