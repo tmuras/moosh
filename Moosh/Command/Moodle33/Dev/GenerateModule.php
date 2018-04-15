@@ -17,6 +17,7 @@ class GenerateModule extends MooshCommand
         parent::__construct('module', 'generate');
 
         $this->addArgument('module_name');
+	$this->addOption('c|copyright:', 'Your Name <your@email.address', "Your Name <you@example.com>");
     }
 
     public function execute()
@@ -40,6 +41,7 @@ class GenerateModule extends MooshCommand
             cli_error("Module name can not contain _");
         }
 
+	$copyright = date('Y') . ' ' . $this->expandedOptions['copyright'];
         //copy newmodule
         $modname = $this->arguments[0];
         $modpath = $this->topDir.'/mod/'.$modname;
@@ -52,7 +54,7 @@ class GenerateModule extends MooshCommand
         echo "Generating module $modname based on tool_pluginskel\n";
 
         $recipe = array(
-                'copyright' => '2018 Your Name <you@example.com>',
+                'copyright' => $copyright,
                 'component' => "$modname",
                 'release' => '0.1.0',
                 'version' => date('Ymd00'),
@@ -165,7 +167,52 @@ class GenerateModule extends MooshCommand
   </TABLES>
 </XMLDB>
 ";
+	file_put_contents($modpath . '/db/install.xml', $installfile);
 
-        file_put_contents($modpath . '/db/install.xml', $installfile);
+	mkdir($modpath . '/classes/event', 0755, true);
+	$eventfile = "<?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+/**
+ * Defines the view event.
+ *
+ * @package    mod_$modname
+ * @copyright  $copyright
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+namespace mod_$modname\\event;
+defined('MOODLE_INTERNAL') || die();
+/**
+ * The mod_newmodule instance viewed event class
+ *
+ * If the view mode needs to be stored as well, you may need to
+ * override methods get_url() and get_legacy_log_data(), too.
+ *
+ * @package    mod_$modname
+ * @copyright  $copyright
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class course_module_viewed extends \\core\\event\\course_module_viewed {
+    /**
+     * Initialize the event
+     */
+    protected function init() {
+        \$this->data['objecttable'] = '$modname';
+        parent::init();
+    }
+}";
+	file_put_contents($modpath . '/classes/event/course_module_viewed.php', $eventfile);
     }
 }
