@@ -475,6 +475,10 @@ Example 2: Create new course
 
     moosh course-create --category 1 --fullname "full course name" --description "course description" --idnumber "course idnumber" shortname
 
+Example 3: Create new course with section format, number options
+
+    moosh course-create --category 4 --format topics --numsections 2 test
+
 
 <span class="anchor" id="course-config-set"></span>
 <a class="command-name">course-config-set</a>

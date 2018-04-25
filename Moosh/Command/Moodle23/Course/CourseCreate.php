@@ -19,6 +19,7 @@ class CourseCreate extends MooshCommand
         $this->addOption('f|fullname:', 'full name');
         $this->addOption('d|description:', 'description');
         $this->addOption('F|format:', 'format (e.g. one of site, weeks, topics, etc.)');
+        $this->addOption('n|numsections:', 'number of sections (i.e. of weeks, topics, etc.)');
         $this->addOption('i|idnumber:', 'id number');
         $this->addOption('v|visible:', 'visible (y or n, by default created visible)');
         $this->addOption('r|reuse', 'reuse existing course if it is the only matching one', false);
@@ -46,6 +47,11 @@ class CourseCreate extends MooshCommand
             	$format = get_config('moodlecourse', 'format');
             }
             $course->format = $format;
+            $numsections = $options['numsections'];
+            if(!$numsections){
+            	$numsections = get_config('moodlecourse', 'numsections');
+            }
+            $course->numsections = $numsections;
             $course->idnumber = $options['idnumber'];
             $visible = strtolower($options['visible']);
             if($visible == 'n' || $visible == 'no' ){
