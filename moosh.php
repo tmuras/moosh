@@ -182,7 +182,7 @@ if ($bootstrap_level = $subcommand->bootstrapLevel()) {
         $_SERVER['REMOTE_ADDR'] = 'localhost';
         $_SERVER['SERVER_PORT'] = 80;
         $_SERVER['SERVER_PROTOCOL'] = 'HTTP 1.1';
-        $_SERVER['SERVER_SOFTWARE'] = 'PHP/'.phpversion() ;
+        $_SERVER['SERVER_SOFTWARE'] = 'PHP /'.phpversion().' Development Server';
         $_SERVER['REQUEST_URI'] = '/';
     } else {
         define('CLI_SCRIPT', true);
