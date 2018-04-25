@@ -37,6 +37,7 @@ class GenerateGradeExport extends MooshCommand
         run_external_command("find '$modPath' -type f -exec sed 's/newgradeexport/{$this->arguments[0]}/g' -i {} \;", "sed command failed");
 
         //rename lang/en/newmodule.php
+        run_external_command("mv '$modPath/grade_export_newgradeexport.php' '$modPath/grade_export_{$this->arguments[0]}.php'", "Renaming grade export file failed");
         run_external_command("mv '$modPath/lang/en/gradeexport_newgradeexport.php' '$modPath/lang/en/gradeexport_{$this->arguments[0]}.php'", "Renaming lang file failed");
     }
 }

@@ -1,204 +1,227 @@
 {
-    "name": "tmuras/moosh",
-    "description": "Moosh stands for MOOdle SHell. It is a command-line tool that will allow you to perform most common Moodle tasks.",
-    "license": "GPL-3.0+",
-    "homepage": "http://moosh-online.com",
-    "keywords": ["moodle", "shell", "cli"],
-    "repositories":[
-        {
-            "type":"package",
-            "package":{
-                "version":"dev-master",
-                "name":"moodlehq/moodle-mod_newmodule",
-                "source":{
-                    "url":"https://github.com/moodlehq/moodle-mod_newmodule.git",
-                    "type":"git",
-                    "reference":"master"
-                },
-                "dist":{
-                    "url":"https://github.com/moodlehq/moodle-mod_newmodule/archive/master.zip",
-                    "type":"zip"
-                }
-            }
+  "name": "tmuras/moosh",
+  "description": "Moosh stands for MOOdle SHell. It is a command-line tool that will allow you to perform most common Moodle tasks.",
+  "license": "GPL-3.0+",
+  "homepage": "http://moosh-online.com",
+  "keywords": [
+    "moodle",
+    "shell",
+    "cli"
+  ],
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "version": "dev-master",
+        "name": "moodlehq/moodle-mod_newmodule",
+        "source": {
+          "url": "https://github.com/moodlehq/moodle-mod_newmodule.git",
+          "type": "git",
+          "reference": "master"
         },
-        {
-            "type":"package",
-            "package":{
-                "version":"dev-master",
-                "name":"moodlehq/moodle-local_wstemplate",
-                "source":{
-                    "url":"https://github.com/moodlehq/moodle-local_wstemplate",
-                    "type":"git",
-                    "reference":"master"
-                },
-                "dist":{
-                    "url":"https://github.com/moodlehq/moodle-local_wstemplate/archive/master.zip",
-                    "type":"zip"
-                }
-            }
-        },
-         {
-            "type":"package",
-            "package":{
-                "version":"dev-master",
-                "name":"danielneis/moodle-block_newblock",
-                "source":{
-                    "url":"https://github.com/danielneis/moodle-block_newblock.git",
-                    "type":"git",
-                    "reference":"master"
-                },
-                "dist":{
-                    "url":"https://github.com/danielneis/moodle-block_newblock/archive/master.zip",
-                    "type":"zip"
-                }
-            }
-        },
-        {
-            "type":"package",
-            "package":{
-                "version":"dev-master",
-                "name":"jamiepratt/moodle-qtype_TEMPLATE",
-                "source":{
-                    "url":"https://github.com/jamiepratt/moodle-qtype_TEMPLATE",
-                    "type":"git",
-                    "reference":"master"
-                },
-                "dist":{
-                    "url":"https://github.com/jamiepratt/moodle-qtype_TEMPLATE/archive/master.zip",
-                    "type":"zip"
-                }
-            }
-        },
-        {
-            "type":"package",
-            "package":{
-                "version":"dev-master",
-                "name":"danielneis/moodle-gradeexport_newgradeexport",
-                "source":{
-                    "url":"https://github.com/danielneis/moodle-gradeexport_newgradeexport",
-                    "type":"git",
-                    "reference":"master"
-                },
-                "dist":{
-                    "url":"https://github.com/danielneis/moodle-gradeexport_newgradeexport/archive/master.zip",
-                    "type":"zip"
-                }
-            }
-        },
-        {
-            "type":"package",
-            "package":{
-                "version":"dev-master",
-                "name":"danielneis/moodle-gradereport_newgradereport",
-                "source":{
-                    "url":"https://github.com/danielneis/moodle-gradereport_newgradereport",
-                    "type":"git",
-                    "reference":"master"
-                },
-                "dist":{
-                    "url":"https://github.com/danielneis/moodle-gradereport_newgradereport/archive/master.zip",
-                    "type":"zip"
-                }
-            }
-        },
-        {
-            "type":"package",
-            "package":{
-                "version":"dev-master",
-                "name":"danielneis/moodle-message_newprocessor",
-                "source":{
-                    "url":"https://github.com/danielneis/moodle-message_newprocessor",
-                    "type":"git",
-                    "reference":"master"
-                },
-                "dist":{
-                    "url":"https://github.com/danielneis/moodle-message_newprocessor/archive/master.zip",
-                    "type":"zip"
-                }
-            }
-        },
-        {
-            "type":"package",
-            "package":{
-                "version":"dev-master",
-                "name":"danielneis/moodle-availability_newavailability",
-                "source":{
-                    "url":"https://github.com/danielneis/moodle-availability_newavailability",
-                    "type":"git",
-                    "reference":"master"
-                },
-                "dist":{
-                    "url":"https://github.com/danielneis/moodle-availability_newavailability/archive/master.zip",
-                    "type":"zip"
-                }
-            }
-        },
-        {
-            "type":"package",
-            "package":{
-                "version":"dev-master",
-                "name":"danielneis/moodle-local_newlocal",
-                "source":{
-                    "url":"https://github.com/danielneis/moodle-local_newlocal",
-                    "type":"git",
-                    "reference":"master"
-                },
-                "dist":{
-                    "url":"https://github.com/danielneis/moodle-local_newlocal/archive/master.zip",
-                    "type":"zip"
-                }
-            }
-        },
-        {
-            "type":"package",
-            "package":{
-                "version":"dev-master",
-                "name":"danielneis/moodle-enrol_newenrol",
-                "source":{
-                    "url":"https://github.com/danielneis/moodle-enrol_newenrol",
-                    "type":"git",
-                    "reference":"master"
-                },
-                "dist":{
-                    "url":"https://github.com/danielneis/moodle-enrol_newenrol/archive/master.zip",
-                    "type":"zip"
-                }
-            }
-        },
-        {
-            "type":"package",
-            "package":{
-                "version":"dev-master",
-                "name":"yetanotherape/diff-match-patch",
-                "source":{
-                    "url":"https://github.com/yetanotherape/diff-match-patch",
-                    "type":"git",
-                    "reference":"master"
-                },
-                "dist":{
-                    "url":"https://github.com/yetanotherape/diff-match-patch/archive/master.zip",
-                    "type":"zip"
-                }
-            }
+        "dist": {
+          "url": "https://github.com/moodlehq/moodle-mod_newmodule/archive/master.zip",
+          "type": "zip"
         }
-    ],
-    "require":{
-        "corneltek/getoptionkit":"dev-master#3fd84905bb13d713477f1356beac1f9f9367ddcf",
-        "twig/twig":"1.18.2",
-        "moodlehq/moodle-mod_newmodule":"dev-master#e1f112be8842291259ece87de3000cd5f0e18711",
-        "danielneis/moodle-block_newblock":"dev-master#1fc89fb0845ad282426140feeb6bc3653efd1d7f",
-        "jamiepratt/moodle-qtype_TEMPLATE":"dev-master",
-        "danielneis/moodle-gradereport_newgradereport":"dev-master#691f53a15de352c3fe25da03c001a97a76b18358",
-        "moodlehq/moodle-local_wstemplate":"dev-master#add2ad0949e72f025c0aad36c4b822e8c6479d3b",
-        "yetanotherape/diff-match-patch":"dev-master#0726dbb4e59e68574326821c174013cf6fdfe20e",
-        "danielneis/moodle-gradeexport_newgradeexport": "dev-master#4d13e3f6e9f4f53d54d6e8ad348278248968412d",
-        "danielneis/moodle-message_newprocessor": "dev-master#e2b82f0776b13a30a79f4f20de89d597a15f58c5",
-        "danielneis/moodle-availability_newavailability": "dev-master#43198d6736931213ad223c8fd05881749baac22c",
-        "symfony/finder": "^2.7",
-        "danielneis/moodle-local_newlocal": "dev-master#b9596bdd37963d312069a048c8d315c7592c1c24",
-        "danielneis/moodle-enrol_newenrol": "dev-master",
-        "moodlerooms/moodle-coding-standard": "^2.0",
-        "squizlabs/php_codesniffer": "^2.5"
+      }
     },
-    "bin": ["moosh.php"]
+    {
+      "type": "package",
+      "package": {
+        "version": "dev-master",
+        "name": "moodlehq/moodle-local_wstemplate",
+        "source": {
+          "url": "https://github.com/moodlehq/moodle-local_wstemplate",
+          "type": "git",
+          "reference": "master"
+        },
+        "dist": {
+          "url": "https://github.com/moodlehq/moodle-local_wstemplate/archive/master.zip",
+          "type": "zip"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "version": "dev-master",
+        "name": "danielneis/moodle-block_newblock",
+        "source": {
+          "url": "https://github.com/danielneis/moodle-block_newblock.git",
+          "type": "git",
+          "reference": "master"
+        },
+        "dist": {
+          "url": "https://github.com/danielneis/moodle-block_newblock/archive/master.zip",
+          "type": "zip"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "version": "dev-master",
+        "name": "jamiepratt/moodle-qtype_TEMPLATE",
+        "source": {
+          "url": "https://github.com/jamiepratt/moodle-qtype_TEMPLATE",
+          "type": "git",
+          "reference": "master"
+        },
+        "dist": {
+          "url": "https://github.com/jamiepratt/moodle-qtype_TEMPLATE/archive/master.zip",
+          "type": "zip"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "version": "dev-master",
+        "name": "danielneis/moodle-gradeexport_newgradeexport",
+        "source": {
+          "url": "https://github.com/danielneis/moodle-gradeexport_newgradeexport",
+          "type": "git",
+          "reference": "master"
+        },
+        "dist": {
+          "url": "https://github.com/danielneis/moodle-gradeexport_newgradeexport/archive/master.zip",
+          "type": "zip"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "version": "dev-master",
+        "name": "danielneis/moodle-gradereport_newgradereport",
+        "source": {
+          "url": "https://github.com/danielneis/moodle-gradereport_newgradereport",
+          "type": "git",
+          "reference": "master"
+        },
+        "dist": {
+          "url": "https://github.com/danielneis/moodle-gradereport_newgradereport/archive/master.zip",
+          "type": "zip"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "version": "dev-master",
+        "name": "danielneis/moodle-message_newprocessor",
+        "source": {
+          "url": "https://github.com/danielneis/moodle-message_newprocessor",
+          "type": "git",
+          "reference": "master"
+        },
+        "dist": {
+          "url": "https://github.com/danielneis/moodle-message_newprocessor/archive/master.zip",
+          "type": "zip"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "version": "dev-master",
+        "name": "danielneis/moodle-availability_newavailability",
+        "source": {
+          "url": "https://github.com/danielneis/moodle-availability_newavailability",
+          "type": "git",
+          "reference": "master"
+        },
+        "dist": {
+          "url": "https://github.com/danielneis/moodle-availability_newavailability/archive/master.zip",
+          "type": "zip"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "version": "dev-master",
+        "name": "danielneis/moodle-local_newlocal",
+        "source": {
+          "url": "https://github.com/danielneis/moodle-local_newlocal",
+          "type": "git",
+          "reference": "master"
+        },
+        "dist": {
+          "url": "https://github.com/danielneis/moodle-local_newlocal/archive/master.zip",
+          "type": "zip"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "version": "dev-master",
+        "name": "danielneis/moodle-enrol_newenrol",
+        "source": {
+          "url": "https://github.com/danielneis/moodle-enrol_newenrol",
+          "type": "git",
+          "reference": "master"
+        },
+        "dist": {
+          "url": "https://github.com/danielneis/moodle-enrol_newenrol/archive/master.zip",
+          "type": "zip"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "version": "dev-master",
+        "name": "yetanotherape/diff-match-patch",
+        "source": {
+          "url": "https://github.com/yetanotherape/diff-match-patch",
+          "type": "git",
+          "reference": "master"
+        },
+        "dist": {
+          "url": "https://github.com/yetanotherape/diff-match-patch/archive/master.zip",
+          "type": "zip"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "version": "dev-master",
+        "name": "mudrd8mz/moodle-tool_pluginskel",
+        "source": {
+          "url": "https://github.com/mudrd8mz/moodle-tool_pluginskel",
+          "type": "git",
+          "reference": "master"
+        },
+        "dist": {
+          "url": "https://github.com/mudrd8mz/moodle-tool_pluginskel/archive/master.zip",
+          "type": "zip"
+        }
+      }
+    }
+  ],
+  "require": {
+    "mudrd8mz/moodle-tool_pluginskel":"dev-master",
+    "corneltek/getoptionkit": "dev-master#3fd84905bb13d713477f1356beac1f9f9367ddcf",
+    "twig/twig": "1.18.2",
+    "moodlehq/moodle-mod_newmodule": "dev-master#e1f112be8842291259ece87de3000cd5f0e18711",
+    "danielneis/moodle-block_newblock": "dev-master#1fc89fb0845ad282426140feeb6bc3653efd1d7f",
+    "jamiepratt/moodle-qtype_TEMPLATE": "dev-master",
+    "danielneis/moodle-gradereport_newgradereport": "dev-master#691f53a15de352c3fe25da03c001a97a76b18358",
+    "moodlehq/moodle-local_wstemplate": "dev-master#add2ad0949e72f025c0aad36c4b822e8c6479d3b",
+    "yetanotherape/diff-match-patch": "dev-master#0726dbb4e59e68574326821c174013cf6fdfe20e",
+    "danielneis/moodle-gradeexport_newgradeexport": "dev-master#4d13e3f6e9f4f53d54d6e8ad348278248968412d",
+    "danielneis/moodle-message_newprocessor": "dev-master#e2b82f0776b13a30a79f4f20de89d597a15f58c5",
+    "danielneis/moodle-availability_newavailability": "dev-master#43198d6736931213ad223c8fd05881749baac22c",
+    "symfony/finder": "^2.7",
+    "danielneis/moodle-local_newlocal": "dev-master#b9596bdd37963d312069a048c8d315c7592c1c24",
+    "danielneis/moodle-enrol_newenrol": "dev-master",
+    "moodlerooms/moodle-coding-standard": "^2.0",
+    "squizlabs/php_codesniffer": "^2.5"
+  },
+  "bin": [
+    "moosh.php"
+  ]
 }

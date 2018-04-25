@@ -9,53 +9,37 @@
 /**
  * Detect what kind of plugin (if any) is being worked on
  * based on the current directory.
+ *
  * @param $dir
  */
-function detect_plugin($dir)
-{
-    $templates = array(
-        'qtype' => array('dir' => 'question/type'),
-        'qbehaviour' => array('dir' => 'question/behaviour'),
-        'qformat' => array('dir' => 'question/format'),
-        'filter' => array('dir' => 'filter'),
-        'enrol' => array('dir' => 'enrol'),
-        'auth' => array('dir' => 'auth'),
-        'message' => array('dir' => 'message/output'),
-        'editor' => array('dir' => 'lib/editor'),
-        'format' => array('dir' => 'course/format'),
-        'profilefield' => array('dir' => 'user/profile/field'),
-        'report' => array('dir' => 'report'),
-        'coursereport' => array('dir' => 'course/report'),
-        'gradeexport' => array('dir' => 'grade/export'),
-        'gradeimport' => array('dir' => 'grade/import'),
-        'gradereport' => array('dir' => 'grade/report'),
-        'gradingform' => array('dir' => 'grade/grading/form'),
-        'mnetservice' => array('dir' => 'mnet/service'),
-        'webservice' => array('dir' => 'webservice'),
-        'repository' => array('dir' => 'repository'),
-        'portfolio' => array('dir' => 'portfolio'),
-        'plagiarism' => array('dir' => 'plagiarism'),
-        'tool' => array('dir' => 'admin/tool'),
-        'cachestore' => array('dir' => 'cache/stores'),
-        'cachelock' => array('dir' => 'cache/locks'),
-        'theme' => array('dir' => 'theme'),
-        'assignsubmission' => array('dir' => 'mod/assign/submission'),
-        'assignfeedback' => array('dir' => 'mod/assign/feedback'),
-        'assignment' => array('dir' => 'mod/assignment/type'),
-        'booktool' => array('dir' => 'mod/book/tool'),
-        'datafield' => array('dir' => 'mod/data/field'),
-        'datapreset' => array('dir' => 'mod/data/preset'),
-        'quiz' => array('dir' => 'mod/quiz/report'),
-        'quizaccess' => array('dir' => 'mod/quiz/accessrule'),
-        'scormreport' => array('dir' => 'mod/scorm/report'),
-        'workshopform' => array('dir' => 'mod/workshop/form'),
-        'workshopallocation' => array('dir' => 'mod/workshop/allocation'),
-        'workshopeval' => array('dir' => 'mod/workshop/eval'),
-        'tinymce' => array('dir' => 'lib/editor/tinymce/plugins/moodlemedia'),
-        'mod' => array('dir' => 'mod'),
-        'block' => array('dir' => 'blocks'),
-        'local' => array('dir' => 'local'),
-    );
+function detect_plugin($dir) {
+    $templates = array('tinymce' => array('dir' => 'lib/editor/tinymce/plugins'),
+            'workshopallocation' => array('dir' => 'mod/workshop/allocation'),
+            'atto' => array('dir' => 'lib/editor/atto/plugins'), 'availability' => array('dir' => 'availability/condition'),
+            'assignsubmission' => array('dir' => 'mod/assign/submission'), 'logstore' => array('dir' => 'admin/tool/log/store'),
+            'quizaccess' => array('dir' => 'mod/quiz/accessrule'), 'assignment' => array('dir' => 'mod/assignment/type'),
+            'assignfeedback' => array('dir' => 'mod/assign/feedback'), 'gradingform' => array('dir' => 'grade/grading/form'),
+            'qbehaviour' => array('dir' => 'question/behaviour'), 'profilefield' => array('dir' => 'user/profile/field'),
+            'workshopform' => array('dir' => 'mod/workshop/form'), 'workshopeval' => array('dir' => 'mod/workshop/eval'),
+            'scormreport' => array('dir' => 'mod/scorm/report'), 'fileconverter' => array('dir' => 'files/converter'),
+            'qformat' => array('dir' => 'question/format'), 'quiz' => array('dir' => 'mod/quiz/report'),
+            'ltiservice' => array('dir' => 'mod/lti/service'), 'datapreset' => array('dir' => 'mod/data/preset'),
+            'ltisource' => array('dir' => 'mod/lti/source'), 'datafield' => array('dir' => 'mod/data/field'),
+            'message' => array('dir' => 'message/output'), 'booktool' => array('dir' => 'mod/book/tool'),
+            'calendartype' => array('dir' => 'calendar/type'), 'format' => array('dir' => 'course/format'),
+            'coursereport' => array('dir' => 'course/report'), 'mlbackend' => array('dir' => 'lib/mlbackend'),
+            'search' => array('dir' => 'search/engine'), 'antivirus' => array('dir' => 'lib/antivirus'),
+            'qtype' => array('dir' => 'question/type'), 'media' => array('dir' => 'media/player'),
+            'cachestore' => array('dir' => 'cache/stores'), 'gradereport' => array('dir' => 'grade/report'),
+            'gradeimport' => array('dir' => 'grade/import'), 'gradeexport' => array('dir' => 'grade/export'),
+            'mnetservice' => array('dir' => 'mnet/service'), 'cachelock' => array('dir' => 'cache/locks'),
+            'plagiarism' => array('dir' => 'plagiarism'), 'repository' => array('dir' => 'repository'),
+            'tool' => array('dir' => 'admin/tool'), 'editor' => array('dir' => 'lib/editor'),
+            'dataformat' => array('dir' => 'dataformat'), 'webservice' => array('dir' => 'webservice'),
+            'portfolio' => array('dir' => 'portfolio'), 'filter' => array('dir' => 'filter'),
+            'report' => array('dir' => 'report'), 'block' => array('dir' => 'blocks'), 'local' => array('dir' => 'local'),
+            'enrol' => array('dir' => 'enrol'), 'theme' => array('dir' => 'theme'), 'auth' => array('dir' => 'auth'),
+            'mod' => array('dir' => 'mod'));
 
     foreach ($templates as $key => $value) {
         $templates[$key]['regex'] = '|' . $templates[$key]['dir'] . '/([^/]+)|';
@@ -73,10 +57,10 @@ function detect_plugin($dir)
 
 /**
  * Find top level Moodle directory going from current directory up.
+ *
  * @param $dir
  */
-function find_top_moodle_dir($dir)
-{
+function find_top_moodle_dir($dir) {
     //don't try to go up more than this
     //the deepest directory I have found in Moodle 2.4.0 was:
     //lib/editor/tinymce/tiny_mce/3.5.7b/themes/simple/skins/o2k7/img
@@ -100,13 +84,11 @@ function find_top_moodle_dir($dir)
 /**
  * Returns true if $dir is top-level Moodle directory
  */
-function is_top_moodle_dir($dir)
-{
+function is_top_moodle_dir($dir) {
     return file_exists("$dir/config.php") && file_exists("$dir/version.php") && file_exists("$dir/install.php");
 }
 
-function home_dir()
-{
+function home_dir() {
     // getenv('HOME') isn't set on windows and generates a Notice.
     $home = getenv('HOME');
     if (empty($home)) {
@@ -115,17 +97,16 @@ function home_dir()
             $home = $_SERVER['HOMEDRIVE'] . $_SERVER['HOMEPATH'];
         }
     }
-    return empty($home) ? NULL : $home;
+    return empty($home) ? null : $home;
 }
-
 
 /**
  * Write error notification
+ *
  * @param $text
  * @return void
  */
-function cli_problem($text)
-{
+function cli_problem($text) {
     fwrite(STDERR, $text . "\n");
 }
 
@@ -136,15 +117,13 @@ function cli_problem($text)
  * @param int $errorcode
  * @return void (does not return)
  */
-function cli_error($text, $errorcode = 1)
-{
+function cli_error($text, $errorcode = 1) {
     fwrite(STDERR, $text);
     fwrite(STDERR, "\n");
     die($errorcode);
 }
 
-function array_merge_recursive_distinct(array &$array1, array &$array2)
-{
+function array_merge_recursive_distinct(array &$array1, array &$array2) {
     $merged = $array1;
 
     foreach ($array2 as $key => &$value) {
@@ -165,8 +144,7 @@ function array_merge_recursive_distinct(array &$array1, array &$array2)
  * @param string $topdir moodle directory
  * @return string a branch version (e.g. 23, 24, 25, etc.)
  */
-function moosh_moodle_version($topdir, $default = 23)
-{
+function moosh_moodle_version($topdir, $default = 23) {
     if ($topdir && is_dir($topdir) && file_exists($topdir . '/version.php')) {
 
         // use the branch defined in version.php
@@ -194,8 +172,7 @@ function moosh_moodle_version($topdir, $default = 23)
     return $default;
 }
 
-function moosh_generate_version_list($upto, $from = 19)
-{
+function moosh_generate_version_list($upto, $from = 19) {
     $upto = intval($upto);
     $from = intval($from);
     if (!($from && $upto) || $from > $upto) {
@@ -217,10 +194,10 @@ function moosh_generate_version_list($upto, $from = 19)
  * then the Moodle25 version will be used.
  *
  * @param string $srcdir directory containing the Moosh directory
- * @param array $viable_versions array of ascending branch numbers representing Moodle versions, i.e (23, 24, 25, 26) that can be used
+ * @param array $viable_versions array of ascending branch numbers representing Moodle versions, i.e (23, 24, 25, 26) that can be
+ *         used
  */
-function moosh_load_all_commands($srcdir, $viable_versions)
-{
+function moosh_load_all_commands($srcdir, $viable_versions) {
     //load all commands
     $classnames = array();
     foreach ($viable_versions as $version) {
@@ -239,10 +216,8 @@ function moosh_load_all_commands($srcdir, $viable_versions)
     return array_values($classnames);
 }
 
-function generate_paragraph($length)
-{
+function generate_paragraph($length) {
     global $table, $n;
-
 
     $out = array();
     $ngram = array();
@@ -274,29 +249,27 @@ function generate_paragraph($length)
     }
     $text = implode(' ', $out);
     $replacements = array(
-        '  ' => ' ',
+            '  ' => ' ',
     );
     $text = strtr($text, $replacements);
     return $text;
 }
 
-function generate_html_element()
-{
+function generate_html_element() {
     $html = array(
-        'p' => 100,
-        'span' => 100,
-        'a' => 10,
-        'h1' => 10,
-        'h2' => 10,
+            'p' => 100,
+            'span' => 100,
+            'a' => 10,
+            'h1' => 10,
+            'h2' => 10,
     );
     $key = array_rand($html);
 
     return "<$key>" . generate_paragraph($html[$key]) . "</$key>";
 }
 
-function generate_html_page($minlength)
-{
-    srand((float)microtime() * 10000000);
+function generate_html_page($minlength) {
+    srand((float) microtime() * 10000000);
 
     require_once("en-galaxy-word-2gram.php");
 
@@ -314,20 +287,18 @@ function generate_html_page($minlength)
  *
  * @return testing_data_generator
  */
-function get_data_generator()
-{
+function get_data_generator() {
     global $CFG;
 
     require_once($CFG->dirroot . '/lib/testing/generator/lib.php');
     return new testing_data_generator();
 }
 
-function run_external_command($command, $error=NULL)
-{
+function run_external_command($command, $error = null) {
     exec($command, $output, $ret);
 
     if ($ret != 0) {
-        if($error) {
+        if ($error) {
             cli_error($error);
         } else {
             cli_error("Error when running:\n$command\n");
@@ -337,8 +308,7 @@ function run_external_command($command, $error=NULL)
     return $output;
 }
 
-function get_sub_context_ids($path)
-{
+function get_sub_context_ids($path) {
     global $DB;
 
     $sql = "SELECT ctx.id FROM {context} ctx WHERE ";
@@ -347,8 +317,7 @@ function get_sub_context_ids($path)
     return $contextids;
 }
 
-function get_all_courses($sort = "c.sortorder DESC", $fields = "c.*")
-{
+function get_all_courses($sort = "c.sortorder DESC", $fields = "c.*") {
     global $CFG, $DB;
 
     require_once($CFG->dirroot . '/lib/accesslib.php');
@@ -371,8 +340,7 @@ function get_all_courses($sort = "c.sortorder DESC", $fields = "c.*")
     return $DB->get_records_sql($sql, $param);
 }
 
-function get_files($contextid)
-{
+function get_files($contextid) {
     global $DB;
 
     $sql = 'SELECT f.id, f.contenthash, f.filesize FROM {files} f 
@@ -383,11 +351,10 @@ function get_files($contextid)
     return $DB->get_records_sql($sql, $param);
 }
 
-function file_is_unique($contenthash, $contextid)
-{
+function file_is_unique($contenthash, $contextid) {
     global $DB;
 
-    $unique = TRUE;
+    $unique = true;
     $sql_like = $DB->sql_like('f.contenthash', ':hash');
     $not_like = $DB->sql_like('f.component', ':component', true, true, true);
     $sql = "SELECT f.id FROM {files} f
@@ -397,13 +364,12 @@ function file_is_unique($contenthash, $contextid)
                 AND $not_like";
     $params = array('ctxid' => $contextid, 'hash' => $contenthash, 'component' => 'user');
     if ($DB->get_records_sql($sql, $params)) {
-        $unique = FALSE;
+        $unique = false;
     }
     return $unique;
 }
 
-function higher_size($filesbycourse)
-{
+function higher_size($filesbycourse) {
     $newarr = array();
     $sortarr = array();
     foreach ($filesbycourse as $courseid => $value) {
@@ -422,9 +388,7 @@ function higher_size($filesbycourse)
     return $sortarr;
 }
 
-
-function backup_size()
-{
+function backup_size() {
     global $DB;
 
     if (is_a($DB, 'pgsql_native_moodle_database')) {
@@ -443,8 +407,7 @@ function backup_size()
     return $DB->get_records_sql($sql, array('filearea' => 'backup', 'component' => 'backup'));
 }
 
-function get_user_by_name($username)
-{
+function get_user_by_name($username) {
     global $DB;
 
     $user = $DB->get_record('user', array("username" => $username));
@@ -458,8 +421,7 @@ function get_user_by_name($username)
 /**
  * Detects the owner of the Moodle Data directory.
  */
-function detect_moodledata_owner($dir)
-{
+function detect_moodledata_owner($dir) {
     if (!is_dir($dir)) {
         throw new RuntimeException("Not a directory: $dir");
     }
@@ -482,28 +444,29 @@ function detect_moodledata_owner($dir)
  */
 function context_level_to_name($level) {
     static $levels = array(CONTEXT_SYSTEM => 'CONTEXT_SYSTEM',
-        CONTEXT_USER => 'CONTEXT_USER',
-        CONTEXT_COURSECAT => 'CONTEXT_COURSECAT',
-        CONTEXT_COURSE => 'CONTEXT_COURSE',
-        CONTEXT_MODULE => 'CONTEXT_MODULE',
-        CONTEXT_BLOCK => 'CONTEXT_BLOCK');
+            CONTEXT_USER => 'CONTEXT_USER',
+            CONTEXT_COURSECAT => 'CONTEXT_COURSECAT',
+            CONTEXT_COURSE => 'CONTEXT_COURSE',
+            CONTEXT_MODULE => 'CONTEXT_MODULE',
+            CONTEXT_BLOCK => 'CONTEXT_BLOCK');
 
     return $levels[$level];
 }
 
-function admin_login($option=null) {
+function admin_login($option = null) {
     global $CFG;
 
     require_once("$CFG->libdir/datalib.php");
     $user = get_admin();
 
     if (!$user) {
-      cli_error("Unable to find admin user in DB.");
+        cli_error("Unable to find admin user in DB.");
     }
 
     $auth = empty($user->auth) ? 'manual' : $user->auth;
-    if ($auth=='nologin' or !is_enabled_auth($auth)) {
-      cli_error(sprintf("User authentication is either 'nologin' or disabled. Check Moodle authentication method for '%s'", $user->username));
+    if ($auth == 'nologin' or !is_enabled_auth($auth)) {
+        cli_error(sprintf("User authentication is either 'nologin' or disabled. Check Moodle authentication method for '%s'",
+                $user->username));
     }
 
     $authplugin = get_auth_plugin($auth);
@@ -517,4 +480,17 @@ function admin_login($option=null) {
 
     $credentials = array('cookiename' => session_name(), 'cookie' => session_id());
     return $credentials;
+}
+
+
+function read_config($filepath) {
+
+    // Read content of the config file
+    $config = file_get_contents($filepath);
+    // Strip the require_once on setup.php at the end of the file
+    $config = str_replace('require_once', '//require_once', $config);
+    $config = str_replace('<?php', '', $config);
+    eval($config);
+
+    return $CFG;
 }

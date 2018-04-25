@@ -16,9 +16,9 @@ class GenerateCfg extends MooshCommand
     public function __construct()
     {
         parent::__construct('cfg', 'generate');
+        $this->addOption('d|nodoc', 'List attributes with no documentation in the template.');
 
     }
-
 
     public function execute()
     {
@@ -36,15 +36,16 @@ class GenerateCfg extends MooshCommand
 
         // Find in source code to find usages.
         $cfg = $this->find_cfg_in_code();
+
+        // Get the newest documentation from the lang files.
+        $cfg = $this->find_help_strings($cfg);
+
+        // Fill in blanks from the manual entries.
         require_once($this->mooshDir . '/includes/cfg_documentation.php');
 
-        echo <<<HEREDOC
-<?php
-class moodle_config {
-HEREDOC;
         foreach ($cfg as $name => $values) {
-            if (isset($template[$name])) {
-                $short = $template[$name]['short'];
+            if (!$values['short'] && isset($template[$name])) {
+                $cfg[$name]['short'] = $template[$name]['short'];
                 $longraw = $template[$name]['long'];
                 $longraw = explode("\n", $longraw);
                 $long = array();
@@ -52,11 +53,27 @@ HEREDOC;
                     $line = str_replace('*/', '* /', $line);
                     $long[] = "     * $line";
                 }
-                $long = implode("\n", $long);
-            } else {
-                $short = '';
-                $long = '';
+                $cfg[$name]['long'] = implode("\n", $long);
             }
+        }
+
+        if ($options['nodoc']) {
+            foreach ($cfg as $name => $values) {
+                if (!$values['short']) {
+                    echo "$name\n";
+                }
+            }
+            die();
+        }
+
+        echo <<<HEREDOC
+<?php
+class moodle_config {
+HEREDOC;
+
+        foreach ($cfg as $name => $values) {
+            $long = $values['long'];
+            $short = $values['short'];
             echo <<<HEREDOC
 
     /**
@@ -67,14 +84,16 @@ $long
     public \$$name;
 
 HEREDOC;
+
         }
+
         echo "}\n\$CFG = new moodle_config();";
 
     }
 
     private function extract_help($key)
     {
-        $matches = NULL;
+        $matches = null;
         preg_match("/\\\$string\['$key'\] =\s*'(.*)';/sU", $this->langfiles, $matches);
         if (!$matches[1]) {
             cli_problem("Couldn't parse string for $key");
@@ -87,14 +106,14 @@ HEREDOC;
     {
         $finder = new Finder();
         $iterator = $finder
-            ->files()
-            ->name('*.php')
-            ->in($this->topDir);
+                ->files()
+                ->name('*.php')
+                ->in($this->topDir);
         $cfg = array();
         foreach ($iterator as $file) {
-            //print $file->getRealpath() . "\n";
-            $content = file_get_contents($file->getRealpath());
-            $matches = NULL;
+            // Source code with comments and whitespaces removed.
+            $content = php_strip_whitespace($file->getRealpath());
+            $matches = null;
             preg_match_all('/\$CFG->(\w+)/', $content, $matches);
             foreach ($matches[1] as $match) {
                 if (!isset($cfg[$match])) {
@@ -116,10 +135,10 @@ HEREDOC;
     {
         $finder = new Finder();
         $iterator = $finder
-            ->files()
-            ->path('lang/en/')
-            ->name('*.php')
-            ->in($this->topDir);
+                ->files()
+                ->path('lang/en/')
+                ->name('*.php')
+                ->in($this->topDir);
 
         $this->langfiles = '';
         foreach ($iterator as $file) {
@@ -129,7 +148,6 @@ HEREDOC;
             $this->langfiles .= file_get_contents($file->getRealpath());
 
         }
-
         foreach ($cfg as $name => $values) {
             $values['short'] = '';
             $values['long'] = '';
@@ -140,13 +158,15 @@ HEREDOC;
                 $found = true;
             }
 
-            if (!$found && strpos($this->langfiles, "\$string['$name']") !== false && strpos($this->langfiles, "\$string['config{$name}']")) {
+            if (!$found && strpos($this->langfiles, "\$string['$name']") !== false &&
+                    strpos($this->langfiles, "\$string['config{$name}']")) {
                 $values['short'] = $this->extract_help($name);
                 $values['long'] = $this->extract_help("config$name");
                 $found = true;
             }
 
-            if (!$found && strpos($this->langfiles, "\$string['$name']") !== false && strpos($this->langfiles, "\$string['{$name}_desc']")) {
+            if (!$found && strpos($this->langfiles, "\$string['$name']") !== false &&
+                    strpos($this->langfiles, "\$string['{$name}_desc']")) {
                 $values['short'] = $this->extract_help($name);
                 $values['long'] = $this->extract_help($name . '_desc');
                 $found = true;
@@ -157,24 +177,34 @@ HEREDOC;
                 array_shift($exploded);
                 $name2 = implode('_', $exploded);
 
-                if (strpos($this->langfiles, "\$string['$name2']") !== false && strpos($this->langfiles, "\$string['config{$name2}']")) {
+                if (strpos($this->langfiles, "\$string['$name2']") !== false &&
+                        strpos($this->langfiles, "\$string['config{$name2}']")) {
                     $values['short'] = $this->extract_help($name2);
                     $values['long'] = $this->extract_help("config$name2");
                     $found = true;
                 }
 
-                if (!$found && strpos($this->langfiles, "\$string['$name2']") !== false && strpos($this->langfiles, "\$string['{$name2}_help']")) {
+                if (!$found && strpos($this->langfiles, "\$string['$name2']") !== false &&
+                        strpos($this->langfiles, "\$string['{$name2}_help']")) {
                     $values['short'] = $this->extract_help($name2);
                     $values['long'] = $this->extract_help($name2 . '_help');
                     $found = true;
                 }
 
-                if (!$found && strpos($this->langfiles, "\$string['$name2']") !== false && strpos($this->langfiles, "\$string['{$name2}_desc']")) {
+                if (!$found && strpos($this->langfiles, "\$string['$name2']") !== false &&
+                        strpos($this->langfiles, "\$string['{$name2}_desc']")) {
                     $values['short'] = $this->extract_help($name2);
                     $values['long'] = $this->extract_help($name2 . '_desc');
                     $found = true;
                 }
 
+            }
+
+            // Maybe only a short name is in the lang file.
+            if (!$found && strpos($this->langfiles, "\$string['$name']") !== false) {
+                $values['short'] = $this->extract_help($name);
+                $values['long'] = '';
+                $found = true;
             }
 
             $cfg[$name] = $values;
@@ -195,7 +225,8 @@ HEREDOC;
      * @param $template
      * @throws \coding_exception
      */
-    private function fill_help($template) {
+    private function fill_help($template)
+    {
         foreach ($template as $k => $v) {
             if (!@$v['short'] && @$v['short_help']) {
                 $template[$k]['short'] = get_string($v['short_help'][0], $v['short_help'][1]);
@@ -209,4 +240,8 @@ HEREDOC;
         return $template;
     }
 
+    public function bootstrapLevel()
+    {
+        return self::$BOOTSTRAP_CONFIG;
+    }
 }

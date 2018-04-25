@@ -37,7 +37,7 @@ use GetOptionKit\OptionCollection;
 @error_reporting(E_ALL | E_STRICT);
 @ini_set('display_errors', '1');
 
-define('MOOSH_VERSION', '0.25');
+define('MOOSH_VERSION', '0.26');
 define('MOODLE_INTERNAL', true);
 
 $appspecs = new OptionCollection;
@@ -58,6 +58,10 @@ if ($app_options->has('moodle-path')) {
 }
 
 $moodle_version = moosh_moodle_version($top_dir);
+if (isset($app_options['verbose'])) {
+    echo "Moodle version detected: $moodle_version\n";
+}
+
 $local_dir = home_dir() . DIRECTORY_SEPARATOR . '.moosh';
 $viable_versions = moosh_generate_version_list($moodle_version);
 $viable_versions[] = 'Generic';
@@ -178,7 +182,7 @@ if ($bootstrap_level = $subcommand->bootstrapLevel()) {
         $_SERVER['REMOTE_ADDR'] = 'localhost';
         $_SERVER['SERVER_PORT'] = 80;
         $_SERVER['SERVER_PROTOCOL'] = 'HTTP 1.1';
-        $_SERVER['SERVER_SOFTWARE'] = 'PHP/'.phpversion() ;
+        $_SERVER['SERVER_SOFTWARE'] = 'PHP /'.phpversion().' Development Server';
         $_SERVER['REQUEST_URI'] = '/';
     } else {
         define('CLI_SCRIPT', true);
@@ -207,19 +211,6 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
         }
     }
 
-    //gather more info based on the directory where moosh was run
-    $relative_dir = substr($cwd, strlen($top_dir));
-    $relative_dir = trim($relative_dir, '/');
-    if ($app_options->has('verbose')) {
-        echo "Top Moodle dir: $top_dir\n";
-        echo "Current working dir: " . $cwd . "\n";
-        echo "Relative Moodle dir: $relative_dir\n";
-    }
-    $plugin_info = detect_plugin($relative_dir);
-    $subcommand->setPluginInfo($plugin_info);
-    $subcommand->topDir = $top_dir;
-    $subcommand->relativeDir = $relative_dir;
-
     // Set up debugging.
     $CFG->debug = (E_ALL);
     $CFG->debugdisplay = 1;
@@ -244,6 +235,21 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
         }
         @complete_user_login($user);
     }
+}
+
+if($top_dir) {
+    // Gather more info based on the directory where moosh was run
+    $relative_dir = substr($cwd, strlen($top_dir));
+    $relative_dir = trim($relative_dir, '/');
+    if ($app_options->has('verbose')) {
+        echo "Top Moodle dir: $top_dir\n";
+        echo "Current working dir: " . $cwd . "\n";
+        echo "Relative Moodle dir: $relative_dir\n";
+    }
+    $plugin_info = detect_plugin($relative_dir);
+    $subcommand->setPluginInfo($plugin_info);
+    $subcommand->topDir = $top_dir;
+    $subcommand->relativeDir = $relative_dir;
 }
 
 if ($app_options->has('verbose')) {

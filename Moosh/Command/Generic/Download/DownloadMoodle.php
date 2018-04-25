@@ -16,7 +16,7 @@ class DownloadMoodle extends MooshCommand {
     public function __construct() {
         parent::__construct('moodle', 'download');
 
-        $this->addOption('v|version:', 'version');
+        $this->addOption('v|version:', 'Download Moodle version: use 3.5 for the latest 3.5, 3.5.1 for an exact minor version.');
     }
 
     public function bootstrapLevel() {
@@ -25,6 +25,13 @@ class DownloadMoodle extends MooshCommand {
 
     public function execute() {
         $options = $this->expandedOptions;
+
+        // Example URLs
+        // Latest 3.4: https://download.moodle.org/download.php/direct/stable34/moodle-latest-34.tgz
+        // 3.4.1:      https://download.moodle.org/download.php/direct/stable34/moodle-3.4.1.tgz
+        // 3.4.0:      https://download.moodle.org/download.php/direct/stable34/moodle-3.4.tgz
+        // Latest 3.3: https://download.moodle.org/download.php/direct/stable33/moodle-latest-33.tgz
+
 
         if(!$options['version']) {
             $releasepage = file_get_contents('https://download.moodle.org/releases/latest/');
@@ -37,10 +44,24 @@ class DownloadMoodle extends MooshCommand {
         }
 
         $version = explode('.', $options['version']);
-        $url = str_replace('<version>', $version[0] . $version[1], self::downloadUrl);
-        $url = str_replace('<major>', $version[0], $url);
-        $url = str_replace('<minor>', $version[1], $url);
-        $url = str_replace('<point>', $version[2], $url);
+        if(count($version) == 3) {
+            $major = $version[0];
+            $minor = $version[1];
+            $point = $version[2];
+        } else if (count($version) == 2) {
+            $major = $version[0];
+            $minor = $version[1];
+            $point = -1; // Latest $major.$minor
+         } else {
+            die("Provide version in X.Y or X.Y.Z format");
+         }
+
+        $url = str_replace('<version>', $major . $minor, self::downloadUrl);
+        $url = str_replace('<major>', $major, $url);
+        $url = str_replace('<minor>', $minor, $url);
+        if($point != -1) {
+          $url = str_replace('<point>', $point, $url);
+        }
 
         run_external_command("wget --continue --timestamping '$url'", "Fetching file failed");
     }

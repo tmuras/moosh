@@ -232,6 +232,18 @@ Example 2: Add category "mycat" under category id 6, set to visible and descript
 
     moosh category-create -p 6 -v 1 -d "My category" mycat
 
+
+<span class="anchor" id="category-delete"></span>
+<a class="command-name">category-delete</a>
+---------------
+
+Delete category, all sub-categories and all courses inside.
+
+Example 1: Delete recursively category with id=2
+
+    moosh category-delete 2
+
+
 <span class="anchor" id="category-export"></span>
 <a class="command-name">category-export</a>
 -------------
@@ -462,6 +474,10 @@ Example 1: Create 10 new courses using bash/zim expansion
 Example 2: Create new course
 
     moosh course-create --category 1 --fullname "full course name" --description "course description" --idnumber "course idnumber" shortname
+
+Example 3: Create new course with section format, number options
+
+    moosh course-create --category 4 --format topics --numsections 2 test
 
 
 <span class="anchor" id="course-config-set"></span>
@@ -747,7 +763,7 @@ Go through all files in Moodle data and check them for corruption. The check is 
 <a class="command-name">file-dbcheck</a>
 -----------
 
-Check that all files in DB do exist in Moodle data.
+Check that all files recorder in the DB do exist in Moodle data directory.
 
     moosh file-dbcheck
 
@@ -797,6 +813,9 @@ The output will contain some defaults or nearly all possible file information if
 
 With "-i" option only IDs are returned. This can be used when pipe-ing into other file-related commands.
 
+Use the -m option to list files that exsist on the {files} DB table but are missing from the file system,
+and add -r option to remove them from the {file} DB table.
+
 Example 1: Show all legacy files for a course, which context id is 15
 
     moosh file-list "contextid=15 AND component='course' AND filearea='legacy'"
@@ -812,6 +831,7 @@ Example 3: Show all files from course 6
 Example 4: Super-combo. Get all course files and tar/bzip2 them up.
 
     moosh file-list -i course=2 | moosh file-path -s -r | tar -C $(moosh config-get core dataroot) -T - -cjf files.tar.bz2
+
 
 <span class="anchor" id="file-path"></span>
 <a class="command-name">file-path</a>
@@ -1226,6 +1246,24 @@ Example 2: download all modules available for version 2.8 or later
 
     moosh plugin-list  | grep '^mod_' | grep 2.8 | grep -o '[^,]*$' | wget -i -
 
+<span class="anchor" id="plugins-usage"></span>
+<a class="command-name">plugins-usage</a>
+----------------
+
+Shows the usage of the subset of the plugins used in Moodle installation. 
+Plugin will show the usages, wherever it can figure out if the plugin is used. 
+Currently supported plugins are: filters, question types, course formats, enrolments,
+blocks, authentication types, activities.
+
+Example 1: show all plugins and their usage
+
+    moosh plugins-usage 
+
+
+Example 2: show only contrubuted (3-rd party) plugins
+
+    moosh plugins-usage -c 1
+    
 <span class="anchor" id="plugin-uninstall"></span>
 <a class="command-name">plugin-uninstall</a>
 ----------------
@@ -1367,9 +1405,14 @@ Example 4: update all users
 
     moosh user-mod --email my@email.com --password newpwd --auth manual --all
 
-Example 4: set user as global super user
+Example 5: set user as global super user
 
-    moosh user-mod -g 
+    moosh user-mod -g
+    
+Example 6: change admin's password while ignoring password's policy
+
+    moosh user-mod --password weakpassword admin
+     
 <span class="anchor" id="random-label"></span>
 <a class="command-name">random-label</a>
 ------------
@@ -1396,6 +1439,17 @@ Example 1: Get concurrent users between 20-01-2014 and 27-01-2014 with 30 minut 
 
     moosh report-concurrency -f 20140120 -t 20140127 -p 30
 
+<span class="anchor" id="restore-settings"></span>
+<a class="command-name">restore-settings</a>
+------------------
+
+Returns all possible restore settings for the current Moodle. To figure them out,
+the command creates and then backes up an empty course with short name "moosh001" - unless it already exists.
+
+Example 1: Dump all possible restore settings
+
+    moosh restore-settings
+    
 <span class="anchor" id="role-create"></span>
 <a class="command-name">role-create</a>
 -----------

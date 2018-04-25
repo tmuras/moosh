@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle23\File;
+namespace Moosh\Command\Moodle33\File;
 
 use Moosh\MooshCommand;
 
@@ -84,9 +84,9 @@ timemodified
                 /** @var \stored_file $fileobject */
                 $fileobject = $fs->get_file_by_id($file->id);
                 try {
-                    $fileexists = $fs->content_exists($fileobject->get_contenthash());
+                    $fileexists = $fs->get_file_system()->is_file_readable_locally_by_hash($fileobject->get_contenthash());
                 } catch (Exception $e) {
-                    // no file
+                    $fileexists = false;
                 }
                 if (!$fileexists) {
                     $contenthash = $fileobject->get_contenthash();
