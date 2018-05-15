@@ -78,6 +78,9 @@ class CategoryImport extends MooshCommand
             echo "Creating new category " . $attrs['NAME'] . " under $current\n";
             $category = new \stdClass();
             $category->name = $attrs['NAME'];
+            if(isset($attrs['IDNUMBER'])) {
+                $category->idnumber = $attrs['IDNUMBER'];
+            }            
             $category->parent = $current;
 
             $newcat = $this->create_category($category);
