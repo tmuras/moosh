@@ -131,6 +131,22 @@ class GenerateModule extends MooshCommand
                                         'text' => "View"
                                 ),
                         ),
+		'capabilities' =>
+			array (
+				array (
+					'name' => "addinstance",
+					'title' => "$modname add instance",
+					'riskbitmask' => 'RISK_XSS',
+					'captype' => 'write',
+					'contextlevel' => 'CONTEXT_COURSE',
+					'archetypes' =>
+					array (
+						'role' => 'editingteacher',
+						'permission' => 'CAP_ALLOW'
+					),
+				        'clonepermissionsfrom' => 'moodle/course:manageactivities'
+				),
+			)
         );
 
         $logger = new \Monolog\Logger('tool_pluginskel');
