@@ -29,10 +29,10 @@ class CourseEnrolByName extends MooshCommand
         $this->addOption('f|firstname:', 'users firstname');
         $this->addOption('l|lastname:', 'users lastname');
         $this->addOption('c|cshortname:', 'course shortname');
+	$this->addOption('S|startdate:', 'any date php strtotime can parse');
+	$this->addOption('E|enddate:', 'any date php strtotime can parse, or duration in # of days');
 
         //possible other options
-        //duration
-        //startdate
         //recovergrades
 
         $this->addArgument('courseid');
@@ -83,8 +83,32 @@ class CourseEnrolByName extends MooshCommand
         }
         $plugin = $plugins['manual'];
 
-        $today = time();
-        $today = make_timestamp(date('Y', $today), date('m', $today), date('d', $today), 0, 0, 0);
+	$startdate = $options['startdate'] ? strtotime($options['startdate']) : time();
+	if ($startdate === false) {
+            cli_error('invalid start date');
+        }
+	$startdate = make_timestamp(date('Y', $startdate), date('m', $startdate), date('d', $startdate), date('H', $startdate), date('i', $startdate), date('s', $startdate));
+				
+	if($options['enddate']) {
+		if(strtotime($options['enddate'])) {
+			$enddate = strtotime($options['enddate']);
+			$enddate = make_timestamp(date('Y', $enddate), date('m', $enddate), date('d', $enddate), date('H', $enddate), date('i', $enddate), date('s', $enddate));
+		} else if(preg_match("/^[1-9]\d*$/", $options['enddate'])) {
+			$enddate = $startdate + ($options['enddate'] * 86400);
+		} else {
+			cli_error('invalid end date or duration');
+		}
+	} else {
+		$enddate = 0;
+	}
+	
+	if ($enddate === false) {
+		cli_error('invalid end date');
+	}
+		
+        if ($enddate != 0 && $enddate < $startdate) {
+            cli_error('end date date must be higher than start date');
+        }
 
         //get userid from firstname AND lastname
         //check, if firstname and lastname set
@@ -93,7 +117,7 @@ class CourseEnrolByName extends MooshCommand
             if(!$user) {
                 cli_problem("User '$user' not found");
             } else {
-                $plugin->enrol_user($instance, $user->id, $role->id, $today, 0);
+                $plugin->enrol_user($instance, $user->id, $role->id, $startdate, $enddate);
             }
         }
 
@@ -107,7 +131,7 @@ class CourseEnrolByName extends MooshCommand
                 cli_problem("User '$user' not found");
                 continue;
             }
-            $plugin->enrol_user($instance, $user->id, $role->id, $today, 0);
+            $plugin->enrol_user($instance, $user->id, $role->id, $startdate, $enddate);
         }
     }
 }
