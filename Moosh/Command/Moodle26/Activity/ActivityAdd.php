@@ -81,6 +81,9 @@ class ActivityAdd extends MooshCommand
         if (!empty($options['idnumber'])) {
             $moduledata->idnumber = $options['idnumber'];
         }
+        if (!empty($options['gradecat'])) {
+            $moduledata->gradecat = $options['gradecat'];
+        }
 
         $moduledata->section = $options['section'];
 
