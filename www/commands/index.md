@@ -17,6 +17,7 @@ by it's id.
     moosh activity-add --section 3 forum 4
     moosh activity-add --name "General course forum" --section 2 forum 3
     moosh activity-add --name "Easy assignent" --section 2 --idnumber "ASD123" assign 2
+    moosh activity-add -n 'more emails' -o="--intro=\"polite orders.\" --grade=3 --subnet=192.168.2.2" quiz 33
 
 <span class="anchor" id="activity-delete"></span>
 <a class="command-name">activity-delete</a>

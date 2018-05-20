@@ -10,6 +10,8 @@
 namespace Moosh\Command\Moodle26\Activity;
 use Moosh\MooshCommand;
 
+use GetOptionKit\Argument;
+
 /**
  * Adds a new activity to the specified course
  *
@@ -26,6 +28,7 @@ class ActivityAdd extends MooshCommand
         $this->addOption('n|name:', 'activity instance name');
         $this->addOption('s|section:', 'section number', '1');
         $this->addOption('i|idnumber:', 'idnumber', null);
+        $this->addOption('c|gradecat:', 'gradecategory id', null);
         $this->addOption('o|options:', 'any options that should be passed for activity creation', null);
 
         $this->addArgument('activitytype');
@@ -58,6 +61,19 @@ class ActivityAdd extends MooshCommand
 
         // $options are course module options.
         $options = $this->expandedOptions;
+
+        if (!empty($options['options'])) {
+            $course_module_options = preg_split( '/\s+(?=--)/', $options['options']);
+            foreach ( $course_module_options as $option ) {
+                $arg = new Argument( $option );
+                $name = $arg->getOptionName();
+                $value = $arg->getOptionValue();
+                $moduledata->$name = $value;
+                if ($this->verbose) {
+                    echo "\"$option\" -> $name=" . $value . "\n";
+                }
+            }
+        }
 
         if (!empty($options['name'])) {
             $moduledata->name = $options['name'];
