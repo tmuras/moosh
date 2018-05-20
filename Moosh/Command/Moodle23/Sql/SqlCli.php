@@ -18,6 +18,10 @@ class SqlCli extends MooshCommand
 
     }
 
+    public function bootstrapLevel() {
+        return self::$BOOTSTRAP_CONFIG;
+    }
+
     public function execute()
     {
 
