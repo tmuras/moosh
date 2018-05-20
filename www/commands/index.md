@@ -12,12 +12,32 @@ Commands
 Adds an activity instance to the specified course. The activity is specified by it's component name
 without the plugin type prefix, so "forum", "assign" or "data" for example, and the course is specified
 by it's id.
+See [Moodle forum post](https://moodle.org/mod/forum/discuss.php?d=368091) about using the options. 
+
+Example 1. Add new assignment activity to course with id 2.
 
     moosh activity-add assign 2
+
+Example 2. Add forum to section 3 of course 4.
+
     moosh activity-add --section 3 forum 4
-    moosh activity-add --name "General course forum" --section 2 forum 3
-    moosh activity-add --name "Easy assignent" --section 2 --idnumber "ASD123" assign 2
-    moosh activity-add -n 'more emails' -o="--intro=\"polite orders.\" --grade=3 --subnet=192.168.2.2" quiz 33
+    
+Example 3. Add lesson named "The first lesson" to course 2.
+
+    moosh activity-add --name "The first lesson" lesson 2
+    
+Example 4. Add assignment with name "Easy assignment" and idnumber "ASD123"
+
+    moosh activity-add --name "Easy assignment" --section 2 --idnumber "ASD123" assign 2
+    
+Example 5. Add quiz "more emails" with intro set to "polite orders", network address restriction set to  192.168.2.2
+
+    moosh activity-add -n 'more emails' -o="--intro=\"polite orders.\" --subnet=192.168.2.2" quiz 33
+    
+Example 6. Add scorm "scorm1" with description "my intro ABC" and forcenewattempt set to yes.
+
+    moosh activity-add -n scorm1 -o '--intro=my intro ABC --forcenewattempt=1' scorm 2    
+
 
 <span class="anchor" id="activity-delete"></span>
 <a class="command-name">activity-delete</a>
