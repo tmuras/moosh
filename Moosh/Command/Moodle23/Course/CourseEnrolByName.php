@@ -8,6 +8,8 @@
  *      -f --firstname
  *      -l --lasttname
  *      -c --cshortname
+ *      -S --startdate
+ *      -E --enddate
  *      courseid username1 [<username2> ...]
  *
  * @copyright  2013 onwards Mirko Otto
