@@ -1432,7 +1432,7 @@ Example 5: set user as global super user
     
 Example 6: change admin's password while ignoring password's policy
 
-    moosh user-mod --password weakpassword admin
+    moosh user-mod --ignorepolicy --password weakpassword admin
      
 <span class="anchor" id="random-label"></span>
 <a class="command-name">random-label</a>
