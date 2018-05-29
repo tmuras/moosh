@@ -1143,11 +1143,27 @@ Possible column headers to us:
 <a class="command-name">info</a>
 ---------------
 
+
+<span class="anchor" id="group-list"></span>
+<a class="command-name">group-list</a>
+-------------
+
+Lists groups in course, or grouping.
+
+Example 1:
+
+    moosh group-list courseid
+
+Example 2:
+
+    moosh group-list --id -G groupingid courseid
+
 Show information about plugin in current directory.
 
 Example 1:
 
     moosh info
+
 
 <span class="anchor" id="info-plugins"></span>
 <a class="command-name">info-plugins</a>
