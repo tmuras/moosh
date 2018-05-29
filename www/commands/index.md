@@ -1139,10 +1139,6 @@ Possible column headers to us:
 * "email" user's email
 * one or more columns matching grade item name
 
-<span class="anchor" id="info"></span>
-<a class="command-name">info</a>
----------------
-
 
 <span class="anchor" id="group-list"></span>
 <a class="command-name">group-list</a>
@@ -1158,6 +1154,10 @@ Example 2:
 
     moosh group-list --id -G groupingid courseid
 
+
+<span class="anchor" id="info"></span>
+<a class="command-name">info</a>
+---------------
 Show information about plugin in current directory.
 
 Example 1:
