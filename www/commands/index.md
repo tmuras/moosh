@@ -1158,12 +1158,12 @@ Example 2:
 <span class="anchor" id="info"></span>
 <a class="command-name">info</a>
 ---------------
+
 Show information about plugin in current directory.
 
 Example 1:
 
     moosh info
-
 
 <span class="anchor" id="info-plugins"></span>
 <a class="command-name">info-plugins</a>
