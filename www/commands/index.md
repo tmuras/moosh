@@ -1148,7 +1148,7 @@ Lists groups in course, or grouping.
 
 Example 1:
 
-    moosh group-list courseid
+    moosh group-list courseid ...
 
 Example 2:
 
