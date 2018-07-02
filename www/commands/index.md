@@ -1139,6 +1139,17 @@ Possible column headers to us:
 * "email" user's email
 * one or more columns matching grade item name
 
+<span class="anchor" id="grouping-create"></span>
+<a class="command-name">grouping-create</a>
+-------------
+
+Create a new grouping.
+
+Example:
+
+    moosh grouping-create --description "grouping description" --id "grouping idnumber" groupingname courseid
+
+
 <span class="anchor" id="info"></span>
 <a class="command-name">info</a>
 ---------------
