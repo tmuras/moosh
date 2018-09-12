@@ -20,12 +20,29 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\FuncCall;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
+use Symfony\Component\Finder\Finder;
 
 class LangFinder extends NodeVisitorAbstract {
     public $list = [];
 
+    protected function printTypeDebug(Expr $node) {
+        echo "\ttype: " . $node->getType() . "\n";
+        echo "\tline: " . $node->getLine() . "\n";
+
+    }
+
     protected function processClass(Expr\New_ $node) {
+        if (!isset($node->class->parts)) {
+            echo "Can't handle new with type: " . $node->class->getType() . "\n";
+            $this->printTypeDebug($node->class);
+            return;
+        }
+        $name = $node->class->parts[0];
+        if ($name != 'lang_string') {
+            return;
+        }
         $args = $node->args;
+
         if (count($args) < 1) {
             echo "Invalid get_string invocation - with no arguments.";
             return;
@@ -37,8 +54,8 @@ class LangFinder extends NodeVisitorAbstract {
                 /** @var $value1 Scalar\String_ */
                 $this->list['moodle'][$value1->value] = true;
             } else {
-                echo "Can't process get_string() with argument different than simple string: '" .
-                        $value1->getType() . "''\n";
+                echo "Can't process get_string() with argument different than simple string: \n";
+                $this->printTypeDebug($value1);
                 return;
             }
         }
@@ -47,14 +64,14 @@ class LangFinder extends NodeVisitorAbstract {
             $value1 = $args[0]->value;
             $value2 = $args[1]->value;
             if (!$value1 instanceof Scalar\String_) {
-                echo "Can't process get_string() with argument different than simple string: '" .
-                        $value1->getType() . "''\n";
+                echo "Can't process get_string() with argument different than simple string:\n";
+                $this->printTypeDebug($value1);
                 return;
             }
 
             if (!$value2 instanceof Scalar\String_) {
-                echo "Can't process get_string() with argument different than simple string: '" .
-                        $value2->getType() . "''\n";
+                echo "Can't process get_string() with argument different than simple string:\n";
+                $this->printTypeDebug($value2);
                 return;
             }
 
@@ -69,22 +86,73 @@ class LangFinder extends NodeVisitorAbstract {
                 $this->process_get_string($node);
                 break;
             case 'get_strings':
-                warn("get_strings() not implemented yet! PR welcome.");
+                cli_problem("get_strings() not implemented yet! PR welcome.");
                 break;
             case 'get_string_manager':
-                warn("get_string_manager() not implemented yet! PR welcome.");
+                cli_problem("get_string_manager() not implemented yet! PR welcome.");
                 break;
-
-
             case 'print_string':
                 // Compatible with get_string();
                 $this->process_get_string($node);
                 break;
         }
+    }
+
+    protected function processMethod(Expr\MethodCall $node) {
+        switch ($node->name) {
+            case 'string_for_js':
+                $this->process_get_string($node);
+                break;
+            case 'strings_for_js':
+                $args = $node->args;
+                $value1 = $args[0]->value;
+                $value2 = $args[1]->value;
+                if (!$value1 instanceof Expr\Array_) {
+                    echo "Can't process strings_for_js() with 1st argument different than array: '" .
+                            $value1->getType() . "''\n";
+                    return;
+                }
+                if (!$value2 instanceof Scalar\String_) {
+                    echo "Can't process strings_for_js() with 2nd argument different than simple string: '" .
+                            $value2->getType() . "''\n";
+                    return;
+                }
+
+                foreach ($value1->items as $item) {
+                    if (!$item->value instanceof Scalar\String_) {
+                        echo "Can't process strings_for_js() with array items different than simple strings: '" .
+                                $item->getType() . "''\n";
+                    } else {
+                        $this->list[$value2->value][$item->value->value] = true;
+                    }
+                }
+                break;
+
+            case 'addHelpButton':
+                $args = $node->args;
+                $value1 = $args[1]->value;
+                $value2 = null;
+                if (isset($args[2])) {
+                    $value2 = $args[2]->value;
+                }
+                if (!$value1 instanceof Scalar\String_) {
+                    echo "Can't process addHelpButton() with 2nd argument different than array:\n";
+                    $this->printTypeDebug($value2);
+                    return;
+                }
+                if (!$value2 instanceof Scalar\String_) {
+                    echo "Can't process addHelpButton() with 3rd argument different than simple string:\n";
+                    $this->printTypeDebug($value2);
+                    return;
+                }
+                $this->list[$value2->value][$value1->value] = true;
+                $this->list[$value2->value][$value1->value.'_help'] = true;
+                break;
+        }
 
     }
 
-    protected function process_get_string(FuncCall $node) {
+    protected function process_get_string(Expr $node) {
         $args = $node->args;
         if (count($args) < 1) {
             echo "Invalid get_string invocation - with no arguments.";
@@ -97,8 +165,8 @@ class LangFinder extends NodeVisitorAbstract {
                 /** @var $value1 Scalar\String_ */
                 $this->list['moodle'][$value1->value] = true;
             } else {
-                echo "Can't process get_string() with argument different than simple string: '" .
-                        $value1->getType() . "''\n";
+                echo "Can't process get_string() with 1st argument different than simple string:\n";
+                $this->printTypeDebug($value1);
                 return;
             }
         }
@@ -107,14 +175,14 @@ class LangFinder extends NodeVisitorAbstract {
             $value1 = $args[0]->value;
             $value2 = $args[1]->value;
             if (!$value1 instanceof Scalar\String_) {
-                echo "Can't process get_string() with argument different than simple string: '" .
-                        $value1->getType() . "''\n";
+                echo "Can't process get_string() with 1st argument different than simple string:\n";
+                $this->printTypeDebug($value1);
                 return;
             }
 
             if (!$value2 instanceof Scalar\String_) {
-                echo "Can't process get_string() with argument different than simple string: '" .
-                        $value2->getType() . "''\n";
+                echo "Can't process get_string() with 2nd argument different than simple string:\n";
+                $this->printTypeDebug($value2);
                 return;
             }
 
@@ -124,14 +192,15 @@ class LangFinder extends NodeVisitorAbstract {
     }
 
     public function enterNode(Node $node) {
-        echo "entering node type: " . $node->getType() . " class: " . get_class($node) . "\n";
+        //echo "entering node type: " . $node->getType() . " class: " . get_class($node) . "\n";
 
         if ($node instanceof Expr\New_) {
             $this->processClass($node);
         } else if ($node instanceof FuncCall) {
             $this->processFunction($node);
+        } else if ($node instanceof Expr\MethodCall) {
+            $this->processMethod($node);
         }
-        // TODO: Expr_MethodCall
     }
 }
 
@@ -139,7 +208,7 @@ class DevLangusage extends MooshCommand {
     public function __construct() {
         parent::__construct('langusage', 'dev');
 
-        //$this->addArgument('name');
+        $this->addArgument('path');
 
         //$this->addOption('t|test', 'option with no value');
         //$this->addOption('o|option:', 'option with value and default', 'default');
@@ -157,18 +226,10 @@ class DevLangusage extends MooshCommand {
         //  $this->verbose - if set to true, then "moosh -v" was run - add more verbose / debug information
 
         $options = $this->expandedOptions;
-
-        /* if verbose mode was requested, show some more information/debug messages
-        if($this->verbose) {
-            echo "Say what you're doing now";
-        }
-        */
-
-        // Find all get_string function invocations.
-        // If component empty, then = moodle.
-
         $code = <<<'CODE'
 <?php
+new other_class();
+
 /*
 get_string("one");
 get_string("one", "two");
@@ -179,10 +240,10 @@ $modname = get_string('onetwo', 'local_module');
 $OUTPUT->pix_icon("t/download", get_string('download'));
 echo "get_string('fake','call')";
 print_string("one1", "two1");
+new other_class('aa');
 new lang_string('fromcore');
 new lang_string('showchildrendesc', 'block_course_overview');
 $settings->add(new admin_setting_configcheckbox('block_course_overview/showwelcomearea', new lang_string('showwelcomearea', 'block_course_overview')));
-*/
 
 $this->page->requires->string_for_js(
     'js1',
@@ -190,11 +251,55 @@ $this->page->requires->string_for_js(
     block_xxx()
 );
 $this->page->requires->strings_for_js(array(
-    'js1',
+    'item1', 'item2', 
 ), 'js2');
-
+*/
 CODE;
+        //$this->parseCode($code);die('ok');
 
+        $files = [];
+        $path = $this->arguments[0];
+
+        if (is_file($this->cwd . '/' . $path)) {
+            $files = [$this->cwd . '/' . $path];
+        } else if (is_dir($this->cwd . '/' . $path)) {
+            $files = $this->getFilesFromDir($this->cwd . '/' . $path);
+        } else {
+            cli_error("Can not find " . $this->cwd . '/' . $path);
+        }
+
+        foreach ($files as $file) {
+            if ($this->verbose) {
+                echo "Processing $file... ";
+            }
+            $strings = $this->parseCode(file_get_contents($file));
+            if ($this->verbose) {
+                echo count($strings, COUNT_RECURSIVE) . " strings found";
+                echo "\n";
+            }
+
+            // With all the strings gathered, check if they exist.
+            $manger = get_string_manager();
+            foreach ($strings as $component => $strings) {
+                $frstrings = $manger->load_component_strings('cleaner_replace_urls','fr', true, true);
+                
+                foreach ($strings as $string => $ignore) {
+                    echo "Checking $component/$string... ";
+                    $exists = $manger->string_exists($string, $component);
+                    $exists = isset($frstrings[$string]);
+                    if ($exists) {
+                        echo "OK\n";
+                    } else {
+                        echo "missing!\n";
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    private function parseCode(string $code) {
         $parser = (new ParserFactory)->create(ParserFactory::PREFER_PHP7);
         try {
             $ast = $parser->parse($code);
@@ -207,9 +312,23 @@ CODE;
         $visitor = new LangFinder();
         $traverser->addVisitor($visitor);
         $ast = $traverser->traverse($ast);
-        print_r($visitor->list);
 
-        $dumper = new NodeDumper;
-        echo $dumper->dump($ast) . "\n";
+        //$dumper = new NodeDumper; echo $dumper->dump($ast) . "\n";
+
+        return $visitor->list;
+    }
+
+    private function getFilesFromDir(string $dir) {
+        $finder = new Finder();
+        $files = [];
+        $iterator = $finder
+                ->files()
+                ->name('*.php')
+                ->in($dir);
+        foreach ($iterator as $file) {
+            $files[] = $file->getRealpath();
+        }
+
+        return $files;
     }
 }
