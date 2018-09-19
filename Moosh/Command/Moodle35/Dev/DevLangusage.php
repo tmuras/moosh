@@ -25,10 +25,13 @@ use Symfony\Component\Finder\Finder;
 class LangFinder extends NodeVisitorAbstract {
     public $list = [];
 
-    protected function printTypeDebug(Expr $node) {
-        echo "\ttype: " . $node->getType() . "\n";
-        echo "\tline: " . $node->getLine() . "\n";
-
+    protected function printTypeDebug(Node $node = null) {
+        if(is_null($node)) {
+            echo "\ttype: null\n";
+        } else {
+            echo "\ttype: " . $node->getType() . "\n";
+            echo "\tline: " . $node->getLine() . "\n";
+        }
     }
 
     protected function processClass(Expr\New_ $node) {
@@ -146,7 +149,7 @@ class LangFinder extends NodeVisitorAbstract {
                     return;
                 }
                 $this->list[$value2->value][$value1->value] = true;
-                $this->list[$value2->value][$value1->value.'_help'] = true;
+                $this->list[$value2->value][$value1->value . '_help'] = true;
                 break;
         }
 
@@ -210,8 +213,8 @@ class DevLangusage extends MooshCommand {
 
         $this->addArgument('path');
 
-        //$this->addOption('t|test', 'option with no value');
-        //$this->addOption('o|option:', 'option with value and default', 'default');
+        $this->addOption('l|lang:', 'check if translation in this language exists', null);
+        $this->addOption('c|component:', 'search for this component only', null);
 
     }
 
@@ -272,21 +275,35 @@ CODE;
             if ($this->verbose) {
                 echo "Processing $file... ";
             }
-            $strings = $this->parseCode(file_get_contents($file));
+            $langstrings = $this->parseCode(file_get_contents($file));
             if ($this->verbose) {
-                echo count($strings, COUNT_RECURSIVE) . " strings found";
+                echo count($langstrings, COUNT_RECURSIVE) . " strings found";
                 echo "\n";
             }
 
             // With all the strings gathered, check if they exist.
-            $manger = get_string_manager();
-            foreach ($strings as $component => $strings) {
-                $frstrings = $manger->load_component_strings('cleaner_replace_urls','fr', true, true);
-                
-                foreach ($strings as $string => $ignore) {
-                    echo "Checking $component/$string... ";
-                    $exists = $manger->string_exists($string, $component);
-                    $exists = isset($frstrings[$string]);
+            $manager = get_string_manager();
+            foreach ($langstrings as $component => $componentstrings) {
+                // Skip check if it's a component we don't care about.
+                if ($options['component'] && $component != $options['component']) {
+                    continue;
+                }
+
+                foreach ($componentstrings as $componentstring => $ignore) {
+
+                    echo "Checking $component/$componentstring... ";
+
+                    if (!$options['lang']) {
+                        $exists = $manager->string_exists($componentstring, $component);
+                    } else {
+                        // Checking against particular lang file - eg different language.
+                        $string = [];
+                        include($this->cwd . '/' . $options['lang']);
+                        $exists = isset($options['lang']);
+                        //$foreignstrings = $manager->load_component_strings($component, $options['lang'], true, false);
+                        //$exists = isset($foreignstrings[$componentstring]);
+                    }
+
                     if ($exists) {
                         echo "OK\n";
                     } else {
@@ -295,6 +312,7 @@ CODE;
 
                 }
             }
+
         }
 
     }
