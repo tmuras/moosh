@@ -532,7 +532,7 @@ Example 1: delete courses id 2,3 and 4.
 ------------
 
 Enrol user(s) into a course id provided. First argument is a course ID, then put one or more user names.
-Use -i for providing username IDs.
+Use -i for providing username IDs.  Optionally add -S and -E to define start and end dates for the enrollment.
 
 Example 1: Enroll username1 and username2 into course ID 21 as students.
 
@@ -542,6 +542,14 @@ Example 2: Enroll user with id 21 into the course with id 31 as a non-editing te
 
     moosh course-enrol -r teacher -i 31 21
 
+Example 3: Enroll username3 into course ID 21 with start date of May 1st, 2018 10AM and end date May 31st, 2018 10AM
+
+    moosh course-enrol 21 username3 -S 2018-05-01T10:00:00 -E 2018-05-31T10:00:00
+	
+Example 4: Enroll username4 into course ID 21 with start date of May 1st, 2018 10AM and duration of 30 days.
+
+    moosh course-enrol 21 username3 -S 2018-05-01T10:00:00 -E 30
+	
 <span class="anchor" id="course-enrolbyname"></span>
 <a class="command-name">course-enrolbyname</a>
 ------------------
@@ -1149,6 +1157,16 @@ Example:
 
     moosh grouping-create --description "grouping description" --id "grouping idnumber" groupingname courseid
 
+<span class="anchor" id="group-assigngrouping"></span>
+<a class="command-name">group-assigngrouping</a>
+-------------
+
+Add a group to a grouping.
+
+Example:
+
+    moosh group-assigngrouping -G groupingid groupid1 [groupid2] ...
+
 
 <span class="anchor" id="info"></span>
 <a class="command-name">info</a>
@@ -1443,7 +1461,7 @@ Example 5: set user as global super user
     
 Example 6: change admin's password while ignoring password's policy
 
-    moosh user-mod --password weakpassword admin
+    moosh user-mod --ignorepolicy --password weakpassword admin
      
 <span class="anchor" id="random-label"></span>
 <a class="command-name">random-label</a>
