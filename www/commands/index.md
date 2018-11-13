@@ -1147,6 +1147,20 @@ Possible column headers to us:
 * "email" user's email
 * one or more columns matching grade item name
 
+<span class="anchor" id="group-memberadd"></span>
+<a class="command-name">group-memberadd</a>
+-------------
+
+Add a member to a group.
+
+Example 1:
+
+    moosh group-memberadd -c courseid -g groupid membername1 [membername2] ...
+
+Example 2:
+
+    moosh group-memberadd -g groupid memberid1 [memberid2] ...
+
 <span class="anchor" id="grouping-create"></span>
 <a class="command-name">grouping-create</a>
 -------------
