@@ -66,7 +66,7 @@ class ActivityAdd extends MooshCommand
             $course_module_options = preg_split( '/\s+(?=--)/', $options['options']);
             foreach ( $course_module_options as $option ) {
                 $arg = new Argument( $option );
-                $name = $arg->getOptionName();
+                $name = $this->getOptionName($arg);
                 $value = $arg->getOptionValue();
                 $moduledata->$name = $value;
                 if ($this->verbose) {
@@ -97,4 +97,10 @@ class ActivityAdd extends MooshCommand
         echo "{$record->id}\n";
     }
 
+    private function getOptionName($arg)
+    {
+        if (preg_match('/^[-]+([_a-zA-Z0-9-]+)/', $arg->arg, $regs)) {
+            return $regs[1];
+        }
+    }
 }
