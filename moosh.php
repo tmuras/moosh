@@ -123,6 +123,9 @@ if ($app_options->has('help') || (!$subcommand && !$possible_matches)) {
     $printer = new GetOptionKit\OptionPrinter\ConsoleOptionPrinter;
     echo $printer->render($appspecs);
     echo "\n";
+    if (!$subcommand || count($possible_matches) > 1) {
+        exit(10);
+    }
     exit(0);
 }
 
@@ -130,7 +133,7 @@ if (!$subcommand && $possible_matches) {
     foreach ($possible_matches as $match) {
         echo $match . "\n";
     }
-    exit(1);
+    exit(10);
 }
 
 $parser->setSpecs($subcommand_specs[$subcommand]);
