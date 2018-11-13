@@ -12,11 +12,32 @@ Commands
 Adds an activity instance to the specified course. The activity is specified by it's component name
 without the plugin type prefix, so "forum", "assign" or "data" for example, and the course is specified
 by it's id.
+See [Moodle forum post](https://moodle.org/mod/forum/discuss.php?d=368091) about using the options. 
+
+Example 1. Add new assignment activity to course with id 2.
 
     moosh activity-add assign 2
+
+Example 2. Add forum to section 3 of course 4.
+
     moosh activity-add --section 3 forum 4
-    moosh activity-add --name "General course forum" --section 2 forum 3
-    moosh activity-add --name "Easy assignent" --section 2 --idnumber "ASD123" assign 2
+    
+Example 3. Add lesson named "The first lesson" to course 2.
+
+    moosh activity-add --name "The first lesson" lesson 2
+    
+Example 4. Add assignment with name "Easy assignment" and idnumber "ASD123"
+
+    moosh activity-add --name "Easy assignment" --section 2 --idnumber "ASD123" assign 2
+    
+Example 5. Add quiz "more emails" with intro set to "polite orders", network address restriction set to  192.168.2.2
+
+    moosh activity-add -n 'more emails' -o="--intro=\"polite orders.\" --subnet=192.168.2.2" quiz 33
+    
+Example 6. Add scorm "scorm1" with description "my intro ABC" and forcenewattempt set to yes.
+
+    moosh activity-add -n scorm1 -o '--intro=my intro ABC --forcenewattempt=1' scorm 2    
+
 
 <span class="anchor" id="activity-delete"></span>
 <a class="command-name">activity-delete</a>
@@ -511,7 +532,7 @@ Example 1: delete courses id 2,3 and 4.
 ------------
 
 Enrol user(s) into a course id provided. First argument is a course ID, then put one or more user names.
-Use -i for providing username IDs.
+Use -i for providing username IDs.  Optionally add -S and -E to define start and end dates for the enrollment.
 
 Example 1: Enroll username1 and username2 into course ID 21 as students.
 
@@ -521,6 +542,14 @@ Example 2: Enroll user with id 21 into the course with id 31 as a non-editing te
 
     moosh course-enrol -r teacher -i 31 21
 
+Example 3: Enroll username3 into course ID 21 with start date of May 1st, 2018 10AM and end date May 31st, 2018 10AM
+
+    moosh course-enrol 21 username3 -S 2018-05-01T10:00:00 -E 2018-05-31T10:00:00
+	
+Example 4: Enroll username4 into course ID 21 with start date of May 1st, 2018 10AM and duration of 30 days.
+
+    moosh course-enrol 21 username3 -S 2018-05-01T10:00:00 -E 30
+	
 <span class="anchor" id="course-enrolbyname"></span>
 <a class="command-name">course-enrolbyname</a>
 ------------------
@@ -1118,6 +1147,66 @@ Possible column headers to us:
 * "email" user's email
 * one or more columns matching grade item name
 
+
+<span class="anchor" id="group-create"></span>
+<a class="command-name">group-create</a>
+-------------
+
+Create a new group.
+
+Example 1:
+
+    moosh group-create --description "group description" --key sesame --id "group idnumber" groupname courseid
+
+<span class="anchor" id="group-list"></span>
+<a class="command-name">group-list</a>
+-------------
+
+Lists groups in course, or grouping.
+
+Example 1:
+
+    moosh group-list courseid ...
+
+Example 2:
+
+    moosh group-list --id -G groupingid courseid
+
+<span class="anchor" id="group-memberadd"></span>
+<a class="command-name">group-memberadd</a>
+-------------
+
+Add a member to a group.
+
+Example 1:
+
+    moosh group-memberadd -c courseid -g groupid membername1 [membername2] ...
+
+Example 2:
+
+    moosh group-memberadd -g groupid memberid1 [memberid2] ...
+
+<span class="anchor" id="grouping-create"></span>
+<a class="command-name">grouping-create</a>
+-------------
+
+Create a new grouping.
+
+Example:
+
+    moosh grouping-create --description "grouping description" --id "grouping idnumber" groupingname courseid
+
+<span class="anchor" id="group-assigngrouping"></span>
+<a class="command-name">group-assigngrouping</a>
+-------------
+
+Add a group to a grouping.
+
+Example:
+
+    moosh group-assigngrouping -G groupingid groupid1 [groupid2] ...
+
+
 <span class="anchor" id="info"></span>
 <a class="command-name">info</a>
 ---------------
@@ -1411,7 +1500,7 @@ Example 5: set user as global super user
     
 Example 6: change admin's password while ignoring password's policy
 
-    moosh user-mod --password weakpassword admin
+    moosh user-mod --ignorepolicy --password weakpassword admin
      
 <span class="anchor" id="random-label"></span>
 <a class="command-name">random-label</a>
