@@ -4,6 +4,8 @@
  * moosh course-enrol
  *      -i --id
  *      -r --role
+ *      -S --startdate
+ *      -E --enddate
  *      courseid username1 [<username2> ...]
  *
  * @copyright  2012 onwards Tomasz Muras
