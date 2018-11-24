@@ -36,7 +36,11 @@ class CourseDelete extends MooshCommand
             }
 
             if ($course instanceof \stdClass) {
-                delete_course($course);
+                try {
+                    delete_course($course);
+                } catch (Exception $e) {
+                    print get_class($e) . " thrown for courseid={$course->id} within the exception handler. Message: " . $e->getMessage() . " on line " . $e->getLine();
+                }
             } else {
                 print "Course not found\n";
             }
