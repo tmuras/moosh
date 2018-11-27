@@ -113,6 +113,8 @@ if (!isset($subcommand_specs[$subcommand])) {
     }
 }
 
+ksort($subcommands);
+
 if ($app_options->has('help') || (!$subcommand && !$possible_matches)) {
     echo "moosh version " . MOOSH_VERSION . "\n";
     echo "No command provided, possible commands:\n\t";
@@ -130,6 +132,7 @@ if ($app_options->has('help') || (!$subcommand && !$possible_matches)) {
 }
 
 if (!$subcommand && $possible_matches) {
+    sort($possible_matches);
     foreach ($possible_matches as $match) {
         echo $match . "\n";
     }
