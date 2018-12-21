@@ -32,7 +32,7 @@ class ToolsCodeCheck extends MooshCommand
         require_once($this->mooshDir."/includes/codesniffer_cli.php");
         require_once($this->mooshDir."/includes/coderepair/CodeRepair.php");
 
-        $moodle_sniffs = $this->mooshDir."/vendor/moodlerooms/moodle-coding-standard/moodle";
+        $moodle_sniffs = $this->mooshDir.'/vendor/blackboard-open-source/moodle-coding-standard/moodle';
 
         $options = $this->expandedOptions;
         $interactive = $options['interactive'];
