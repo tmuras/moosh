@@ -43,7 +43,6 @@ class FileUpload extends MooshCommand
         }
 
         if ($arguments[0][0] != '/') {
-            $filepath = $this->cwd . DIRECTORY_SEPARATOR .  DIRECTORY_SEPARATOR .$arguments[0];
             $arguments[0] = $this->cwd . DIRECTORY_SEPARATOR . $arguments[0];
         }
 
@@ -68,7 +67,7 @@ class FileUpload extends MooshCommand
         $filerecord->filename   = $filename;
 
         try {
-            $fp->create_file_from_pathname($filerecord, $filepath);
+            $fp->create_file_from_pathname($filerecord, $arguments[0]);
             echo "File uploaded successfully!\n";
         }
         catch (Exception $e) {
