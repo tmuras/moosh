@@ -93,7 +93,7 @@ class CohortEnrol extends MooshCommand
             if (!empty($user)) {
                 foreach($cohorts as $cohort) {
                     cohort_add_member($cohort->id,$options['userid']);
-                    echo "User enrolled\n";
+                    echo "User " . $options['userid'] . " enrolled\n";
                     if (!empty($course)) {
                         $this->enrol_cohort_sync($course->id);
                     }
