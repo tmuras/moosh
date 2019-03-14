@@ -24,11 +24,11 @@ class DataStats extends MooshCommand
 
         $options = $this->expandedOptions;
 
-        $dataroot = run_external_command("du -s $CFG->dataroot", "Couldn't find dataroot directory");
+        $dataroot = run_external_command("du -bs $CFG->dataroot", "Couldn't find dataroot directory");
         $pattern = '/\d*/';
         preg_match($pattern, $dataroot[0], $matches);
 
-        $filedir = run_external_command("du -s $CFG->dataroot/filedir", "Couldn't find filedir directory");
+        $filedir = run_external_command("du -bs $CFG->dataroot/filedir", "Couldn't find filedir directory");
         preg_match($pattern, $filedir[0], $dir_matches);
 
         $sql_query = "SELECT SUM(filesize) AS total FROM {files}";
