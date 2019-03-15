@@ -23,7 +23,8 @@ class ReportConcurrency extends MooshCommand
         );
         $this->addOption('t|to:', 
                          'to date in YYYYMMDD or YYYY-MM-DD format (default is today)');
-        $this->addOption('p|period:', 'period of time in minutes', 5);
+        $this->addOption('p|period:', 'period of time (in minutes) during which unique users will be counted as concurrent.', 5);
+        $this->addOption('z|time-zone:', 'timezone used to display the dates. Possible values on https://secure.php.net/manual/en/timezones.php.', "UTC");
     }
 
     public function execute()
@@ -52,24 +53,54 @@ class ReportConcurrency extends MooshCommand
             cli_error('to date must be higher than from date');
         }
 
-        $period = $period = $options['period'];
+        $timezone = new \DateTimeZone($options['time-zone']);
+
+        $period = $options['period'] * 60;
+        
+        
 
         // get the number of concurrent users for each period (hidden)
-        $sql = "SELECT (FROM_UNIXTIME(period * ( $period*60 ))) AS Date,
-                DAYNAME( FROM_UNIXTIME( period * ( $period *60 ) ) ) AS DAY,
-                DATE_FORMAT( FROM_UNIXTIME( period * ( $period *60 ) ) , '%M %d, %Y' ) AS DayDate,
-                TIME( FROM_UNIXTIME( period * ( $period *60 ) ) ) AS Timecreated,
+        $sql = "SELECT (FROM_UNIXTIME(period * ( $period ))) AS Date,
+                DAYNAME( FROM_UNIXTIME( period * ( $period ) ) ) AS DAY,
+                DATE_FORMAT( FROM_UNIXTIME( period * ( $period ) ) , '%M %d, %Y' ) AS DayDate,
+                TIME( FROM_UNIXTIME( period * ( $period ) ) ) AS Timecreated,
+                period * ( $period )  AS unixtime,
 				online_users FROM 
 				
-				(SELECT ROUND( timecreated / ( $period*60 ) ) AS period,
+				(SELECT ROUND( timecreated / ( $period ) ) AS period,
 				COUNT( DISTINCT userid ) AS online_users
 				FROM {logstore_standard_log}
 				WHERE timecreated BETWEEN $from_date AND $to_date
+				AND origin = 'web'
 				GROUP BY period
 				) AS concurrent_users_report";
         $query = $DB->get_records_sql($sql);
+
+        $fulldata = [];
+        $previoustime = null;
         foreach ($query as $k => $v) {
-            //echo $k . " users online: " . $v->online_users . "\n";
+            $date = date_create('@' . $v->unixtime, $timezone);
+            if (!$date) {
+                die("Invalid date for " . $v->unixtime);
+            }
+            $fulldata[$v->unixtime] = ['date' => $date->format("Y-m-d H:i:s"), 'users' => $v->online_users];
+
+            if ($previoustime && $v->unixtime - $previoustime != $period * 60) {
+                // Insert missing records - per period.
+                $missing = ($v->unixtime - $previoustime) / ($period * 60) - 1;
+                $missing = (int) $missing;
+                //echo "Missing $missing records, the difference is " . ($v->unixtime - $previoustime) . "\n";
+                for ($i = 1; $i <= $missing; $i++) {
+                    $tempdate = date_create('@' . ($v->unixtime + $i * $period), $timezone);
+                    $fulldata[$v->unixtime + $i * $period] =
+                            ['date' => $tempdate->format("Y-m-d H:i:s"), 'users' => 0];
+                }
+            }
+            $previoustime = $v->unixtime;
+        }
+
+        foreach($fulldata as $k=>$row) {
+            echo $row['date'] . ',' . $row['users'] . "\n";
         }
 
         // display the instance name
@@ -106,7 +137,7 @@ class ReportConcurrency extends MooshCommand
 
         // get the max concurrent users during any period
         $sql = "SELECT MAX( concurrent_users_report.online_users ) AS maxusercount
-                FROM (SELECT ROUND( timecreated / ( $period*60 ) ) AS period,
+                FROM (SELECT ROUND( timecreated / ( $period ) ) AS period,
 				COUNT( DISTINCT userid ) AS online_users
 				FROM {logstore_standard_log}
 				WHERE timecreated BETWEEN $from_date AND $to_date
@@ -120,12 +151,12 @@ class ReportConcurrency extends MooshCommand
         $totalusersinpastyear = 0;
         $periodsoveryear = 0;
 
-        $sql = "SELECT (FROM_UNIXTIME(period * ( $period*60 ))) AS Date,
-                DAYNAME( FROM_UNIXTIME( period * ( $period *60 ) ) ) AS DAY,
-                DATE_FORMAT( FROM_UNIXTIME( period * ( $period *60 ) ) , '%M %d, %Y' ) AS DayDate,
-                TIME( FROM_UNIXTIME( period * ( $period *60 ) ) ) AS Timecreated,
+        $sql = "SELECT (FROM_UNIXTIME(period * ( $period ))) AS Date,
+                DAYNAME( FROM_UNIXTIME( period * ( $period ) ) ) AS DAY,
+                DATE_FORMAT( FROM_UNIXTIME( period * ( $period ) ) , '%M %d, %Y' ) AS DayDate,
+                TIME( FROM_UNIXTIME( period * ( $period ) ) ) AS Timecreated,
 				online_users FROM 
-				(SELECT ROUND( timecreated / ( $period*60 ) ) AS period,
+				(SELECT ROUND( timecreated / ( $period ) ) AS period,
 				COUNT( DISTINCT userid ) AS online_users
 				FROM {logstore_standard_log}
 				WHERE timecreated > $todayminustwelvemonths
