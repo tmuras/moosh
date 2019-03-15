@@ -136,6 +136,9 @@ class ReportConcurrency extends MooshCommand
             $totalusersinpastyear += $result->online_users;
             $periodsoveryear++;
         }
+        if($periodsoveryear == 0){
+            $periodsoveryear=1;
+        }
 
         echo "Average concurrent users past 12 months: ".round($totalusersinpastyear/$periodsoveryear,2)."\n";
     }
