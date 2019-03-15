@@ -56,9 +56,9 @@ class ReportConcurrency extends MooshCommand
 
         // get the number of concurrent users for each period (hidden)
         $sql = "SELECT (FROM_UNIXTIME(period * ( $period*60 ))) AS Date,
-                DAYNAME( FROM_UNIXTIME( period * ( 15 *60 ) ) ) AS DAY,
-                DATE_FORMAT( FROM_UNIXTIME( period * ( 15 *60 ) ) , '%M %d, %Y' ) AS DayDate,
-                TIME( FROM_UNIXTIME( period * ( 15 *60 ) ) ) AS Timecreated,
+                DAYNAME( FROM_UNIXTIME( period * ( $period *60 ) ) ) AS DAY,
+                DATE_FORMAT( FROM_UNIXTIME( period * ( $period *60 ) ) , '%M %d, %Y' ) AS DayDate,
+                TIME( FROM_UNIXTIME( period * ( $period *60 ) ) ) AS Timecreated,
 				online_users FROM 
 				
 				(SELECT ROUND( timecreated / ( $period*60 ) ) AS period,
@@ -121,9 +121,9 @@ class ReportConcurrency extends MooshCommand
         $periodsoveryear = 0;
 
         $sql = "SELECT (FROM_UNIXTIME(period * ( $period*60 ))) AS Date,
-                DAYNAME( FROM_UNIXTIME( period * ( 15 *60 ) ) ) AS DAY,
-                DATE_FORMAT( FROM_UNIXTIME( period * ( 15 *60 ) ) , '%M %d, %Y' ) AS DayDate,
-                TIME( FROM_UNIXTIME( period * ( 15 *60 ) ) ) AS Timecreated,
+                DAYNAME( FROM_UNIXTIME( period * ( $period *60 ) ) ) AS DAY,
+                DATE_FORMAT( FROM_UNIXTIME( period * ( $period *60 ) ) , '%M %d, %Y' ) AS DayDate,
+                TIME( FROM_UNIXTIME( period * ( $period *60 ) ) ) AS Timecreated,
 				online_users FROM 
 				(SELECT ROUND( timecreated / ( $period*60 ) ) AS period,
 				COUNT( DISTINCT userid ) AS online_users
