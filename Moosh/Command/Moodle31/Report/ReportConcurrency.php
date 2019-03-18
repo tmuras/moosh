@@ -37,10 +37,10 @@ class ReportConcurrency extends MooshCommand {
         $this->addOption('Z|zero-days-include:',
                 'By default the days with no activity at all are ignored in some statistics. This option reverts that.');
         $this->addOption('work-hours-from:',
-                '(not implemented yet) The start time for generating the statistics. Values from 0 to 23.');
+                'The start hour for generating the statistics. Values from 0 to 23. Default: 0.', 0);
         $this->addOption('work-hours-to:',
-                '(not implemented yet) The start time for generating the statistics. Values from 0 to 23.');
-        $this->addOption('work-days:', '(not implemented yet) Define working days.', '12345');
+                'The finish hour for generating the statistics. Values from 0 to 23. Default: 0.', 0);
+        $this->addOption('work-days:', 'Define working days. 1 - Monday, ..., 7 - Sunday. Defaults to whole week: 1234567.', '1234567');
 
     }
 
@@ -80,16 +80,33 @@ class ReportConcurrency extends MooshCommand {
             cli_error('"to date" must be later than "from date".');
         }
 
+        if ($options['work-hours-from'] < 0 || $options['work-hours-from'] > 23) {
+            cli_error("'work-hours-from' must be between 0 and 23");
+        }
+
+        if ($options['work-hours-to'] < 0 || $options['work-hours-from'] > 23) {
+            cli_error("'work-hours-from' must be between 0 and 23");
+        }
+
+        if (preg_match('/^\d+$/', $options['work-days']) != 1) {
+            cli_error("'work-days' should be a string constructed from digits 1-7");
+        }
+
         if ($this->verbose) {
+            $dowfrom = $fromdate->format('N');
+            $dowfrom = $this->week_day_name($dowfrom);
+            $dowto = $todate->format('N');
+            $dowto = $this->week_day_name($dowto);
+
             echo 'Records from ' .
-                    $fromdate->format(self::DATE_FORMAT) . ' [' . $fromdate->getTimestamp() . ']' .
-                  ' to ' .
-                    $todate->format(self::DATE_FORMAT) . ' [' . $todate->getTimestamp() . ']' . "\n";
+                    $fromdate->format(self::DATE_FORMAT) . ' [' . $fromdate->getTimestamp() . "] $dowfrom" .
+                    ' to ' .
+                    $todate->format(self::DATE_FORMAT) . ' [' . $todate->getTimestamp() . "] $dowto\n";
         }
 
         $tsutcfrom = $fromdate->getTimestamp();
-        $tsutcto = $todate->getTimestamp();
-        
+        $tsutcto = $todate->getTimestamp() ;
+
         if ($options['csv']) {
             $filepath = $this->cwd . '/' . $options['csv'];
             $csvfile = fopen($filepath, 'w');
@@ -103,7 +120,7 @@ class ReportConcurrency extends MooshCommand {
         // Number of entries in the log for given from-to range.
         $sql = "SELECT COUNT(*) AS 'count', MIN(id) AS 'min', MAX(id) AS 'max'
                    FROM {logstore_standard_log}
-				  WHERE timecreated BETWEEN $tsutcfrom AND $tsutcto";
+				  WHERE timecreated >= $tsutcfrom AND timecreated < $tsutcto";
         $record = $DB->get_record_sql($sql);
         $recordsfrom = $record->min;
         $recordsto = $record->max;
@@ -120,7 +137,7 @@ class ReportConcurrency extends MooshCommand {
 				(SELECT ROUND( timecreated / ( $period ) ) AS period,
 				COUNT( DISTINCT userid ) AS online_users
 				FROM {logstore_standard_log}
-				WHERE timecreated BETWEEN $tsutcfrom AND $tsutcto
+				WHERE timecreated >= $tsutcfrom AND timecreated < $tsutcto
 				AND origin = 'web'
 				GROUP BY period
 				) AS concurrent_users_report";
@@ -129,7 +146,11 @@ class ReportConcurrency extends MooshCommand {
         $fulldata = [];
         $previoustime = null;
         foreach ($query as $k => $v) {
-            $date = date_create('@' . $v->unixtime, $timezone);
+            $date = date_create('@' . $v->unixtime, new \DateTimeZone('UTC'));
+            $date->setTimezone($timezone);
+            if($date < $fromdate || $date > $todate) {
+                continue;
+            }
             if (!$date) {
                 die("Invalid date for " . $v->unixtime);
             }
@@ -148,12 +169,14 @@ class ReportConcurrency extends MooshCommand {
             $previoustime = $v->unixtime;
         }
 
-        $weekstats = new weekday_stats($options['zero-days-include']);
+        $weekstats =
+                new weekday_stats_calculator($options['zero-days-include'], $options['work-hours-from'], $options['work-hours-to'],
+                        $options['work-days']);
 
         $maxconcurrent = ['date' => null, 'users' => 0];
         foreach ($fulldata as $k => $row) {
             $weekstats->add($row['date'], $row['users']);
-            echo $row['date']->format(self::DATE_FORMAT), " - ", $row['users'], "\n";
+            //echo $row['date']->format(self::DATE_FORMAT), " - ", $row['users'], "\n";
 
             if ($options['csv']) {
                 fputcsv($csvfile, [$row['date']->format(self::DATE_FORMAT), $row['users']]);
@@ -207,22 +230,69 @@ class ReportConcurrency extends MooshCommand {
         $result = $DB->get_record_sql($sql);
 
         echo "Active Users: " . $result->{'numberofactiveusers'} . "\n";
-        echo "Max Concurrent Users: " . $maxconcurrent['users'] . "\n";
-        echo "\ton " . $maxconcurrent['date']->format(self::DATE_FORMAT) . "\n";
-        $stats = $weekstats->get_stats();
-        print_r($stats);
 
-        //echo "Average concurrent users: " . round($totalusersinpastyear / $periodsoveryear, 2) . "\n";
+        $weekday = $maxconcurrent['date']->format("N");
+        echo "Max Concurrent Users: " . $maxconcurrent['users'] . "\n";
+        echo "\ton " . $this->week_day_name($weekday) . ', ' . $maxconcurrent['date']->format(self::DATE_FORMAT) . "\n";
+
+        $stats = $weekstats->get_stats();
+        echo "Average concurrent users per day of the week\n";
+        foreach($stats->weekdays as $d=>$weekday) {
+            echo "\t" . $this->week_day_name($d) . ' : ' . $weekday['avg'] . "\n";
+        }
+
+        echo "Global average concurrent users: " . $stats->globalavg ."\n";
+        echo "Average concurrent users considering working days & hours: " . $stats->avg ."\n";
+
+    }
+
+    /**
+     * Week day number 1-7 to name (Monday-Sunday).
+     * @param $number
+     */
+    private function week_day_name($number) : string {
+        switch($number) {
+            case 1:
+                return 'Monday';
+            case 2:
+                return 'Tuesday';
+            case 3:
+                return 'Wednesday';
+            case 4:
+                return 'Thursday';
+            case 5:
+                return 'Friday';
+            case 6:
+                return 'Saturday';
+            case 7:
+                return 'Sunday';
+        }
+        throw new \Exception("Invalid day number: '$number'");
     }
 }
 
-class weekday_stats {
+class stats {
+    public $weekdays;
+    public $globalavg;
+    public $avg;
+}
+
+class weekday_stats_calculator {
     private $daily = [];
     private $weekdays = [];
     private $zerodaysinclude = false;
+    private $workhoursfrom = null;
+    private $workhoursto = null;
+    private $workdays = null;
+    private $globalsum = 0;
+    private $globalcount = 0;
+    private $globalavg = 0;
 
-    public function __construct($zerodaysinclude) {
+    public function __construct($zerodaysinclude, $workhoursfrom, $workhoursto, $workdays) {
         $this->zerodaysinclude = $zerodaysinclude;
+        $this->workhoursfrom = $workhoursfrom;
+        $this->workhoursto = $workhoursto;
+        $this->workdays = $workdays;
     }
 
     /**
@@ -232,9 +302,29 @@ class weekday_stats {
      * @param $users
      */
     public function add(\DateTime $date, $users) {
+        // Global average.
+        $this->globalcount++;
+        $this->globalsum += $users;
+
         // Let's store each day separately.
         // z - The day of the year 0 - 365.
         $dayyear = $date->format('z');
+
+        // N - Week day.
+        $dayweek = $date->format('N');
+        if (strstr($this->workdays, $dayweek) === false) {
+            // Ignore the whole day.
+            return false;
+        }
+        // G 24-hour format of an hour without leading zeros 	0 through 23
+        $hour = (int) $date->format('G');
+        if ($this->workhoursfrom && $hour < $this->workhoursfrom) {
+            return false;
+        }
+        if ($this->workhoursto && $hour >= $this->workhoursto) {
+            return false;
+        }
+
         if (!isset($this->daily[$dayyear])) {
             $this->daily[$dayyear] = ['count' => 0, 'sum' => 0, 'max' => 0, 'date' => $date];
         }
@@ -246,10 +336,24 @@ class weekday_stats {
     }
 
     public function get_stats() {
+        $stats = new stats();
+
+        $this->globalavg = round($this->globalsum / $this->globalcount, 2);
+        $stats->globalavg = $this->globalavg;
+
         // Now that we have all data, calculate averages.
         foreach ($this->daily as $day => $data) {
             $this->daily[$day]['avg'] = round($data['sum'] / $data['count'], 2);
         }
+
+        // Calculate global avg - but this one is after exclusions.
+        $sum = 0;
+        $count = 0;
+        foreach ($this->daily as $day => $data) {
+            $count++;
+            $sum += $this->daily[$day]['avg'];
+        }
+        $stats->avg = round($sum / $count, 2);
 
         // Generate statistics per week day.
         // N - Week day.
@@ -268,7 +372,8 @@ class weekday_stats {
         foreach ($this->weekdays as $day => $data) {
             $this->weekdays[$day]['avg'] = round($data['sum'] / $data['count'], 2);
         }
+        $stats->weekdays = $this->weekdays;
 
-        return $this->weekdays;
+        return $stats;
     }
 }
