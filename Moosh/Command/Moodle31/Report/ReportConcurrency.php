@@ -193,36 +193,6 @@ class ReportConcurrency extends MooshCommand {
 
         echo "Name: " . $CFG->wwwroot . "\n";
 
-        // Database size
-        $sql = "SELECT table_name AS 'table',
-                  ROUND(((data_length + index_length))) AS 'Size(Bytes)'
-                  FROM information_schema.TABLES
-                  WHERE table_schema = '" . $CFG->dbname . "'
-                  ORDER BY (data_length + index_length) DESC";
-        $results = $DB->get_records_sql($sql);
-
-        $databasesize = 0;
-        $topsizes = [];
-        $topnames = [];
-        foreach ($results as $result) {
-            if (!isset($topsizes[0])) {
-                $topsizes[0] = $result->{'size(bytes)'};
-                $topnames[0] = $result->table;
-            } else if (!isset($topsizes[1])) {
-                $topsizes[1] = $result->{'size(bytes)'};
-                $topnames[1] = $result->table;
-            } else if (!isset($topsizes[2])) {
-                $topsizes[2] = $result->{'size(bytes)'};
-                $topnames[2] = $result->table;
-            }
-            $databasesize += $result->{'size(bytes)'};
-        }
-        echo "Database Size: $databasesize\n";
-        echo "Top 3 tables:\n";
-        for ($i = 0; $i < 3; $i++) {
-            echo "\t" . $topnames[$i] . " : " . $topsizes[$i] . "\n";
-        }
-
         // Display active users during specified period.
         $sql = "SELECT COUNT( DISTINCT userid ) AS NumberOfActiveUsers
 				FROM {logstore_standard_log}
@@ -372,6 +342,7 @@ class weekday_stats_calculator {
         foreach ($this->weekdays as $day => $data) {
             $this->weekdays[$day]['avg'] = round($data['sum'] / $data['count'], 2);
         }
+        ksort($this->weekdays);
         $stats->weekdays = $this->weekdays;
 
         return $stats;

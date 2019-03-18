@@ -100,7 +100,7 @@ class CourseList extends MooshCommand {
 
         // @TODO: If empty == no, then add those that have no modules but some modification to sections
 
-        $this->display($courses);
+        $this->display_courses($courses);
 
 
     }
@@ -133,7 +133,7 @@ class CourseList extends MooshCommand {
         return $categories;
     }
 
-    protected function display($courses) {
+    private function display_courses($courses) {
         $options = $this->expandedOptions;
         $fields = NULL;
         if ($options['fields']) {
