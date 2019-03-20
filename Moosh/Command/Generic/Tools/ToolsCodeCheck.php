@@ -32,13 +32,13 @@ class ToolsCodeCheck extends MooshCommand
         require_once($this->mooshDir."/includes/codesniffer_cli.php");
         require_once($this->mooshDir."/includes/coderepair/CodeRepair.php");
 
-        $moodle_sniffs = $this->mooshDir."/vendor/moodlerooms/moodle-coding-standard/moodle";
+        $moodle_sniffs = $this->mooshDir.'/vendor/blackboard-open-source/moodle-coding-standard/moodle';
 
         $options = $this->expandedOptions;
         $interactive = $options['interactive'];
 
         if (isset($options['path'])) {
-            $this->checkDirArg($options['path']);
+            $this->checkPathArg($options['path']);
             $path = $options['path'];
         } else {
             $path = $this->cwd;
@@ -70,22 +70,27 @@ class ToolsCodeCheck extends MooshCommand
             "php",
         );
 
-        $objects = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
-
         $files = array();
 
-        if ($handle = opendir($path)) {
+        if (is_file($path)) {
+            $files[] = $path;
+        } else {
+            $objects = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
 
-            foreach($objects as $entry => $object){
-                if (!$object->isDir()) {
-                    $ext = pathinfo($entry, PATHINFO_EXTENSION);
-                    if (in_array($ext, $extensions_to_check)) {
-                        $files[] = $entry;
+            if ($handle = opendir($path)) {
+
+                foreach($objects as $entry => $object){
+                    if (!$object->isDir()) {
+                        $ext = pathinfo($entry, PATHINFO_EXTENSION);
+                        if (in_array($ext, $extensions_to_check)) {
+                            $files[] = $entry;
+                        }
                     }
                 }
+                closedir($handle);
             }
-            closedir($handle);
         }
+
         return $files;
     }
 }
