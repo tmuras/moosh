@@ -7,7 +7,6 @@
  */
 
 namespace Moosh\Command\Generic\Language;
-use function Composer\Autoload\includeFile;
 use Moosh\MooshCommand;
 
 class LanguageCompare extends MooshCommand

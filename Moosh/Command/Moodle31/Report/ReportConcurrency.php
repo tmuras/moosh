@@ -220,7 +220,7 @@ class ReportConcurrency extends MooshCommand {
      * Week day number 1-7 to name (Monday-Sunday).
      * @param $number
      */
-    private function week_day_name($number) : string {
+    private function week_day_name($number) {
         switch($number) {
             case 1:
                 return 'Monday';
