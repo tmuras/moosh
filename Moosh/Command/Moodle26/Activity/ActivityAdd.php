@@ -10,6 +10,8 @@
 namespace Moosh\Command\Moodle26\Activity;
 use Moosh\MooshCommand;
 
+use GetOptionKit\Argument;
+
 /**
  * Adds a new activity to the specified course
  *
@@ -60,6 +62,19 @@ class ActivityAdd extends MooshCommand
         // $options are course module options.
         $options = $this->expandedOptions;
 
+        if (!empty($options['options'])) {
+            $course_module_options = preg_split( '/\s+(?=--)/', $options['options']);
+            foreach ( $course_module_options as $option ) {
+                $arg = new Argument( $option );
+                $name = $this->getOptionName($arg);
+                $value = $arg->getOptionValue();
+                $moduledata->$name = $value;
+                if ($this->verbose) {
+                    echo "\"$option\" -> $name=" . $value . "\n";
+                }
+            }
+        }
+
         if (!empty($options['name'])) {
             $moduledata->name = $options['name'];
         }
@@ -82,4 +97,10 @@ class ActivityAdd extends MooshCommand
         echo "{$record->id}\n";
     }
 
+    private function getOptionName($arg)
+    {
+        if (preg_match('/^[-]+([_a-zA-Z0-9-]+)/', $arg->arg, $regs)) {
+            return $regs[1];
+        }
+    }
 }

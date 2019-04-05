@@ -18,6 +18,10 @@ class SqlCli extends MooshCommand
 
     }
 
+    public function bootstrapLevel() {
+        return self::$BOOTSTRAP_CONFIG;
+    }
+
     public function execute()
     {
 
@@ -28,7 +32,7 @@ class SqlCli extends MooshCommand
         switch ($CFG->dbtype) {
             case 'mysqli':
             case 'mariadb':
-                $connstr = "mysql -h {$CFG->dbhost} -u {$CFG->dbuser} -p{$CFG->dbpass} {$CFG->dbname}";
+                $connstr = "mysql -h {$CFG->dbhost} -u {$CFG->dbuser} -p'{$CFG->dbpass}' {$CFG->dbname}";
                 break;
             case 'pgsql':
                 $portoption = '';

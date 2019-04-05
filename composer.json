@@ -218,8 +218,9 @@
     "symfony/finder": "^2.7",
     "danielneis/moodle-local_newlocal": "dev-master#b9596bdd37963d312069a048c8d315c7592c1c24",
     "danielneis/moodle-enrol_newenrol": "dev-master",
-    "moodlerooms/moodle-coding-standard": "^2.0",
-    "squizlabs/php_codesniffer": "^2.5"
+    "blackboard-open-source/moodle-coding-standard": "2.0.3",
+    "squizlabs/php_codesniffer": "^2.5",
+    "nikic/php-parser": "^4.0"
   },
   "bin": [
     "moosh.php"

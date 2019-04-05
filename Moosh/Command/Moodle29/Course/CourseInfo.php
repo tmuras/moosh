@@ -207,7 +207,7 @@ class CourseInfo extends MooshCommand
         rebuild_course_cache($courseid);
         $this->data['Cache build time'] = microtime(true) - $start;
 
-        $this->display();
+        $this->display_course();
     }
 
     private function inc(&$array, $key)
@@ -217,7 +217,7 @@ class CourseInfo extends MooshCommand
         }
         $array[$key]++;
     }
-    private function display()
+    private function display_course()
     {
 
         if($this->expandedOptions['csv']) {
