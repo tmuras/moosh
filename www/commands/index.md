@@ -1128,6 +1128,36 @@ Creates new local plugin for WS development based on moodlehq/moodle-local_wstem
     moosh generate-ws newws
 
 
+<span class="anchor" id="gradecategory-create"></span>
+<a class="command-name">gradecategory-create</a>
+---------------
+
+Creates grade category.
+
+Example:
+
+    moosh gradecategory-create -n category-name -a aggregation parent_id course_id
+
+<span class="anchor" id="gradecategory-list"></span>
+<a class="command-name">gradecategory-list</a>
+---------------
+
+Lists grade categories, with command-line options, arguments modeled on course-list's.
+
+Example:
+
+    moosh gradecategory-list --hidden=yes --empty=yes --fields=id,parent,fullname courseid=26
+
+<span class="anchor" id="gradeitem-list"></span>
+<a class="command-name">gradeitem-list</a>
+---------------
+
+Lists grade items, with command-line options, arguments modeled on course-list's.
+
+Example:
+
+    moosh gradeitem-list --hidden=yes --locked=no --empty=yes --fields=id,categoryid,itemname courseid=26
+
 <span class="anchor" id="gradebook-import"></span>
 <a class="command-name">gradebook-import</a>
 ---------------
@@ -1186,6 +1216,7 @@ Example 2:
 
     moosh group-memberadd -g groupid memberid1 [memberid2] ...
 
+
 <span class="anchor" id="grouping-create"></span>
 <a class="command-name">grouping-create</a>
 -------------
@@ -1195,6 +1226,7 @@ Create a new grouping.
 Example:
 
     moosh grouping-create --description "grouping description" --id "grouping idnumber" groupingname courseid
+
 
 <span class="anchor" id="group-assigngrouping"></span>
 <a class="command-name">group-assigngrouping</a>
