@@ -7,7 +7,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle31\Report;
+namespace Moosh\Command\Generic\Report;
 
 use Moosh\MooshCommand;
 
@@ -44,8 +44,28 @@ class ReportConcurrency extends MooshCommand {
 
     }
 
-    public function execute() {
+    public function bootstrapLevel()
+    {
+        return self::$BOOTSTRAP_NONE;
+    }
+
+    public function execute()
+    {
         global $DB, $CFG;
+
+        // Manually retrieve the information from config.php
+        // and create $DB object.
+        $config = NULL;
+        exec("php -w config.php", $config);
+        $config = $config[1];
+        $config = str_replace('require_once', '//require_once', $config);
+        eval($config);
+        $CFG->libdir = $this->mooshDir .  "/includes/moodle/lib/";
+        $CFG->debugdeveloper = false;
+
+        require_once($CFG->libdir . "/setuplib.php");
+        require_once($CFG->libdir . "/dmllib.php");
+        setup_DB();
 
         $options = $this->expandedOptions;
 
@@ -99,13 +119,13 @@ class ReportConcurrency extends MooshCommand {
             $dowto = $this->week_day_name($dowto);
 
             echo 'Records from ' .
-                    $fromdate->format(self::DATE_FORMAT) . ' [' . $fromdate->getTimestamp() . "] $dowfrom" .
-                    ' to ' .
-                    $todate->format(self::DATE_FORMAT) . ' [' . $todate->getTimestamp() . "] $dowto\n";
+                $fromdate->format(self::DATE_FORMAT) . ' [' . $fromdate->getTimestamp() . "] $dowfrom" .
+                ' to ' .
+                $todate->format(self::DATE_FORMAT) . ' [' . $todate->getTimestamp() . "] $dowto\n";
         }
 
         $tsutcfrom = $fromdate->getTimestamp();
-        $tsutcto = $todate->getTimestamp() ;
+        $tsutcto = $todate->getTimestamp();
 
         if ($options['csv']) {
             $filepath = $this->cwd . '/' . $options['csv'];
@@ -148,7 +168,7 @@ class ReportConcurrency extends MooshCommand {
         foreach ($query as $k => $v) {
             $date = date_create('@' . $v->unixtime, new \DateTimeZone('UTC'));
             $date->setTimezone($timezone);
-            if($date < $fromdate || $date > $todate) {
+            if ($date < $fromdate || $date > $todate) {
                 continue;
             }
             if (!$date) {
@@ -159,19 +179,19 @@ class ReportConcurrency extends MooshCommand {
             if ($previoustime && $v->unixtime - $previoustime != $period) {
                 // Insert missing records - per period.
                 $missing = ($v->unixtime - $previoustime) / ($period) - 1;
-                $missing = (int) $missing;
+                $missing = (int)$missing;
                 for ($i = 1; $i <= $missing; $i++) {
                     $tempdate = date_create('@' . ($v->unixtime + $i * $period), $timezone);
                     $fulldata[$v->unixtime + $i * $period] =
-                            ['date' => $tempdate, 'users' => 0];
+                        ['date' => $tempdate, 'users' => 0];
                 }
             }
             $previoustime = $v->unixtime;
         }
 
         $weekstats =
-                new weekday_stats_calculator($options['zero-days-include'], $options['work-hours-from'], $options['work-hours-to'],
-                        $options['work-days']);
+            new weekday_stats_calculator($options['zero-days-include'], $options['work-hours-from'], $options['work-hours-to'],
+                $options['work-days']);
 
         $maxconcurrent = ['date' => null, 'users' => 0];
         foreach ($fulldata as $k => $row) {
@@ -201,9 +221,11 @@ class ReportConcurrency extends MooshCommand {
 
         echo "Active Users: " . $result->{'numberofactiveusers'} . "\n";
 
-        $weekday = $maxconcurrent['date']->format("N");
-        echo "Max Concurrent Users: " . $maxconcurrent['users'] . "\n";
-        echo "\ton " . $this->week_day_name($weekday) . ', ' . $maxconcurrent['date']->format(self::DATE_FORMAT) . "\n";
+        if ($maxconcurrent['date']) {
+            $weekday = $maxconcurrent['date']->format("N");
+            echo "Max Concurrent Users: " . $maxconcurrent['users'] . "\n";
+            echo "\ton " . $this->week_day_name($weekday) . ', ' . $maxconcurrent['date']->format(self::DATE_FORMAT) . "\n";
+        }
 
         $stats = $weekstats->get_stats();
         echo "Average concurrent users per day of the week\n";
@@ -308,7 +330,11 @@ class weekday_stats_calculator {
     public function get_stats() {
         $stats = new stats();
 
-        $this->globalavg = round($this->globalsum / $this->globalcount, 2);
+        if($this->globalcount) {
+            $this->globalavg = round($this->globalsum / $this->globalcount, 2);
+        } else {
+            $this->globalavg = 0;
+        }
         $stats->globalavg = $this->globalavg;
 
         // Now that we have all data, calculate averages.
@@ -323,7 +349,11 @@ class weekday_stats_calculator {
             $count++;
             $sum += $this->daily[$day]['avg'];
         }
-        $stats->avg = round($sum / $count, 2);
+        if($count) {
+            $stats->avg = round($sum / $count, 2);
+        } else {
+            $stats->avg = 0;
+        }
 
         // Generate statistics per week day.
         // N - Week day.
