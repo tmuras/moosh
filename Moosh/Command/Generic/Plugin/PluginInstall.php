@@ -20,8 +20,8 @@ class PluginInstall extends MooshCommand
         parent::__construct('install', 'plugin');
 
         $this->addArgument('plugin_name');
-        $this->addArgument('plugin_version');
 
+        $this->addOption('r|release:', 'Specify exact version to install e.g. 2019010700');
         $this->addOption('f|force', 'Force installation even if current Moodle version is unsupported.');
         $this->addOption('d|delete', 'If it already exists, automatically delete plugin before installing.');
     }
@@ -49,9 +49,13 @@ class PluginInstall extends MooshCommand
         $this->init();
 
         $pluginname     = $this->arguments[0];
-        $pluginversion  = $this->arguments[1];
+        $pluginversion  = null;
+        if (!empty($this->expandedOptions['release'])) {
+            $pluginversion  = $this->expandedOptions['release'];
+        }
 
-        $downloadurl    = $this->get_plugin_url($pluginname, $pluginversion);
+        $version        = $this->get_plugin_to_install($pluginname, $pluginversion);
+        $downloadurl    = $version->downloadurl;
 
         $split          = explode('_', $pluginname, 2);
         $type           = $split[0];
@@ -92,7 +96,7 @@ class PluginInstall extends MooshCommand
 
         echo "Installing\n";
         echo "\tname:    $pluginname\n";
-        echo "\tversion: $pluginversion\n";
+        echo "\tversion: $version->version\n";
         upgrade_noncore(true);
         echo "Done\n";
     }
@@ -134,9 +138,22 @@ class PluginInstall extends MooshCommand
         return $types[$type];
     }
 
-    private function get_plugin_url($pluginname, $pluginversion) {
+    /**
+     * Get the best version to install.
+     *
+     * @param string $pluginname
+     *   The plugin to install (example: 'block_checklist', 'format_topcoll')
+     * @param string|null $pluginversion
+     *   The version of the plugin to install (example: '2019010700') or null for the latest
+     * @return stdClass $version
+     *   The info about the version to install, download url etc
+     */
+    private function get_plugin_to_install($pluginname, $pluginversion = null) {
         $pluginlist = $this->get_plugins_data();
 
+        if ($pluginversion === null) {
+            $pluginversion = 'latest';
+        }
         foreach ($pluginlist->plugins as $plugin) {
             if (!$plugin->component) {
                 continue;
@@ -151,19 +168,26 @@ class PluginInstall extends MooshCommand
                         } else {
                             $altversion = $version;
                         }
+                    } else if ($pluginversion == 'latest') {
+                        if ($this->is_supported_by_moodle($version) &&
+                            (!$bestversion || $version->version > $bestversion->version)) {
+                            $bestversion = $version;
+                        } else if (!$altversion || $version->version > $altversion->version) {
+                            $altversion = $version;
+                        }
                     }
                 }
-                if (!$this->expandedOptions['force'] && !$bestversion) {
+                if (!$this->expandedOptions['force'] && !$bestversion && $altversion) {
                     $message =
                             "This plugin is not supported for your Moodle version (release $this->moodlerelease - version $this->moodleversion). ";
                     $message .= "Specify a different plugin version, or use the -f flag to force installation of (this) unsupported version.\n";
                     die($message);
                 }
 
-                if($bestversion) {
-                    return $bestversion->downloadurl;
-                } else {
-                    return $altversion->downloadurl;
+                if ($bestversion) {
+                    return $bestversion;
+                } else if ($altversion) {
+                    return $altversion;
                 }
             }
         }
