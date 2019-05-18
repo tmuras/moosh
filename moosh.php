@@ -47,6 +47,7 @@ $appspecs->add('u|user:', "Moodle user, by default ADMIN");
 $appspecs->add('n|no-user-check', "Don't check if Moodle data is owned by the user running script");
 $appspecs->add('t|performance', "Show performance infomation including timings");
 $appspecs->add('h|help', "Show global help.");
+$appspecs->add('list-commands', "Show all possible commands");
 
 $parser = new ContinuousOptionParser($appspecs);
 $app_options = $parser->parse($argv);
@@ -114,6 +115,12 @@ if (!isset($subcommand_specs[$subcommand])) {
 }
 
 ksort($subcommands);
+
+if ($app_options->has('list-commands')) {
+    echo implode("\n", array_keys($subcommands));
+    echo "\n";
+    exit(0);
+}
 
 if ($app_options->has('help') || (!$subcommand && !$possible_matches)) {
     echo "moosh version " . MOOSH_VERSION . "\n";
