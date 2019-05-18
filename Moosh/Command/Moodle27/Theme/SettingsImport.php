@@ -39,8 +39,8 @@ class SettingsImport extends MooshCommand {
         }
 
         $filename = basename($this->inputfilepath);
-        $outpurdirname = rtrim($filename, '.tar.gz');
-        $this->extractiondir = "{$this->cwd}/{$outpurdirname}/";
+        $outputdirname = rtrim($filename, '.tar.gz');
+        $this->extractiondir = "{$this->cwd}/{$outputdirname}/";
 
         if (!is_writable($this->cwd)) {
             echo "Directory not writable \n";
