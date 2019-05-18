@@ -214,6 +214,27 @@ Example:
     moosh block-manage show calendar
 
 
+cache-clear
+-----------
+
+The same as "purge all caches" page.
+
+    moosh cache-clear
+
+
+cache-course-rebuild
+-----------
+
+Rebuild course cache.
+
+Example 1: Rebuild cache for course with id 2
+
+    moosh cache-course-rebuild 2
+    
+Example 2: Rebuild cache for all the courses.
+
+    moosh cache-course-rebuild -a
+
 category-config-set
 ---------------
 
@@ -310,27 +331,6 @@ You usually want to run the check as the same user that runs web server.
 Example:
 
     sudo -u www-data moosh chkdatadir
-
-cache-clear
------------
-
-The same as "purge all caches" page.
-
-    moosh cache-clear
-
-
-cache-course-rebuild
------------
-
-Rebuild course cache.
-
-Example 1: Rebuild cache for course with id 2
-
-    moosh cache-course-rebuild 2
-    
-Example 2: Rebuild cache for all the courses.
-
-    moosh cache-course-rebuild -a
 
 
 code-check
@@ -453,6 +453,20 @@ Example 1: Check if there is any HTML to be cleaned-up in course 3:
     moosh course-cleanup 3
 
 
+course-config-set
+-----------------
+
+Update a field in the Moodle {course} table for a single course, or for all courses in a category.
+
+Example 1: set the shortname of a single course with id=42
+
+    moosh course-config-set course 42 shortname new_shortname
+    
+Example 2: set the format to topics for all courses in a category with id=7
+
+    moosh course-config-set category 7 format topics
+
+
 course-create
 -------------
 
@@ -469,20 +483,6 @@ Example 2: Create new course
 Example 3: Create new course with section format, number options
 
     moosh course-create --category 4 --format topics --numsections 2 test
-
-
-course-config-set
------------------
-
-Update a field in the Moodle {course} table for a single course, or for all courses in a category.
-
-Example 1: set the shortname of a single course with id=42
-
-    moosh course-config-set course 42 shortname new_shortname
-    
-Example 2: set the format to topics for all courses in a category with id=7
-
-    moosh course-config-set category 7 format topics
 
 
 course-delete
@@ -1056,6 +1056,25 @@ Creates new local plugin for WS development based on moodlehq/moodle-local_wstem
     moosh generate-ws newws
 
 
+gradebook-import
+---------------
+
+Imports gradebook grades from csv file into a course given by id. With --course-idnumber use take mdl_course.idnumber instead of course.id.
+--map-users-by will change what to use for mapping users from CSV (email or idnumber).
+
+Use --test for testing the import first.
+
+Example:
+
+    moosh gradebook-import --test gradebook.csv course_id
+
+Possible column headers to us:
+
+* "ID number" user's ID number (idnumber)
+* "email" user's email
+* one or more columns matching grade item name
+
+
 gradecategory-create
 ---------------
 
@@ -1082,25 +1101,6 @@ Lists grade items, with command-line options, arguments modeled on course-list's
 Example:
 
     moosh gradeitem-list --hidden=yes --locked=no --empty=yes --fields=id,categoryid,itemname courseid=26
-
-gradebook-import
----------------
-
-Imports gradebook grades from csv file into a course given by id. With --course-idnumber use take mdl_course.idnumber instead of course.id.
---map-users-by will change what to use for mapping users from CSV (email or idnumber).
-
-Use --test for testing the import first.
-
-Example:
-
-    moosh gradebook-import --test gradebook.csv course_id
-
-Possible column headers to us:
-
-* "ID number" user's ID number (idnumber)
-* "email" user's email
-* one or more columns matching grade item name
-
 
 group-create
 -------------
@@ -1310,127 +1310,6 @@ Example: import question from file path/to/question.xml to quiz with id 2
 
     moosh question-import path/to/question.xml 2
 
-user-create
------------
-
-Create a new Moodle user. Provide one or more arguments to create one or more users.
-
-Example 1: create user "testuser" with the all default profile fields.
-
-    moosh user-create testuser
-
-Example 2: create user "testuser" with the all the optional values
-
-    moosh user-create --password pass --email me@example.com --digest 2 --city Szczecin --country PL --firstname "first name" --lastname name testuser
-
-Example 3: use bash/zsh expansion to create 10 users
-
-    moosh user-create testuser{1..10}
-
-The users will have unique email addresses based on the user name (testuser1, testuser2, testuser3...).
-
-Example 4: create a user with LDAP authentication
-
-    moosh user-create --auth ldap --password NONE  --email joe.blogs@domain.tld --city "Some City" --country IE --firstname "Joe" --lastname "Blogs" jblogs
-
-user-delete
------------
-
-Delete user(s) from Moodle. Provide one ore more usernames as arguments.
-
-Example 1: delete user testuser
-
-    moosh user-delete testuser
-
-Example 2: delete user testuser1 and user testuser2
-    
-    moosh user-delete testuser1 testuser2
-
-user-export
------------
-
-Exports user with given username to csv file.
-
-Example 1:
-
-    moosh user-export testuser
-    
-user-getidbyname
-----------------
-
-This command has been deprecated. Use user-list instead.
-
-user-import-pictures
-
---------
-
-Provides capability of importing user pictures from a specific directory (recursively including subdirectories). 
-Image filename can be mapped to user ID, idnumber or username database field. Supported image types are jpg, gif and png.
---overwrite option flag can be used to force overwriting of existing user pictures.
-
-Example 1: import user pictures from directory and map file names to user's ID value. 
-
-    moosh user-import-pictures -i /path/to/import/dir
-
-Example 2: import user pictures from directory and map file names to user's idnumber value. 
-
-    moosh user-import-pictures -n /path/to/import/dir
-
-Example 3: import user pictures from directory and map file names to user's username value. 
-
-    moosh user-import-pictures -u /path/to/import/dir
-
-user-list
---------
-
-List user accounts. It accepts sql WHERE clause. If run without sql argument it will list first 100 users from database.
-
-Example 1: list user accounts with id number higher than 10 and sort them by email
-
-    moosh user-list --sort email "id > 10"
-
-Example 2: list users with first name bruce and username batman
-
-    moosh user-list "name = 'bruce' AND username = 'batman'"
-
-Example 3: list users enrolled in course id 2
-
-    moosh user-list --course 2
-
-Example 4: list teachers enrolled in course id 2 that never accessed that course
-
-    moosh user-list --course 2 --course-role editingteacher --course-inactive
-
-
-user-mod
---------
-
-Modify user(s) account.
-
-Example 1: change admin's user password and email
-
-    moosh user-mod --email my@email.com --password newpwd admin
-
-Example 2: change authentication method for users with ids 17,20,22
-
-    moosh user-mod -i --auth manual 17 20 22
-
-Example 3: use bash/zsh expansion to change password for users with ID between 100 and 200
-
-    moosh user-mod -i --password newpwd {100..200}
-
-Example 4: update all users
-
-    moosh user-mod --email my@email.com --password newpwd --auth manual --all
-
-Example 5: set user as global super user
-
-    moosh user-mod -g
-    
-Example 6: change admin's password while ignoring password's policy
-
-    moosh user-mod --ignorepolicy --password weakpassword admin
-     
 random-label
 ------------
 
@@ -1571,6 +1450,127 @@ Example:
 
     moosh theme-info
 
+user-create
+-----------
+
+Create a new Moodle user. Provide one or more arguments to create one or more users.
+
+Example 1: create user "testuser" with the all default profile fields.
+
+    moosh user-create testuser
+
+Example 2: create user "testuser" with the all the optional values
+
+    moosh user-create --password pass --email me@example.com --digest 2 --city Szczecin --country PL --firstname "first name" --lastname name testuser
+
+Example 3: use bash/zsh expansion to create 10 users
+
+    moosh user-create testuser{1..10}
+
+The users will have unique email addresses based on the user name (testuser1, testuser2, testuser3...).
+
+Example 4: create a user with LDAP authentication
+
+    moosh user-create --auth ldap --password NONE  --email joe.blogs@domain.tld --city "Some City" --country IE --firstname "Joe" --lastname "Blogs" jblogs
+
+user-delete
+-----------
+
+Delete user(s) from Moodle. Provide one ore more usernames as arguments.
+
+Example 1: delete user testuser
+
+    moosh user-delete testuser
+
+Example 2: delete user testuser1 and user testuser2
+    
+    moosh user-delete testuser1 testuser2
+
+user-export
+-----------
+
+Exports user with given username to csv file.
+
+Example 1:
+
+    moosh user-export testuser
+    
+user-getidbyname
+----------------
+
+This command has been deprecated. Use user-list instead.
+
+user-import-pictures
+
+--------
+
+Provides capability of importing user pictures from a specific directory (recursively including subdirectories). 
+Image filename can be mapped to user ID, idnumber or username database field. Supported image types are jpg, gif and png.
+--overwrite option flag can be used to force overwriting of existing user pictures.
+
+Example 1: import user pictures from directory and map file names to user's ID value. 
+
+    moosh user-import-pictures -i /path/to/import/dir
+
+Example 2: import user pictures from directory and map file names to user's idnumber value. 
+
+    moosh user-import-pictures -n /path/to/import/dir
+
+Example 3: import user pictures from directory and map file names to user's username value. 
+
+    moosh user-import-pictures -u /path/to/import/dir
+
+user-list
+--------
+
+List user accounts. It accepts sql WHERE clause. If run without sql argument it will list first 100 users from database.
+
+Example 1: list user accounts with id number higher than 10 and sort them by email
+
+    moosh user-list --sort email "id > 10"
+
+Example 2: list users with first name bruce and username batman
+
+    moosh user-list "name = 'bruce' AND username = 'batman'"
+
+Example 3: list users enrolled in course id 2
+
+    moosh user-list --course 2
+
+Example 4: list teachers enrolled in course id 2 that never accessed that course
+
+    moosh user-list --course 2 --course-role editingteacher --course-inactive
+
+
+user-mod
+--------
+
+Modify user(s) account.
+
+Example 1: change admin's user password and email
+
+    moosh user-mod --email my@email.com --password newpwd admin
+
+Example 2: change authentication method for users with ids 17,20,22
+
+    moosh user-mod -i --auth manual 17 20 22
+
+Example 3: use bash/zsh expansion to change password for users with ID between 100 and 200
+
+    moosh user-mod -i --password newpwd {100..200}
+
+Example 4: update all users
+
+    moosh user-mod --email my@email.com --password newpwd --auth manual --all
+
+Example 5: set user as global super user
+
+    moosh user-mod -g
+    
+Example 6: change admin's password while ignoring password's policy
+
+    moosh user-mod --ignorepolicy --password weakpassword admin
+     
 webservice-call
 ---------------
 
