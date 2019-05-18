@@ -116,7 +116,7 @@ class SettingsExport extends MooshCommand {
                 unlink($outputxml);
                 unlink($tarname);
 
-                echo "Settings exported to $tarname \n";
+                echo "Settings exported to $tarname.gz \n";
                 exit(0);
             }
         } else {
