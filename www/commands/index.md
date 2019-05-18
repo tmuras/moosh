@@ -21,19 +21,19 @@ Example 1. Add new assignment activity to course with id 2.
 Example 2. Add forum to section 3 of course 4.
 
     moosh activity-add --section 3 forum 4
-    
+
 Example 3. Add lesson named "The first lesson" to course 2.
 
     moosh activity-add --name "The first lesson" lesson 2
-    
+
 Example 4. Add assignment with name "Easy assignment" and idnumber "ASD123"
 
     moosh activity-add --name "Easy assignment" --section 2 --idnumber "ASD123" assign 2
-    
+
 Example 5. Add quiz "more emails" with intro set to "polite orders", network address restriction set to  192.168.2.2
 
     moosh activity-add -n 'more emails' -o="--intro=\"polite orders.\" --subnet=192.168.2.2" quiz 33
-    
+
 Example 6. Add scorm "scorm1" with description "my intro ABC" and forcenewattempt set to yes.
 
     moosh activity-add -n scorm1 -o '--intro=my intro ABC --forcenewattempt=1' scorm 2    
@@ -53,7 +53,7 @@ admin-login
 Create a session (login) for admin user. Command returns session cookie name & value.
 
     moosh admin-login
-    
+
 
 apache-parse-extendedlog
 ---------------
@@ -67,7 +67,7 @@ Parse Apache log that was configured to capture extra Moodle & timings informati
 2. Add new log in your virtual host configuration:
 
     CustomLog ${APACHE_LOG_DIR}/moodle.log moodle_log
-    
+
 You can then parse resulting moodle.log file with moosh:    
 
     moosh apache-parse-extendedlog /var/log/apache2/moodle.log
@@ -230,7 +230,7 @@ Rebuild course cache.
 Example 1: Rebuild cache for course with id 2
 
     moosh cache-course-rebuild 2
-    
+
 Example 2: Rebuild cache for all the courses.
 
     moosh cache-course-rebuild -a
@@ -461,7 +461,7 @@ Update a field in the Moodle {course} table for a single course, or for all cour
 Example 1: set the shortname of a single course with id=42
 
     moosh course-config-set course 42 shortname new_shortname
-    
+
 Example 2: set the format to topics for all courses in a category with id=7
 
     moosh course-config-set category 7 format topics
@@ -512,11 +512,11 @@ Example 2: Enroll user with id 21 into the course with id 31 as a non-editing te
 Example 3: Enroll username3 into course ID 21 with start date of May 1st, 2018 10AM and end date May 31st, 2018 10AM
 
     moosh course-enrol 21 username3 -S 2018-05-01T10:00:00 -E 2018-05-31T10:00:00
-	
+
 Example 4: Enroll username4 into course ID 21 with start date of May 1st, 2018 10AM and duration of 30 days.
 
     moosh course-enrol 21 username3 -S 2018-05-01T10:00:00 -E 30
-	
+
 course-enrolbyname
 ------------------
 
@@ -543,7 +543,7 @@ Enable self enrolment on one or more courses given a list of course IDs. By defa
 Example 1: Enable self enrolment on a course without an enrolment key
 
     moosh course-enableselfenrol 3
-    
+
 Example 2: Enable self enrolment on a course with an enrolment key
 
     moosh course-enableselfenrol --key "an example enrolment key" 3
@@ -566,7 +566,7 @@ Example 1: List all courses with full name containing phrase 'student'
 Example 2: List above but as separate arguments - quotes are escaped
 
     moosh course-list fullname like \'%student%\'
-    
+
 Example 3: List only empty courses from category 1
 
     moosh course-list -c 1 -e yes
@@ -642,7 +642,7 @@ Example 1: Reset course with id=17 using default settings.
 Example 2: Show default settings  when resetting course id=17
 
     moosh course-reset -n 17
-    
+
 Example 3: Set unenrolment of participants with role id 5 and 6, and reset course with id=17
 
     moosh course-reset -s "unenrol_users=5,6" 17
@@ -843,7 +843,7 @@ Upload selected file to Moodle data. Must specify full path to filename.
 
 
 Example 1: Upload file file.txt to private area of a user with context id 5 - usually "admin" user.
-    
+
     moosh file-upload file.txt
 
 Example 2: Upload to admin's private files a file file.txt, name in Moodle "myfile.txt" and 
@@ -859,9 +859,9 @@ Second argument is a state, use On = 1 , Off/but available per course = -1 , Off
 
 
 Example 1: Disable multimedia filter completely.
-    
+
     moosh filter-set mediaplugin -9999 
-    
+
 form-add
 --------
 
@@ -917,7 +917,7 @@ Generate fake class to get auto-completion for $CFG object. Properties genertate
  See [setup instructions](http://moosh-online.com/#cfg-auto-completion).
 
     moosh generate-cfg > config.class.php
-    
+
 generate-enrol
 -------------
 
@@ -1184,7 +1184,7 @@ Update all installed language packs, in the current Moodle folder.
 Example 1: Update all language packs.
 
     moosh languages-update
-    
+
 maintenance-off
 ---------------
 
@@ -1198,7 +1198,7 @@ maintenance-on
 Enable maintenance mode.
 
     moosh maintenance-on
-    
+
 A maintenance message can also be set:
 
     moosh maintenace-on -m "Example message"
@@ -1290,7 +1290,7 @@ Example 1: show all plugins and their usage
 Example 2: show only contrubuted (3-rd party) plugins
 
     moosh plugins-usage -c 1
-    
+
 plugin-uninstall
 ----------------
 
@@ -1343,7 +1343,7 @@ the command creates and then backes up an empty course with short name "moosh001
 Example 1: Dump all possible restore settings
 
     moosh restore-settings
-    
+
 role-create
 -----------
 
@@ -1440,7 +1440,6 @@ Example 2: Count the number of rows is log table
 
     moosh sql-run "select count(*) from {log}"
 
-
 theme-info
 ----------
 
@@ -1449,6 +1448,32 @@ Show what themes are really used on Moodle site.
 Example:
 
     moosh theme-info
+
+theme-settings-export
+----------
+
+Export theme settings (including uploaded files) as a tar.gz for use with `theme-settings-import`.
+
+Example 1: run within a theme directory and it will know which theme you want
+
+    moosh theme-settings-export
+
+Example 2: run it anywhere within the moodle dir if you specify the theme name
+
+    moosh theme-settings-export --themename boost
+
+theme-settings-import
+----------
+
+Import settings from file created with `theme-settings-export`.
+
+Example 1: give the name of the exported file
+
+    moosh theme-settings-import boost_settings_1558197087.tar.gz
+
+Example 2: specify a target theme name if you want to transfer settings to a different (but compatible) theme
+
+    moosh theme-settings-import --targettheme boostfork boost_settings_1558197087.tar.gz
 
 user-create
 -----------
@@ -1483,7 +1508,7 @@ Example 1: delete user testuser
     moosh user-delete testuser
 
 Example 2: delete user testuser1 and user testuser2
-    
+
     moosh user-delete testuser1 testuser2
 
 user-export
@@ -1494,14 +1519,13 @@ Exports user with given username to csv file.
 Example 1:
 
     moosh user-export testuser
-    
+
 user-getidbyname
 ----------------
 
 This command has been deprecated. Use user-list instead.
 
 user-import-pictures
-
 --------
 
 Provides capability of importing user pictures from a specific directory (recursively including subdirectories). 
@@ -1566,11 +1590,11 @@ Example 4: update all users
 Example 5: set user as global super user
 
     moosh user-mod -g
-    
+
 Example 6: change admin's password while ignoring password's policy
 
     moosh user-mod --ignorepolicy --password weakpassword admin
-     
+
 webservice-call
 ---------------
 
