@@ -43,6 +43,11 @@ class MooshCommand {
     public static $BOOTSTRAP_FULL_NOCLI = 3;
 
     /**
+     * @var int Load only minimum to connect to DB.
+     */
+    public static $BOOTSTRAP_DB_ONLY = 4;
+
+    /**
      * @var \GetOptionKit\OptionSpecCollection
      */
     public $spec;

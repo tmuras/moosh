@@ -181,9 +181,20 @@ if ($moodlerc) {
  *
  */
 $subcommand = $subcommands[$subcommand];
+$bootstrap_level = $subcommand->bootstrapLevel();
+if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE ) {
+ // Do nothing really.
+} else if($bootstrap_level === MooshCommand::$BOOTSTRAP_DB_ONLY) {
+    class fake_string_manager {
+        function string_exists() {
+            return false;
+        }
 
-
-if ($bootstrap_level = $subcommand->bootstrapLevel()) {
+    }
+    function get_string_manager() {
+        return new fake_string_manager();
+    }
+} else {
     if ($bootstrap_level == MooshCommand::$BOOTSTRAP_FULL_NOCLI) {
         $_SERVER['REMOTE_ADDR'] = 'localhost';
         $_SERVER['SERVER_PORT'] = 80;

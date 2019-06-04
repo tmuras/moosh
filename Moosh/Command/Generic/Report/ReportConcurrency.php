@@ -46,7 +46,7 @@ class ReportConcurrency extends MooshCommand {
 
     public function bootstrapLevel()
     {
-        return self::$BOOTSTRAP_NONE;
+        return self::$BOOTSTRAP_DB_ONLY;
     }
 
     public function execute()
