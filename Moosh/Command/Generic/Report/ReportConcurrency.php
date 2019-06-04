@@ -56,10 +56,19 @@ class ReportConcurrency extends MooshCommand {
         // Manually retrieve the information from config.php
         // and create $DB object.
         $config = NULL;
+        if(!is_file('config.php')) {
+            cli_error('config.php not found.');
+        }
         exec("php -w config.php", $config);
+        if(!isset($config[1])) {
+            cli_error("config.php does not look right to me.");
+        }
         $config = $config[1];
         $config = str_replace('require_once', '//require_once', $config);
         eval($config);
+        if(!isset($CFG)) {
+            cli_error('After evaluating config.php, $CFG is not set');
+        }
         $CFG->libdir = $this->mooshDir .  "/includes/moodle/lib/";
         $CFG->debugdeveloper = false;
 
