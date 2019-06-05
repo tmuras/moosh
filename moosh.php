@@ -194,6 +194,28 @@ if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE ) {
     function get_string_manager() {
         return new fake_string_manager();
     }
+    // Manually retrieve the information from config.php
+    // and create $DB object.
+    $config = NULL;
+    if(!is_file('config.php')) {
+        cli_error('config.php not found.');
+    }
+    exec("php -w config.php", $config);
+    if(!isset($config[1])) {
+        cli_error("config.php does not look right to me.");
+    }
+    $config = $config[1];
+    $config = str_replace('require_once', '//require_once', $config);
+    eval($config);
+    if(!isset($CFG)) {
+        cli_error('After evaluating config.php, $CFG is not set');
+    }
+    $CFG->libdir = $moosh_dir .  "/includes/moodle/lib/";
+    $CFG->debugdeveloper = false;
+
+    require_once($CFG->libdir . "/setuplib.php");
+    require_once($CFG->libdir . "/dmllib.php");
+    setup_DB();
 } else {
     if ($bootstrap_level == MooshCommand::$BOOTSTRAP_FULL_NOCLI) {
         $_SERVER['REMOTE_ADDR'] = 'localhost';
