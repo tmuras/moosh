@@ -47,6 +47,6 @@ class WebserviceCall extends MooshCommand
         curl_setopt($rCurl, CURLOPT_HEADER, 0);
         curl_setopt($rCurl, CURLOPT_RETURNTRANSFER, 1);
         echo curl_exec($rCurl);
-        curl_close($ch);
+        curl_close($rCurl);
     }
 }
