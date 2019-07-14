@@ -6,7 +6,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle26\Course;
+namespace Moosh\Command\Moodle36\Course;
+
 
 use Moosh\MooshCommand;
 
@@ -32,7 +33,7 @@ class CourseList extends MooshCommand {
 
 
         require_once $CFG->dirroot . '/course/lib.php';
-        require_once $CFG->dirroot . '/lib/coursecatlib.php';
+
 
         foreach ($this->arguments as $argument) {
             $this->expandOptionsManually(array($argument));
@@ -58,7 +59,8 @@ class CourseList extends MooshCommand {
 
         $sql .= "WHERE '1'='1' ";
         if ($options['categorysearch'] ) {
-            $category = \coursecat::get($options['categorysearch']);
+            $category = \core_course_category::get($options['categorysearch']);
+
 
             $categories = $this->get_categories($category);
 
@@ -121,7 +123,8 @@ class CourseList extends MooshCommand {
     }
 
 
-    protected function get_categories(\coursecat $category) {
+    protected function get_categories(\core_course_category $category) {
+
         static $categories = array();
 
         $categories[$category->id] = $category->name;
