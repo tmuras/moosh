@@ -27,7 +27,7 @@
 
 require_once(__DIR__ . '/../../../../lib/behat/behat_base.php');
 
-use Behat\Mink\Exception\ElementNotFoundException;
+use Behat\Mink\Exception\ExpectationException;
 
 /**
  * moosh tests.
@@ -55,11 +55,44 @@ class behat_moosh extends behat_base
                 break;
             }
         }
-        // For the debugging purposes.
-        file_put_contents("/tmp/test.txt", $command . "\n" . $match . "\n" . implode("\n", $output));
-
+        $this->log_moosh_output($output);
         if (!$matched) {
-            throw new ElementNotFoundException($this->getSession());
+            throw new ExpectationException("Failure! Not found '$match' in the output for the command: '$command'", $this->getSession());
         }
+    }
+
+    /**
+     *
+     * @Then /^moosh command "(?P<command>.+)" does not contain "(?P<match>.+)"$/
+     */
+    public function moosh_command_does_not_contain($command, $match)
+    {
+        $output = null;
+        $ret = null;
+        exec("php /var/www/html/moosh/moosh.php $command", $output, $ret);
+
+        $matched = false;
+        foreach ($output as $line) {
+            if (stristr($line, $match) !== false) {
+                $matched = true;
+                break;
+            }
+        }
+
+        $this->log_moosh_output($output);
+        if ($matched) {
+            throw new ExpectationException("Failure! Found '$match' in the output for the command: '$command'", $this->getSession());
+        }
+    }
+
+    /**
+     * For the debugging purposes. Displayed text shows when there is a failure.
+     * @param $output
+     */
+    private function log_moosh_output($output)
+    {
+        file_put_contents("/tmp/test.txt", implode("\n", $output));
+        echo "***moosh command output***\n". implode("\n", $output) . "\n***\n";
+
     }
 }
