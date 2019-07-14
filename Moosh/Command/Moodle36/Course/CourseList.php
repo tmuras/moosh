@@ -8,6 +8,7 @@
 
 namespace Moosh\Command\Moodle36\Course;
 
+
 use Moosh\MooshCommand;
 
 class CourseList extends MooshCommand {
@@ -32,6 +33,7 @@ class CourseList extends MooshCommand {
 
 
         require_once $CFG->dirroot . '/course/lib.php';
+
 
         foreach ($this->arguments as $argument) {
             $this->expandOptionsManually(array($argument));
@@ -58,6 +60,7 @@ class CourseList extends MooshCommand {
         $sql .= "WHERE '1'='1' ";
         if ($options['categorysearch'] ) {
             $category = \core_course_category::get($options['categorysearch']);
+
 
             $categories = $this->get_categories($category);
 
@@ -121,6 +124,7 @@ class CourseList extends MooshCommand {
 
 
     protected function get_categories(\core_course_category $category) {
+
         static $categories = array();
 
         $categories[$category->id] = $category->name;

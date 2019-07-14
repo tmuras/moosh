@@ -46,26 +46,14 @@ class ReportConcurrency extends MooshCommand {
 
     public function bootstrapLevel()
     {
-        return self::$BOOTSTRAP_NONE;
+        return self::$BOOTSTRAP_DB_ONLY;
     }
 
     public function execute()
     {
         global $DB, $CFG;
 
-        // Manually retrieve the information from config.php
-        // and create $DB object.
-        $config = NULL;
-        exec("php -w config.php", $config);
-        $config = $config[1];
-        $config = str_replace('require_once', '//require_once', $config);
-        eval($config);
-        $CFG->libdir = $this->mooshDir .  "/includes/moodle/lib/";
-        $CFG->debugdeveloper = false;
 
-        require_once($CFG->libdir . "/setuplib.php");
-        require_once($CFG->libdir . "/dmllib.php");
-        setup_DB();
 
         $options = $this->expandedOptions;
 
@@ -211,7 +199,9 @@ class ReportConcurrency extends MooshCommand {
             fclose($csvfile);
         }
 
-        echo "Name: " . $CFG->wwwroot . "\n";
+        if(isset($CFG->wwwroot)) {
+            echo "Name: " . $CFG->wwwroot . "\n";
+        }
 
         // Display active users during specified period.
         $sql = "SELECT COUNT( DISTINCT userid ) AS NumberOfActiveUsers

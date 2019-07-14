@@ -52,26 +52,26 @@ class UserList extends MooshCommand {
         } else {
             $users = ("SELECT * FROM {user} WHERE " . $this->arguments[0]);
             $limit_to = 0;
+        }
 
-            $sort = "id";
-            if ($options['sort']) {
-                if ($options['sort'] == 'username' || $options['sort'] == 'email' || $options['sort'] == 'idnumber') {
-                    $sort = $options['sort'];
-                } else {
-                    echo "Invalid sorting option. Use 'username', 'email' or 'idnumber'.\n";
-                }
+        $sort = "id";
+        if ($options['sort']) {
+            if ($options['sort'] == 'username' || $options['sort'] == 'email' || $options['sort'] == 'idnumber') {
+                $sort = $options['sort'];
+            } else {
+                echo "Invalid sorting option. Use 'username', 'email' or 'idnumber'.\n";
             }
+        }
 
-            $dir = 'ASC';
-            if ($options['descending']) {
-                $dir = 'DESC';
-            }
+        $dir = 'ASC';
+        if ($options['descending']) {
+            $dir = 'DESC';
+        }
 
-            $users .= " ORDER BY $sort $dir";
+        $users .= " ORDER BY $sort $dir";
 
-            if ($options['limit'] && preg_match('/^\d+$/', $options['limit'])) {
-                $limit_to = $options['limit'];
-            }
+        if ($options['limit'] && preg_match('/^\d+$/', $options['limit'])) {
+            $limit_to = $options['limit'];
         }
 
         if($options['course']) {
