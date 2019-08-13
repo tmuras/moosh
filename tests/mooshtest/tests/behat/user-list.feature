@@ -44,12 +44,12 @@ Feature: moosh user-list
   Scenario: user-list run with --course %course:C1% parameter returns user enroled to course 101.
     Given the following "users" exist:
       | username | firstname | lastname | email |
-      | teacher12 | Teacher | 12 | teacher12@example.com |
+      | teacher1 | Teacher | 1 | teacher1@example.com |
     And the following "courses" exist:
       | fullname | shortname | category |
-      | Course 12 | C12        | 0        |
+      | Course 1 | C1        | 0        |
     And the following "course enrolments" exist:
       | user     | course | role    |
-      | teacher12  | C12     | teacher |
-    Then moosh command "user-list --course %course:C12%" contains "teacher12"
+      | teacher1  | C1     | teacher |
+    Then moosh command "user-list --course %course:C1%" contains "teacher1"
 

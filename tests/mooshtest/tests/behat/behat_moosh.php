@@ -46,15 +46,8 @@ class behat_moosh extends behat_base
     public function moosh_command_returns($command, $match)
     {
 
-
-        if(strchr($command, "%")!==False){
-            $this->explode_id_commend($command);
-            return $command;
-        }
-        elseif(strchr($match, "%")!==False){
-            $this->explode_id_commend($match);
-            return $match;
-        }
+            $command = $this->explode_id_command($command);
+            $match = $this->explode_id_command($match);
 
         $output = null;
         $ret = null;
@@ -81,14 +74,8 @@ class behat_moosh extends behat_base
     public function moosh_command_does_not_contain($command, $match)
     {
 
-        if(strchr($command, "%")!==False){
-            $this->explode_id_commend($command);
-            return $command;
-        }
-        elseif(strchr($match, "%")!==False){
-            $this->explode_id_commend($match);
-            return $match;
-        }
+            $command = $this->explode_id_command($command);
+            $match = $this->explode_id_command($match);
 
         $output = null;
         $ret = null;
@@ -118,17 +105,26 @@ class behat_moosh extends behat_base
         echo "***moosh command output***\n". implode("\n", $output) . "\n***\n";
 
     }
-    private function explode_id_commend($output){
+    private function explode_id_command($output)
+    {
         global $DB;
-        $subcommand = explode( '%', $output );
-        $tab_var = explode( ':', $subcommand[1] );
+        if(strchr($output, "%")!==False) {
 
-        $params = array('par' => $tab_var[0],
-            'val' => $tab_var[1]);
-        $sql = "SELECT id FROM {course} WHERE :par= :val";
-        $command_id = $DB->get_record_sql($sql, $params, $strictness=IGNORE_MISSING);
+            $subcommand = explode('%', $output);
+            $tab_var = explode(':', $subcommand[1]);
 
-        $output=$subcommand[0].$command_id;
-        return $output;
+            $command_id = $DB->get_field('course', 'id', [$tab_var[0] => $tab_var[1]], MUST_EXIST);
+
+            $pattern = '/(%)(\w+)(:)(\w+)(%)/';
+            $returned_command = preg_replace($pattern, $command_id, $output);
+
+            return $returned_command;
+
+        }else{
+
+            return $output;
+
+        }
     }
+
 }

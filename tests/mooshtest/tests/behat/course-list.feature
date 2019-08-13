@@ -15,7 +15,7 @@ Feature: moosh course-list
 
   Scenario: course-list run with -i shows only id column.
     Given the following "courses" exist:
-    | fullname | shortname | category | format | vivable |
+    | fullname | shortname | category | format | visable |
     | Course 1 | C1 | 0 | social | 1 |
     | Course 2 | C2 | 0 | social | 1 |
     | Course 3 | C3 | 0 | social | 0 |
@@ -24,7 +24,7 @@ Feature: moosh course-list
 
   Scenario: course-list run with -c 0 show courses id from given category.
     Given the following "courses" exist:
-      | fullname | shortname | category | format | vivable |
+      | fullname | shortname | category | format | visable |
       | Course 1 | C1 | 0 | social | 1 |
       | Course 2 | C2 | 0 | social | 1 |
       | Course 3 | C3 | 0 | social | 0 |
@@ -33,7 +33,7 @@ Feature: moosh course-list
 
   Scenario: course-list run with -c 0 and -v yes shows visable courses from given category.
     Given the following "courses" exist:
-    | fullname | shortname | category | format | vivable |
+    | fullname | shortname | category | format | visable |
     | Course 1 | C1 | 0 | social | 1 |
     | Course 2 | C2 | 0 | social | 1 |
     | Course 3 | C3 | 0 | social | 0 |
@@ -42,7 +42,7 @@ Feature: moosh course-list
 
   Scenario: course-list run with -v yes shows visable courses.
     Given the following "courses" exist:
-    | fullname | shortname | category | format | vivable |
+    | fullname | shortname | category | format | visable |
     | Course 1 | C1 | 0 | social | 1 |
     | Course 2 | C2 | 0 | social | 1 |
     | Course 3 | C3 | 0 | social | 0 |
@@ -69,7 +69,7 @@ Feature: moosh course-list
 
   Scenario: course-list run with -f id shows courses id.
     Given the following "courses" exist:
-      | fullname | shortname | category | format | vivable |
+      | fullname | shortname | category | format | visable |
       | Course 1 | C1 | 0 | social | 1 |
       | Course 2 | C2 | 0 | social | 1 |
       | Course 3 | C3 | 0 | social | 0 |
