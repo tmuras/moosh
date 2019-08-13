@@ -77,6 +77,7 @@ class behat_moosh extends behat_base
             $command = $this->explode_id_command($command);
             $match = $this->explode_id_command($match);
 
+
         $output = null;
         $ret = null;
         exec("php /var/www/html/moosh/moosh.php $command", $output, $ret);
