@@ -7,7 +7,7 @@ Commands
 ========
 <span class="anchor" id="activity-add"></span>
 <a class="command-name">activity-add</a>
-------------
+--------
 
 Adds an activity instance to the specified course. The activity is specified by it's component name
 without the plugin type prefix, so "forum", "assign" or "data" for example, and the course is specified

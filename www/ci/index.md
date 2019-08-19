@@ -16,7 +16,7 @@ CI
     </thead>
     <tbody>
     	<tr>
-		<td><a href="/commands/#activity-add ">activity-add</td>
+		<td><a href="/commands/#activity-add ">activity-add</a></td>
 		<td><i class="fa fa-check"></i></td>
 		<td><i class="fa fa-check"></i></td>
 	</tr>
