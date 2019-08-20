@@ -1,9 +1,0 @@
-FROM jekyll/builder as builder
-
-RUN mkdir -p /srv/jekyll
-
-WORKDIR /srv/jekyll
-
-COPY . .
-
-RUN jekyll build --config _config.yml --destination ./dist/staging
