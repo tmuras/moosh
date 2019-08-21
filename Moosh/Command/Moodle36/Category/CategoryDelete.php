@@ -26,6 +26,7 @@ class CategoryDelete extends MooshCommand
 		//Make sure catid is valid.
 		if ($catid <= 0) {
 			echo "Invalid category id. Must be > 0\n";
+			exit;
 		}
 
 		//Make sure the category exists
