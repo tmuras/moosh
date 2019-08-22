@@ -39,15 +39,61 @@ use Behat\Mink\Exception\ExpectationException;
 class behat_moosh extends behat_base
 {
 
+
+    /**
+     *
+     * @Then /^moosh command "(?P<command>.+)" print out id "(?P<match>.+)"$/
+     */
+    public function moosh_command_return_id($command, $match)
+    {
+        $id = $this->explode_id_command($match);
+
+        $output = null;
+        $ret = null;
+        $output = exec("php /var/www/html/moosh/moosh.php $command", $output, $ret);
+
+        if($output==$id){
+            echo "***moosh command output***\nId from created course ". $id . "\n***\n";;
+        }else{
+            throw new ExpectationException("Failure! Id $id does not match $output", $this->getSession());
+        }
+    }
+    /**
+     *
+     * @Then /^there are "(\d+)" courses added to database$/
+     */
+    public function moosh_command_x($val)
+    {
+        global $DB;
+        $coursecount = $DB->count_records('course', array());
+        $coursecount--;
+
+        if($coursecount==$val) {
+            echo "***moosh command output***\nNumber of added courses ". $val . "\n***\n";
+        }else{
+            throw new ExpectationException("Failure! $val the number of rows created does not match the number added to the database", $this->getSession());
+        }
+    }
+
+    /**
+     *
+     * @When /^I run moosh "(?P<command>.+)"$/
+     */
+    public function moosh_command_run($command)
+    {
+        $output = null;
+        $ret = null;
+        exec("php /var/www/html/moosh/moosh.php $command", $output, $ret);
+
+    }
     /**
      *
      * @Then /^moosh command "(?P<command>.+)" contains "(?P<match>.+)"$/
      */
     public function moosh_command_returns($command, $match)
     {
-
-            $command = $this->explode_id_command($command);
-            $match = $this->explode_id_command($match);
+        $command = $this->explode_id_command($command);
+        $match = $this->explode_id_command($match);
 
         $output = null;
         $ret = null;
@@ -73,10 +119,8 @@ class behat_moosh extends behat_base
      */
     public function moosh_command_does_not_contain($command, $match)
     {
-
-            $command = $this->explode_id_command($command);
-            $match = $this->explode_id_command($match);
-
+        $command = $this->explode_id_command($command);
+        $match = $this->explode_id_command($match);
 
         $output = null;
         $ret = null;
@@ -106,26 +150,19 @@ class behat_moosh extends behat_base
         echo "***moosh command output***\n". implode("\n", $output) . "\n***\n";
 
     }
+
     private function explode_id_command($output)
     {
         global $DB;
         if(strchr($output, "%")!==False) {
-
             $subcommand = explode('%', $output);
             $tab_var = explode(':', $subcommand[1]);
-
             $command_id = $DB->get_field('course', 'id', [$tab_var[0] => $tab_var[1]], MUST_EXIST);
-
             $pattern = '/(%)(\w+)(:)(\w+)(%)/';
             $returned_command = preg_replace($pattern, $command_id, $output);
-
             return $returned_command;
-
         }else{
-
             return $output;
-
         }
     }
-
 }

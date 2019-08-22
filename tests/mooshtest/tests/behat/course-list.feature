@@ -20,7 +20,7 @@ Feature: moosh course-list
     | Course 2 | C2 | 0 | social | 1 |
     | Course 3 | C3 | 0 | social | 0 |
     | Course 4 | C4 | 0 | social | 1 |
-    Then moosh command "course-list -i" does not contain "%course:C1%"
+    Then moosh command "course-list -i" contains "%course:C1%"
 
   Scenario: course-list run with -c 0 show courses id from given category.
     Given the following "courses" exist:
@@ -67,14 +67,14 @@ Feature: moosh course-list
     | Course 1 | C1 | 0 | social |
     Then moosh command "course-list -o tab" contains "C1"
 
-  Scenario: course-list run with -f id shows courses id.
+  Scenario: course-list run with -f id shows courses fullname and shotname.
     Given the following "courses" exist:
       | fullname | shortname | category | format | visible |
       | Course 1 | C1 | 0 | social | 1 |
       | Course 2 | C2 | 0 | social | 1 |
       | Course 3 | C3 | 0 | social | 0 |
       | Course 4 | C4 | 0 | social | 1 |
-    Then moosh command "course-list -f id, fullname" contains "%course:C3%"
+    Then moosh command "course-list -f fullname,shortname" contains "%course:C3%"
 
 
 
