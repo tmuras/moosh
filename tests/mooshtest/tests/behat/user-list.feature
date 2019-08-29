@@ -40,15 +40,15 @@ Feature: moosh user-list
     Then moosh command "user-list -s email -n 3" contains "a@example.com"
     And moosh command "user-list -s email -n 3" does not contain "z@example.com"
 
-  Scenario: user-list run with --course %course:C1% parameter returns user enroled to course 101.
+  Scenario: user-list run with --course %course:C1% parameter returns user enroled to course C12.
     Given the following "users" exist:
       | username | firstname | lastname | email |
-      | teacher1 | Teacher | 1 | teacher1@example.com |
+      | teacher12 | Teacher | 12 | teacher12@example.com |
     And the following "courses" exist:
       | fullname | shortname | category |
-      | Course 1 | C1        | 0        |
+      | Course 12 | C12        | 0        |
     And the following "course enrolments" exist:
       | user     | course | role    |
-      | teacher1  | C1     | teacher |
-    Then moosh command "user-list --course %course:C1%" contains "teacher1"
+      | teacher12  | C12     | teacher |
+    Then moosh command "user-list --course %shortname:C12%" contains "teacher12"
 
