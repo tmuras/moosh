@@ -32,24 +32,24 @@ Feature: You can create a second course with -r option and the same parameters
 
   Scenario: course-create run with -f fulltest, created a course with fullname - fulltest
     When I run moosh "course-create -f fulltest4 test4"
-    Then course with "shortname" = "test4" and "fullname" = "fulltest4" exist
+    Then a record in table "course" with "shortname" = "test4" and "fullname" = "fulltest4" exist
 
   Scenario: course-create run with -F site, created a course with format - site
     When I run moosh "course-create -F site test5"
-    Then course with "shortname" = "test5" and "format" = "site" exist
+    Then a record in table "course" with "shortname" = "test5" and "format" = "site" exist
 
   Scenario: course-create run with -v no, created a course with visible - no
     When I run moosh "course-create -v no test6"
-    Then course with "shortname" = "test6" and "visible" = "no" exist
+    Then a record in table "course" with "shortname" = "test6" and "visible" = "no" exist
 
   Scenario: course-create run with -i 123, created a course with idnumber - 123
     When I run moosh "course-create -i 123 test7"
-    Then course with "shortname" = "test7" and "idnumber" = "123" exist
+    Then a record in table "course" with "shortname" = "test7" and "idnumber" = "123" exist
 
   Scenario: course-create run with -c 1, created a course with idnumber - "test 8 id
     When I run moosh "course-create -i 'test 8 id' test8"
-    Then course with "shortname" = "test8" and "idnumber" = "test 8 id" exist
+    Then a record in table "course" with "shortname" = "test8" and "idnumber" = "test 8 id" exist
 
   Scenario: course-create run with -c 1, created a course with category id - 1
     When I run moosh "course-create -c 1 test9"
-    Then course with "shortname" = "test9" and "category" = "1" exist
+    Then a record in table "course" with "shortname" = "test9" and "category" = "1" exist

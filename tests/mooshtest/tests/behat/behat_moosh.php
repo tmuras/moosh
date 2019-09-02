@@ -36,14 +36,15 @@ class behat_moosh extends behat_base
 
     /**
      *
-     * @Then /^course with "(?P<shortname>.+)" = "(?P<course>.+)" and "(?P<para>.+)" = "(?P<para_val>.+)" exist$/
+     * @Then /^a record in table "(?P<wtable>.+)" with "(?P<rec1>.+)" = "(?P<val1>.+)" and "(?P<para>.+)" = "(?P<para_val>.+)" exist$/
      */
-    public function moosh_course_with_parameter_exist($shortname, $course, $para, $para_val){
+    public function moosh_course_with_parameter_exist($wtable, $rec1, $val1, $para, $para_val){
 
         global $DB;
 
-        if(!($DB->record_exists('course', array($shortname => $course, $para => $para_val)))){
-            throw new ExpectationException("Failure! $shortname, $course, $para, $para_val", $this->getSession());
+
+        if(!($DB->record_exists($wtable, array($rec1 => $val1, $para => $para_val)))){
+            throw new ExpectationException("Failure! $rec1, $val1, $para, $para_val", $this->getSession());
         }
     }
 
@@ -93,6 +94,7 @@ class behat_moosh extends behat_base
         $output = null;
         $ret = null;
         exec("php /var/www/html/moosh/moosh.php $command", $output, $ret);
+        $this->log_moosh_output($output);
     }
     /**
      *
