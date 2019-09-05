@@ -32,3 +32,7 @@ Feature: moosh user-create
   Scenario:user is created with pass -a ldap and username student7
     When I run moosh "user-create -a ldap someuser7"
     Then a record in table "user" with "username" = "someuser7" and "auth" = "ldap" exist
+
+  Scenario:user is created with pass -a ldap and username student8
+    When I run moosh "user-create -p pass -e me@example.com -d 2 -c Szczecin -c PL -f "first name" -l name someuser8"
+    Then a record in table "user" with "username" = "someuser8" and "country" = "PL" exist
