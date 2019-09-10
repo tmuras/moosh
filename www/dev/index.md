@@ -186,7 +186,7 @@ Enter into the folder:
     cd ~/moosh-testing
 
 
-######Clone these two repositories into  ~/moosh-testing directory:
+#####Clone these two repositories into  ~/moosh-testing directory:
 
     git clone https://github.com/moodlehq/moodle-docker.git  
     git clone -b MOODLE_37_STABLE git://git.moodle.org/moodle.git
@@ -208,7 +208,7 @@ In the moodle directory, move tests from ~/moodle/moosh/tests/mooshtest into ~/m
     mv moodle/moosh/tests/mooshtest moodle/local
 
 
-######Initialize behat environment. Go in moodle-docker directory:
+#####Initialize behat environment. Go in moodle-docker directory:
 
     cd ~/moosh-testing/moodle-docker
 
@@ -217,7 +217,7 @@ And run commands:
     export MOODLE_DOCKER_WWWROOT=~/moosh-testing/moodle
     export MOODLE_DOCKER_DB=mysql
 
-######copy template file as config to moodle:
+#####copy template file as config to moodle:
 
     cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
 
@@ -228,13 +228,13 @@ Run container:
     bin/moodle-docker-compose up -d
 
 
-######Disable Moodle check for the DB prefix. In moodle/lib/behat/lib.php, comment out those 2 lines:
+#####Disable Moodle check for the DB prefix. In moodle/lib/behat/lib.php, comment out those 2 lines:
 
     //behat_error(BEHAT_EXITCODE_CONFIG,
     //'$CFG->behat_prefix in config.php must be different from $CFG->prefix');
 
 
-######Edit config.php in /moodle directory and change:
+#####Edit config.php in /moodle directory and change:
 
 
     $CFG->prefix = 'm_';
@@ -246,7 +246,7 @@ To
 (If you don't have permission to change it, you will need change the mode to writable.)
 
 
-######Run now command:
+#####Run now command:
 
 
     bin/moodle-docker-compose exec webserver bash
@@ -263,7 +263,7 @@ In your console you should be logged in as root (you should see something like t
 Then you should be logged in as www-data (and see something like this www-data@b5ba7a659e83:~/html$)
 
 
-######Run then:
+#####Run then:
 
     php admin/tool/behat/cli/init.php
 
@@ -284,7 +284,7 @@ Run this command:
 
 
 
-######Now you can run any moosh test with command:
+#####Now you can run any moosh test with command:
 
     php admin/tool/behat/cli/run.php --format pretty --tags=@moosh
 
@@ -298,7 +298,7 @@ Example:
     moosh/moosh.php course-list
 
 
-######Exit, stop and remove container:
+#####Exit, stop and remove container:
 
 To exit from the interactive container, type:
 
@@ -312,7 +312,7 @@ To stop and remove te container:
 
     bin/moodle-docker-compose down
 _____________________________________
-#####Quick steps to rerun container:
+####Quick steps to rerun container:
 
     export MOODLE_DOCKER_WWWROOT=~/moosh-testing/moodle
     export MOODLE_DOCKER_DB=mysql

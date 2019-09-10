@@ -260,7 +260,7 @@ For example, to create your custom command dev-mytest that works with any Moodle
 <pre><code>cd ~/moosh-testing
 </code></pre>
 
-<h6>Clone these two repositories into  ~/moosh-testing directory:</h6>
+<h5>Clone these two repositories into  ~/moosh-testing directory:</h5>
 
 <pre><code>git clone https://github.com/moodlehq/moodle-docker.git  
 git clone -b MOODLE_37_STABLE git://git.moodle.org/moodle.git
@@ -284,7 +284,7 @@ And install moosh with running this command:</p>
 mv moodle/moosh/tests/mooshtest moodle/local
 </code></pre>
 
-<h6>Initialize behat environment. Go in moodle-docker directory:</h6>
+<h5>Initialize behat environment. Go in moodle-docker directory:</h5>
 
 <pre><code>cd ~/moosh-testing/moodle-docker
 </code></pre>
@@ -295,7 +295,7 @@ mv moodle/moosh/tests/mooshtest moodle/local
 export MOODLE_DOCKER_DB=mysql
 </code></pre>
 
-<h6>copy template file as config to moodle:</h6>
+<h5>copy template file as config to moodle:</h5>
 
 <pre><code>cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
 </code></pre>
@@ -305,13 +305,13 @@ export MOODLE_DOCKER_DB=mysql
 <pre><code>bin/moodle-docker-compose up -d
 </code></pre>
 
-<h6>Disable Moodle check for the DB prefix. In moodle/lib/behat/lib.php, comment out those 2 lines:</h6>
+<h5>Disable Moodle check for the DB prefix. In moodle/lib/behat/lib.php, comment out those 2 lines:</h5>
 
 <pre><code>//behat_error(BEHAT_EXITCODE_CONFIG,
 //'$CFG-&gt;behat_prefix in config.php must be different from $CFG-&gt;prefix');
 </code></pre>
 
-<h6>Edit config.php in /moodle directory and change:</h6>
+<h5>Edit config.php in /moodle directory and change:</h5>
 
 <pre><code>$CFG-&gt;prefix = 'm_';
 </code></pre>
@@ -323,7 +323,7 @@ export MOODLE_DOCKER_DB=mysql
 
 <p>(If you don't have permission to change it, you will need change the mode to writable.)</p>
 
-<h6>Run now command:</h6>
+<h5>Run now command:</h5>
 
 <pre><code>bin/moodle-docker-compose exec webserver bash
 </code></pre>
@@ -338,7 +338,7 @@ sudo -u www-data -E -H bash
 
 <p>Then you should be logged in as www-data (and see something like this www-data@b5ba7a659e83:~/html$)</p>
 
-<h6>Run then:</h6>
+<h5>Run then:</h5>
 
 <pre><code>php admin/tool/behat/cli/init.php
 </code></pre>
@@ -360,7 +360,7 @@ sudo -u www-data -E -H bash
 <pre><code>export LD_LIBRARY_PATH=/usr/local/instantclient_12_1/
 </code></pre>
 
-<h6>Now you can run any moosh test with command:</h6>
+<h5>Now you can run any moosh test with command:</h5>
 
 <pre><code>php admin/tool/behat/cli/run.php --format pretty --tags=@moosh
 </code></pre>
@@ -375,7 +375,7 @@ sudo -u www-data -E -H bash
 <pre><code>moosh/moosh.php course-list
 </code></pre>
 
-<h6>Exit, stop and remove container:</h6>
+<h5>Exit, stop and remove container:</h5>
 
 <p>To exit from the interactive container, type:</p>
 
@@ -394,7 +394,7 @@ sudo -u www-data -E -H bash
 
 <hr />
 
-<h5>Quick steps to rerun container:</h5>
+<h4>Quick steps to rerun container:</h4>
 
 <pre><code>export MOODLE_DOCKER_WWWROOT=~/moosh-testing/moodle
 export MOODLE_DOCKER_DB=mysql
