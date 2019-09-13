@@ -22,6 +22,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 require_once(__DIR__ . '/../../../../lib/behat/behat_base.php');
+
+use Behat\Gherkin\Node\TableNode as TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use core_analytics\course;
 
@@ -85,6 +87,7 @@ class behat_moosh extends behat_base
             throw new ExpectationException("Failure! $coursecount the number of rows created does not match $val.a the number added to the database", $this->getSession());
         }
     }
+
     /**
      *
      * @When /^I run moosh "(?P<command>.+)"$/
@@ -95,7 +98,7 @@ class behat_moosh extends behat_base
         $output = null;
         $ret = null;
         exec("php /var/www/html/moosh/moosh.php $command", $output, $ret);
-        $this->log_moosh_output($output);
+        //$this->log_moosh_output($output);
     }
     /**
      *
@@ -156,12 +159,31 @@ class behat_moosh extends behat_base
     {
         global $DB;
         if(strchr($output, "%")!==False) {
+
             $subcommand = explode('%', $output);
-            $tab_var = explode(':', $subcommand[1]);
-            $command_id = $DB->get_field('course', 'id', [$tab_var[0] => $tab_var[1]], MUST_EXIST);
+
+            $arr_length=count($subcommand);
+            $a=0;
+            for($i=1;$i<$arr_length;$i+=2)
+            {
+                echo $subcommand[$i];
+                $tab_var = explode(':', $subcommand[$i]);
+                $tab = explode('-', $subcommand[0]);
+
+                $id = $DB->get_field($tab[0], 'id', [$tab_var[0] => $tab_var[1]], MUST_EXIST);
+
+                $command_id[]=$id;
+                $a++;
+            }
+
             $pattern = '/(%)(\w+)(:)(\w+)(%)/';
-            $returned_command = preg_replace($pattern, $command_id, $output);
-            return $returned_command;
+            $subcommandd="";
+            for($z=0;$z<$a;$z++){
+                $subcommandd.= $command_id[$z];
+                $subcommandd.=" ";
+            }
+            $command = preg_replace($pattern, $subcommandd, $output);
+            return $command;
         }else{
             return $output;
         }
