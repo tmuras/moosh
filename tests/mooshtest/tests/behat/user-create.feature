@@ -10,7 +10,7 @@ Feature: Command moosh user-create create a new Moodle user provide one or more
     When I run moosh "user-create -c London someuser1"
     Then a record in table "user" with "username" = "someuser1" and "city" = "London" exist
 
-  Scenario: user-create run with -C DE creates a user with the coutry provided.
+  Scenario: user-create run with -C DE creates a user with the country provided.
     When I run moosh "user-create -C DE someuser2"
     Then a record in table "user" with "username" = "someuser2" and "country" = "DE" exist
 
@@ -52,5 +52,3 @@ Feature: Command moosh user-create create a new Moodle user provide one or more
   Scenario: user-create run with someuser10 someuser11 someuser12 creates a multiple users.
     When I run moosh "user-create someuser10 someuser11 someuser12"
     Then moosh command "user-list" contains "someuser10"
-    And moosh command "user-list" contains "someuser11"
-    And moosh command "user-list" contains "someuser12"
