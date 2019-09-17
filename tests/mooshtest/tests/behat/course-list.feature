@@ -37,7 +37,7 @@
       | Course 2 | C2 | 0 | social | 1 |
       | Course 3 | C3 | 0 | social | 0 |
       | Course 4 | C4 | 0 | social | 1 |
-    Then moosh command "course-list -c 0" contains "C4"
+    Then moosh command "course-list -c %category:0%" contains "C4"
 
   Scenario: course-list run with -c 0 and -v yes shows visible courses from given category.
     Given the following "courses" exist:

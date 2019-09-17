@@ -56,7 +56,7 @@ class behat_moosh extends behat_base
      */
     public function moosh_command_return_id($command, $match)
     {
-        $id = $this->explode_id_command($match);
+        $id = $this->explode_id_match($match);
         $output = null;
         $ret = null;
         $output = exec("php /var/www/html/moosh/moosh.php $command", $output, $ret);
@@ -107,7 +107,7 @@ class behat_moosh extends behat_base
     public function moosh_command_returns($command, $match)
     {
         $command = $this->explode_id_command($command);
-        $match = $this->explode_id_command($match);
+        $match = $this->explode_id_match($match);
         $output = null;
         $ret = null;
         exec("php /var/www/html/moosh/moosh.php $command", $output, $ret);
@@ -130,7 +130,7 @@ class behat_moosh extends behat_base
     public function moosh_command_does_not_contain($command, $match)
     {
         $command = $this->explode_id_command($command);
-        $match = $this->explode_id_command($match);
+        $match = $this->explode_id_match($match);
         $output = null;
         $ret = null;
         exec("php /var/www/html/moosh/moosh.php $command", $output, $ret);
@@ -183,6 +183,22 @@ class behat_moosh extends behat_base
                 $subcommandd.=" ";
             }
             $command = preg_replace($pattern, $subcommandd, $output);
+            return $command;
+        }else{
+            return $output;
+        }
+    }
+
+    private function explode_id_match($output)
+    {
+        global $DB;
+        if(strchr($output, "%")!==False) {
+            $subcommand = explode('%', $output);
+            $tab_var = explode(':', $subcommand[1]);
+            $courseid = $DB->get_field('course', 'id', array($tab_var[0] => $tab_var[1]), MUST_EXIST);
+
+            $pattern = '/(%)(\w+)(:)(\w+)(%)/';
+            $command = preg_replace($pattern, $courseid, $output);
             return $command;
         }else{
             return $output;
