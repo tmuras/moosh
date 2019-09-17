@@ -50,5 +50,9 @@ Feature: Command moosh user-create create a new Moodle user provide one or more
     Then I should see "You are logged in as First Last"
 
   Scenario: user-create run with someuser10 someuser11 someuser12 creates a multiple users.
+    Given I log in as "admin"
     When I run moosh "user-create someuser10 someuser11 someuser12"
-    Then moosh command "user-list" contains "someuser10"
+    And I navigate to "Users > Accounts > Browse list of users" in site administration
+    And I should see "someuser10"
+    And I should see "someuser11"
+    And I should see "someuser12"

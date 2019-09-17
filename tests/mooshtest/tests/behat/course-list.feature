@@ -29,7 +29,6 @@
       | Course 3 | C3 | 0 | social | 0 |
       | Course 4 | C4 | 0 | social | 1 |
     Then moosh command "course-list -i" contains "%shortname:C1%"
-    And moosh command "course-list -i" contains "%shortname:C2%"
 
   Scenario: course-list run with -c 0 show curse list from given category.
     Given the following "courses" exist:
@@ -85,7 +84,7 @@
       | Course 2 | C2 | 0 | social | 1 |
       | Course 3 | C3 | 0 | social | 0 |
       | Course 4 | C4 | 0 | social | 1 |
-    Then moosh command "course-list -f id,fullname" contains "%shortname:C3%"
+    Then moosh command "course-list -f id,fullname" contains "Course 3"
 
     Scenario: course-list run with -f show only given fields in the output
     category returns a list of courses from given category.
