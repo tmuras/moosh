@@ -43,8 +43,6 @@ class behat_moosh extends behat_base
     public function moosh_course_with_parameter_exist($wtable, $rec1, $val1, $para, $para_val){
 
         global $DB;
-
-
         if(!($DB->record_exists($wtable, array($rec1 => $val1, $para => $para_val)))){
             throw new ExpectationException("Failure! $rec1, $val1, $para, $para_val", $this->getSession());
         }
@@ -56,11 +54,10 @@ class behat_moosh extends behat_base
      */
     public function moosh_command_return_id($command, $match)
     {
-        $id = $this->explode_id_match($match);
+        $id = $this->modified_match($match);
         $output = null;
         $ret = null;
         $output = exec("php /var/www/html/moosh/moosh.php $command", $output, $ret);
-
         if($output==$id){
             echo "***moosh command output***\nId from created course ". $id . "\n***\n";;
         }else{
@@ -75,11 +72,9 @@ class behat_moosh extends behat_base
     {
         global $DB;
         $shortname.='%';
-
         $sql= "SELECT COUNT(id)
-               FROM {course}
-               WHERE shortname LIKE ?";
-
+                FROM {course}
+                WHERE shortname LIKE ?";
         $coursecount = $DB->count_records_sql($sql, array($shortname));
         if($coursecount==$val) {
             echo "$shortname moosh command output\nNumber of added courses ". $val . "\n***\n";
@@ -94,7 +89,7 @@ class behat_moosh extends behat_base
      */
     public function moosh_command_run($command)
     {
-        $command = $this->explode_id_command($command);
+        $command = $this->modified_command($command);
         $output = null;
         $ret = null;
         exec("php /var/www/html/moosh/moosh.php $command", $output, $ret);
@@ -106,8 +101,8 @@ class behat_moosh extends behat_base
      */
     public function moosh_command_returns($command, $match)
     {
-        $command = $this->explode_id_command($command);
-        $match = $this->explode_id_match($match);
+        $command = $this->modified_command($command);
+        $match = $this->modified_match($match);
         $output = null;
         $ret = null;
         exec("php /var/www/html/moosh/moosh.php $command", $output, $ret);
@@ -129,8 +124,8 @@ class behat_moosh extends behat_base
      */
     public function moosh_command_does_not_contain($command, $match)
     {
-        $command = $this->explode_id_command($command);
-        $match = $this->explode_id_match($match);
+        $command = $this->modified_command($command);
+        $match = $this->modified_match($match);
         $output = null;
         $ret = null;
         exec("php /var/www/html/moosh/moosh.php $command", $output, $ret);
@@ -155,53 +150,52 @@ class behat_moosh extends behat_base
         file_put_contents("/tmp/test.txt", implode("\n", $output));
         echo "***moosh command output***\n". implode("\n", $output) . "\n***\n";
     }
-    private function explode_id_command($output)
+
+    /**
+     * @param string $input
+     * @return string $command
+     */
+    private function modified_command($input)
     {
         global $DB;
-        if(strchr($output, "%")!==False) {
+        if(strchr($input, "%")!==false) {
+            $subcommand = explode('%', $input);
+            $subcommand_length = count($subcommand);
 
-            $subcommand = explode('%', $output);
-
-            $arr_length=count($subcommand);
-            $a=0;
-            for($i=1;$i<$arr_length;$i+=2)
-            {
-                echo $subcommand[$i];
-                $tab_var = explode(':', $subcommand[$i]);
-                $tab = explode('-', $subcommand[0]);
-
-                $id = $DB->get_field($tab[0], 'id', [$tab_var[0] => $tab_var[1]], MUST_EXIST);
-
-                $command_id[]=$id;
-                $a++;
+            for ($i = 1; $i < $subcommand_length; $i += 2) {
+                $table_cel = explode(':', $subcommand[$i]);
+                $table = explode('-', $subcommand[0]);
+                $id = $DB->get_field($table[0], 'id', [$table_cel[0] => $table_cel[1]], MUST_EXIST);
+                $patern = '/%' . $subcommand[$i] . '%/';
+                $output = preg_replace($patern, $id, $input);
+                $input = $output;
             }
 
-            $pattern = '/(%)(\w+)(:)(\w+)(%)/';
-            $subcommandd="";
-            for($z=0;$z<$a;$z++){
-                $subcommandd.= $command_id[$z];
-                $subcommandd.=" ";
-            }
-            $command = preg_replace($pattern, $subcommandd, $output);
-            return $command;
+            return $output;
         }else{
+            $output=$input;
             return $output;
         }
     }
 
-    private function explode_id_match($output)
+    /**
+     *
+     * @param string $input
+     * @return string $command
+     */
+    private function modified_match($input)
     {
         global $DB;
-        if(strchr($output, "%")!==False) {
-            $subcommand = explode('%', $output);
-            $tab_var = explode(':', $subcommand[1]);
-            $courseid = $DB->get_field('course', 'id', array($tab_var[0] => $tab_var[1]), MUST_EXIST);
-
+        if(strchr($input, "%")!==false) {
+            $submatch = explode('%', $input);
+            $tablematch = explode(':', $submatch[1]);
+            $courseid = $DB->get_field('course', 'id', array($tablematch[0] => $tablematch[1]), MUST_EXIST);
             $pattern = '/(%)(\w+)(:)(\w+)(%)/';
-            $command = preg_replace($pattern, $courseid, $output);
+            $command = preg_replace($pattern, $courseid, $input);
             return $command;
         }else{
-            return $output;
+            $command = $input;
+            return $command;
         }
     }
 }
