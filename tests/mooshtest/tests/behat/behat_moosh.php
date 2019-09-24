@@ -159,16 +159,26 @@ class behat_moosh extends behat_base
     {
         global $DB;
         if(strchr($input, "%")!==false) {
+
             $subcommand = explode('%', $input);
             $subcommand_length = count($subcommand);
 
-            for ($i = 1; $i < $subcommand_length; $i += 2) {
-                $table_cel = explode(':', $subcommand[$i]);
+            if ((strpos($subcommand[0], "--course ")) !== false) {
+                $table[] = 'course';
+            } else{
                 $table = explode('-', $subcommand[0]);
-                $id = $DB->get_field($table[0], 'id', [$table_cel[0] => $table_cel[1]], MUST_EXIST);
-                $patern = '/%' . $subcommand[$i] . '%/';
-                $output = preg_replace($patern, $id, $input);
-                $input = $output;
+            }
+            
+            for ($i = 1; $i < $subcommand_length; $i++) {
+                if(strchr($subcommand[$i], ":")!==false) {
+                    $table_cel = explode(':', $subcommand[$i]);
+
+                    $id = $DB->get_field($table[0], 'id', [$table_cel[0] => $table_cel[1]], MUST_EXIST);
+
+                    $patern = '/%' . $subcommand[$i] . '%/';
+                    $output = preg_replace($patern, $id, $input);
+                    $input = $output;
+                }
             }
 
             return $output;
