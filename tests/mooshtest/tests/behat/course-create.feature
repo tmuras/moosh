@@ -7,21 +7,23 @@ Feature: You can create a second course with -r option and the same parameters
   checks if only one course has been added to the database
     When I run moosh "course-create -r -c 1 -i 1001 -F weeks -f full testr1"
     And I run moosh "course-create -r -c 1 -i 1001 -F weeks -f full testr1"
-    Then there are "1" "testr" courses added to database
-
-  Scenario: two course-create run with -r and with the different value,
-  checks if two courses have been added to the database
-    When I run moosh "course-create -r -c 1 -i 2002 -F weeks -f full tests1"
-    And I run moosh "course-create -r -c 1 -i 2003 -F weeks -f full tests2"
-    Then there are "2" "tests" courses added to database
+    When I log in as "admin"
+    And I am on site homepage
+    Then I should see "full"
 
   Scenario: two course-create run with -r and with the same value,
   second course was not created return command returns course
   id of the first created course
-    When I run moosh "course-create -r -c 1 -i 100 -F weeks -f full test1"
-    And I run moosh "course-create -r -c 1 -i 100 -F weeks -f full test1"
-    Then moosh command "course-create -r -c 1 -i 100 -F weeks -f full test1" print out id "%shortname:test1%"
-    And moosh command "course-create -r -c 1 -i 100 -F weeks -f full test1" print out id "%shortname:test1%"
+    When I run moosh "course-create -r tests1"
+    And I run moosh "course-create -r  tests1"
+    Then moosh command "course-create -r tests1" print out id "%shortname:tests1%"
+    And there are "1" "tests" courses added to database
+
+  Scenario: two course-create run with -r and with the different value,
+  checks if two courses have been added to the database
+    When I run moosh "course-create -r tests1"
+    And I run moosh "course-create -r tests2"
+    Then there are "2" "tests" courses added to database
 
   Scenario: two course-create run with -r and with the different value,
   first and second returns a different id

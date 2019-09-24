@@ -168,7 +168,7 @@ class behat_moosh extends behat_base
             } else{
                 $table = explode('-', $subcommand[0]);
             }
-            
+
             for ($i = 1; $i < $subcommand_length; $i++) {
                 if(strchr($subcommand[$i], ":")!==false) {
                     $table_cel = explode(':', $subcommand[$i]);
