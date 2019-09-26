@@ -163,40 +163,34 @@ class behat_moosh extends behat_base
             $subcommand = explode('%', $input);
             $subcommand_length = count($subcommand);
 
-            if ((strpos($subcommand[0], "--course ")) !== false) {
-                $table[] = 'course';
-            }else{
-                $table = explode('-', $subcommand[0]);
-            }
+            $table = explode('-', $subcommand[0]);
 
+            $temp='';
             for ($i = 0; $i < $subcommand_length; $i++) {
-
-                if (strpos($subcommand[$i], "-i") !== false) {
-                    $table[0] = 'user';
-                    $i++;
-                }
-
-                if($i!=0) {
                     if (strpos($subcommand[$i], ":") !== false) {
                         $table_cel = explode(':', $subcommand[$i]);
-                        echo $table[0];
-                        echo $table_cel[0];
-                        echo $table_cel[1];
+
+                        if($table_cel[0]=='username'){
+                            $temp = $table[0];
+                            $table[0]='user';
+                        }elseif($table_cel[0]=='shortname'){
+                            $temp = $table[0];
+                            $table[0] = 'course';
+                        }elseif($table_cel[0]=='category'){
+                            $temp = $table[0];
+                            $table[0] = 'course';
+                        }else{
+                            $table[0] = $temp;
+                        }
+
                         $id = $DB->get_field($table[0], 'id', [$table_cel[0] => $table_cel[1]], MUST_EXIST);
-                        echo $id;
+
                         $patern = '/%' . $subcommand[$i] . '%/';
                         $output = preg_replace($patern, $id, $input);
                         $input = $output;
                         $table = explode('-', $subcommand[0]);
                     }
-                }
-                if($i==($subcommand_length-1)){
-                    echo $output;
-                    //echo $b;
-                }
             }
-
-
             return $output;
         }else{
             $output=$input;
