@@ -165,21 +165,37 @@ class behat_moosh extends behat_base
 
             if ((strpos($subcommand[0], "--course ")) !== false) {
                 $table[] = 'course';
-            } else{
+            }else{
                 $table = explode('-', $subcommand[0]);
             }
 
-            for ($i = 1; $i < $subcommand_length; $i++) {
-                if(strchr($subcommand[$i], ":")!==false) {
-                    $table_cel = explode(':', $subcommand[$i]);
+            for ($i = 0; $i < $subcommand_length; $i++) {
 
-                    $id = $DB->get_field($table[0], 'id', [$table_cel[0] => $table_cel[1]], MUST_EXIST);
+                if (strpos($subcommand[$i], "-i") !== false) {
+                    $table[0] = 'user';
+                    $i++;
+                }
 
-                    $patern = '/%' . $subcommand[$i] . '%/';
-                    $output = preg_replace($patern, $id, $input);
-                    $input = $output;
+                if($i!=0) {
+                    if (strpos($subcommand[$i], ":") !== false) {
+                        $table_cel = explode(':', $subcommand[$i]);
+                        echo $table[0];
+                        echo $table_cel[0];
+                        echo $table_cel[1];
+                        $id = $DB->get_field($table[0], 'id', [$table_cel[0] => $table_cel[1]], MUST_EXIST);
+                        echo $id;
+                        $patern = '/%' . $subcommand[$i] . '%/';
+                        $output = preg_replace($patern, $id, $input);
+                        $input = $output;
+                        $table = explode('-', $subcommand[0]);
+                    }
+                }
+                if($i==($subcommand_length-1)){
+                    echo $output;
+                    //echo $b;
                 }
             }
+
 
             return $output;
         }else{
