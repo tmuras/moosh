@@ -165,7 +165,7 @@ class behat_moosh extends behat_base
 
             $table = explode('-', $subcommand[0]);
 
-            $temp='';
+            $temp=$table[0];
             for ($i = 0; $i < $subcommand_length; $i++) {
                     if (strpos($subcommand[$i], ":") !== false) {
                         $table_cel = explode(':', $subcommand[$i]);
@@ -179,6 +179,10 @@ class behat_moosh extends behat_base
                             case 'user':
                                 $temp = $table[0];
                                 $table[0] = 'course';
+                                break;
+                            case 'name':
+                                $temp = $table[0];
+                                $table[0] = 'course_categories';
                                 break;
                             default:
                                 $table[0] = $temp;
