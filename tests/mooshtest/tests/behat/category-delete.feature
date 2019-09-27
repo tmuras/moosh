@@ -1,7 +1,7 @@
 @moosh
-Feature: moosh category-list
+Feature: The moosh command category-delete deletes a given category.
 
-  Scenario: category-list run with no parameters returns a list of categories.
+  Scenario: category-delete run with id of category - deletes the category.
     Given the following "categories" exist:
       | name          | idnumber   | category  |
       | Year          | year       |     0     |
