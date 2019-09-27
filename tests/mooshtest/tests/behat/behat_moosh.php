@@ -38,13 +38,13 @@ class behat_moosh extends behat_base
 
     /**
      *
-     * @Then /^a record in table "(?P<wtable>.+)" with "(?P<rec1>.+)" = "(?P<val1>.+)" and "(?P<para>.+)" = "(?P<para_val>.+)" exist$/
+     * @Then /^a record in table "(?P<table>.+)" with "(?P<cell1>.+)" = "(?P<val1>.+)" and "(?P<cel2>.+)" = "(?P<val2>.+)" exist$/
      */
-    public function moosh_course_with_parameter_exist($wtable, $rec1, $val1, $para, $para_val){
+    public function moosh_course_with_parameter_exist($table, $cell1, $val1, $cell2, $val2){
 
         global $DB;
-        if(!($DB->record_exists($wtable, array($rec1 => $val1, $para => $para_val)))){
-            throw new ExpectationException("Failure! $rec1, $val1, $para, $para_val", $this->getSession());
+        if(!($DB->record_exists($table, array($cell1 => $val1, $cell2=> $val2)))){
+            throw new ExpectationException("Failure! record with parameter $cell1 = $val1 and $cell2 = $val2 does not exist", $this->getSession());
         }
     }
 
@@ -68,18 +68,18 @@ class behat_moosh extends behat_base
      *
      * @Then /^there are "(\d+)" "(?P<shortname>.+)" courses added to database$/
      */
-    public function moosh_command_cout_how_many_are_added($val, $shortname)
+    public function moosh_command_cout_how_many_are_added($value, $shortname)
     {
         global $DB;
         $shortname.='%';
         $sql= "SELECT COUNT(id)
                 FROM {course}
                 WHERE shortname LIKE ?";
-        $coursecount = $DB->count_records_sql($sql, array($shortname));
-        if($coursecount==$val) {
-            echo "$shortname moosh command output\nNumber of added courses ". $val . "\n***\n";
+        $course_count = $DB->count_records_sql($sql, array($shortname));
+        if($course_count==$value) {
+            echo "$shortname moosh command output\nNumber of added courses ". $value . "\n***\n";
         }else{
-            throw new ExpectationException("Failure! $coursecount the number of rows created does not match $val.a the number added to the database", $this->getSession());
+            throw new ExpectationException("Failure! $course_count the number of rows created does not match $value.a the number added to the database", $this->getSession());
         }
     }
 
@@ -170,19 +170,19 @@ class behat_moosh extends behat_base
                     if (strpos($subcommand[$i], ":") !== false) {
                         $table_cel = explode(':', $subcommand[$i]);
 
-                        if($table_cel[0]=='username'){
-                            $temp = $table[0];
-                            $table[0]='user';
-                        }elseif($table_cel[0]=='shortname'){
-                            $temp = $table[0];
-                            $table[0] = 'course';
-                        }elseif($table_cel[0]=='category'){
-                            $temp = $table[0];
-                            $table[0] = 'course';
-                        }else{
-                            $table[0] = $temp;
+                        switch($table_cel[0]) {
+                            case 'username':
+                                $temp = $table[0];
+                                $table[0]='user';
+                                break;
+                            case 'category':
+                            case 'user':
+                                $temp = $table[0];
+                                $table[0] = 'course';
+                                break;
+                            default:
+                                $table[0] = $temp;
                         }
-
                         $id = $DB->get_field($table[0], 'id', [$table_cel[0] => $table_cel[1]], MUST_EXIST);
 
                         $patern = '/%' . $subcommand[$i] . '%/';
