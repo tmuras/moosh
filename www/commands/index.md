@@ -256,6 +256,7 @@ Example 2: Add category "mycat" under category id 6, set to visible and descript
 Example 3: Create category only once. The second run of the command with "-r" will return the ID of the existing, matching category. The same category is defined as one having the same name, idnumber, parent and description. Also there must be exactly 1 match.
 
     moosh category-create -r CategoryABC
+    moosh category-create -r CategoryABC
 
 
 <span class="anchor" id="category-delete"></span>
