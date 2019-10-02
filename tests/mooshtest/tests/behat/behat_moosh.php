@@ -163,37 +163,22 @@ class behat_moosh extends behat_base
             $subcommand = explode('%', $input);
             $subcommand_length = count($subcommand);
 
-            $table = explode('-', $subcommand[0]);
+            //$table = explode('-', $subcommand[0]);
+            //$table_name = explode('.', $subcommand);
 
-            $temp=$table[0];
+            //$temp=$table[0];
             for ($i = 0; $i < $subcommand_length; $i++) {
-                    if (strpos($subcommand[$i], ":") !== false) {
-                        $table_cel = explode(':', $subcommand[$i]);
+                if (strpos($subcommand[$i], ":") !== false) {
+                    $table_name = explode('.', $subcommand[$i]);
+                    $table_cel = explode(':', $table_name[1]);
+                    $table=$table_name[0];
 
-                        switch($table_cel[0]) {
-                            case 'username':
-                                $temp = $table[0];
-                                $table[0]='user';
-                                break;
-                            case 'category':
-                            case 'user':
-                                $temp = $table[0];
-                                $table[0] = 'course';
-                                break;
-                            case 'name':
-                                $temp = $table[0];
-                                $table[0] = 'course_categories';
-                                break;
-                            default:
-                                $table[0] = $temp;
-                        }
-                        $id = $DB->get_field($table[0], 'id', [$table_cel[0] => $table_cel[1]], MUST_EXIST);
+                    $id = $DB->get_field($table, 'id', [$table_cel[0] => $table_cel[1]], MUST_EXIST);
 
-                        $patern = '/%' . $subcommand[$i] . '%/';
-                        $output = preg_replace($patern, $id, $input);
-                        $input = $output;
-                        $table = explode('-', $subcommand[0]);
-                    }
+                    $patern = '/%' . $subcommand[$i] . '%/';
+                    $output = preg_replace($patern, $id, $input);
+                    $input = $output;
+                }
             }
             return $output;
         }else{

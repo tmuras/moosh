@@ -35,7 +35,7 @@ Feature: moosh category-list
       | Course A2i  | A2i       | A2i          | topics        | department-a2     |
       | Course B1i  | B1i       | B1i          | topics        | department-b1     |
       | Course B2i  | B2i       | B2i          | topics        | department-b2     |
-    Then moosh command "category-list Faculty" contains "faculty-a"
+    Then moosh command "category-list Faculty" contains "Faculty A"
 
   Scenario: category-list run with Faculty Department returns a List all categories with name Faculty and Department.
     Given the following "categories" exist:

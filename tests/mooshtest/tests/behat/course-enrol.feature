@@ -12,7 +12,7 @@ Feature: The command course-enrol enrol existing user to existing course.
     And the following "courses" exist:
       | fullname | shortname | category |
       | Course 1 | C1        | 0        |
-    When I run moosh "course-enrol %shortname:C1% teacher1"
+    When I run moosh "course-enrol %course.shortname:C1% teacher1"
     And I log in as "teacher1"
     And I am on "Course 1" course homepage
     And I navigate to course participants
@@ -29,7 +29,7 @@ Feature: The command course-enrol enrol existing user to existing course.
     And the following "courses" exist:
       | fullname | shortname | category |
       | Course 1 | C1        | 0        |
-    When I run moosh "course-enrol %shortname:C1% teacher1 student1"
+    When I run moosh "course-enrol %course.shortname:C1% teacher1 student1"
     And I log in as "teacher1"
     And I am on "Course 1" course homepage
     And I navigate to course participants
@@ -64,12 +64,12 @@ Feature: The command course-enrol enrol existing user to existing course.
     And the following "courses" exist:
       | fullname | shortname | category |
       | Course 1 | C1        | 0        |
-    When I run moosh "course-enrol -r teacher %shortname:C1% teacher1"
+    When I run moosh "course-enrol -r teacher %course.shortname:C1% teacher1"
     And I log in as "teacher1"
     And I am on "Course 1" course homepage
     And I follow "Participants"
     And I follow "Teacher 1"
-    Then I should not see "Teacher"
+    Then I should see "Teacher"
     
   Scenario: course-enrol run with the course id, username and role as a teacher,
   erol the user to the course as a teacher.
@@ -82,7 +82,7 @@ Feature: The command course-enrol enrol existing user to existing course.
     And the following "courses" exist:
       | fullname | shortname | category |
       | Course 1 | C1        | 0        |
-    When I run moosh "course-enrol -r teacher %shortname:C1% teacher1"
+    When I run moosh "course-enrol -r teacher %course.shortname:C1% teacher1"
     And I log in as "teacher1"
     And I am on "Course 1" course homepage
     And I navigate to course participants

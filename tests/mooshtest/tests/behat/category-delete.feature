@@ -6,6 +6,6 @@ Feature: The moosh command category-delete deletes a given category.
       | name          | idnumber   | category  |
       | Year          | year       |     0     |
       | Faculty       | faculty    |     0     |
-    When I run moosh "category-delete %name:Year%"
+    When I run moosh "category-delete %course_categories.name:Year%"
     Then moosh command "category-list" does not contain "Year"
     And moosh command "category-list" contains "Faculty"

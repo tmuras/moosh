@@ -21,6 +21,6 @@ Feature: Command course-unenrol unenroll given user from a given course.
     And I am on "Course 1" course homepage
     And I navigate to course participants
     And I should see "Student 1" in the "participants" "table"
-    When I run moosh "course-unenrol %shortname:C1% %username:student1%"
+    When I run moosh "course-unenrol %course.shortname:C1% %user.username:student1%"
     And I reload the page
     Then I should not see "Student 1" in the "participants" "table"

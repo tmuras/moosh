@@ -52,4 +52,4 @@ Feature: moosh user-list
       | user | course | role |
       | teacher1 | C1 | teacher |
       | student1 | C1 | student |
-    Then moosh command "user-list --course %shortname:C1%" contains "teacher1"
+    Then moosh command "user-list --course %course.shortname:C1%" contains "teacher1"
