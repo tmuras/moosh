@@ -12,11 +12,11 @@ Feature: The command course-enrolbyname enrol existing user to existing course.
     And the following "courses" exist:
       | fullname | shortname | category |
       | Course 1 | C1        | 0        |
-    When I run moosh "course-enrolbyname -f "Teacher" -l 1 -c C1"
-    And I log in as "teacher1"
+    When I run moosh "course-enrolbyname -f "Student" -l 1 -c C1"
+    And I log in as "student1"
     And I am on "Course 1" course homepage
     And I navigate to course participants
-    Then I should see "Teacher 1" in the "participants" "table"
+    Then I should see "Student 1" in the "participants" "table"
     And I log out
 
   Scenario: course-enrol run with the course id and two use rnames,
@@ -30,11 +30,11 @@ Feature: The command course-enrolbyname enrol existing user to existing course.
     And the following "courses" exist:
       | fullname | shortname | category |
       | Course 1 | C1        | 0        |
-    When I run moosh "course-enrolbyname -f "Teacher" -l 1 %course.shortname:C1%"
-    And I log in as "teacher1"
+    When I run moosh "course-enrolbyname -f "Student" -l 1 %course.shortname:C1%"
+    And I log in as "student1"
     And I am on "Course 1" course homepage
     And I navigate to course participants
-    Then I should see "Teacher 1" in the "participants" "table"
+    Then I should see "Student 1" in the "participants" "table"
     And I log out
 
   Scenario: course-enrol run with the course id and two use rnames,
@@ -48,11 +48,11 @@ Feature: The command course-enrolbyname enrol existing user to existing course.
     And the following "courses" exist:
       | fullname | shortname | category |
       | Course 1 | C1        | 0        |
-    When I run moosh "course-enrolbyname -l 1 -f "Teacher" %course.shortname:C1%"
-    And I log in as "teacher1"
+    When I run moosh "course-enrolbyname -l 1 -f "Student" %course.shortname:C1%"
+    And I log in as "student1"
     And I am on "Course 1" course homepage
     And I navigate to course participants
-    Then I should see "Teacher 1" in the "participants" "table"
+    Then I should see "Student 1" in the "participants" "table"
     And I log out
 
   Scenario: course-enrol run with the course id, username and role as a teacher,
@@ -66,12 +66,12 @@ Feature: The command course-enrolbyname enrol existing user to existing course.
     And the following "courses" exist:
       | fullname | shortname | category |
       | Course 1 | C1        | 0        |
-    When I run moosh "course-enrolbyname -r "teacher" -l 1 -f "Teacher" %course.shortname:C1%"
-    And I log in as "teacher1"
+    When I run moosh "course-enrolbyname -r "student" -l 1 -f "Student" %course.shortname:C1%"
+    And I log in as "student1"
     And I am on "Course 1" course homepage
     And I navigate to course participants
-    Then I should see "Teacher 1" in the "participants" "table"
-    And  I should see "Role: Teacher"
+    Then I should see "Student 1" in the "participants" "table"
+    And  I should see "Role: Student"
 
   Scenario: course-enrol run with the course id and user name,
   erol the user to the course
@@ -84,8 +84,8 @@ Feature: The command course-enrolbyname enrol existing user to existing course.
     And the following "courses" exist:
       | fullname | shortname | category |
       | Course 1 | C1        | 0        |
-    When I run moosh "course-enrolbyname -c C1 teacher1"
-    And I log in as "teacher1"
+    When I run moosh "course-enrolbyname -c C1 student1"
+    And I log in as "student1"
     And I am on "Course 1" course homepage
     And I navigate to course participants
-    Then I should see "Teacher 1" in the "participants" "table"
+    Then I should see "Student 1" in the "participants" "table"
