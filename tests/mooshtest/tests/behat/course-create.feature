@@ -15,22 +15,22 @@ Feature: You can create a second course with -r option and the same parameters
   second course was not created return command returns course
   id of the first created course
     When I run moosh "course-create -r tests1"
-    And I run moosh "course-create -r  tests1"
-    Then moosh command "course-create -r tests1" print out id "%shortname:tests1%"
-    And there are "1" "tests" courses added to database
+    And I run moosh "course-create -r tests1"
+    Then moosh command "course-create -r tests1" print out id "%course.shortname:tests1%"
+    And there are "1" "tests" record added to database
 
   Scenario: two course-create run with -r and with the different value,
   checks if two courses have been added to the database
     When I run moosh "course-create -r tests1"
     And I run moosh "course-create -r tests2"
-    Then there are "2" "tests" courses added to database
+    Then there are "2" "tests" record added to database
 
   Scenario: two course-create run with -r and with the different value,
   first and second returns a different id
     When I run moosh "course-create -r -c 1 -i 101 -F weeks -f full test2"
     And I run moosh "course-create -r -c 1 -i 102 -F weeks -f full test3"
-    Then moosh command "course-create -r -c 1 -i 101 -F weeks -f full test2" print out id "%shortname:test2%"
-    And moosh command "course-create -r -c 1 -i 102 -F weeks -f full test3" print out id "%shortname:test3%"
+    Then moosh command "course-create -r -c 1 -i 101 -F weeks -f full test2" print out id "%course.shortname:test2%"
+    And moosh command "course-create -r -c 1 -i 102 -F weeks -f full test3" print out id "%course.shortname:test3%"
 
   Scenario: course-create run with -f fulltest, created a course with fullname - fulltest
     When I run moosh "course-create -f fulltest4 test4"

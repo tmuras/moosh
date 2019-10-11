@@ -1,5 +1,15 @@
 @moosh
-Feature: moosh user-list
+Feature: With moosh user-list command we list existing users
+  Test the command with given options:
+  -h, --help        - help information
+  -n, --limit=      - display max n users
+  -i, --id          - display id only column
+  -s, --sort=       - sort by (username, email or idnumber)
+  -d, --descending  - sort in descending order
+  --course-inactive - limit to users who never accessed course provided with --course.
+  --course-role=    - limit to users with given role in a --course.
+  --course=         - select all enrolled in given course id
+
 
   Scenario: user-list run with no parameters returns a list of users.
     Given the following "users" exist:

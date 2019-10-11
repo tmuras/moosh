@@ -37,7 +37,7 @@
       | Course 2  | C2        | C2i       | topics  |    0     |    1    |
       | Course 3  | C3        | C3i       | topics  |    0     |    1    |
       | Course 4  | C4        | C4i       | topics  |    0     |    1    |
-    Then moosh command "course-list -i" contains "%shortname:C1%"
+    Then moosh command "course-list -i" contains "%course.shortname:C1%"
     And moosh command "course-list -i" does not contain "C1"
 
   Scenario: course-list run with -c option show curse list from given category.

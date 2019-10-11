@@ -36,6 +36,8 @@ use core_analytics\course;
 class behat_moosh extends behat_base
 {
 
+
+
     /**
      *
      * @Then /^a record in table "(?P<table>.+)" with "(?P<cell1>.+)" = "(?P<val1>.+)" and "(?P<cel2>.+)" = "(?P<val2>.+)" exist$/
@@ -59,14 +61,14 @@ class behat_moosh extends behat_base
         $ret = null;
         $output = exec("php /var/www/html/moosh/moosh.php $command", $output, $ret);
         if($output==$id){
-            echo "***moosh command output***\nId from created course ". $id . "\n***\n";;
+            echo "***moosh command output***\nId - ". $id . "\n***\n";;
         }else{
             throw new ExpectationException("Failure! Id $id does not match $output", $this->getSession());
         }
     }
     /**
      *
-     * @Then /^there are "(\d+)" "(?P<shortname>.+)" courses added to database$/
+     * @Then /^there are "(\d+)" "(?P<shortname>.+)" record added to database$/
      */
     public function moosh_command_cout_how_many_are_added($value, $shortname)
     {
@@ -163,10 +165,6 @@ class behat_moosh extends behat_base
             $subcommand = explode('%', $input);
             $subcommand_length = count($subcommand);
 
-            //$table = explode('-', $subcommand[0]);
-            //$table_name = explode('.', $subcommand);
-
-            //$temp=$table[0];
             for ($i = 0; $i < $subcommand_length; $i++) {
                 if (strpos($subcommand[$i], ":") !== false) {
                     $table_name = explode('.', $subcommand[$i]);
@@ -196,11 +194,17 @@ class behat_moosh extends behat_base
     {
         global $DB;
         if(strchr($input, "%")!==false) {
-            $submatch = explode('%', $input);
-            $tablematch = explode(':', $submatch[1]);
-            $courseid = $DB->get_field('course', 'id', array($tablematch[0] => $tablematch[1]), MUST_EXIST);
-            $pattern = '/(%)(\w+)(:)(\w+)(%)/';
-            $command = preg_replace($pattern, $courseid, $input);
+            $matchtab = explode('%', $input);
+
+            if(strchr($matchtab[1], ".")!==false) {
+
+                $submatch = explode('.', $matchtab[1]);
+                $tablematch = explode(':', $submatch[1]);
+                $table=$submatch[0];
+                $courseid = $DB->get_field($table, 'id', array($tablematch[0] => $tablematch[1]), MUST_EXIST);
+                $pattern = '/%' . $matchtab[1] . '%/';
+                $command = preg_replace($pattern, $courseid, $input);
+            }
             return $command;
         }else{
             $command = $input;
