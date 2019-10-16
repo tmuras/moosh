@@ -21,9 +21,9 @@ Feature: You can create a second course with -r option and the same parameters
 
   Scenario: two course-create run with -r and with the different value,
   checks if two courses have been added to the database
-    When I run moosh "course-create -r tests1"
-    And I run moosh "course-create -r tests2"
-    Then there are "2" "tests" record added to database
+    When I run moosh "course-create -r course1"
+    And I run moosh "course-create -r course2"
+    Then there are "2" "course" record added to database
 
   Scenario: two course-create run with -r and with the different value,
   first and second returns a different id

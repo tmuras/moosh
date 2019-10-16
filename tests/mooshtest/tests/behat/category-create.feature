@@ -51,7 +51,7 @@ Feature: With moosh category-create command we create categories
     And a record in table "course_categories" with "name" = "test_category4" and "parent" = "1" exist
 
   Scenario: category-create run with -i "first" test_category5
-    When I run moosh "category-create -i "first" test_category5"
+    When I run moosh "category-create -i /'first/' test_category5"
     Then moosh command "category-list" contains "first"
 
   Scenario: category-create run with -i "first" test_category5
@@ -63,7 +63,7 @@ Feature: With moosh category-create command we create categories
     And a record in table "course_categories" with "name" = "test_category5" and "idnumber" = "first" exist
 
   Scenario: category-create run with -r
-    When I run moosh "category-create -r category1"
-    And moosh command "category-list" contains "category1"
-    Then moosh command "category-create -r category1" print out id "%course_categories.name:category1%"
-    And there are "1" "%course_categories.name:category1%" record added to database
+    When I run moosh "category-create -r test1"
+    And moosh command "category-list" contains "test1"
+    Then moosh command "category-create -r test1" print out id "%course_categories.name:test1%"
+    And there are "1" "%test1%" category added to database
