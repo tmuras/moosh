@@ -1,5 +1,11 @@
 @moosh
-Feature:user-delete
+Feature:  The command user-delete delete a given user.
+  Test the command with given options:
+  OPTIONS:
+  -h, --help      - help information
+  ARGUMENTS:
+  username ...
+
 
   Scenario: user-delete run with the username teacher1 - which you want to delete
     Given the following "users" exist:

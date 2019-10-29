@@ -1,5 +1,18 @@
 @moosh
 Feature: The command course-enrolbyname enrol existing user to existing course.
+  Test the command with given options:
+  OPTIONS:
+  -h, --help              help information
+  -i, --id=               use this user id instead of user name
+  -r, --role=             role short name
+  -f, --firstname=        users firstname
+  -l, --lastname=         users lastname
+  -c, --cshortname=       course shortname
+  -S, --startdate=        any date php strtotime can parse
+  -E, --enddate=          any date php strtotime can parse, or duration in # of days
+  ARGUMENTS:
+  courseid username ...
+
 
   Scenario: course-enrol run with the course id and user name,
   erol the user to the course

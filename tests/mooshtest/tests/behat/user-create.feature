@@ -1,6 +1,22 @@
 @moosh
-Feature: Command moosh user-create create a new Moodle user provide one or more
+Feature: The command moosh user-create create a new Moodle user provide one or more
           arguments to create one or more users.
+          Test the command with given options:
+          OPTIONS:
+          -h, --help           -   help information
+          -a, --auth=          -   authentication plugin, e.g. ldap
+          -p, --password=      -   password (NONE for a blank password)
+          -e, --email=         -   email address
+          -c, --city=          -   city
+          -C, --country=       -   country
+          -f, --firstname=     -   first name
+          -l, --lastname=      -   last name
+          -i, --idnumber=      -   idnumber
+          -d, --digest=        -   mail digest type as int (0=No digest, 1=Complete, 2=Subjects)
+          ARGUMENTS:
+          username ...
+
+
 
   Scenario: user-create run with -e some@gmail.com creates a user with the e-mail address provided.
     When I run moosh "user-create -e some@gmail.com someuser"

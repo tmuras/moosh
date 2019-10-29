@@ -1,7 +1,20 @@
 @moosh
-Feature: You can create a second course with -r option and the same parameters
-  the second course should not be created
-  and a create command should return the ID of the first course created
+Feature: The command course-create create a new course.
+  You can create a second course with -r option and the same parameters
+  the second course should not be created and a create command should return the ID of the first course created
+  Test the command with given options:
+  OPTIONS:
+  -h, --help            - help information
+  -c, --category=       -  category id
+  -f, --fullname=       - full name
+  -d, --description=    - description
+  -F, --format=         - format (e.g. one of site, weeks, topics, etc.)
+  -n, --numsections=    - number of sections (i.e. of weeks, topics, etc.)
+  -i, --idnumber=       - id number
+  -v, --visible=        - visible (y or n, by default created visible)
+  -r, --reuse           - do not create new course if it a matching one already exists
+  ARGUMENTS:
+  shortname ...
 
   Scenario: two course-create run with -r and with the same value,
   checks if only one course has been added to the database

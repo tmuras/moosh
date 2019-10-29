@@ -1,5 +1,10 @@
 @moosh
-Feature:course-delate
+Feature:The command course-delete
+  Test the command with given options:
+  OPTIONS:
+  -h, --help  - help information
+  ARGUMENTS:
+  id ...
 
   Scenario: course-delete run with the course id - which you want to delete
     Given the following "courses" exist:

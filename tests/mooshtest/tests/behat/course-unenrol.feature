@@ -1,5 +1,10 @@
 @moosh
 Feature: Command course-unenrol unenroll given user from a given course.
+  Test the command with given options:
+  OPTIONS:
+  -h, --help      -   help information
+  ARGUMENTS:
+  courseid userid ...
 
 
   Scenario: Command course-unenrol run with user and course id,

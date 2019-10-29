@@ -1,5 +1,13 @@
 @moosh
-Feature: course-config-set with this command you can chane for example a shornam for a given course
+Feature: The command course-config-set, with this command you can chane for example a shornam for a given course
+  Test the command with given options:
+  OPTIONS:
+  -h, --help  - help information
+  ARGUMENTS:
+  course courseid setting value
+  Or...
+  category categoryid[all] setting value
+
 
   Scenario: course-config-set run with course %shortname:CR1% shortname course_rename,
             the shorname will change from CR1 to course_rename

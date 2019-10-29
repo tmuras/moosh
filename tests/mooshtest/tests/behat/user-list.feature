@@ -1,5 +1,5 @@
 @moosh
-Feature: With moosh user-list command we list existing users
+Feature: The command user-list list existing users
   Test the command with given options:
   -h, --help        - help information
   -n, --limit=      - display max n users

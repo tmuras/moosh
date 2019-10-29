@@ -1,5 +1,16 @@
 @moosh
 Feature: The command course-enrol enrol existing user to existing course.
+  Test the command with given options:
+  OPTIONS:
+  -h, --help           -   help information
+  -i, --id             -   use numeric IDs instead of user name(s)
+  -s, --shortname      -   use course short name instead of course ID as first argument
+  -r, --role=          -   role short name
+  -S, --startdate=     -   any date php strtotime can parse
+  -E, --enddate=        -  any date php strtotime can parse, or duration in # of days
+  ARGUMENTS:
+  courseid username ...
+
 
   Scenario: course-enrol run with the course id and user name,
               erol the user to the course
@@ -17,6 +28,7 @@ Feature: The command course-enrol enrol existing user to existing course.
     And I am on "Course 1" course homepage
     And I navigate to course participants
     Then I should see "Teacher 1" in the "participants" "table"
+
 
   Scenario: course-enrol run with the course id and two use rnames,
               erol two user to the course
@@ -36,6 +48,7 @@ Feature: The command course-enrol enrol existing user to existing course.
     Then I should see "Teacher 1" in the "participants" "table"
     And I should see "Student 1" in the "participants" "table"
 
+
   Scenario: course-enrol run with the course name and user name,
               erol the user to the course
     Given the following "users" exist:
@@ -52,6 +65,7 @@ Feature: The command course-enrol enrol existing user to existing course.
     And I am on "Course 1" course homepage
     And I navigate to course participants
     Then I should see "Teacher 1" in the "participants" "table"
+
 
   Scenario: course-enrol run with the course id, username and role as a teacher,
               erol the user to the course as a teacher.
@@ -70,7 +84,8 @@ Feature: The command course-enrol enrol existing user to existing course.
     And I follow "Participants"
     And I follow "Teacher 1"
     Then I should see "Teacher"
-    
+
+
   Scenario: course-enrol run with the course id, username and role as a teacher,
   erol the user to the course as a teacher.
     Given the following "users" exist:
@@ -87,4 +102,5 @@ Feature: The command course-enrol enrol existing user to existing course.
     And I am on "Course 1" course homepage
     And I navigate to course participants
     Then I should see "Teacher 1" in the "participants" "table"
+    And I follow "Teacher 1"
     And  I should see "Role: Teacher"

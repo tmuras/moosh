@@ -1,5 +1,12 @@
 @moosh
-Feature: moosh category-list
+Feature: The command category-list
+  Test the command with given options:
+  OPTIONS:
+  -h, --help        -   help information
+  ARGUMENTS:
+  search ...
+
+
 
   Scenario: category-list run with no parameters returns a list of categories.
     Given the following "categories" exist:
