@@ -74,7 +74,189 @@
 
           <div class="col-xs-12 col-sm-9">
                <div class="">
-                    <h1>Vagrant</h1>
+                    <h1>Behat testing with docker</h1>
+
+<p>The idea is to use Moodle Behat integration to test moosh functionality.
+To run Behat tests, Moodle plugin is needed so a <a href="https://github.com/tmuras/moosh/tree/master/tests/mooshtest">local plugin mooshtest</a> was created.</p>
+
+<p>It runs external moosh command with</p>
+
+<pre><code>And I run moosh...
+</code></pre>
+
+<p>And can check the output of the moosh command with</p>
+
+<pre><code>Then moosh command "..." contains "..."
+</code></pre>
+
+<p>See <a href="https://github.com/tmuras/moosh/tree/master/tests/mooshtest/tests/behat">existing feature files</a> for examples.</p>
+
+<p>Few hacks are needed in order to run the testing like that. Normally when Moodle runs behat tests, it is in "behat mode".
+It uses a copy of DB and data (by default with a b_ prefix). If we run external command (moosh), it bootstrap Moodle in "normal mode".
+Below are the instructions on how to set up mooshtest local plugin + vanilla Moodle 3.7 + moosh.</p>
+
+<h4>Do the following steps to install and run moosh tests:</h4>
+
+<p>Create new folder:</p>
+
+<pre><code>mkdir ~/moosh-testing 
+</code></pre>
+
+<p>Enter into the folder:</p>
+
+<pre><code>cd ~/moosh-testing
+</code></pre>
+
+<p>Clone Moodle HQ docker repository and Moodle code into  ~/moosh-testing:</p>
+
+<pre><code>git clone https://github.com/moodlehq/moodle-docker.git  
+git clone -b MOODLE_37_STABLE git://git.moodle.org/moodle.git
+</code></pre>
+
+<p>Go into the moodle directory and download the moosh code:</p>
+
+<pre><code>cd ~/moosh-testing/moodle
+git clone git://github.com/tmuras/moosh.git
+</code></pre>
+
+<p>Go into ~/moosh-testing/moodle/moosh and install moosh dependencies:</p>
+
+<pre><code>cd ~/moosh-testing/moodle/moosh
+composer install
+</code></pre>
+
+<p>In the moodle directory, <strong>move</strong> tests from ~/moodle/moosh/tests/mooshtest into ~/moodle/local:</p>
+
+<pre><code>cd  ~/moosh-testing/moodle
+mv moosh/tests/mooshtest local
+</code></pre>
+
+<p>Initialize environment for behat:</p>
+
+<pre><code>export MOODLE_DOCKER_WWWROOT=~/moosh-testing/moodle
+export MOODLE_DOCKER_DB=mysql
+</code></pre>
+
+<p>copy template file as config to moodle:</p>
+
+<pre><code>cd ~/moosh-testing/moodle-docker
+cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
+</code></pre>
+
+<p>Run Docker container:</p>
+
+<pre><code>bin/moodle-docker-compose up -d
+</code></pre>
+
+<p>Disable Moodle check for the DB prefix. In ~/moosh-testing/moodle/lib/behat/lib.php, comment out those 2 lines:</p>
+
+<pre><code>//behat_error(BEHAT_EXITCODE_CONFIG,
+//'$CFG-&gt;behat_prefix in config.php must be different from $CFG-&gt;prefix');
+</code></pre>
+
+<p>Edit ~/moosh-testing/moodle/config.php directory and change:</p>
+
+<pre><code>$CFG-&gt;prefix = 'm_';
+</code></pre>
+
+<p>To</p>
+
+<pre><code>$CFG-&gt;prefix = 'b_';
+</code></pre>
+
+<p>Get into the web container:</p>
+
+<pre><code>cd ~/moosh-testing/moodle-docker
+bin/moodle-docker-compose exec webserver bash
+</code></pre>
+
+<p>In your console you should be logged in as root (you should see something like this root@b5ba7a659e83:/var/www/html#), run the following commands:</p>
+
+<pre><code>apt-get update
+apt-get install sudo
+chown -R www-data /var/www
+sudo -u www-data -E -H bash
+</code></pre>
+
+<p>Then you should be logged in as www-data (and see something like this www-data@b5ba7a659e83:~/html$)</p>
+
+<p>Run then:</p>
+
+<pre><code>cd /var/www/html
+php admin/tool/behat/cli/init.php
+</code></pre>
+
+<p>At the end of the installation, it should show local_mooshtest being installed:</p>
+
+<p>-->local_mooshtest</p>
+
+<p>++ Success ++</p>
+
+<hr />
+
+<p>When you get warning like this one:</p>
+
+<p>PHP Warning:  PHP Startup: Unable to load dynamic library '/usr/local/lib/php/extensions/no-debug-non-zts-20160303/oci8.so' - libmql1.so: cannot open shared object file: No such file or directory in Unknown on line 0</p>
+
+<p>Run this command:</p>
+
+<pre><code>export LD_LIBRARY_PATH=/usr/local/instantclient_12_1/
+</code></pre>
+
+<p>Now you can run any moosh test with command:</p>
+
+<pre><code>php admin/tool/behat/cli/run.php --format pretty --tags=@moosh
+</code></pre>
+
+<p>Or test any command:</p>
+
+<pre><code>moosh/moosh.php moosh-command
+</code></pre>
+
+<p>Example:</p>
+
+<pre><code>moosh/moosh.php course-list
+</code></pre>
+
+<h4>Exit, stop and remove container:</h4>
+
+<p>To exit from the interactive container, type:</p>
+
+<pre><code>exit    
+</code></pre>
+
+<p>To stop the container:</p>
+
+<pre><code>bin/moodle-docker-compose stop
+</code></pre>
+
+<p>To stop and remove te container:</p>
+
+<pre><code>bin/moodle-docker-compose down
+</code></pre>
+
+<hr />
+
+<h4>Quick steps to rerun the tests:</h4>
+
+<pre><code>export MOODLE_DOCKER_WWWROOT=~/moosh-testing/moodle
+export MOODLE_DOCKER_DB=mysql
+
+cd $MOODLE_DOCKER_WWWROOT
+bin/moodle-docker-compose up -d
+bin/moodle-docker-compose exec webserver bash
+
+apt-get update
+apt-get install sudo
+
+chown -R www-data /var/www
+sudo -u www-data -E -H bash
+
+php admin/tool/behat/cli/init.php
+php admin/tool/behat/cli/run.php --format pretty --tags=@moosh
+</code></pre>
+
+<h1>Vagrant</h1>
 
 <p>moosh comes with vagrant setup, which will give you the following moosh development environment:</p>
 
@@ -235,185 +417,6 @@ php run-tests.php
 For example, to create your custom command dev-mytest that works with any Moodle version, you would put it under:</p>
 
 <pre><code>~/.moosh/Moosh/Command/Generic/Dev/MyTest.php
-</code></pre>
-
-<h1>Testing with docker</h1>
-
-<h2>Prerequisites:</h2>
-
-<p>You need to have installed:</p>
-
-<ul>
-<li>Docker</li>
-<li>Docker Compose</li>
-<li>Composer</li>
-</ul>
-
-
-<hr />
-
-<h4>Do the following steps to install and run moosh tests:</h4>
-
-<p>Create new folder:</p>
-
-<pre><code>mkdir ~/moosh-testing 
-</code></pre>
-
-<p>Enter into the folder:</p>
-
-<pre><code>cd ~/moosh-testing
-</code></pre>
-
-<p>Clone these two repositories into  ~/moosh-testing directory:</p>
-
-<pre><code>git clone https://github.com/moodlehq/moodle-docker.git  
-git clone -b MOODLE_37_STABLE git://git.moodle.org/moodle.git
-</code></pre>
-
-<p>Two new directories will appear, one is /moodle. Go into the moodle directory and download the repository:</p>
-
-<pre><code>git clone git://github.com/tmuras/moosh.git
-</code></pre>
-
-<p>Then go into ~/moosh-testing/moodle/moosh directory with the command:
-cd moosh
-And install moosh with running this command:</p>
-
-<pre><code>composer install
-</code></pre>
-
-<p>In the moodle directory, move tests from ~/moodle/moosh/tests/mooshtest into ~/moodle/local with this two commands:</p>
-
-<pre><code>cd  ~/moosh-testing/moodle
-mv moodle/moosh/tests/mooshtest moodle/local
-</code></pre>
-
-<p>Initialize behat environment. Go in moodle-docker directory:</p>
-
-<pre><code>cd ~/moosh-testing/moodle-docker
-</code></pre>
-
-<p>And run commands:</p>
-
-<pre><code>export MOODLE_DOCKER_WWWROOT=~/moosh-testing/moodle
-export MOODLE_DOCKER_DB=mysql
-</code></pre>
-
-<p>copy template file as config to moodle:</p>
-
-<pre><code>cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
-</code></pre>
-
-<p>Run container:</p>
-
-<pre><code>bin/moodle-docker-compose up -d
-</code></pre>
-
-<p>Disable Moodle check for the DB prefix. In moodle/lib/behat/lib.php, comment out those 2 lines:</p>
-
-<pre><code>//behat_error(BEHAT_EXITCODE_CONFIG,
-//'$CFG-&gt;behat_prefix in config.php must be different from $CFG-&gt;prefix');
-</code></pre>
-
-<p>Edit config.php in /moodle directory and change:</p>
-
-<pre><code>$CFG-&gt;prefix = 'm_';
-</code></pre>
-
-<p>To</p>
-
-<pre><code>$CFG-&gt;prefix = 'b_';
-</code></pre>
-
-<p>(If you don't have permission to change it, you will need change the mode to writable.)</p>
-
-<p>Run now command:</p>
-
-<pre><code>bin/moodle-docker-compose exec webserver bash
-</code></pre>
-
-<p>In your console you should be logged in as root (you should see something like this root@b5ba7a659e83:/var/www/html#), run the following commands:</p>
-
-<pre><code>apt-get update
-apt-get install sudo
-chown -R www-data /var/www
-sudo -u www-data -E -H bash
-</code></pre>
-
-<p>Then you should be logged in as www-data (and see something like this www-data@b5ba7a659e83:~/html$)</p>
-
-<p>Run then:</p>
-
-<pre><code>php admin/tool/behat/cli/init.php
-</code></pre>
-
-<p>At the end of the installation, it should show local_mooshtest being installed:</p>
-
-<p>-->local_mooshtest</p>
-
-<p>++ Success ++</p>
-
-<hr />
-
-<p>When you get warning like this one:</p>
-
-<p>PHP Warning:  PHP Startup: Unable to load dynamic library '/usr/local/lib/php/extensions/no-debug-non-zts-20160303/oci8.so' - libmql1.so: cannot open shared object file: No such file or directory in Unknown on line 0</p>
-
-<p>Run this command:</p>
-
-<pre><code>export LD_LIBRARY_PATH=/usr/local/instantclient_12_1/
-</code></pre>
-
-<p>Now you can run any moosh test with command:</p>
-
-<pre><code>php admin/tool/behat/cli/run.php --format pretty --tags=@moosh
-</code></pre>
-
-<p>Or test any command:</p>
-
-<pre><code>moosh/moosh.php moosh-command
-</code></pre>
-
-<p>Example:</p>
-
-<pre><code>moosh/moosh.php course-list
-</code></pre>
-
-<h4>Exit, stop and remove container:</h4>
-
-<p>To exit from the interactive container, type:</p>
-
-<pre><code>exit    
-</code></pre>
-
-<p>To stop the container:</p>
-
-<pre><code>bin/moodle-docker-compose stop
-</code></pre>
-
-<p>To stop and remove te container:</p>
-
-<pre><code>bin/moodle-docker-compose down
-</code></pre>
-
-<hr />
-
-<h4>Quick steps to rerun container:</h4>
-
-<pre><code>export MOODLE_DOCKER_WWWROOT=~/moosh-testing/moodle
-export MOODLE_DOCKER_DB=mysql
-
-bin/moodle-docker-compose up -d
-bin/moodle-docker-compose exec webserver bash
-
-apt-get update
-apt-get install sudo
-
-chown -R www-data /var/www
-sudo -u www-data -E -H bash
-
-php admin/tool/behat/cli/init.php
-php admin/tool/behat/cli/run.php --format pretty --tags=@moosh
 </code></pre>
 
                </div>

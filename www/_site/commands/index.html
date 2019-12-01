@@ -341,6 +341,12 @@ moosh block-manage show calendar
 <pre><code>moosh category-create -p 6 -v 1 -d "My category" mycat
 </code></pre>
 
+<p>Example 3: Create category only once. The second run of the command with "-r" will return the ID of the existing, matching category. The same category is defined as one having the same name, idnumber, parent and description. Also there must be exactly 1 match.</p>
+
+<pre><code>moosh category-create -r CategoryABC
+moosh category-create -r CategoryABC
+</code></pre>
+
 <p><span class="anchor" id="category-delete"></span></p>
 
 <h2><a class="command-name">category-delete</a></h2>
