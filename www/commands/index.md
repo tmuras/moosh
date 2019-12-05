@@ -155,16 +155,6 @@ CREATE TABLE perflog (
 );
 </code></pre>
 
-<span class="anchor" id="assign-dupe"></span>
-<a class="command-name">assign-dupe</a>
----------------
-
-Check existence of same string in possibly multiple assignment submissions, reporting unix time created and modified, and first and last name.
-
-Example:
-
-    moosh assign-dupe -a 613 -f onlinetext -d 'suspicious string'
-
 <span class="anchor" id="audit-passwords"></span>
 <a class="command-name">audit-passwords</a>
 ---------------
