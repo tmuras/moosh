@@ -155,6 +155,16 @@ CREATE TABLE perflog (
 );
 </code></pre>
 
+<span class="anchor" id="assign-dupe"></span>
+<a class="command-name">assign-dupe</a>
+---------------
+
+Check existence of same string in possibly multiple assignment submissions, reporting unix time created and modified, and first and last name.
+
+Example:
+
+    moosh assign-dupe -a 613 -f onlinetext -d 'suspicious string'
+
 <span class="anchor" id="audit-passwords"></span>
 <a class="command-name">audit-passwords</a>
 ---------------
@@ -1153,6 +1163,16 @@ Example:
 
     moosh gradecategory-list --hidden=yes --empty=yes --fields=id,parent,fullname courseid=26
 
+<span class="anchor" id="gradeitem-create"></span>
+<a class="command-name">gradeitem-create</a>
+---------------
+
+Creates grade items, with command-line options and courseid, gradecategoryid arguments.
+
+Example:
+
+    moosh gradeitem-create --itemname=Boost --grademax=3 --calculation='=max(3, [[point]]' -o '--aggregationcoef=1' 37 527
+
 <span class="anchor" id="gradeitem-list"></span>
 <a class="command-name">gradeitem-list</a>
 ---------------
@@ -1232,7 +1252,6 @@ Example:
 
     moosh grouping-create --description "grouping description" --id "grouping idnumber" groupingname courseid
 
-
 <span class="anchor" id="group-assigngrouping"></span>
 <a class="command-name">group-assigngrouping</a>
 -------------
@@ -1242,7 +1261,6 @@ Add a group to a grouping.
 Example:
 
     moosh group-assigngrouping -G groupingid groupid1 [groupid2] ...
-
 
 <span class="anchor" id="info"></span>
 <a class="command-name">info</a>
