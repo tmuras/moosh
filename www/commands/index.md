@@ -1171,7 +1171,7 @@ Creates grade items, with command-line options and courseid, gradecategoryid arg
 
 Example:
 
-    moosh gradeitem-create --itemname=Boost --grademax=3 --calculation='=max(3, [[point]]' -o '--aggregationcoef=1' 37 527
+    moosh gradeitem-create --itemname=Boost --grademax=3 --calculation='=max(3, ##gi5075##)' -o '--aggregationcoef=1' 37 527
 
 <span class="anchor" id="gradeitem-list"></span>
 <a class="command-name">gradeitem-list</a>
