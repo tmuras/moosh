@@ -58,6 +58,20 @@ if ($app_options->has('moodle-path')) {
     $top_dir = find_top_moodle_dir($cwd);
 }
 
+if (file_exists($top_dir . '/lib/clilib.php')) {
+    require_once ($top_dir . '/lib/clilib.php');
+} else {
+    function cli_problem($text) {
+        fwrite(STDERR, $text . "\n");
+    }
+
+    function cli_error($text, $errorcode = 1) {
+        fwrite(STDERR, $text);
+        fwrite(STDERR, "\n");
+        die($errorcode);
+    }
+}
+
 $moodle_version = moosh_moodle_version($top_dir);
 if (isset($app_options['verbose'])) {
     echo "Moodle version detected: $moodle_version\n";
