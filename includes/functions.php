@@ -106,8 +106,10 @@ function home_dir() {
  * @param $text
  * @return void
  */
-function cli_problem($text) {
-    fwrite(STDERR, $text . "\n");
+if(!function_exists('cli_problem')) {
+    function cli_problem($text) {
+	fwrite(STDERR, $text . "\n");
+    }
 }
 
 /**
