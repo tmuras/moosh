@@ -99,7 +99,7 @@ if (!$parser->isEnd()) {
 }
 
 
-if (!isset($subcommand_specs[$subcommand])) {
+if (($subcommand !== null) and !isset($subcommand_specs[$subcommand])) {
     $possible_matches = array();
     foreach ($subcommands as $k => $v) {
         if (strpos($k, $subcommand) !== false) {
