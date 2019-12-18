@@ -1163,6 +1163,26 @@ Example:
 
     moosh gradeitem-list --hidden=yes --locked=no --empty=yes --fields=id,categoryid,itemname courseid=26
 
+<span class="anchor" id="gradebook-export"></span>
+<a class="command-name">gradebook-export</a>
+---------------
+
+Exports gradebook grades for grade item(s) (comma-separated if more than 1) in specified course.
+
+Example:
+
+    moosh gradebook-export -g 0 -x 1 -a 1 -d 2 -p 0 -s comma -f txt 4755,4756 40 > grades.csv
+
+Options and defaults:
+
+* 'group id': 0
+* 'exportfeedback': 0
+* 'onlyactive': 1
+* 'displaytype (real=1, percentage=2, letter=3)': 1
+* 'decimalpoints': 2
+* 'separator (tab, comma)': comma
+* 'export format: (ods, txt, xls, xml)': txt
+
 <span class="anchor" id="gradebook-import"></span>
 <a class="command-name">gradebook-import</a>
 ---------------
