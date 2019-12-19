@@ -1,92 +1,27 @@
 _moosh() 
 {
-    local cur prev opts
+    local cur prev opts plugins
     COMPREPLY=()
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-    opts="category-export \
-         chkdatadir \
-         course-enrol \
-         report-concurrency \
-         cohort-unenrol \
-         activity-add \
-         block-manage \
-         category-create \
-         category-list \
-         category-move \
-         category-delete \
-         cohort-create \
-         cohort-enrol \
-         config-get \
-         config-plugins \
-         config-set \
-         maintenance-off \
-         maintenance-on \
-         course-backup \
-         course-bulk_unenrol_inactive_users \
-         course-config-set \
-         course-create \
-         course-delete \
-         course-enableselfenrol \
-         course-enrolbyname \
-         course-enrolleduser \
-         course-list \
-         course-reset \
-         course-restore \
-         course-restoreexisting \
-         course-unenrol \
-         gradebook-import \
-         data-stats \
-         cache-clear \
-         debug-off \
-         debug-on \
-         dev-versionbump \
-         form-add \
-         generate-availability \
-         generate-block \
-         generate-enrol \
-         generate-filemanager \
-         generate-form \
-         generate-gradeexport \
-         generate-gradereport \
-         generate-lang \
-         generate-local \
-         generate-messageoutput
-         generate-module \
-         generate-qtype \
-         generate-ws \
-         random-label \
-         file-delete \
-         file-list \
-         file-path \
-         forum-newdiscussion \
-         info \
-         info-plugins \
-         module-config \
-         module-manage \
-         module-reinstall \
-         role-create \
-         role-delete \
-         role-update-capability \
-         role-update-contextlevel \
-         sql-dump \
-         sql-run \
-         theme-info \
-         user-create \
-         user-delete \
-         user-getidbyname \
-         user-list \
-         user-mod \
-         webservice-call \
-         generate-moosh \
-         apachelog-parse \
-         perflog-parse \
-         plugins-usage \
-         download-moodle"
+    opts="$(moosh --list-commands)"
+    plugins="$(moosh plugin-list --name-only)"
 
-    if [[ ${cur} == * ]] ; then
-        COMPREPLY=( $(compgen -W "${opts}" ${cur}) )
-        return 0
-    fi
+  if [ "$COMP_CWORD" -eq 1 ]; then
+    COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+  elif [ "$COMP_CWORD" -eq 2 ]; then
+    case "$prev" in
+      plugin-install|plugin-uninstall|module-reinstall)
+    COMPREPLY=( $(compgen -W "${plugins}" -- ${cur}) )
+        ;;
+      theme-settings-import|file-upload|gradebook-import|user-import-pictures|userprofilefields-import|apache-parse-missing-files|apache-parse-perflog)
+    COMPREPLY=( $(compgen -d -- ${cur}) )
+        ;;
+      *)
+        ;;
+    esac
+  fi
+
+  return 0
 }
 complete -F _moosh moosh

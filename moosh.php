@@ -37,7 +37,7 @@ use GetOptionKit\OptionCollection;
 @error_reporting(E_ALL | E_STRICT);
 @ini_set('display_errors', '1');
 
-define('MOOSH_VERSION', '0.29');
+define('MOOSH_VERSION', '0.30');
 define('MOODLE_INTERNAL', true);
 
 $appspecs = new OptionCollection;
@@ -47,6 +47,7 @@ $appspecs->add('u|user:', "Moodle user, by default ADMIN");
 $appspecs->add('n|no-user-check', "Don't check if Moodle data is owned by the user running script");
 $appspecs->add('t|performance', "Show performance infomation including timings");
 $appspecs->add('h|help', "Show global help.");
+$appspecs->add('list-commands', "Show all possible commands");
 
 $parser = new ContinuousOptionParser($appspecs);
 $app_options = $parser->parse($argv);
@@ -55,6 +56,20 @@ if ($app_options->has('moodle-path')) {
     $top_dir = $app_options['moodle-path']->value;
 } else {
     $top_dir = find_top_moodle_dir($cwd);
+}
+
+if (file_exists($top_dir . '/lib/clilib.php')) {
+    require_once ($top_dir . '/lib/clilib.php');
+} else {
+    function cli_problem($text) {
+        fwrite(STDERR, $text . "\n");
+    }
+
+    function cli_error($text, $errorcode = 1) {
+        fwrite(STDERR, $text);
+        fwrite(STDERR, "\n");
+        die($errorcode);
+    }
 }
 
 $moodle_version = moosh_moodle_version($top_dir);
@@ -99,7 +114,7 @@ if (!$parser->isEnd()) {
 }
 
 
-if (!isset($subcommand_specs[$subcommand])) {
+if (($subcommand !== null) and !isset($subcommand_specs[$subcommand])) {
     $possible_matches = array();
     foreach ($subcommands as $k => $v) {
         if (strpos($k, $subcommand) !== false) {
@@ -114,6 +129,12 @@ if (!isset($subcommand_specs[$subcommand])) {
 }
 
 ksort($subcommands);
+
+if ($app_options->has('list-commands')) {
+    echo implode("\n", array_keys($subcommands));
+    echo "\n";
+    exit(0);
+}
 
 if ($app_options->has('help') || (!$subcommand && !$possible_matches)) {
     echo "moosh version " . MOOSH_VERSION . "\n";
@@ -181,9 +202,42 @@ if ($moodlerc) {
  *
  */
 $subcommand = $subcommands[$subcommand];
+$bootstrap_level = $subcommand->bootstrapLevel();
+if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE ) {
+ // Do nothing really.
+} else if($bootstrap_level === MooshCommand::$BOOTSTRAP_DB_ONLY) {
+    class fake_string_manager {
+        function string_exists() {
+            return false;
+        }
 
+    }
+    function get_string_manager() {
+        return new fake_string_manager();
+    }
+    // Manually retrieve the information from config.php
+    // and create $DB object.
+    $config = NULL;
+    if(!is_file('config.php')) {
+        cli_error('config.php not found.');
+    }
+    exec("php -w config.php", $config);
+    if(!isset($config[1])) {
+        cli_error("config.php does not look right to me.");
+    }
+    $config = $config[1];
+    $config = str_replace('require_once', '//require_once', $config);
+    eval($config);
+    if(!isset($CFG)) {
+        cli_error('After evaluating config.php, $CFG is not set');
+    }
+    $CFG->libdir = $moosh_dir .  "/includes/moodle/lib/";
+    $CFG->debugdeveloper = false;
 
-if ($bootstrap_level = $subcommand->bootstrapLevel()) {
+    require_once($CFG->libdir . "/setuplib.php");
+    require_once($CFG->libdir . "/dmllib.php");
+    setup_DB();
+} else {
     if ($bootstrap_level == MooshCommand::$BOOTSTRAP_FULL_NOCLI) {
         $_SERVER['REMOTE_ADDR'] = 'localhost';
         $_SERVER['SERVER_PORT'] = 80;

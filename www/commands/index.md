@@ -7,7 +7,7 @@ Commands
 ========
 <span class="anchor" id="activity-add"></span>
 <a class="command-name">activity-add</a>
-------------
+--------
 
 Adds an activity instance to the specified course. The activity is specified by it's component name
 without the plugin type prefix, so "forum", "assign" or "data" for example, and the course is specified
@@ -252,6 +252,11 @@ Example 1: Add new top level category "mycat", invisible with no description.
 Example 2: Add category "mycat" under category id 6, set to visible and description to "My category".
 
     moosh category-create -p 6 -v 1 -d "My category" mycat
+
+Example 3: Create category only once. The second run of the command with "-r" will return the ID of the existing, matching category. The same category is defined as one having the same name, idnumber, parent and description. Also there must be exactly 1 match.
+
+    moosh category-create -r CategoryABC
+    moosh category-create -r CategoryABC
 
 
 <span class="anchor" id="category-delete"></span>
@@ -1128,6 +1133,66 @@ Creates new local plugin for WS development based on moodlehq/moodle-local_wstem
     moosh generate-ws newws
 
 
+<span class="anchor" id="gradecategory-create"></span>
+<a class="command-name">gradecategory-create</a>
+---------------
+
+Creates grade category.
+
+Example:
+
+    moosh gradecategory-create -n category-name -a aggregation parent_id course_id
+
+<span class="anchor" id="gradecategory-list"></span>
+<a class="command-name">gradecategory-list</a>
+---------------
+
+Lists grade categories, with command-line options, arguments modeled on course-list's.
+
+Example:
+
+    moosh gradecategory-list --hidden=yes --empty=yes --fields=id,parent,fullname courseid=26
+
+<span class="anchor" id="gradeitem-create"></span>
+<a class="command-name">gradeitem-create</a>
+---------------
+
+Creates grade items, with command-line options and courseid, gradecategoryid arguments.
+
+Example:
+
+    moosh gradeitem-create --itemname=Boost --grademax=3 --calculation='=max(3, ##gi5075##)' -o '--aggregationcoef=1' 37 527
+
+<span class="anchor" id="gradeitem-list"></span>
+<a class="command-name">gradeitem-list</a>
+---------------
+
+Lists grade items, with command-line options, arguments modeled on course-list's.
+
+Example:
+
+    moosh gradeitem-list --hidden=yes --locked=no --empty=yes --fields=id,categoryid,itemname courseid=26
+
+<span class="anchor" id="gradebook-export"></span>
+<a class="command-name">gradebook-export</a>
+---------------
+
+Exports gradebook grades for grade item(s) (comma-separated if more than 1) in specified course.
+
+Example:
+
+    moosh gradebook-export -g 0 -x 1 -a 1 -d 2 -p 0 -s comma -f txt 4755,4756 40 > grades.csv
+
+Options and defaults:
+
+* 'group id': 0
+* 'exportfeedback': 0
+* 'onlyactive': 1
+* 'displaytype (real=1, percentage=2, letter=3)': 1
+* 'decimalpoints': 2
+* 'separator (tab, comma)': comma
+* 'export format: (ods, txt, xls, xml)': txt
+
 <span class="anchor" id="gradebook-import"></span>
 <a class="command-name">gradebook-import</a>
 ---------------
@@ -1186,6 +1251,7 @@ Example 2:
 
     moosh group-memberadd -g groupid memberid1 [memberid2] ...
 
+
 <span class="anchor" id="grouping-create"></span>
 <a class="command-name">grouping-create</a>
 -------------
@@ -1205,7 +1271,6 @@ Add a group to a grouping.
 Example:
 
     moosh group-assigngrouping -G groupingid groupid1 [groupid2] ...
-
 
 <span class="anchor" id="info"></span>
 <a class="command-name">info</a>
@@ -1314,11 +1379,15 @@ Example:
 <a class="command-name">plugin-install</a>
 ----------------
 
-Download and install plugin. Requires plugin short name, and plugin version. You can obtain those data by using `plugin-list -v' command.
+Download and install plugin. Requires plugin short name, and optional version. You can obtain those data by using `plugin-list -v' command.
 
-Example:
+Example 1: install a specific version
 
-    moosh plugin-install mod_quickmail 20160101
+    moosh plugin-install --release 20160101 mod_quickmail
+
+Example 2: install the latest release supported by current moodle version
+
+    moosh plugin-install block_checklist
 
 
 <span class="anchor" id="plugin-list"></span>

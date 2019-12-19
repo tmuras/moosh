@@ -22,7 +22,7 @@ class CourseCreate extends MooshCommand
         $this->addOption('n|numsections:', 'number of sections (i.e. of weeks, topics, etc.)');
         $this->addOption('i|idnumber:', 'id number');
         $this->addOption('v|visible:', 'visible (y or n, by default created visible)');
-        $this->addOption('r|reuse', 'reuse existing course if it is the only matching one', false);
+        $this->addOption('r|reuse', 'do not create new course if it a matching one already exists', false);
 
         $this->addArgument('shortname');
 

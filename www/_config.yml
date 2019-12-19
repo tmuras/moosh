@@ -12,3 +12,5 @@ ftp_host: 'serwer1693244.home.pl'
 ftp_dir: '/public_html/moosh-online.com'
 ftp_passive: true
 ftp_port: 21
+
+

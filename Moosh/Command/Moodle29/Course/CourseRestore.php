@@ -23,7 +23,7 @@ class CourseRestore extends MooshCommand {
         $this->addOption('d|directory', 'restore from extracted directory (1st param) under tempdir/backup');
         $this->addOption('e|existing', 'restore into existing course, id provided instead of category_id');
         $this->addOption('o|overwrite', 'restore into existing course, overwrite current content, id provided instead of category_id');
-
+        $this->addOption('i|ignore-warnings', 'continue with restore if there are pre-check warnings');
     }
 
     public function execute() {
@@ -43,7 +43,7 @@ class CourseRestore extends MooshCommand {
             $options['existing'] = true;
         }
 
-            // Check if category is OK.
+        // Check if category is OK.
         if (!$options['existing']) {
             $category = $DB->get_record('course_categories', array('id' => $this->arguments[1]), '*', MUST_EXIST);
         } else {
@@ -167,7 +167,9 @@ class CourseRestore extends MooshCommand {
             $check = $rc->get_precheck_results();
             cli_problem("Restore pre-check failed!");
             var_dump($check);
-            die();
+            if (!$options['ignore-warnings'] || array_key_exists('errors',$check)) {
+                die();
+            }
         }
 
         if ($options['existing'] && $options['overwrite']) {

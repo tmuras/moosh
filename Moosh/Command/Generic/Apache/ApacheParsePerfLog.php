@@ -13,56 +13,56 @@ use Moosh\ApacheLogParser\Parser;
 
 /**
  * The DB table:
- * CREATE TABLE perflog (
- * id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
- * timestamp datetime NOT NULL,
- * time int(10) unsigned NOT NULL,
- * url varchar(255) NOT NULL,
- * memory_peak int(10) unsigned NOT NULL,
- * includecount int(10) unsigned NOT NULL,
- * contextswithfilters int(10) unsigned NOT NULL,
- * filterscreated int(10) unsigned NOT NULL,
- * textsfiltered int(10) unsigned NOT NULL,
- * stringsfiltered int(10) unsigned NOT NULL,
- * langcountgetstring int(10) unsigned NOT NULL,
- * db_reads int(10) unsigned NOT NULL,
- * db_writes int(10) unsigned NOT NULL,
- * db_queries_time int(10) unsigned NOT NULL,
- * ticks int(10) unsigned NOT NULL,
- * user int(10) unsigned NOT NULL,
- * sys int(10) unsigned NOT NULL,
- * cuser int(10) unsigned NOT NULL,
- * csys int(10) unsigned NOT NULL,
- * serverload int(10) unsigned NOT NULL,
- * cache_mondodb_sets int(10) unsigned NOT NULL,
- * cache_mondodb_misses int(10) unsigned NOT NULL,
- * cache_mondodb_hits int(10) unsigned NOT NULL,
- * cache_static_sets int(10) unsigned NOT NULL,
- * cache_static_misses int(10) unsigned NOT NULL,
- * cache_static_hits int(10) unsigned NOT NULL,
- * cache_staticpersist_sets int(10) unsigned NOT NULL,
- * cache_staticpersist_misses int(10) unsigned NOT NULL,
- * cache_staticpersist_hits int(10) unsigned NOT NULL,
- * cache_file_sets int(10) unsigned NOT NULL,
- * cache_file_misses int(10) unsigned NOT NULL,
- * cache_file_hits int(10) unsigned NOT NULL,
- * cache_memcache_sets int(10) unsigned NOT NULL,
- * cache_memcache_misses int(10) unsigned NOT NULL,
- * cache_memcache_hits int(10) unsigned NOT NULL,
- * cache_memcached_sets int(10) unsigned NOT NULL,
- * cache_memcached_misses int(10) unsigned NOT NULL,
- * cache_memcached_hits int(10) unsigned NOT NULL,
- * cache_redis_sets int(10) unsigned NOT NULL,
- * cache_redis_misses int(10) unsigned NOT NULL,
- * cache_redis_hits int(10) unsigned NOT NULL,
- * query varchar(255) NULL,
- * script varchar(255) NULL,
- * path varchar(255) NULL,
- * type varchar(255) NULL,
- * host varchar(255) NULL,
- * PRIMARY KEY (id),
- * UNIQUE KEY uniquerow (timestamp,time,url)
- * );
+CREATE TABLE perflog (
+id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+timestamp datetime NOT NULL,
+time int(10) unsigned NOT NULL,
+url varchar(255) NOT NULL,
+memory_peak int(10) unsigned NOT NULL,
+includecount int(10) unsigned NOT NULL,
+contextswithfilters int(10) unsigned NOT NULL,
+filterscreated int(10) unsigned NOT NULL,
+textsfiltered int(10) unsigned NOT NULL,
+stringsfiltered int(10) unsigned NOT NULL,
+langcountgetstring int(10) unsigned NOT NULL,
+db_reads int(10) unsigned NOT NULL,
+db_writes int(10) unsigned NOT NULL,
+db_queries_time int(10) unsigned NOT NULL,
+ticks int(10) unsigned NOT NULL,
+user int(10) unsigned NOT NULL,
+sys int(10) unsigned NOT NULL,
+cuser int(10) unsigned NOT NULL,
+csys int(10) unsigned NOT NULL,
+serverload int(10) unsigned NOT NULL,
+cache_mondodb_sets int(10) unsigned NOT NULL,
+cache_mondodb_misses int(10) unsigned NOT NULL,
+cache_mondodb_hits int(10) unsigned NOT NULL,
+cache_static_sets int(10) unsigned NOT NULL,
+cache_static_misses int(10) unsigned NOT NULL,
+cache_static_hits int(10) unsigned NOT NULL,
+cache_staticpersist_sets int(10) unsigned NOT NULL,
+cache_staticpersist_misses int(10) unsigned NOT NULL,
+cache_staticpersist_hits int(10) unsigned NOT NULL,
+cache_file_sets int(10) unsigned NOT NULL,
+cache_file_misses int(10) unsigned NOT NULL,
+cache_file_hits int(10) unsigned NOT NULL,
+cache_memcache_sets int(10) unsigned NOT NULL,
+cache_memcache_misses int(10) unsigned NOT NULL,
+cache_memcache_hits int(10) unsigned NOT NULL,
+cache_memcached_sets int(10) unsigned NOT NULL,
+cache_memcached_misses int(10) unsigned NOT NULL,
+cache_memcached_hits int(10) unsigned NOT NULL,
+cache_redis_sets int(10) unsigned NOT NULL,
+cache_redis_misses int(10) unsigned NOT NULL,
+cache_redis_hits int(10) unsigned NOT NULL,
+query varchar(255) NULL,
+script varchar(255) NULL,
+path varchar(255) NULL,
+type varchar(255) NULL,
+host varchar(255) NULL,
+PRIMARY KEY (id),
+UNIQUE KEY uniquerow (timestamp,time,url)
+);
  * Class ParseApacheLog
  *
  * @package Moosh\Command\Generic\Dev
@@ -273,17 +273,21 @@ class ApacheParsePerfLog extends MooshCommand {
         if ($script == '/pluginfile.php' || $script == '/webservice/pluginfile.php' || $script == '/file.php' ||
                 $script == '/draftfile.php') {
             $type = 'download';
-        } else if (preg_match('/download=zip$/', $row['url']) || preg_match('/action=downloadall$/', $row['url'])) {
+        } else if (preg_match('/download=zip$/', $row['url']) ||
+                preg_match('/action=downloadall$/', $row['url']) ||
+                preg_match('|^/mod/folder/download_folder.php|', $row['url']) ||
+                preg_match('|^/course/dndupload.php|', $row['url'])
+        ) {
             $type = 'download';
         } else if (preg_match('/repository_ajax.php\?action=upload/', $row['url'])) {
             $type = 'upload';
+        } else if (preg_match('|^/backup/|', $row['url'])) {
+            $type = 'backup';
         } else if (preg_match('|course/view.php|', $row['url'])) {
             $type = 'course';
         } else {
             $type = 'script';
         }
-
-        //echo $script . ' ' . $type . "\n";
 
         unset($exploded[0]);
         $queryorpath = implode('.php', $exploded);

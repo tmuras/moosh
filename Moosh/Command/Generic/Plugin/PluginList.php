@@ -20,6 +20,7 @@ class PluginList extends MooshCommand
 
         $this->addOption('p|path:', 'path to plugins.json file', home_dir() . '/.moosh/plugins.json');
         $this->addOption('v|versions', 'display plugin versions instead of supported moodle versions');
+        $this->addOption('n|name-only', 'display only the frankenstyle name');
     }
 
     public function execute()
@@ -72,11 +73,15 @@ class PluginList extends MooshCommand
 
 
         ksort($fulllist);
-        foreach($fulllist as $k => $plugin) {
+        foreach($fulllist as $pluginname => $plugin) {
+            if($this->expandedOptions['name-only']) {
+                echo "$pluginname\n";
+                continue;
+            }
             $versions = array_keys($plugin['releases']);
             sort($versions);
 
-            echo "$k," .implode(",",$versions) . ",".$plugin['url'] ."\n";
+            echo "$pluginname," .implode(",",$versions) . ",".$plugin['url'] ."\n";
         }
     }
 
