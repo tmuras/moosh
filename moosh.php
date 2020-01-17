@@ -217,16 +217,18 @@ if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE ) {
     }
     // Manually retrieve the information from config.php
     // and create $DB object.
-    $config = NULL;
+    $config = [];
     if(!is_file('config.php')) {
         cli_error('config.php not found.');
     }
     exec("php -w config.php", $config);
-    if(!isset($config[1])) {
+    if (count($config) == 0) {
         cli_error("config.php does not look right to me.");
     }
-    $config = $config[1];
+    $config = implode("\n", $config);
+    $config = str_replace('<?php', '', $config);
     $config = str_replace('require_once', '//require_once', $config);
+
     eval($config);
     if(!isset($CFG)) {
         cli_error('After evaluating config.php, $CFG is not set');
