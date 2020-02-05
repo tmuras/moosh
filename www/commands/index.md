@@ -26,15 +26,15 @@ Example 3. Add lesson named "The first lesson" to course 2.
 
     moosh activity-add --name "The first lesson" lesson 2
     
-Example 4. Add assignment with name "Easy assignment" and idnumber "ASD123"
+Example 4. Add assignment with name "Easy assignment" and idnumber "ASD123" to course 2.
 
     moosh activity-add --name "Easy assignment" --section 2 --idnumber "ASD123" assign 2
     
-Example 5. Add quiz "more emails" with intro set to "polite orders", network address restriction set to  192.168.2.2
+Example 5. Add quiz "more emails" with intro set to "polite orders", network address restriction set to 192.168.2.2 to course 33.
 
     moosh activity-add -n 'more emails' -o="--intro=\"polite orders.\" --subnet=192.168.2.2" quiz 33
     
-Example 6. Add scorm "scorm1" with description "my intro ABC" and forcenewattempt set to yes.
+Example 6. Add scorm "scorm1" with description "my intro ABC" and forcenewattempt set to yes to course 2.
 
     moosh activity-add -n scorm1 -o '--intro=my intro ABC --forcenewattempt=1' scorm 2    
 
