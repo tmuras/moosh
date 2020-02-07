@@ -37,7 +37,7 @@ class QuestionImport extends MooshCommand
         $coursecontext = \context_course::instance($course->id);
         $coursemodule = get_coursemodule_from_instance('quiz',$quiz->id);
         $quizcontext = \context_module::instance($coursemodule->id,MUST_EXIST);
-        $contexts = new question_edit_contexts($quizcontext);
+        $contexts = new \question_edit_contexts($quizcontext);
 
         // Use existing questions category for quiz or create the defaults.
         if (!$category = $DB->get_record('question_categories',array('contextid'=>$coursecontext->id))) {
