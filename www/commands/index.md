@@ -48,6 +48,15 @@ Deletes activity with given module id.
     moosh activity-delete 2
 
 
+<span class="anchor" id="activity-move"></span>
+<a class="command-name">activity-move</a>
+---------------
+
+Moves activity with module id in the first argument to the end of its present section (if alone), to the end of the section in the \-\-section number (not id) option (if given), and before the activity with the module id in the second, optional argument (which is not respected if it conflicts with the section number option).
+
+    moosh activity-move -s 2 4576 4578
+
+
 <span class="anchor" id="admin-login"></span>
 <a class="command-name">admin-login</a>
 ---------------
