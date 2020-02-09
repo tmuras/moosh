@@ -48,6 +48,25 @@ Deletes activity with given module id.
     moosh activity-delete 2
 
 
+<span class="anchor" id="activity-config-set"></span>
+<a class="command-name">activity-config-set</a>
+---------------
+
+Follows the course-config-set pattern, updating a field in the Moodle {$module} table, (NOT {course_modules} table!), for a single activity of a given module type, or for all activities of that type (or only those in one section (optional)) in a course.
+
+Example 1: set the name of a single URL resource with instance(!) id=151
+
+    moosh activity-config-set activity 151 url name "Examinee handbook"
+
+Example 2: set introformat to markdown in all forums in a course with id=41
+
+    moosh activity-config-set course 41 forum introformat 4
+
+Example 3: set reviewrightanswer to "After quiz closes" for quizzes in section number 2 in a course with id=45
+
+    moosh activity-config-set -s 2 course 45 quiz reviewrightanswer 65552
+
+
 <span class="anchor" id="admin-login"></span>
 <a class="command-name">admin-login</a>
 ---------------
