@@ -40,8 +40,8 @@ class ActivityConfigSet extends MooshCommand
         switch ($this->arguments[0]) {
             case 'activity':
                 if(!self::setActivitySetting($modulename, $id/* activityid */,$setting,$value)){
-                	// the setting was not applied, exit with a non-zero exit code
-                	cli_error('');
+                    // the setting was not applied, exit with a non-zero exit code
+                    cli_error('');
                 }
                 break;
             case 'course':
@@ -76,9 +76,9 @@ class ActivityConfigSet extends MooshCommand
     }
 
     private function setActivitySetting($modulename,$activityid,$setting,$value) {
-        
+
         global $DB;
-        
+
         if ($DB->set_field($modulename,$setting,$value,array('id'=>$activityid))) {
             echo "OK - Set $setting='$value' ($modulename activityid={$activityid})\n";
             return true;
