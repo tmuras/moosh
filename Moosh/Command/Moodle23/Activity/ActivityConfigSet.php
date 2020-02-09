@@ -91,7 +91,7 @@ class ActivityConfigSet extends MooshCommand
 
     protected function getArgumentsHelp()
     {
-        return "\n\nARGUMENTS:\n\tactivity activityid module setting value\n\tOr...\n\tcourse courseid[all] module setting value";
+        return "\n\nARGUMENTS:\n\tactivity activityid moduletype setting value\n\tOr...\n\tcourse courseid[all] moduletype setting value";
     }
 
 }
