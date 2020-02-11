@@ -36,9 +36,10 @@ class CategoryResortCourses extends MooshCommand
     }
 
     protected function resortcourses_category($category, $sort)
-    {
-        global $CFG;
-        return core_course_category::get($category->id)->resort_courses($sort);
+    {        
+        $cat = core_course_category::get($category->id);
+        $cat->resort_categories_cleanup(true);
+        return $cat->resort_courses($sort);
     }
 
 }
