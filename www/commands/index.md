@@ -26,15 +26,15 @@ Example 3. Add lesson named "The first lesson" to course 2.
 
     moosh activity-add --name "The first lesson" lesson 2
     
-Example 4. Add assignment with name "Easy assignment" and idnumber "ASD123"
+Example 4. Add assignment with name "Easy assignment" and idnumber "ASD123" to course 2.
 
     moosh activity-add --name "Easy assignment" --section 2 --idnumber "ASD123" assign 2
     
-Example 5. Add quiz "more emails" with intro set to "polite orders", network address restriction set to  192.168.2.2
+Example 5. Add quiz "more emails" with intro set to "polite orders", network address restriction set to 192.168.2.2 to course 33.
 
     moosh activity-add -n 'more emails' -o="--intro=\"polite orders.\" --subnet=192.168.2.2" quiz 33
     
-Example 6. Add scorm "scorm1" with description "my intro ABC" and forcenewattempt set to yes.
+Example 6. Add scorm "scorm1" with description "my intro ABC" and forcenewattempt set to yes to course 2.
 
     moosh activity-add -n scorm1 -o '--intro=my intro ABC --forcenewattempt=1' scorm 2    
 
@@ -65,6 +65,15 @@ Example 2: set introformat to markdown in all forums in a course with id=41
 Example 3: set reviewrightanswer to "After quiz closes" for quizzes in section number 2 in a course with id=45
 
     moosh activity-config-set -s 2 course 45 quiz reviewrightanswer 65552
+
+
+<span class="anchor" id="activity-move"></span>
+<a class="command-name">activity-move</a>
+---------------
+
+Moves activity with module id in the first argument to the end of its present section (if alone), to the end of the section in the \-\-section number (not id) option (if given), and before the activity with the module id in the second, optional argument (which is not respected if it conflicts with the section number option).
+
+    moosh activity-move -s 2 4576 4578
 
 
 <span class="anchor" id="admin-login"></span>
