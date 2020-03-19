@@ -140,10 +140,12 @@ class ReportConcurrency extends MooshCommand {
         // Get the number of concurrent users for each period.
         $sql = "SELECT 
                   period * ( $period ) AS unixtime,
-				  online_users FROM 
+				  online_users,
+				  number_actions FROM 
 				
 				(SELECT ROUND( timecreated / ( $period ) ) AS period,
-				COUNT( DISTINCT userid ) AS online_users
+				COUNT( DISTINCT userid ) AS online_users,
+				COUNT( id ) AS number_actions
 				FROM {logstore_standard_log}
 				WHERE timecreated >= $tsutcfrom AND timecreated < $tsutcto
 				AND origin = 'web'
@@ -162,7 +164,7 @@ class ReportConcurrency extends MooshCommand {
             if (!$date) {
                 die("Invalid date for " . $v->unixtime);
             }
-            $fulldata[$v->unixtime] = ['date' => $date, 'users' => $v->online_users];
+            $fulldata[$v->unixtime] = ['date' => $date, 'users' => $v->online_users, 'actions' => $v->number_actions];
 
             if ($previoustime && $v->unixtime - $previoustime != $period) {
                 // Insert missing records - per period.
@@ -171,12 +173,11 @@ class ReportConcurrency extends MooshCommand {
                 for ($i = 1; $i <= $missing; $i++) {
                     $tempdate = date_create('@' . ($v->unixtime + $i * $period), $timezone);
                     $fulldata[$v->unixtime + $i * $period] =
-                        ['date' => $tempdate, 'users' => 0];
+                        ['date' => $tempdate, 'users' => 0, 'actions' => 0];
                 }
             }
             $previoustime = $v->unixtime;
         }
-
         $weekstats =
             new weekday_stats_calculator($options['zero-days-include'], $options['work-hours-from'], $options['work-hours-to'],
                 $options['work-days']);
@@ -187,7 +188,7 @@ class ReportConcurrency extends MooshCommand {
             //echo $row['date']->format(self::DATE_FORMAT), " - ", $row['users'], "\n";
 
             if ($options['csv']) {
-                fputcsv($csvfile, [$row['date']->format(self::DATE_FORMAT), $row['users']]);
+                fputcsv($csvfile, [$row['date']->format(self::DATE_FORMAT), $row['users'], $row['actions']]);
             }
             if ($row['users'] > $maxconcurrent['users']) {
                 $maxconcurrent['users'] = $row['users'];
