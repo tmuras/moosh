@@ -41,7 +41,7 @@ Example 6. Add scorm "scorm1" with description "my intro ABC" and forcenewattemp
 Example 7. Add quiz named "moosh test quiz" with intro set to "Here is your quiz", and activity completion options enabled to course 33
 
     moosh activity-add 'moosh test quiz' -o="--intro=\"Here is your quiz.\  --completion=2 --completionview=1 --complet
-ionusergrade=1 --completionpass=1" quiz 33
+ionusegrade=1 --completionpass=1" quiz 33
 
 
 <span class="anchor" id="activity-delete"></span>
