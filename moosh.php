@@ -22,7 +22,6 @@ if (file_exists(__DIR__ . '/Moosh')) {
 }
 
 $loader = require $moosh_dir . '/vendor/autoload.php';
-$loader->add('Moosh\\', $moosh_dir);
 $loader->add('DiffMatchPatch\\', $moosh_dir . '/vendor/yetanotherape/diff-match-patch/src');
 
 $options = array('debug' => true, 'optimizations' => 0);
@@ -231,6 +230,15 @@ if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE ) {
     require_once($CFG->libdir . "/weblib.php");
     require_once($CFG->libdir . "/setuplib.php");
     require_once($CFG->libdir . "/dmllib.php");
+
+    if(!class_exists('core_string_manager_standard')) {
+        class core_string_manager_standard {
+            function string_exists() {
+                return false;
+            }
+        }
+    }
+
     setup_DB();
 } else {
     if ($bootstrap_level == MooshCommand::$BOOTSTRAP_FULL_NOCLI) {
