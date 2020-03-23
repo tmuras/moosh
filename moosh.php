@@ -206,15 +206,6 @@ $bootstrap_level = $subcommand->bootstrapLevel();
 if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE ) {
  // Do nothing really.
 } else if($bootstrap_level === MooshCommand::$BOOTSTRAP_DB_ONLY) {
-    class fake_string_manager {
-        function string_exists() {
-            return false;
-        }
-
-    }
-    function get_string_manager() {
-        return new fake_string_manager();
-    }
     // Manually retrieve the information from config.php
     // and create $DB object.
     $config = [];
@@ -236,6 +227,8 @@ if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE ) {
     $CFG->libdir = $moosh_dir .  "/includes/moodle/lib/";
     $CFG->debugdeveloper = false;
 
+    require_once($CFG->libdir . "/moodlelib.php");
+    require_once($CFG->libdir . "/weblib.php");
     require_once($CFG->libdir . "/setuplib.php");
     require_once($CFG->libdir . "/dmllib.php");
     setup_DB();
