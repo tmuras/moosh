@@ -92,12 +92,10 @@ class PerfAnalyse extends MooshCommand
 				FROM perflog
 				WHERE timestamp > ? and timestamp < ?";
         $result = $DB->get_record_sql($sql, $fromto);
-        echo "Total number of rows: " . $result->total . "\n";
+        echo "Total number of rows between the requested dates: " . $result->total . "\n";
         echo "First entry: " . $result->first . "\n";
         echo "Last entry: " . $result->last . "\n";
         
-        $this->script_analyse("/mod/chat/chat_ajax.php", $fromdate, $todate);
-        die();
         $sql = "SELECT script, COUNT(*) AS total  FROM perflog
                 WHERE timestamp > ? and timestamp < ?
                 GROUP BY script ORDER BY total DESC";
@@ -109,16 +107,21 @@ class PerfAnalyse extends MooshCommand
 
         $top5 = array_slice($results, 0, 5);
         foreach ($top5 as $topscript) {
+            // Analyze single script in given $fromdate - $todate time frame.
             $this->script_analyse($topscript->script, $fromdate, $todate);
         }
 
-        // Analyze single script in given $fromdate - $todate time frame.
-        // min, max, avg times.
-        // Special case - /lib/ajax/service.php
-        // user + sys + DB queries = ticks
-        // 
+        // Number of requests per hour in one graph - 5 top scripts + the rest.
+
+        // Scripts by the database usage - which cause the most reads / writes.
+
+        // Scripts by the CPU usage.
+
+        // Entries that take the most time.
+
         // If there are different hosts, then create per-host statistics.
-        
+
+
         if ($options['csv']) {
             $filepath = $this->cwd . '/' . 'requests-per-second.csv';
             $csvfile = fopen($filepath, 'w');
@@ -147,8 +150,20 @@ class PerfAnalyse extends MooshCommand
 
     }
 
+    /**
+     * Analysis of a single script.
+     *
+     * @param $script
+     * @param $fromdate
+     * @param $todate
+     * @throws \Exception
+     */
     protected function script_analyse($script, $fromdate, $todate)
     {
+        // min, max, avg times.
+        // Special case - /lib/ajax/service.php
+        // user + sys + DB queries = ticks
+
         global $DB;
         $options = $this->expandedOptions;
         
@@ -175,9 +190,7 @@ class PerfAnalyse extends MooshCommand
         }
         
         $calc->get_stats();
-        if ($options['csv']) {
-            // dump 
-        }
+        return $calc;
     }
 
     /**
@@ -220,10 +233,27 @@ class script_calculator
     private $name;
     private $daily = [];
     private $hourly = [];
+    private $cwd;
     
-    public function __construct($name)
+    public function __construct($name, \DateTime $from, \DateTime $to)
     {
         $this->name = $name;
+        $this->cwd = getcwd();
+
+        // Fill in daily and hourly statistics with "0"s so we have no gaps.
+        $firstday = $from->format('z');
+        $lastday = $to->format('z');
+        for($d = $firstday; $d <= $lastday; $d++) {
+            $this->daily[$d] = ['count' => 0, 'sum' => 0, 'max' => 0, 'date' => null];
+        }
+
+        $firsthour = $from->format('Y-m-d:H');
+        $lastthour = $to->format('Y-m-d:H');
+        $time = clone $from;
+        var_dump($from);
+        $from->add("+1h");
+        var_dump($from);
+        die();
     }
 
     /**
@@ -242,7 +272,7 @@ class script_calculator
         $dayyear = $datetime->format('z');
         
         if(!isset($this->daily[$dayyear])) {
-            $this->daily[$dayyear] = ['count' => 0, 'sum' => 0, 'max' => 0, 'date' => $datetime];;
+            $this->daily[$dayyear] = ['count' => 0, 'sum' => 0, 'max' => 0, 'date' => $datetime];
         }
         $this->daily[$dayyear]['count']++;
         $this->daily[$dayyear]['sum'] += $requests;
@@ -250,7 +280,7 @@ class script_calculator
         // Each hour separately
         $hour = $datetime->format('Y-m-d:H');
         if(!isset($this->hourly[$hour])) {
-            $this->hourly[$hour] = ['count' => 0, 'sum' => 0, 'max' => 0, 'date' => $datetime];;
+            $this->hourly[$hour] = ['count' => 0, 'sum' => 0, 'max' => 0, 'date' => $datetime];
         }
         $this->hourly[$hour]['count']++;
         $this->hourly[$hour]['sum'] += $requests;
@@ -263,22 +293,35 @@ class script_calculator
         ksort($this->hourly);
         
         echo "Total number of requests: " . $this->globalcount . "\n";
-//        var_dump($this->daily);
-        var_dump($this->hourly);
+        $this->dump_csv_files();
     }
     
     public function dump_csv_files()
     {
-        $filepath = $this->cwd . '/' . $this->name . '-requests-per-day.csv';
+        $filepath = $this->cwd . '/' . str_replace('/','_',$this->name) . '-requests-per-day.csv';
         $csvfile = fopen($filepath, 'w');
         if (!$csvfile) {
             cli_error("Can't open '$filepath' for writing");
         }
-        
+        // Header.
+        fputcsv($csvfile, ['date','number of requests']);
         foreach ($this->daily as $day) {
-            fputcsv($csvfile, [$day['date']]);
+            fputcsv($csvfile, [$day['date']->format('Y-m-d'), $day['sum']]);
         }
         fclose($csvfile);
+
+        $filepath = $this->cwd . '/' . str_replace('/','_',$this->name) . '-requests-per-hour.csv';
+        $csvfile = fopen($filepath, 'w');
+        if (!$csvfile) {
+            cli_error("Can't open '$filepath' for writing");
+        }
+        // Header.
+        fputcsv($csvfile, ['date','number of requests']);
+        foreach ($this->hourly as $hour) {
+            fputcsv($csvfile, [$hour['date']->format('Y-m-d H'), $hour['sum']]);
+        }
+        fclose($csvfile);
+
     }
 }
 
