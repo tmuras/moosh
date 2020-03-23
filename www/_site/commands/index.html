@@ -100,20 +100,27 @@ See <a href="https://moodle.org/mod/forum/discuss.php?d=368091">Moodle forum pos
 <pre><code>moosh activity-add --name "The first lesson" lesson 2
 </code></pre>
 
-<p>Example 4. Add assignment with name "Easy assignment" and idnumber "ASD123"</p>
+<p>Example 4. Add assignment with name "Easy assignment" and idnumber "ASD123" to course 2.</p>
 
 <pre><code>moosh activity-add --name "Easy assignment" --section 2 --idnumber "ASD123" assign 2
 </code></pre>
 
-<p>Example 5. Add quiz "more emails" with intro set to "polite orders", network address restriction set to  192.168.2.2</p>
+<p>Example 5. Add quiz "more emails" with intro set to "polite orders", network address restriction set to 192.168.2.2 to course 33.</p>
 
 <pre><code>moosh activity-add -n 'more emails' -o="--intro=\"polite orders.\" --subnet=192.168.2.2" quiz 33
 </code></pre>
 
-<p>Example 6. Add scorm "scorm1" with description "my intro ABC" and forcenewattempt set to yes.</p>
+<p>Example 6. Add scorm "scorm1" with description "my intro ABC" and forcenewattempt set to yes to course 2.</p>
 
 <pre><code>moosh activity-add -n scorm1 -o '--intro=my intro ABC --forcenewattempt=1' scorm 2    
 </code></pre>
+
+<p>Example 7. Add quiz named "moosh test quiz" with intro set to "Here is your quiz", and activity completion options enabled to course 33</p>
+
+<pre><code>moosh activity-add 'moosh test quiz' -o="--intro=\"Here is your quiz.\  --completion=2 --completionview=1 --complet
+</code></pre>
+
+<p>ionusegrade=1 --completionpass=1" quiz 33</p>
 
 <p><span class="anchor" id="activity-delete"></span></p>
 
@@ -122,6 +129,36 @@ See <a href="https://moodle.org/mod/forum/discuss.php?d=368091">Moodle forum pos
 <p>Deletes activity with given module id.</p>
 
 <pre><code>moosh activity-delete 2
+</code></pre>
+
+<p><span class="anchor" id="activity-config-set"></span></p>
+
+<h2><a class="command-name">activity-config-set</a></h2>
+
+<p>Follows the course-config-set pattern, updating a field in the Moodle {$module} table, (NOT {course_modules} table!), for a single activity of a given module type, or for all activities of that type (or only those in one section (optional)) in a course.</p>
+
+<p>Example 1: set the name of a single URL resource with instance(!) id=151</p>
+
+<pre><code>moosh activity-config-set activity 151 url name "Examinee handbook"
+</code></pre>
+
+<p>Example 2: set introformat to markdown in all forums in a course with id=41</p>
+
+<pre><code>moosh activity-config-set course 41 forum introformat 4
+</code></pre>
+
+<p>Example 3: set reviewrightanswer to "After quiz closes" for quizzes in section number 2 in a course with id=45</p>
+
+<pre><code>moosh activity-config-set -s 2 course 45 quiz reviewrightanswer 65552
+</code></pre>
+
+<p><span class="anchor" id="activity-move"></span></p>
+
+<h2><a class="command-name">activity-move</a></h2>
+
+<p>Moves activity with module id in the first argument to the end of its present section (if alone), to the end of the section in the --section number (not id) option (if given), and before the activity with the module id in the second, optional argument (which is not respected if it conflicts with the section number option).</p>
+
+<pre><code>moosh activity-move -s 2 4576 4578
 </code></pre>
 
 <p><span class="anchor" id="admin-login"></span></p>
