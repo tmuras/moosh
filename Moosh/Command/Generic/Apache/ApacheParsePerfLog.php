@@ -199,7 +199,7 @@ class ApacheParsePerfLog extends MooshCommand {
                     $this->parseCaches($line, 'cachestore_redis');
 
             // Analyze URL.
-            list($row['script'], $row['query'], $row['path'], $row['type']) = $this->analyzeURL($row);
+            list($row['script'], $row['query'], $row['path'], $row['type']) = ApacheParsePerfLog::analyzeURL($row['url']);
 
             // Add host information.
              if($this->expandedOptions['host']) {
@@ -250,55 +250,67 @@ class ApacheParsePerfLog extends MooshCommand {
         return array($hits, $misses, $sets);
     }
 
-    private function analyzeURL($row) {
+    /**
+     * Analyze URL - categorize and extract script name.
+     *
+     * @param $url
+     * @return array|false
+     */
+    public static function analyzeURL($url) {
         $script = '';
         $query = null;
         $path = null;
         $type = 'other';
 
-        if ($row['url'] == '<cron>') {
+        if ($url == '<cron>') {
             // Nothing to analyze here.
             return array($script, $query, $path, 'cli');
         }
 
-        // Split row on first .php
-        $exploded = explode('.php', $row['url']);
+        // Get path and query parts.
+        $urlparsed = parse_url($url);
+
+        if(!$urlparsed) {
+            return false;
+        }
+
+        $urlpath = $urlparsed['path'];
+        if(isset($urlparsed['query'])) {
+            $query = $urlparsed['query'];
+        }
+
+        // Everything until .php will be a script name.
+        // If there is no .php then we append index.php.
+        $exploded = explode('.php', $urlpath);
+
         if (count($exploded) < 2) {
-            $script = rtrim($exploded[0], '?') . 'index.php';
+            $script = rtrim($urlpath,'/') . '/' . 'index.php';
         } else {
             $script = $exploded[0] . '.php';
+            // If there was anything behind .php, then it's a path.
+            if($exploded[1]) {
+                $path = $exploded[1];
+            }
         }
 
         // Determine a type of request.
         if ($script == '/pluginfile.php' || $script == '/webservice/pluginfile.php' || $script == '/file.php' ||
                 $script == '/draftfile.php') {
             $type = 'download';
-        } else if (preg_match('/download=zip$/', $row['url']) ||
-                preg_match('/action=downloadall$/', $row['url']) ||
-                preg_match('|^/mod/folder/download_folder.php|', $row['url']) ||
-                preg_match('|^/course/dndupload.php|', $row['url'])
+        } else if (preg_match('/download=zip$/', $url) ||
+                preg_match('/action=downloadall$/', $url) ||
+                preg_match('|^/mod/folder/download_folder.php|', $url) ||
+                preg_match('|^/course/dndupload.php|', $url)
         ) {
             $type = 'download';
-        } else if (preg_match('/repository_ajax.php\?action=upload/', $row['url'])) {
+        } else if (preg_match('/repository_ajax.php\?action=upload/', $url)) {
             $type = 'upload';
-        } else if (preg_match('|^/backup/|', $row['url'])) {
+        } else if (preg_match('|^/backup/|', $url)) {
             $type = 'backup';
-        } else if (preg_match('|course/view.php|', $row['url'])) {
+        } else if (preg_match('|course/view.php|', $url)) {
             $type = 'course';
         } else {
             $type = 'script';
-        }
-
-        unset($exploded[0]);
-        $queryorpath = implode('.php', $exploded);
-        if ($queryorpath) {
-            if ($queryorpath[0] == '/') {
-                $path = $queryorpath;
-            } else if ($queryorpath[0] == '?') {
-                $query = ltrim($queryorpath, '?');
-            } else {
-                cli_problem('Invalid query or path part: ' . $queryorpath);
-            }
         }
 
         return array($script, $query, $path, $type);
