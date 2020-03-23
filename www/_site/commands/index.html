@@ -1332,6 +1332,17 @@ necessary.</p>
 <pre><code>moosh gradecategory-list --hidden=yes --empty=yes --fields=id,parent,fullname courseid=26
 </code></pre>
 
+<p><span class="anchor" id="gradeitem-create"></span></p>
+
+<h2><a class="command-name">gradeitem-create</a></h2>
+
+<p>Creates grade items, with command-line options and courseid, gradecategoryid arguments.</p>
+
+<p>Example:</p>
+
+<pre><code>moosh gradeitem-create --itemname=Boost --grademax=3 --calculation='=max(3, ##gi5075##)' -o '--aggregationcoef=1' 37 527
+</code></pre>
+
 <p><span class="anchor" id="gradeitem-list"></span></p>
 
 <h2><a class="command-name">gradeitem-list</a></h2>
@@ -1342,6 +1353,30 @@ necessary.</p>
 
 <pre><code>moosh gradeitem-list --hidden=yes --locked=no --empty=yes --fields=id,categoryid,itemname courseid=26
 </code></pre>
+
+<p><span class="anchor" id="gradebook-export"></span></p>
+
+<h2><a class="command-name">gradebook-export</a></h2>
+
+<p>Exports gradebook grades for grade item(s) (comma-separated if more than 1) in specified course.</p>
+
+<p>Example:</p>
+
+<pre><code>moosh gradebook-export -g 0 -x 1 -a 1 -d 2 -p 0 -s comma -f txt 4755,4756 40 &gt; grades.csv
+</code></pre>
+
+<p>Options and defaults:</p>
+
+<ul>
+<li>'group id': 0</li>
+<li>'exportfeedback': 0</li>
+<li>'onlyactive': 1</li>
+<li>'displaytype (real=1, percentage=2, letter=3)': 1</li>
+<li>'decimalpoints': 2</li>
+<li>'separator (tab, comma)': comma</li>
+<li>'export format: (ods, txt, xls, xml)': txt</li>
+</ul>
+
 
 <p><span class="anchor" id="gradebook-import"></span></p>
 
@@ -1545,11 +1580,16 @@ moosh module-reinstall mod_book
 
 <h2><a class="command-name">plugin-install</a></h2>
 
-<p>Download and install plugin. Requires plugin short name, and plugin version. You can obtain those data by using `plugin-list -v' command.</p>
+<p>Download and install plugin. Requires plugin short name, and optional version. You can obtain those data by using `plugin-list -v' command.</p>
 
-<p>Example:</p>
+<p>Example 1: install a specific version</p>
 
-<pre><code>moosh plugin-install mod_quickmail 20160101
+<pre><code>moosh plugin-install --release 20160101 mod_quickmail
+</code></pre>
+
+<p>Example 2: install the latest release supported by current moodle version</p>
+
+<pre><code>moosh plugin-install block_checklist
 </code></pre>
 
 <p><span class="anchor" id="plugin-list"></span></p>
