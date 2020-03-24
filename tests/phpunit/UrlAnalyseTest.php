@@ -4,7 +4,7 @@ use Moosh\Command\Generic\Apache\ApacheParsePerfLog;
 use PHPUnit\Framework\TestCase;
 
 
-final class EmailTest extends TestCase
+final class UrlAnalyseTest extends TestCase
 {
     public function testUrlWithScriptAndQuery(): void
     {
