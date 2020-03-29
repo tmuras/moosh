@@ -24,11 +24,24 @@
       .fa-check {
 	color: #2ECC40;
       }
-      .anchor {
-        display: block;
-        height: 20px;
-        margin-top: 20px;
-        visibility: hidden;
+
+      a[name] + h2 {
+        padding-top: 4rem; // Prevent navbar hiding heading when linking to a #command-name
+      }
+
+      .bs-sidebar {
+        position: static;
+      }
+
+      @media (min-width: 769px) {
+        img.book.above-index {
+          max-height: calc(100vh - 50rem);
+        }
+
+        .bs-sidebar {
+          position: fixed;
+          max-width: 25%;
+        }
       }
     </style>
 
@@ -67,17 +80,18 @@
 
     <div class="container">
 
-<div class="container">
 
      <div class="row row-offcanvas row-offcanvas-right">
 
 
           <div class="col-xs-12 col-sm-9">
                <div class="">
-                    <h1>FAQ</h1>
+                    <a name="FAQ"></a>
+<h1>FAQ</h1>
 
 <p><span class="anchor" id="windows"></span></p>
 
+<a name="Does.it.run.on.Windows."></a>
 <h2>Does it run on Windows?</h2>
 
 <p>To quote <a href="https://moodle.org/mod/forum/discuss.php?d=257341#p1131033">Marcus</a>:</p>
@@ -103,6 +117,7 @@ and if you really need to run it on Windows, I suggest Cygwin.</p>
 
 <p><span class="anchor" id="permissions"></span></p>
 
+<a name="As.which.user.should.moosh.be.run..What.s.the.story.with.permission.s.check."></a>
 <h2>As which user should moosh be run? What's the story with permission's check?</h2>
 
 <p>The permissions are very important and incorrect use of them may break your Moodle installation.</p>
@@ -135,11 +150,10 @@ For example:</p>
                </div>
           </div>
 
-          <div class="col-md-3">
+          <div class="col-sm-3">
                <div class="bs-sidebar hidden-print">
                          <p>Moodle development book:</p>
-                         <a href="https://leanpub.com/moodle"><img src="/images/book.png" /></a>
-
+                          <a href="https://leanpub.com/moodle"><img class="img-responsive book" src="/images/book.jpg" /></a>
                </div>
           </div>
      </div>

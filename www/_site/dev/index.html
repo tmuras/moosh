@@ -24,11 +24,24 @@
       .fa-check {
 	color: #2ECC40;
       }
-      .anchor {
-        display: block;
-        height: 20px;
-        margin-top: 20px;
-        visibility: hidden;
+
+      a[name] + h2 {
+        padding-top: 4rem; // Prevent navbar hiding heading when linking to a #command-name
+      }
+
+      .bs-sidebar {
+        position: static;
+      }
+
+      @media (min-width: 769px) {
+        img.book.above-index {
+          max-height: calc(100vh - 50rem);
+        }
+
+        .bs-sidebar {
+          position: fixed;
+          max-width: 25%;
+        }
       }
     </style>
 
@@ -67,14 +80,14 @@
 
     <div class="container">
 
-<div class="container">
 
      <div class="row row-offcanvas row-offcanvas-right">
 
 
           <div class="col-xs-12 col-sm-9">
                <div class="">
-                    <h1>Behat testing with docker</h1>
+                    <a name="Behat.testing.with.docker"></a>
+<h1>Behat testing with docker</h1>
 
 <p>The idea is to use Moodle Behat integration to test moosh functionality.
 To run Behat tests, Moodle plugin is needed so a <a href="https://github.com/tmuras/moosh/tree/master/tests/mooshtest">local plugin mooshtest</a> was created.</p>
@@ -95,6 +108,7 @@ To run Behat tests, Moodle plugin is needed so a <a href="https://github.com/tmu
 It uses a copy of DB and data (by default with a b_ prefix). If we run external command (moosh), it bootstrap Moodle in "normal mode".
 Below are the instructions on how to set up mooshtest local plugin + vanilla Moodle 3.7 + moosh.</p>
 
+<a name="Do.the.following.steps.to.install.and.run.moosh.tests:"></a>
 <h4>Do the following steps to install and run moosh tests:</h4>
 
 <p>Create new folder:</p>
@@ -218,6 +232,7 @@ php admin/tool/behat/cli/init.php
 <pre><code>moosh/moosh.php course-list
 </code></pre>
 
+<a name="Exit..stop.and.remove.container:"></a>
 <h4>Exit, stop and remove container:</h4>
 
 <p>To exit from the interactive container, type:</p>
@@ -237,6 +252,7 @@ php admin/tool/behat/cli/init.php
 
 <hr />
 
+<a name="Quick.steps.to.rerun.the.tests:"></a>
 <h4>Quick steps to rerun the tests:</h4>
 
 <pre><code>export MOODLE_DOCKER_WWWROOT=~/moosh-testing/moodle
@@ -256,6 +272,7 @@ php admin/tool/behat/cli/init.php
 php admin/tool/behat/cli/run.php --format pretty --tags=@moosh
 </code></pre>
 
+<a name="Vagrant"></a>
 <h1>Vagrant</h1>
 
 <p>moosh comes with vagrant setup, which will give you the following moosh development environment:</p>
@@ -298,6 +315,7 @@ php admin/tool/behat/cli/run.php --format pretty --tags=@moosh
 <p>So - no excuses now - use pre-configured environment, develop some awesome moosh commands and send
  them to me!</p>
 
+<a name="Performance.information"></a>
 <h1>Performance information</h1>
 
 <p>You can use global option -t (or long version --performance) to show extra performance information collected while the command runs:</p>
@@ -316,6 +334,7 @@ Memory peak: 43679224/45088768  (41.66 MB/43.00 MB)
 *******************************
 </code></pre>
 
+<a name="Functional.tests"></a>
 <h1>Functional tests</h1>
 
 <p>There are no unit tests implemented for testing moosh at the moment. Instead, a set of functional tests have been developed.
@@ -347,11 +366,13 @@ fi
 
 <p>All tests are then run with run-tests.php script, which in turn will generate status on the <a href="http://moosh-online.com/ci/">continues integration</a> page.</p>
 
+<a name="Environment"></a>
 <h2>Environment</h2>
 
 <p>Notice in the test above that test suite assumes there is Moodle instance already setup and it contains a file called "grumpycat".
 All commands will be run in a known, prepared environment with users, courses pre-created. “install moodle” means restoring Moodle DB and data from prepared snapshot.</p>
 
+<a name="Set.up..amp..run.functional.tests"></a>
 <h2>Set up &amp; run functional tests</h2>
 
 <p>Some scripts use sudo chown command to operate on Moodle data, so to let them run without prompting for password add something like this to /etc/sudoers (use visudo to edit):</p>
@@ -396,6 +417,7 @@ cp config-template.sh config26.sh
 php run-tests.php
 </code></pre>
 
+<a name="Contributing.to.moosh"></a>
 <h1>Contributing to moosh</h1>
 
 <ol>
@@ -411,6 +433,7 @@ php run-tests.php
 </ol>
 
 
+<a name="Local.commands"></a>
 <h1>Local commands</h1>
 
 <p>You can add your own, local commands to moosh by storing them in the same structure as moosh does but under ~/.moosh.
@@ -422,11 +445,10 @@ For example, to create your custom command dev-mytest that works with any Moodle
                </div>
           </div>
 
-          <div class="col-md-3">
+          <div class="col-sm-3">
                <div class="bs-sidebar hidden-print">
                          <p>Moodle development book:</p>
-                         <a href="https://leanpub.com/moodle"><img src="/images/book.png" /></a>
-
+                          <a href="https://leanpub.com/moodle"><img class="img-responsive book" src="/images/book.jpg" /></a>
                </div>
           </div>
      </div>

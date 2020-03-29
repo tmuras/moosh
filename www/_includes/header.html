@@ -24,11 +24,24 @@
       .fa-check {
 	color: #2ECC40;
       }
-      .anchor {
-        display: block;
-        height: 20px;
-        margin-top: 20px;
-        visibility: hidden;
+
+      a[name] + h2 {
+        padding-top: 4rem; // Prevent navbar hiding heading when linking to a #command-name
+      }
+
+      .bs-sidebar {
+        position: static;
+      }
+
+      @media (min-width: 769px) {
+        img.book.above-index {
+          max-height: calc(100vh - 50rem);
+        }
+
+        .bs-sidebar {
+          position: fixed;
+          max-width: 25%;
+        }
       }
     </style>
 

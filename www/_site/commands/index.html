@@ -24,11 +24,24 @@
       .fa-check {
 	color: #2ECC40;
       }
-      .anchor {
-        display: block;
-        height: 20px;
-        margin-top: 20px;
-        visibility: hidden;
+
+      a[name] + h2 {
+        padding-top: 4rem; // Prevent navbar hiding heading when linking to a #command-name
+      }
+
+      .bs-sidebar {
+        position: static;
+      }
+
+      @media (min-width: 769px) {
+        img.book.above-index {
+          max-height: calc(100vh - 50rem);
+        }
+
+        .bs-sidebar {
+          position: fixed;
+          max-width: 25%;
+        }
       }
     </style>
 
@@ -67,18 +80,18 @@
 
     <div class="container">
 
-    <div class="container">
+    <!-- <div class="container"> -->
 
       <div class="row row-offcanvas row-offcanvas-right">
 
 
           <div class="col-xs-12 col-sm-9">
-          <div class="">
-            <h1>Commands</h1>
+          <!--<div class="">-->
+            <a name="Commands"></a>
+<h1>Commands</h1>
 
-<p><span class="anchor" id="activity-add"></span></p>
-
-<h2><a class="command-name">activity-add</a></h2>
+<a name="activity-add"></a>
+<h2>activity-add</h2>
 
 <p>Adds an activity instance to the specified course. The activity is specified by it's component name
 without the plugin type prefix, so "forum", "assign" or "data" for example, and the course is specified
@@ -122,18 +135,16 @@ See <a href="https://moodle.org/mod/forum/discuss.php?d=368091">Moodle forum pos
 
 <p>ionusegrade=1 --completionpass=1" quiz 33</p>
 
-<p><span class="anchor" id="activity-delete"></span></p>
-
-<h2><a class="command-name">activity-delete</a></h2>
+<a name="activity-delete"></a>
+<h2>activity-delete</h2>
 
 <p>Deletes activity with given module id.</p>
 
 <pre><code>moosh activity-delete 2
 </code></pre>
 
-<p><span class="anchor" id="activity-config-set"></span></p>
-
-<h2><a class="command-name">activity-config-set</a></h2>
+<a name="activity-config-set"></a>
+<h2>activity-config-set</h2>
 
 <p>Follows the course-config-set pattern, updating a field in the Moodle {$module} table, (NOT {course_modules} table!), for a single activity of a given module type, or for all activities of that type (or only those in one section (optional)) in a course.</p>
 
@@ -152,27 +163,24 @@ See <a href="https://moodle.org/mod/forum/discuss.php?d=368091">Moodle forum pos
 <pre><code>moosh activity-config-set -s 2 course 45 quiz reviewrightanswer 65552
 </code></pre>
 
-<p><span class="anchor" id="activity-move"></span></p>
-
-<h2><a class="command-name">activity-move</a></h2>
+<a name="activity-move"></a>
+<h2>activity-move</h2>
 
 <p>Moves activity with module id in the first argument to the end of its present section (if alone), to the end of the section in the --section number (not id) option (if given), and before the activity with the module id in the second, optional argument (which is not respected if it conflicts with the section number option).</p>
 
 <pre><code>moosh activity-move -s 2 4576 4578
 </code></pre>
 
-<p><span class="anchor" id="admin-login"></span></p>
-
-<h2><a class="command-name">admin-login</a></h2>
+<a name="admin-login"></a>
+<h2>admin-login</h2>
 
 <p>Create a session (login) for admin user. Command returns session cookie name &amp; value.</p>
 
 <pre><code>moosh admin-login
 </code></pre>
 
-<p><span class="anchor" id="apache-parse-extendedlog"></span></p>
-
-<h2><a class="command-name">apache-parse-extendedlog</a></h2>
+<a name="apache-parse-extendedlog"></a>
+<h2>apache-parse-extendedlog</h2>
 
 <p>Parse Apache log that was configured to capture extra Moodle &amp; timings information. To configure it for your Apache server:</p>
 
@@ -191,9 +199,8 @@ See <a href="https://moodle.org/mod/forum/discuss.php?d=368091">Moodle forum pos
 <pre><code>moosh apache-parse-extendedlog /var/log/apache2/moodle.log
 </code></pre>
 
-<p><span class="anchor" id="apache-parse-missing-files"></span></p>
-
-<h2><a class="command-name">apache-parse-missing-files</a></h2>
+<a name="apache-parse-missing-files"></a>
+<h2>apache-parse-missing-files</h2>
 
 <p>Looks for missing files in apache log when moodle files are accessed and reports them</p>
 
@@ -202,9 +209,8 @@ See <a href="https://moodle.org/mod/forum/discuss.php?d=368091">Moodle forum pos
 <pre><code>moosh apache-parse-missing-files apache.log
 </code></pre>
 
-<p><span class="anchor" id="apache-parse-perflog"></span></p>
-
-<h2><a class="command-name">apache-parse-perflog</a></h2>
+<a name="apache-parse-perflog"></a>
+<h2>apache-parse-perflog</h2>
 
 <p>Parse log file, and construct query with performance log.</p>
 
@@ -273,9 +279,8 @@ CREATE TABLE perflog (
 </code></pre>
 
 
-<p><span class="anchor" id="audit-passwords"></span></p>
-
-<h2><a class="command-name">audit-passwords</a></h2>
+<a name="audit-passwords"></a>
+<h2>audit-passwords</h2>
 
 <p>Audit hashed passwords - check if any one matches top 10 000 known passwords. With -r also show password matched.
  -u <userid> will check only user with given id.</p>
@@ -290,9 +295,8 @@ CREATE TABLE perflog (
 <pre><code>moosh audit-passwords -u 17
 </code></pre>
 
-<p><span class="anchor" id="auth-list"></span></p>
-
-<h2><a class="command-name">auth-list</a></h2>
+<a name="auth-list"></a>
+<h2>auth-list</h2>
 
 <p>List authentication plugins.</p>
 
@@ -301,9 +305,8 @@ CREATE TABLE perflog (
 <pre><code>moosh auth-list
 </code></pre>
 
-<p><span class="anchor" id="auth-manage"></span></p>
-
-<h2><a class="command-name">auth-manage</a></h2>
+<a name="auth-manage"></a>
+<h2>auth-manage</h2>
 
 <p>Allows to manage auth plugins. Disable, enable, moving up and down in order.</p>
 
@@ -317,9 +320,8 @@ CREATE TABLE perflog (
 <pre><code>moosh auth-manage up email 
 </code></pre>
 
-<p><span class="anchor" id="block-add"></span></p>
-
-<h2><a class="command-name">block-add</a></h2>
+<a name="block-add"></a>
+<h2>block-add</h2>
 
 <p>Add a new block instance to any system context (front page, category, course, module ...)
 Can add a block instance to a single course or to all courses in a category
@@ -334,9 +336,8 @@ moosh block-add categorycourses 2 calendar_month course-view-* side-post 0
 moosh block-add course 32 calendar_month course-view-* side-post 0
 </code></pre>
 
-<p><span class="anchor" id="block-manage"></span></p>
-
-<h2><a class="command-name">block-manage</a></h2>
+<a name="block-manage"></a>
+<h2>block-manage</h2>
 
 <p>Show or Hide blocks, system wide (Will also delete, in the future)</p>
 
@@ -346,9 +347,31 @@ moosh block-add course 32 calendar_month course-view-* side-post 0
 moosh block-manage show calendar
 </code></pre>
 
-<p><span class="anchor" id="category-config-set"></span></p>
+<a name="cache-clear"></a>
+<h2>cache-clear</h2>
 
-<h2><a class="command-name">category-config-set</a></h2>
+<p>The same as "purge all caches" page.</p>
+
+<pre><code>moosh cache-clear
+</code></pre>
+
+<a name="cache-course-rebuild"></a>
+<h2>cache-course-rebuild</h2>
+
+<p>Rebuild course cache.</p>
+
+<p>Example 1: Rebuild cache for course with id 2</p>
+
+<pre><code>moosh cache-course-rebuild 2
+</code></pre>
+
+<p>Example 2: Rebuild cache for all the courses.</p>
+
+<pre><code>moosh cache-course-rebuild -a
+</code></pre>
+
+<a name="category-config-set"></a>
+<h2>category-config-set</h2>
 
 <p>Set category configuration. Arguments are: categoryid setting value. The setting should match one of the columns from mdl_course_categories table.</p>
 
@@ -362,9 +385,8 @@ moosh block-manage show calendar
 <pre><code>moosh category-config-set 1 description "My Description" 
 </code></pre>
 
-<p><span class="anchor" id="category-create"></span></p>
-
-<h2><a class="command-name">category-create</a></h2>
+<a name="category-create"></a>
+<h2>category-create</h2>
 
 <p>Create new category.</p>
 
@@ -384,9 +406,8 @@ moosh block-manage show calendar
 moosh category-create -r CategoryABC
 </code></pre>
 
-<p><span class="anchor" id="category-delete"></span></p>
-
-<h2><a class="command-name">category-delete</a></h2>
+<a name="category-delete"></a>
+<h2>category-delete</h2>
 
 <p>Delete category, all sub-categories and all courses inside.</p>
 
@@ -395,9 +416,8 @@ moosh category-create -r CategoryABC
 <pre><code>moosh category-delete 2
 </code></pre>
 
-<p><span class="anchor" id="category-export"></span></p>
-
-<h2><a class="command-name">category-export</a></h2>
+<a name="category-export"></a>
+<h2>category-export</h2>
 
 <p>Export category structure to XML starting from given category ID. Give 0 to export all categories.</p>
 
@@ -411,9 +431,8 @@ moosh category-create -r CategoryABC
 <pre><code>moosh category-export 3
 </code></pre>
 
-<p><span class="anchor" id="category-import"></span></p>
-
-<h2><a class="command-name">category-import</a></h2>
+<a name="category-import"></a>
+<h2>category-import</h2>
 
 <p>Imports category structure from XML.</p>
 
@@ -422,9 +441,8 @@ moosh category-create -r CategoryABC
 <pre><code>moosh category-import categor-to-import.xml
 </code></pre>
 
-<p><span class="anchor" id="category-list"></span></p>
-
-<h2><a class="command-name">category-list</a></h2>
+<a name="category-list"></a>
+<h2>category-list</h2>
 
 <p>List all categories or those that match search string(s).</p>
 
@@ -438,9 +456,8 @@ moosh category-create -r CategoryABC
 <pre><code>moosh category-list test foobar
 </code></pre>
 
-<p><span class="anchor" id="category-move"></span></p>
-
-<h2><a class="command-name">category-move</a></h2>
+<a name="category-move"></a>
+<h2>category-move</h2>
 
 <p>Move one category to another category</p>
 
@@ -454,9 +471,8 @@ moosh category-create -r CategoryABC
 <pre><code>moosh category-move 3 0
 </code></pre>
 
-<p><span class="anchor" id="chkdatadir"></span></p>
-
-<h2><a class="command-name">chkdatadir</a></h2>
+<a name="chkdatadir"></a>
+<h2>chkdatadir</h2>
 
 <p>Check if every file and directory in Moodle data is writeable for the user that runs the command.
 You usually want to run the check as the same user that runs web server.</p>
@@ -466,34 +482,8 @@ You usually want to run the check as the same user that runs web server.</p>
 <pre><code>sudo -u www-data moosh chkdatadir
 </code></pre>
 
-<p><span class="anchor" id="cache-clear"></span></p>
-
-<h2><a class="command-name">cache-clear</a></h2>
-
-<p>The same as "purge all caches" page.</p>
-
-<pre><code>moosh cache-clear
-</code></pre>
-
-<p><span class="anchor" id="cache-course-rebuild"></span></p>
-
-<h2><a class="command-name">cache-course-rebuild</a></h2>
-
-<p>Rebuild course cache.</p>
-
-<p>Example 1: Rebuild cache for course with id 2</p>
-
-<pre><code>moosh cache-course-rebuild 2
-</code></pre>
-
-<p>Example 2: Rebuild cache for all the courses.</p>
-
-<pre><code>moosh cache-course-rebuild -a
-</code></pre>
-
-<p><span class="anchor" id="code-check"></span></p>
-
-<h2><a class="command-name">code-check</a></h2>
+<a name="code-check"></a>
+<h2>code-check</h2>
 
 <p>Checks files if they are compatible with moodle code standards</p>
 
@@ -507,9 +497,8 @@ You usually want to run the check as the same user that runs web server.</p>
 <pre><code>moosh code-check -p some/path/to/dir
 </code></pre>
 
-<p><span class="anchor" id="cohort-create"></span></p>
-
-<h2><a class="command-name">cohort-create</a></h2>
+<a name="cohort-create"></a>
+<h2>cohort-create</h2>
 
 <p>Create new cohort.</p>
 
@@ -523,9 +512,8 @@ You usually want to run the check as the same user that runs web server.</p>
 <pre><code>moosh cohort-create -d "Long description" -i cohort18 -c 2 "my cohort18"
 </code></pre>
 
-<p><span class="anchor" id="cohort-enrol"></span></p>
-
-<h2><a class="command-name">cohort-enrol</a></h2>
+<a name="cohort-enrol"></a>
+<h2>cohort-enrol</h2>
 
 <p>Add user to cohort or enroll cohort to a course.</p>
 
@@ -539,9 +527,8 @@ You usually want to run the check as the same user that runs web server.</p>
 <pre><code>moosh cohort-enrol -c 4 "my cohort18"
 </code></pre>
 
-<p><span class="anchor" id="cohort-unenrol"></span></p>
-
-<h2><a class="command-name">cohort-unenrol</a></h2>
+<a name="cohort-unenrol"></a>
+<h2>cohort-unenrol</h2>
 
 <p>Remove user(s) from a cohort (by cohort id)</p>
 
@@ -550,9 +537,8 @@ You usually want to run the check as the same user that runs web server.</p>
 <pre><code>moosh cohort-unenrol 7 20 30 40
 </code></pre>
 
-<p><span class="anchor" id="config-get"></span></p>
-
-<h2><a class="command-name">config-get</a></h2>
+<a name="config-get"></a>
+<h2>config-get</h2>
 
 <p>Get config variable from config or config_plugins table. The syntax is based on get_config($plugin,$name) API function. Both arguments are optional.</p>
 
@@ -571,9 +557,8 @@ You usually want to run the check as the same user that runs web server.</p>
 <pre><code>moosh config-get core dirroot
 </code></pre>
 
-<p><span class="anchor" id="config-plugins"></span></p>
-
-<h2><a class="command-name">config-plugins</a></h2>
+<a name="config-plugins"></a>
+<h2>config-plugins</h2>
 
 <p>Shows all plugins that have at least one entry in the config_plugins table. Optionally provide an argument to match plugin name.</p>
 
@@ -587,9 +572,8 @@ You usually want to run the check as the same user that runs web server.</p>
 <pre><code>moosh config-plugins theme_
 </code></pre>
 
-<p><span class="anchor" id="config-set"></span></p>
-
-<h2><a class="command-name">config-set</a></h2>
+<a name="config-set"></a>
+<h2>config-set</h2>
 
 <p>Set config variable. The syntax of the command is based on the set_config() Moodle API:</p>
 
@@ -608,9 +592,8 @@ You usually want to run the check as the same user that runs web server.</p>
 <pre><code>moosh config-set logo http://example.com/logo.png theme_sky_high
 </code></pre>
 
-<p><span class="anchor" id="course-backup"></span></p>
-
-<h2><a class="command-name">course-backup</a></h2>
+<a name="course-backup"></a>
+<h2>course-backup</h2>
 
 <p>Backup course with provided id.</p>
 
@@ -624,9 +607,8 @@ You usually want to run the check as the same user that runs web server.</p>
 <pre><code>moosh course-backup -f /tmp/mybackup.mbz 3
 </code></pre>
 
-<p><span class="anchor" id="course-cleanup"></span></p>
-
-<h2><a class="command-name">course-cleanup</a></h2>
+<a name="course-cleanup"></a>
+<h2>course-cleanup</h2>
 
 <p>The command will to though various pieces of HTML texts contained in the given course and run purify_html() function on them. The command does not actually do any changes -
 it will only show which content could possibly be cleaned up.</p>
@@ -636,9 +618,23 @@ it will only show which content could possibly be cleaned up.</p>
 <pre><code>moosh course-cleanup 3
 </code></pre>
 
-<p><span class="anchor" id="course-create"></span></p>
+<a name="course-config-set"></a>
+<h2>course-config-set</h2>
 
-<h2><a class="command-name">course-create</a></h2>
+<p>Update a field in the Moodle {course} table for a single course, or for all courses in a category.</p>
+
+<p>Example 1: set the shortname of a single course with id=42</p>
+
+<pre><code>moosh course-config-set course 42 shortname new_shortname
+</code></pre>
+
+<p>Example 2: set the format to topics for all courses in a category with id=7</p>
+
+<pre><code>moosh course-config-set category 7 format topics
+</code></pre>
+
+<a name="course-create"></a>
+<h2>course-create</h2>
 
 <p>Create a new course(s).</p>
 
@@ -657,25 +653,8 @@ it will only show which content could possibly be cleaned up.</p>
 <pre><code>moosh course-create --category 4 --format topics --numsections 2 test
 </code></pre>
 
-<p><span class="anchor" id="course-config-set"></span></p>
-
-<h2><a class="command-name">course-config-set</a></h2>
-
-<p>Update a field in the Moodle {course} table for a single course, or for all courses in a category.</p>
-
-<p>Example 1: set the shortname of a single course with id=42</p>
-
-<pre><code>moosh course-config-set course 42 shortname new_shortname
-</code></pre>
-
-<p>Example 2: set the format to topics for all courses in a category with id=7</p>
-
-<pre><code>moosh course-config-set category 7 format topics
-</code></pre>
-
-<p><span class="anchor" id="course-delete"></span></p>
-
-<h2><a class="command-name">course-delete</a></h2>
+<a name="course-delete"></a>
+<h2>course-delete</h2>
 
 <p>Delete course(s) with ID(s) given as argument(s).</p>
 
@@ -684,9 +663,8 @@ it will only show which content could possibly be cleaned up.</p>
 <pre><code>moosh course-delete 2 3 4
 </code></pre>
 
-<p><span class="anchor" id="course-enrol"></span></p>
-
-<h2><a class="command-name">course-enrol</a></h2>
+<a name="course-enrol"></a>
+<h2>course-enrol</h2>
 
 <p>Enrol user(s) into a course id provided. First argument is a course ID, then put one or more user names.
 Use -i for providing username IDs.  Optionally add -S and -E to define start and end dates for the enrollment.</p>
@@ -711,9 +689,8 @@ Use -i for providing username IDs.  Optionally add -S and -E to define start and
 <pre><code>moosh course-enrol 21 username3 -S 2018-05-01T10:00:00 -E 30
 </code></pre>
 
-<p><span class="anchor" id="course-enrolbyname"></span></p>
-
-<h2><a class="command-name">course-enrolbyname</a></h2>
+<a name="course-enrolbyname"></a>
+<h2>course-enrolbyname</h2>
 
 <p>Is similar to course-enrol function. But it can also be used the first- and lastname of the user and the course shortname.</p>
 
@@ -722,9 +699,8 @@ Use -i for providing username IDs.  Optionally add -S and -E to define start and
 <pre><code>moosh course-enrolbyname -r editingteacher -f test42 -l user42 -c T12345
 </code></pre>
 
-<p><span class="anchor" id="course-enrolleduser"></span></p>
-
-<h2><a class="command-name">course-enrolleduser</a></h2>
+<a name="course-enrolleduser"></a>
+<h2>course-enrolleduser</h2>
 
 <p>Returns all enrolled user in a course, which have a specific role. First argument is the shortname of a role, second argument is a course ID.</p>
 
@@ -733,9 +709,8 @@ Use -i for providing username IDs.  Optionally add -S and -E to define start and
 <pre><code>moosh course-enrolleduser student 4
 </code></pre>
 
-<p><span class="anchor" id="course-enableselfenrol"></span></p>
-
-<h2><a class="command-name">course-enableselfenrol</a></h2>
+<a name="course-enableselfenrol"></a>
+<h2>course-enableselfenrol</h2>
 
 <p>Enable self enrolment on one or more courses given a list of course IDs. By default self enrolment is enabled without an enrolment key, but one can be passed as an option.</p>
 
@@ -749,9 +724,8 @@ Use -i for providing username IDs.  Optionally add -S and -E to define start and
 <pre><code>moosh course-enableselfenrol --key "an example enrolment key" 3
 </code></pre>
 
-<p><span class="anchor" id="course-list"></span></p>
-
-<h2><a class="command-name">course-list</a></h2>
+<a name="course-list"></a>
+<h2>course-list</h2>
 
 <p>Lists courses that match your search criteria. As an argument you can provide an SQL fragment,
 that is simply injected after WHERE clause when searching for courses.
@@ -775,9 +749,8 @@ There are also quite a few options that modify the behaviour - see <code>moosh c
 <pre><code>moosh course-list -c 1 -e yes
 </code></pre>
 
-<p><span class="anchor" id="course-reset"></span></p>
-
-<h2><a class="command-name">course-reset</a></h2>
+<a name="course-reset"></a>
+<h2>course-reset</h2>
 
 <p>Reset course by ID. With -s or --settings option you can provide any supported setting for the restore. The value for
  -s option is a string with each setting in format key=value separated by space. This means you'll need to quote this
@@ -858,9 +831,8 @@ There are also quite a few options that modify the behaviour - see <code>moosh c
 <pre><code>moosh course-reset -s "unenrol_users=5,6" 17
 </code></pre>
 
-<p><span class="anchor" id="course-restore"></span></p>
-
-<h2><a class="command-name">course-restore</a></h2>
+<a name="course-restore"></a>
+<h2>course-restore</h2>
 
 <p>Restore course from path/to/backup.mbz to category or existig course.</p>
 
@@ -874,9 +846,8 @@ There are also quite a few options that modify the behaviour - see <code>moosh c
 <pre><code>moosh course-restore -e backup.mbz 3
 </code></pre>
 
-<p><span class="anchor" id="course-unenrol"></span></p>
-
-<h2><a class="command-name">course-unenrol</a></h2>
+<a name="course-unenrol"></a>
+<h2>course-unenrol</h2>
 
 <p>Unerol user(s) from a course id provided. First argument is a course ID then list of users.</p>
 
@@ -885,36 +856,32 @@ There are also quite a few options that modify the behaviour - see <code>moosh c
 <pre><code>moosh course-unenrol 2 7 9 12 16
 </code></pre>
 
-<p><span class="anchor" id="data-stats"></span></p>
-
-<h2><a class="command-name">data-stats</a></h2>
+<a name="data-stats"></a>
+<h2>data-stats</h2>
 
 <p>Provides information on size of dataroot directory, dataroot/filedir subdirectory and total size of non-external files in moodle. Outpus data in json format when run using --json option.</p>
 
 <pre><code>moosh data-stats
 </code></pre>
 
-<p><span class="anchor" id="debug-off"></span></p>
-
-<h2><a class="command-name">debug-off</a></h2>
+<a name="debug-off"></a>
+<h2>debug-off</h2>
 
 <p>Turns off full debug and disables theme designer mode.</p>
 
 <pre><code>moosh debug-off
 </code></pre>
 
-<p><span class="anchor" id="debug-on"></span></p>
-
-<h2><a class="command-name">debug-on</a></h2>
+<a name="debug-on"></a>
+<h2>debug-on</h2>
 
 <p>Turns on full debug - all the options in debugging section of the settings plus enables theme designer mode.</p>
 
 <pre><code>moosh debug-on
 </code></pre>
 
-<p><span class="anchor" id="dev-versionbump"></span></p>
-
-<h2><a class="command-name">dev-versionbump</a></h2>
+<a name="dev-versionbump"></a>
+<h2>dev-versionbump</h2>
 
 <p>Increase the version in module's version.php.</p>
 
@@ -924,9 +891,8 @@ There are also quite a few options that modify the behaviour - see <code>moosh c
 moosh dev-versionbump
 </code></pre>
 
-<p><span class="anchor" id="download-moodle"></span></p>
-
-<h2><a class="command-name">download-moodle</a></h2>
+<a name="download-moodle"></a>
+<h2>download-moodle</h2>
 
 <p>Download latest Moodle version from the latest branch (default) or previous one if -v given.</p>
 
@@ -940,45 +906,40 @@ moosh dev-versionbump
 <pre><code>    moosh download-moodle -v 2.3
 </code></pre>
 
-<p><span class="anchor" id="event-fire"></span></p>
-
-<h2><a class="command-name">event-fire</a></h2>
+<a name="event-fire"></a>
+<h2>event-fire</h2>
 
 <p>Fire an event. Provide event name and JSON encoded data.</p>
 
 <pre><code>moosh event-fire report_log\\event\\report_viewed '{"contextid":1,"relateduserid":1,"other":{"groupid":1,"date":100,"modid":1,"modaction":"view","logformat":0}}' 
 </code></pre>
 
-<p><span class="anchor" id="event-list"></span></p>
-
-<h2><a class="command-name">event-list</a></h2>
+<a name="event-list"></a>
+<h2>event-list</h2>
 
 <p>List all events available in current Moodle installation.</p>
 
 <pre><code>moosh event-list
 </code></pre>
 
-<p><span class="anchor" id="file-datacheck"></span></p>
-
-<h2><a class="command-name">file-datacheck</a></h2>
+<a name="file-datacheck"></a>
+<h2>file-datacheck</h2>
 
 <p>Go through all files in Moodle data and check them for corruption. The check is to compare file's SHA to their file names.</p>
 
 <pre><code>moosh file-datacheck
 </code></pre>
 
-<p><span class="anchor" id="file-dbcheck"></span></p>
-
-<h2><a class="command-name">file-dbcheck</a></h2>
+<a name="file-dbcheck"></a>
+<h2>file-dbcheck</h2>
 
 <p>Check that all files recorder in the DB do exist in Moodle data directory.</p>
 
 <pre><code>moosh file-dbcheck
 </code></pre>
 
-<p><span class="anchor" id="file-delete"></span></p>
-
-<h2><a class="command-name">file-delete</a></h2>
+<a name="file-delete"></a>
+<h2>file-delete</h2>
 
 <p>Delete Moodle files from DB and possibly move them to trash. File IDs can be provided as arguments or on the standard input (with moosh file-delete -s).
 --flush option will remove the trashcan directory.</p>
@@ -1004,9 +965,8 @@ moosh dev-versionbump
 moosh file-delete --flush
 </code></pre>
 
-<p><span class="anchor" id="file-list"></span></p>
-
-<h2><a class="command-name">file-list</a></h2>
+<a name="file-list"></a>
+<h2>file-list</h2>
 
 <p>Search and list files from mdl_files table. The argument should be a valid SQL WHERE statement. Interesting columns of possible search criterias are:
 contextid, component, filearea, itemid, filepath, filename, userid, filesize, mimetype, status, timecreated, timemodified.</p>
@@ -1054,9 +1014,8 @@ and add -r option to remove them from the {file} DB table.</p>
 <pre><code>moosh file-list -i course=2 | moosh file-path -s -r | tar -C $(moosh config-get core dataroot) -T - -cjf files.tar.bz2
 </code></pre>
 
-<p><span class="anchor" id="file-path"></span></p>
-
-<h2><a class="command-name">file-path</a></h2>
+<a name="file-path"></a>
+<h2>file-path</h2>
 
 <p>Show full or relative path in the filesystem to Moodle file(s). Files can be identified by ID or hash (auto-detected) as arguments or on stdin (-s option).</p>
 
@@ -1075,9 +1034,8 @@ and add -r option to remove them from the {file} DB table.</p>
 <pre><code>moosh file-list -r -i 'id&gt;100 AND id&lt;200' | moosh file-path -s | sort | uniq
 </code></pre>
 
-<p><span class="anchor" id="file-upload"></span></p>
-
-<h2><a class="command-name">file-upload</a></h2>
+<a name="file-upload"></a>
+<h2>file-upload</h2>
 
 <p>Upload selected file to Moodle data. Must specify full path to filename.</p>
 
@@ -1103,9 +1061,8 @@ place in directory "drop".</p>
 <pre><code>moosh file-upload --filepath=drop --filename=myfile.txt file.txt 
 </code></pre>
 
-<p><span class="anchor" id="filter-set"></span></p>
-
-<h2><a class="command-name">filter-set</a></h2>
+<a name="filter-set"></a>
+<h2>filter-set</h2>
 
 <p>Enable/disable global filter, equivalent to admin/filters.php settings page. First argument is a filter name without filter_ prefix.
 Second argument is a state, use On = 1 , Off/but available per course = -1 , Off = -9999 .</p>
@@ -1115,9 +1072,8 @@ Second argument is a state, use On = 1 , Off/but available per course = -1 , Off
 <pre><code>moosh filter-set mediaplugin -9999 
 </code></pre>
 
-<p><span class="anchor" id="form-add"></span></p>
-
-<h2><a class="command-name">form-add</a></h2>
+<a name="form-add"></a>
+<h2>form-add</h2>
 
 <p>Adds an element to the form. If there is a form in your current working directory, that you have recently worked on with
 moosh (e.g. you have generated it with moosh generate-form), moosh will inject the code into that file. If moosh is not
@@ -1136,9 +1092,8 @@ moosh (e.g. you have generated it with moosh generate-form), moosh will inject t
 <pre><code>moosh form-add advcheckbox checkboxid
 </code></pre>
 
-<p><span class="anchor" id="forum-newdiscussion"></span></p>
-
-<h2><a class="command-name">forum-newdiscussion</a></h2>
+<a name="forum-newdiscussion"></a>
+<h2>forum-newdiscussion</h2>
 
 <p>Adds a new discussion to an existing forum. You should provide a course id, a forum id
 and an user id in this order. If no name or message is specified it defaults to the data
@@ -1150,18 +1105,16 @@ generator one.</p>
 moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 7 2
 </code></pre>
 
-<p><span class="anchor" id="generate-availability"></span></p>
-
-<h2><a class="command-name">generate-availability</a></h2>
+<a name="generate-availability"></a>
+<h2>generate-availability</h2>
 
 <p>Generate a code for new availability condition based on danielneis/moodle-availability_newavailability.</p>
 
 <pre><code>moosh generate-availability newcondition
 </code></pre>
 
-<p><span class="anchor" id="generate-block"></span></p>
-
-<h2><a class="command-name">generate-block</a></h2>
+<a name="generate-block"></a>
+<h2>generate-block</h2>
 
 <p>Generate a code for new block based on the template.</p>
 
@@ -1170,9 +1123,8 @@ moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 
 <pre><code>moosh generate-block abc
 </code></pre>
 
-<p><span class="anchor" id="generate-cfg"></span></p>
-
-<h2><a class="command-name">generate-cfg</a></h2>
+<a name="generate-cfg"></a>
+<h2>generate-cfg</h2>
 
 <p>Generate fake class to get auto-completion for $CFG object. Properties genertated extracted from the current source code.
  See <a href="http://moosh-online.com/#cfg-auto-completion">setup instructions</a>.</p>
@@ -1180,9 +1132,8 @@ moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 
 <pre><code>moosh generate-cfg &gt; config.class.php
 </code></pre>
 
-<p><span class="anchor" id="generate-enrol"></span></p>
-
-<h2><a class="command-name">generate-enrol</a></h2>
+<a name="generate-enrol"></a>
+<h2>generate-enrol</h2>
 
 <p>Creates new local plugin under enrol/ based on template from https://github.com/danielneis/moodle-enrol_newenrol</p>
 
@@ -1194,18 +1145,16 @@ moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 
 <pre><code>moosh generate-local mynewenrol
 </code></pre>
 
-<p><span class="anchor" id="generate-filemanager"></span></p>
-
-<h2><a class="command-name">generate-filemanager</a></h2>
+<a name="generate-filemanager"></a>
+<h2>generate-filemanager</h2>
 
 <p>Shows how to code filepicker, based on https://github.com/AndyNormore/filemanager. Takes no arguments.</p>
 
 <pre><code>moosh generate-filemanager
 </code></pre>
 
-<p><span class="anchor" id="generate-form"></span></p>
-
-<h2><a class="command-name">generate-form</a></h2>
+<a name="generate-form"></a>
+<h2>generate-form</h2>
 
 <p>Creates a new file with the form class code. Will display on the screen a boilerplate code to use the form. If the form
 file already exists, both form &amp; form usage code will only be displayed on the standard output.
@@ -1221,9 +1170,8 @@ class. It will also display a boilerplate code on how can you use the form.</p>
 <pre><code>moosh generate-form edit
 </code></pre>
 
-<p><span class="anchor" id="generate-gradereport"></span></p>
-
-<h2><a class="command-name">generate-gradereport</a></h2>
+<a name="generate-gradereport"></a>
+<h2>generate-gradereport</h2>
 
 <p>Creates new grade report under grade/report based on the template from https://github.com/danielneis/moodle-gradereport_newgradereport.</p>
 
@@ -1235,9 +1183,8 @@ class. It will also display a boilerplate code on how can you use the form.</p>
 <pre><code>moosh generate-gradereport beststudents
 </code></pre>
 
-<p><span class="anchor" id="generate-gradeexport"></span></p>
-
-<h2><a class="command-name">generate-gradeexport</a></h2>
+<a name="generate-gradeexport"></a>
+<h2>generate-gradeexport</h2>
 
 <p>Creates new grade export under grade/export based on the template from https://github.com/danielneis/moodle-gradeexport_newgradeexport.</p>
 
@@ -1249,9 +1196,8 @@ class. It will also display a boilerplate code on how can you use the form.</p>
 <pre><code>moosh generate-gradeexport mycustomsystem
 </code></pre>
 
-<p><span class="anchor" id="generate-lang"></span></p>
-
-<h2><a class="command-name">generate-lang</a></h2>
+<a name="generate-lang"></a>
+<h2>generate-lang</h2>
 
 <p>Scan files given as arguments or currently remembered file, extract language strings and add them to the lang file if
 necessary.</p>
@@ -1264,9 +1210,8 @@ necessary.</p>
 <pre><code>moosh generate-lang edit_form.php
 </code></pre>
 
-<p><span class="anchor" id="generate-local"></span></p>
-
-<h2><a class="command-name">generate-local</a></h2>
+<a name="generate-local"></a>
+<h2>generate-local</h2>
 
 <p>Creates new local plugin under local/ based on template from https://github.com/danielneis/moodle-local_newlocal</p>
 
@@ -1278,9 +1223,8 @@ necessary.</p>
 <pre><code>moosh generate-local mynewlocal
 </code></pre>
 
-<p><span class="anchor" id="generate-messageoutput"></span></p>
-
-<h2><a class="command-name">generate-messageoutput</a></h2>
+<a name="generate-messageoutput"></a>
+<h2>generate-messageoutput</h2>
 
 <p>Creates new message output processor under message/output based on the template from https://github.com/danielneis/moodle-message_newprocessor.</p>
 
@@ -1292,9 +1236,8 @@ necessary.</p>
 <pre><code>moosh generate-messageoutput flashcard
 </code></pre>
 
-<p><span class="anchor" id="generate-module"></span></p>
-
-<h2><a class="command-name">generate-module</a></h2>
+<a name="generate-module"></a>
+<h2>generate-module</h2>
 
 <p>Creates new module based on the NEWMODULE template from Moodle HQ.</p>
 
@@ -1306,18 +1249,16 @@ necessary.</p>
 <pre><code>moosh generate-module flashcard
 </code></pre>
 
-<p><span class="anchor" id="generate-moosh"></span></p>
-
-<h2><a class="command-name">generate-moosh</a></h2>
+<a name="generate-moosh"></a>
+<h2>generate-moosh</h2>
 
 <p>Use moosh to create new moosh command.</p>
 
 <pre><code>moosh generate-moosh category-command
 </code></pre>
 
-<p><span class="anchor" id="generate-qtype"></span></p>
-
-<h2><a class="command-name">generate-qtype</a></h2>
+<a name="generate-qtype"></a>
+<h2>generate-qtype</h2>
 
 <p>Creates new question type based on the NEWMODULE template from https://github.com/jamiepratt/moodle-qtype_TEMPLATE.</p>
 
@@ -1329,27 +1270,46 @@ necessary.</p>
 <pre><code>moosh generate-qtype myqtype
 </code></pre>
 
-<p><span class="anchor" id="generate-userprofilefield"></span></p>
-
-<h2><a class="command-name">generate-userprofilefield</a></h2>
+<a name="generate-userprofilefield"></a>
+<h2>generate-userprofilefield</h2>
 
 <p>Creates new profile field based on a template.</p>
 
 <pre><code>moosh generate-userprofilefield newfield
 </code></pre>
 
-<p><span class="anchor" id="generate-ws"></span></p>
-
-<h2><a class="command-name">generate-ws</a></h2>
+<a name="generate-ws"></a>
+<h2>generate-ws</h2>
 
 <p>Creates new local plugin for WS development based on moodlehq/moodle-local_wstemplate.</p>
 
 <pre><code>moosh generate-ws newws
 </code></pre>
 
-<p><span class="anchor" id="gradecategory-create"></span></p>
+<a name="gradebook-import"></a>
+<h2>gradebook-import</h2>
 
-<h2><a class="command-name">gradecategory-create</a></h2>
+<p>Imports gradebook grades from csv file into a course given by id. With --course-idnumber use take mdl_course.idnumber instead of course.id.
+--map-users-by will change what to use for mapping users from CSV (email or idnumber).</p>
+
+<p>Use --test for testing the import first.</p>
+
+<p>Example:</p>
+
+<pre><code>moosh gradebook-import --test gradebook.csv course_id
+</code></pre>
+
+<p>Possible column headers to us:</p>
+
+<ul>
+<li>"ID number" user's ID number (idnumber)</li>
+<li>"email" user's email</li>
+<li>one or more columns matching grade item name</li>
+</ul>
+
+
+<a name="gradecategory-create"></a>
+<h2>gradecategory-create</h2>
 
 <p>Creates grade category.</p>
 
@@ -1358,9 +1318,8 @@ necessary.</p>
 <pre><code>moosh gradecategory-create -n category-name -a aggregation parent_id course_id
 </code></pre>
 
-<p><span class="anchor" id="gradecategory-list"></span></p>
-
-<h2><a class="command-name">gradecategory-list</a></h2>
+<a name="gradecategory-list"></a>
+<h2>gradecategory-list</h2>
 
 <p>Lists grade categories, with command-line options, arguments modeled on course-list's.</p>
 
@@ -1369,9 +1328,8 @@ necessary.</p>
 <pre><code>moosh gradecategory-list --hidden=yes --empty=yes --fields=id,parent,fullname courseid=26
 </code></pre>
 
-<p><span class="anchor" id="gradeitem-create"></span></p>
-
-<h2><a class="command-name">gradeitem-create</a></h2>
+<a name="gradeitem-create"></a>
+<h2>gradeitem-create</h2>
 
 <p>Creates grade items, with command-line options and courseid, gradecategoryid arguments.</p>
 
@@ -1380,9 +1338,8 @@ necessary.</p>
 <pre><code>moosh gradeitem-create --itemname=Boost --grademax=3 --calculation='=max(3, ##gi5075##)' -o '--aggregationcoef=1' 37 527
 </code></pre>
 
-<p><span class="anchor" id="gradeitem-list"></span></p>
-
-<h2><a class="command-name">gradeitem-list</a></h2>
+<a name="gradeitem-list"></a>
+<h2>gradeitem-list</h2>
 
 <p>Lists grade items, with command-line options, arguments modeled on course-list's.</p>
 
@@ -1391,9 +1348,8 @@ necessary.</p>
 <pre><code>moosh gradeitem-list --hidden=yes --locked=no --empty=yes --fields=id,categoryid,itemname courseid=26
 </code></pre>
 
-<p><span class="anchor" id="gradebook-export"></span></p>
-
-<h2><a class="command-name">gradebook-export</a></h2>
+<a name="gradebook-export"></a>
+<h2>gradebook-export</h2>
 
 <p>Exports gradebook grades for grade item(s) (comma-separated if more than 1) in specified course.</p>
 
@@ -1415,32 +1371,8 @@ necessary.</p>
 </ul>
 
 
-<p><span class="anchor" id="gradebook-import"></span></p>
-
-<h2><a class="command-name">gradebook-import</a></h2>
-
-<p>Imports gradebook grades from csv file into a course given by id. With --course-idnumber use take mdl_course.idnumber instead of course.id.
---map-users-by will change what to use for mapping users from CSV (email or idnumber).</p>
-
-<p>Use --test for testing the import first.</p>
-
-<p>Example:</p>
-
-<pre><code>moosh gradebook-import --test gradebook.csv course_id
-</code></pre>
-
-<p>Possible column headers to us:</p>
-
-<ul>
-<li>"ID number" user's ID number (idnumber)</li>
-<li>"email" user's email</li>
-<li>one or more columns matching grade item name</li>
-</ul>
-
-
-<p><span class="anchor" id="group-create"></span></p>
-
-<h2><a class="command-name">group-create</a></h2>
+<a name="group-create"></a>
+<h2>group-create</h2>
 
 <p>Create a new group.</p>
 
@@ -1449,9 +1381,8 @@ necessary.</p>
 <pre><code>moosh group-create --description "group description" --key sesame --id "group idnumber" groupname courseid
 </code></pre>
 
-<p><span class="anchor" id="group-list"></span></p>
-
-<h2><a class="command-name">group-list</a></h2>
+<a name="group-list"></a>
+<h2>group-list</h2>
 
 <p>Lists groups in course, or grouping.</p>
 
@@ -1465,9 +1396,8 @@ necessary.</p>
 <pre><code>moosh group-list --id -G groupingid courseid
 </code></pre>
 
-<p><span class="anchor" id="group-memberadd"></span></p>
-
-<h2><a class="command-name">group-memberadd</a></h2>
+<a name="group-memberadd"></a>
+<h2>group-memberadd</h2>
 
 <p>Add a member to a group.</p>
 
@@ -1481,9 +1411,8 @@ necessary.</p>
 <pre><code>moosh group-memberadd -g groupid memberid1 [memberid2] ...
 </code></pre>
 
-<p><span class="anchor" id="grouping-create"></span></p>
-
-<h2><a class="command-name">grouping-create</a></h2>
+<a name="grouping-create"></a>
+<h2>grouping-create</h2>
 
 <p>Create a new grouping.</p>
 
@@ -1492,9 +1421,8 @@ necessary.</p>
 <pre><code>moosh grouping-create --description "grouping description" --id "grouping idnumber" groupingname courseid
 </code></pre>
 
-<p><span class="anchor" id="group-assigngrouping"></span></p>
-
-<h2><a class="command-name">group-assigngrouping</a></h2>
+<a name="group-assigngrouping"></a>
+<h2>group-assigngrouping</h2>
 
 <p>Add a group to a grouping.</p>
 
@@ -1503,9 +1431,8 @@ necessary.</p>
 <pre><code>moosh group-assigngrouping -G groupingid groupid1 [groupid2] ...
 </code></pre>
 
-<p><span class="anchor" id="info"></span></p>
-
-<h2><a class="command-name">info</a></h2>
+<a name="info"></a>
+<h2>info</h2>
 
 <p>Show information about plugin in current directory.</p>
 
@@ -1514,9 +1441,8 @@ necessary.</p>
 <pre><code>moosh info
 </code></pre>
 
-<p><span class="anchor" id="info-plugins"></span></p>
-
-<h2><a class="command-name">info-plugins</a></h2>
+<a name="info-plugins"></a>
+<h2>info-plugins</h2>
 
 <p>List all possible plugins in this version of Moodle and directory for each.</p>
 
@@ -1525,9 +1451,8 @@ necessary.</p>
 <pre><code>moosh info-plugins
 </code></pre>
 
-<p><span class="anchor" id="languages-update"></span></p>
-
-<h2><a class="command-name">languages-update</a></h2>
+<a name="languages-update"></a>
+<h2>languages-update</h2>
 
 <p>Update all installed language packs, in the current Moodle folder.</p>
 
@@ -1536,18 +1461,16 @@ necessary.</p>
 <pre><code>moosh languages-update
 </code></pre>
 
-<p><span class="anchor" id="maintenance-off"></span></p>
-
-<h2><a class="command-name">maintenance-off</a></h2>
+<a name="maintenance-off"></a>
+<h2>maintenance-off</h2>
 
 <p>Disable maintenance mode.</p>
 
 <pre><code>moosh maintenance-off
 </code></pre>
 
-<p><span class="anchor" id="maintenance-on"></span></p>
-
-<h2><a class="command-name">maintenance-on</a></h2>
+<a name="maintenance-on"></a>
+<h2>maintenance-on</h2>
 
 <p>Enable maintenance mode.</p>
 
@@ -1559,9 +1482,8 @@ necessary.</p>
 <pre><code>moosh maintenace-on -m "Example message"
 </code></pre>
 
-<p><span class="anchor" id="module-config"></span></p>
-
-<h2><a class="command-name">module-config</a></h2>
+<a name="module-config"></a>
+<h2>module-config</h2>
 
 <p>Set or Get any plugin's settings values</p>
 
@@ -1571,9 +1493,8 @@ necessary.</p>
 moosh module-config get dropbox dropbox_secret ?
 </code></pre>
 
-<p><span class="anchor" id="module-manage"></span></p>
-
-<h2><a class="command-name">module-manage</a></h2>
+<a name="module-manage"></a>
+<h2>module-manage</h2>
 
 <p>Show or Hide moudles, system wide (Will also delete, in the future)</p>
 
@@ -1583,8 +1504,7 @@ moosh module-config get dropbox dropbox_secret ?
 moosh module-manage show scorm
 </code></pre>
 
-<p><span class="anchor" id="module-reinstall"></span>
-<a class="command-name">module-reinstall</a></p>
+<p>module-reinstall</p>
 
 <p>Re-install any Moodle plugin. It will remove all the data related to the module and install it from clean.</p>
 
@@ -1594,17 +1514,15 @@ moosh module-manage show scorm
 moosh module-reinstall mod_book
 </code></pre>
 
-<p><span class="anchor" id="nagios-check"></span>
-<a class="command-name">nagios-check</a></p>
+<p>nagios-check</p>
 
 <p>Create session login and login to a site using curl. Return error in Nagios format if login was not successful.</p>
 
 <pre><code>moosh nagios-check
 </code></pre>
 
-<p><span class="anchor" id="php-eval"></span></p>
-
-<h2><a class="command-name">php-eval</a></h2>
+<a name="php-eval"></a>
+<h2>php-eval</h2>
 
 <p>Evaluate arbitrary php code after bootstrapping Moodle.</p>
 
@@ -1613,9 +1531,8 @@ moosh module-reinstall mod_book
 <pre><code>moosh php-eval 'var_dump(get_object_vars($CFG))'
 </code></pre>
 
-<p><span class="anchor" id="plugin-install"></span></p>
-
-<h2><a class="command-name">plugin-install</a></h2>
+<a name="plugin-install"></a>
+<h2>plugin-install</h2>
 
 <p>Download and install plugin. Requires plugin short name, and optional version. You can obtain those data by using `plugin-list -v' command.</p>
 
@@ -1629,9 +1546,8 @@ moosh module-reinstall mod_book
 <pre><code>moosh plugin-install block_checklist
 </code></pre>
 
-<p><span class="anchor" id="plugin-list"></span></p>
-
-<h2><a class="command-name">plugin-list</a></h2>
+<a name="plugin-list"></a>
+<h2>plugin-list</h2>
 
 <p>List Moodle plugins filtered on given query. Returns plugin full name, short name, available Moodle versions and short description.</p>
 
@@ -1645,9 +1561,8 @@ moosh module-reinstall mod_book
 <pre><code>moosh plugin-list  | grep '^mod_' | grep 2.8 | grep -o '[^,]*$' | wget -i -
 </code></pre>
 
-<p><span class="anchor" id="plugins-usage"></span></p>
-
-<h2><a class="command-name">plugins-usage</a></h2>
+<a name="plugins-usage"></a>
+<h2>plugins-usage</h2>
 
 <p>Shows the usage of the subset of the plugins used in Moodle installation.
 Plugin will show the usages, wherever it can figure out if the plugin is used.
@@ -1664,9 +1579,8 @@ blocks, authentication types, activities.</p>
 <pre><code>moosh plugins-usage -c 1
 </code></pre>
 
-<p><span class="anchor" id="plugin-uninstall"></span></p>
-
-<h2><a class="command-name">plugin-uninstall</a></h2>
+<a name="plugin-uninstall"></a>
+<h2>plugin-uninstall</h2>
 
 <p>Removes given plugin from the DB and disk. It can remove plugins that have no folder on the disk and have some redundant data inside DB tables.
 If you do not have write permissions on the plugins' folder it will advice you with the command that will give the right permissions and then you are asked to run the command again.</p>
@@ -1676,9 +1590,8 @@ If you do not have write permissions on the plugins' folder it will advice you w
 <pre><code>moosh plugin-uninstall theme_elegance
 </code></pre>
 
-<p><span class="anchor" id="question-import"></span></p>
-
-<h2><a class="command-name">question-import</a></h2>
+<a name="question-import"></a>
+<h2>question-import</h2>
 
 <p>Import quiz question from xml file into selected quiz.</p>
 
@@ -1687,9 +1600,190 @@ If you do not have write permissions on the plugins' folder it will advice you w
 <pre><code>moosh question-import path/to/question.xml 2
 </code></pre>
 
-<p><span class="anchor" id="user-create"></span></p>
+<a name="random-label"></a>
+<h2>random-label</h2>
 
-<h2><a class="command-name">user-create</a></h2>
+<p>Add a label with random text to random section of course id provided.</p>
+
+<p>Example 1: Add 5 labels to course id 17.</p>
+
+<pre><code>for i in {1..5}; do moosh random-label 17; done
+</code></pre>
+
+<p>Example 2: Add label that will contain string " uniquetext " inside.</p>
+
+<pre><code>moosh random-label -i ' uniquetext ' 17
+</code></pre>
+
+<a name="report-concurrency"></a>
+<h2>report-concurrency</h2>
+
+<p>Get information about concurrent users online.</p>
+
+<p>Use: -f and -t with date in either YYYYMMDD or YYYY-MM-DD date. Add -p te specify period.</p>
+
+<p>Example 1: Get concurrent users between 20-01-2014 and 27-01-2014 with 30 minut periods.</p>
+
+<pre><code>moosh report-concurrency -f 20140120 -t 20140127 -p 30
+</code></pre>
+
+<a name="restore-settings"></a>
+<h2>restore-settings</h2>
+
+<p>Returns all possible restore settings for the current Moodle. To figure them out,
+the command creates and then backes up an empty course with short name "moosh001" - unless it already exists.</p>
+
+<p>Example 1: Dump all possible restore settings</p>
+
+<pre><code>moosh restore-settings
+</code></pre>
+
+<a name="role-create"></a>
+<h2>role-create</h2>
+
+<p>Create new role, optionally provide description, archetype and name. Role id is returned.</p>
+
+<p>Example 1: Create role with short name "newstudentrole" a description, name an archetype</p>
+
+<pre><code>moosh role-create -d "Role description" -a student -n "Role name" newstudentrole
+</code></pre>
+
+<a name="role-delete"></a>
+<h2>role-delete</h2>
+
+<p>Delete role by ID or shortname.</p>
+
+<p>Example 1: Delete role "newstudentrole"</p>
+
+<pre><code>moosh role-delete newstudentrole
+</code></pre>
+
+<p>Example 2: Delete role id 10.</p>
+
+<pre><code>moosh role-delete -i 10
+</code></pre>
+
+<a name="role-reset"></a>
+<h2>role-reset</h2>
+
+<p>Reset give role's permissions from the file.</p>
+
+<pre><code>moosh role-reset 1 definition_file.txt
+</code></pre>
+
+<a name="role-update-capability"></a>
+<h2>role-update-capability</h2>
+
+<p>Update role capabilities on any context.</p>
+
+<p>Use: -i "roleid" or "role_short_name" with "role capability" and "capability setting" (inherit|allow|prevent|prohibit)
+and finally, "contextid" (where 1 is system wide)</p>
+
+<p>Example 1: update "student" role (roleid=5) "mod/forumng:grade" capability, system wide (contextid=1)</p>
+
+<pre><code>moosh student mod/forumng:grade allow 1
+</code></pre>
+
+<p>Example 2: update "editingteacher" role (roleid=3) "mod/forumng:grade" capability, system wide (contextid=1)</p>
+
+<pre><code>moosh -i 3 mod/forumng:grade prevent 1
+</code></pre>
+
+<a name="role-update-contextlevel"></a>
+<h2>role-update-contextlevel</h2>
+
+<p>Update the context level upon a role can be updated.</p>
+
+<p>Use: "short role name" or -i "roleid" with relevant context level (system|user|category|course|activity|block)
+and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
+
+<p>Example 1: Allow "student" role to be set on block level</p>
+
+<pre><code>moosh student -block-on
+</code></pre>
+
+<p>Example 2: Prevent "manager" role to be set on course level</p>
+
+<pre><code>moosh manager -course-off
+</code></pre>
+
+<a name="sql-cli"></a>
+<h2>sql-cli</h2>
+
+<p>Open a connection to the Moodle DB using credentials in config.php. Currently supports PostgreSQL and MySQL.</p>
+
+<p>Example:</p>
+
+<pre><code>moosh sql-cli
+</code></pre>
+
+<a name="sql-dump"></a>
+<h2>sql-dump</h2>
+
+<p>Dump Moodle DB to sql file. Works for PostgreSQL and MySQL.</p>
+
+<p>Example 1: dump database to backup.sql file</p>
+
+<pre><code>moosh sql-dump &gt; backup.sql
+</code></pre>
+
+<a name="sql-run"></a>
+<h2>sql-run</h2>
+
+<p>Run any custom SQL against bootstrapped Moodle instance DB. If query start with SELECT then matched rows will be displayed.</p>
+
+<p>Example 1: Set the country of all the users to Poland</p>
+
+<pre><code>moosh sql-run "update {user} set country='PL'"
+</code></pre>
+
+<p>Example 2: Count the number of rows is log table</p>
+
+<pre><code>moosh sql-run "select count(*) from {log}"
+</code></pre>
+
+<a name="theme-info"></a>
+<h2>theme-info</h2>
+
+<p>Show what themes are really used on Moodle site.</p>
+
+<p>Example:</p>
+
+<pre><code>moosh theme-info
+</code></pre>
+
+<a name="theme-settings-export"></a>
+<h2>theme-settings-export</h2>
+
+<p>Export theme settings (including uploaded files) as a tar.gz for use with <code>theme-settings-import</code>.</p>
+
+<p>Example 1: run within a theme directory and it will know which theme you want</p>
+
+<pre><code>moosh theme-settings-export
+</code></pre>
+
+<p>Example 2: run it anywhere within the moodle dir if you specify the theme name</p>
+
+<pre><code>moosh theme-settings-export --themename boost
+</code></pre>
+
+<a name="theme-settings-import"></a>
+<h2>theme-settings-import</h2>
+
+<p>Import settings from file created with <code>theme-settings-export</code>.</p>
+
+<p>Example 1: give the name of the exported file</p>
+
+<pre><code>moosh theme-settings-import boost_settings_1558197087.tar.gz
+</code></pre>
+
+<p>Example 2: specify a target theme name if you want to transfer settings to a different (but compatible) theme</p>
+
+<pre><code>moosh theme-settings-import --targettheme boostfork boost_settings_1558197087.tar.gz
+</code></pre>
+
+<a name="user-create"></a>
+<h2>user-create</h2>
 
 <p>Create a new Moodle user. Provide one or more arguments to create one or more users.</p>
 
@@ -1715,9 +1809,8 @@ If you do not have write permissions on the plugins' folder it will advice you w
 <pre><code>moosh user-create --auth ldap --password NONE  --email joe.blogs@domain.tld --city "Some City" --country IE --firstname "Joe" --lastname "Blogs" jblogs
 </code></pre>
 
-<p><span class="anchor" id="user-delete"></span></p>
-
-<h2><a class="command-name">user-delete</a></h2>
+<a name="user-delete"></a>
+<h2>user-delete</h2>
 
 <p>Delete user(s) from Moodle. Provide one ore more usernames as arguments.</p>
 
@@ -1731,9 +1824,8 @@ If you do not have write permissions on the plugins' folder it will advice you w
 <pre><code>moosh user-delete testuser1 testuser2
 </code></pre>
 
-<p><span class="anchor" id="user-export"></span></p>
-
-<h2><a class="command-name">user-export</a></h2>
+<a name="user-export"></a>
+<h2>user-export</h2>
 
 <p>Exports user with given username to csv file.</p>
 
@@ -1742,16 +1834,13 @@ If you do not have write permissions on the plugins' folder it will advice you w
 <pre><code>moosh user-export testuser
 </code></pre>
 
-<p><span class="anchor" id="user-getidbyname"></span></p>
-
-<h2><a class="command-name">user-getidbyname</a></h2>
+<a name="user-getidbyname"></a>
+<h2>user-getidbyname</h2>
 
 <p>This command has been deprecated. Use user-list instead.</p>
 
-<p><span class="anchor" id="user-import-pictures"></span>
-<a class="command-name">user-import-pictures</a></p>
-
-<hr />
+<a name="user-import-pictures"></a>
+<h2>user-import-pictures</h2>
 
 <p>Provides capability of importing user pictures from a specific directory (recursively including subdirectories).
 Image filename can be mapped to user ID, idnumber or username database field. Supported image types are jpg, gif and png.
@@ -1772,9 +1861,8 @@ Image filename can be mapped to user ID, idnumber or username database field. Su
 <pre><code>moosh user-import-pictures -u /path/to/import/dir
 </code></pre>
 
-<p><span class="anchor" id="user-list"></span></p>
-
-<h2><a class="command-name">user-list</a></h2>
+<a name="user-list"></a>
+<h2>user-list</h2>
 
 <p>List user accounts. It accepts sql WHERE clause. If run without sql argument it will list first 100 users from database.</p>
 
@@ -1798,9 +1886,8 @@ Image filename can be mapped to user ID, idnumber or username database field. Su
 <pre><code>moosh user-list --course 2 --course-role editingteacher --course-inactive
 </code></pre>
 
-<p><span class="anchor" id="user-mod"></span></p>
-
-<h2><a class="command-name">user-mod</a></h2>
+<a name="user-mod"></a>
+<h2>user-mod</h2>
 
 <p>Modify user(s) account.</p>
 
@@ -1834,173 +1921,8 @@ Image filename can be mapped to user ID, idnumber or username database field. Su
 <pre><code>moosh user-mod --ignorepolicy --password weakpassword admin
 </code></pre>
 
-<p><span class="anchor" id="random-label"></span></p>
-
-<h2><a class="command-name">random-label</a></h2>
-
-<p>Add a label with random text to random section of course id provided.</p>
-
-<p>Example 1: Add 5 labels to course id 17.</p>
-
-<pre><code>for i in {1..5}; do moosh random-label 17; done
-</code></pre>
-
-<p>Example 2: Add label that will contain string " uniquetext " inside.</p>
-
-<pre><code>moosh random-label -i ' uniquetext ' 17
-</code></pre>
-
-<p><span class="anchor" id="report-concurrency"></span></p>
-
-<h2><a class="command-name">report-concurrency</a></h2>
-
-<p>Get information about concurrent users online.</p>
-
-<p>Use: -f and -t with date in either YYYYMMDD or YYYY-MM-DD date. Add -p te specify period.</p>
-
-<p>Example 1: Get concurrent users between 20-01-2014 and 27-01-2014 with 30 minut periods.</p>
-
-<pre><code>moosh report-concurrency -f 20140120 -t 20140127 -p 30
-</code></pre>
-
-<p><span class="anchor" id="restore-settings"></span></p>
-
-<h2><a class="command-name">restore-settings</a></h2>
-
-<p>Returns all possible restore settings for the current Moodle. To figure them out,
-the command creates and then backes up an empty course with short name "moosh001" - unless it already exists.</p>
-
-<p>Example 1: Dump all possible restore settings</p>
-
-<pre><code>moosh restore-settings
-</code></pre>
-
-<p><span class="anchor" id="role-create"></span></p>
-
-<h2><a class="command-name">role-create</a></h2>
-
-<p>Create new role, optionally provide description, archetype and name. Role id is returned.</p>
-
-<p>Example 1: Create role with short name "newstudentrole" a description, name an archetype</p>
-
-<pre><code>moosh role-create -d "Role description" -a student -n "Role name" newstudentrole
-</code></pre>
-
-<p><span class="anchor" id="role-delete"></span></p>
-
-<h2><a class="command-name">role-delete</a></h2>
-
-<p>Delete role by ID or shortname.</p>
-
-<p>Example 1: Delete role "newstudentrole"</p>
-
-<pre><code>moosh role-delete newstudentrole
-</code></pre>
-
-<p>Example 2: Delete role id 10.</p>
-
-<pre><code>moosh role-delete -i 10
-</code></pre>
-
-<p><span class="anchor" id="role-reset"></span></p>
-
-<h2><a class="command-name">role-reset</a></h2>
-
-<p>Reset give role's permissions from the file.</p>
-
-<pre><code>moosh role-reset 1 definition_file.txt
-</code></pre>
-
-<p><span class="anchor" id="role-update-capability"></span></p>
-
-<h2><a class="command-name">role-update-capability</a></h2>
-
-<p>Update role capabilities on any context.</p>
-
-<p>Use: -i "roleid" or "role_short_name" with "role capability" and "capability setting" (inherit|allow|prevent|prohibit)
-and finally, "contextid" (where 1 is system wide)</p>
-
-<p>Example 1: update "student" role (roleid=5) "mod/forumng:grade" capability, system wide (contextid=1)</p>
-
-<pre><code>moosh student mod/forumng:grade allow 1
-</code></pre>
-
-<p>Example 2: update "editingteacher" role (roleid=3) "mod/forumng:grade" capability, system wide (contextid=1)</p>
-
-<pre><code>moosh -i 3 mod/forumng:grade prevent 1
-</code></pre>
-
-<p><span class="anchor" id="role-update-contextlevel"></span></p>
-
-<h2><a class="command-name">role-update-contextlevel</a></h2>
-
-<p>Update the context level upon a role can be updated.</p>
-
-<p>Use: "short role name" or -i "roleid" with relevant context level (system|user|category|course|activity|block)
-and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
-
-<p>Example 1: Allow "student" role to be set on block level</p>
-
-<pre><code>moosh student -block-on
-</code></pre>
-
-<p>Example 2: Prevent "manager" role to be set on course level</p>
-
-<pre><code>moosh manager -course-off
-</code></pre>
-
-<p><span class="anchor" id="sql-cli"></span></p>
-
-<h2><a class="command-name">sql-cli</a></h2>
-
-<p>Open a connection to the Moodle DB using credentials in config.php. Currently supports PostgreSQL and MySQL.</p>
-
-<p>Example:</p>
-
-<pre><code>moosh sql-cli
-</code></pre>
-
-<p><span class="anchor" id="sql-dump"></span></p>
-
-<h2><a class="command-name">sql-dump</a></h2>
-
-<p>Dump Moodle DB to sql file. Works for PostgreSQL and MySQL.</p>
-
-<p>Example 1: dump database to backup.sql file</p>
-
-<pre><code>moosh sql-dump &gt; backup.sql
-</code></pre>
-
-<p><span class="anchor" id="sql-run"></span></p>
-
-<h2><a class="command-name">sql-run</a></h2>
-
-<p>Run any custom SQL against bootstrapped Moodle instance DB. If query start with SELECT then matched rows will be displayed.</p>
-
-<p>Example 1: Set the country of all the users to Poland</p>
-
-<pre><code>moosh sql-run "update {user} set country='PL'"
-</code></pre>
-
-<p>Example 2: Count the number of rows is log table</p>
-
-<pre><code>moosh sql-run "select count(*) from {log}"
-</code></pre>
-
-<p><span class="anchor" id="theme-info"></span></p>
-
-<h2><a class="command-name">theme-info</a></h2>
-
-<p>Show what themes are really used on Moodle site.</p>
-
-<p>Example:</p>
-
-<pre><code>moosh theme-info
-</code></pre>
-
-<p><span class="anchor" id="webservice-call"></span></p>
-
-<h2><a class="command-name">webservice-call</a></h2>
+<a name="webservice-call"></a>
+<h2>webservice-call</h2>
 
 <p>Calls</p>
 
@@ -2009,24 +1931,25 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 <pre><code>moosh webservice-call --token 4ac42118db3ee8d4b1ae78f2c1232afd --params userid=3 core_enrol_get_users_courses
 </code></pre>
 
-          </div>
+          <!--</div>-->
         </div>
 
-        <div class="col-md-3">
+        <div class="col-sm-3">
           <div class="bs-sidebar hidden-print">
             <ul class="nav bs-sidenav accordion">
             <li></li>
                 <p>Moodle development book:</p>
-                <a href="https://leanpub.com/moodle"><img src="/images/book.png" /></a>
+                <a href="https://leanpub.com/moodle"><img class="img-responsive book above-index" src="/images/book.jpg" /></a>
 
-                <div class="short-navbar"></div>
+                <h4 class="short-navbar-title">command index</h4>
+                <ol class="short-navbar list-unstyled"></ol>
              
             </ul>
           </div>
         </div>
       </div>
 
-    </div>
+    <!--</div>-->
     </div><!-- /.container -->
     <hr>
 <footer>
@@ -2044,7 +1967,8 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 
 <script type="text/javascript">
     var strings = [];
-    $(".command-name").each(function() { strings.push($(this).text()) });
+    //$(".command-name").each(function() { strings.push($(this).text()) });
+    $("a[name] + h2").each(function() { strings.push($(this).text()) });
     var per_group = 8;
 
     var grouped = [];
@@ -2062,7 +1986,7 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
         }
 
         console.log(last);
-        $('.short-navbar').append('<li><a data-toggle="collapse" data-parent="#accordion" href="#' + first + '-' + last + '">' + first + ' : ' + last + '</a><ul id="' + first + '-' + last + '" class="panel-collapse collapse">');
+        $('.short-navbar').append('<li><a data-toggle="collapse" data-parent="#accordion" href="#' + first + '-' + last + '">' + first + ' - ' + last + '</a><ul id="' + first + '-' + last + '" class="panel-collapse collapse">');
         for(var j=i; j<=max_in_group; j++) {
             $('#' + first + '-' + last).append('<li><a href="#' + strings[j] + '"">' + strings[j] + '</li>');
         }
