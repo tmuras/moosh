@@ -1376,6 +1376,22 @@ Example: import question from file path/to/question.xml to quiz with id 2
 
     moosh question-import path/to/question.xml 2
 
+questioncategory-create
+-----------------------
+
+Creates a 'name' question category in a parent category with
+context. The --reuse option creates the category
+if and only if there is not exactly one already in existence with the
+same parent, context and name, returning the existing category id, otherwise.
+
+Other options are idnumber and infoformat, which defaults to
+FORMAT_MARKDOWN.
+
+Example: create a question category, 'noclass' in parent category 6044, with
+context 754 and info 'New Year'. 
+
+     moosh questioncategory-create --reuse -p 6044 -c 754 -d 'New Year' noclass
+
 random-label
 ------------
 
