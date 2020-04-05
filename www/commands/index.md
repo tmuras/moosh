@@ -217,6 +217,16 @@ Example 2. Move up Email-based self-registration (email).
 
     moosh auth-manage up email 
 
+backup-info
+-----------
+
+Provides some basic information about Moodle backup file.
+The command works by extracting files like users.xml, gradebook.xml, course/logs.xml and getting the information from them 
+
+Example 1. Display basic stats about backup-moodle2-course-2-course1-20200405-1947.mbz file.
+
+    moosh backup-info backup-moodle2-course-2-course1-20200405-1947.mbz
+
 block-add
 ---------------
 
