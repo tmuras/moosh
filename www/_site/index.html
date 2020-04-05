@@ -134,8 +134,10 @@ user-mod
 
 <p>PHP 5.3+, Moodle 1.9, 2.2 or higher.</p>
 
-<a name="L.a.name..installation....a.Installation"></a>
-<h1><a name="installation"></a>Installation</h1>
+<a name="Installation"></a>
+<h1>Installation</h1>
+
+<p>Do not copy moosh files inside your Moodle installation as that may <a href="https://github.com/tmuras/moosh/issues/288">break behat</a>.</p>
 
 <a name="Installation.from.Ubuntu.package"></a>
 <h2>Installation from Ubuntu package</h2>
@@ -148,8 +150,21 @@ user-mod
 <a name="Installation.from.Moodle.package"></a>
 <h2>Installation from Moodle package</h2>
 
-<p>Download moosh package from Moodle: https://moodle.org/plugins/view.php?id=522, unpack and cd into the directory.
-Follow "common steps" below.</p>
+<p>Download moosh package from Moodle: https://moodle.org/plugins/view.php?id=522.</p>
+
+<p>Unpack somewhere in your system (but not inside Moodle's code).</p>
+
+<p>cd into the directory.</p>
+
+<p>Link to a location that is set in your $PATH, eg:</p>
+
+<pre><code>ln -s $PWD/moosh.php ~/bin/moosh
+</code></pre>
+
+<p>Or system-wide:</p>
+
+<pre><code>sudo ln -s $PWD/moosh.php /usr/local/bin/moosh
+</code></pre>
 
 <a name="Installation.from.Moodle.git"></a>
 <h2>Installation from Moodle git</h2>
@@ -160,9 +175,6 @@ Follow "common steps" below.</p>
 cd moosh
 composer install
 </code></pre>
-
-<a name="Common.steps.for.Moodle.package.and.git"></a>
-<h2>Common steps for Moodle package and git</h2>
 
 <p>Link to a location that is set in your $PATH, eg:</p>
 

@@ -46,7 +46,10 @@ Requirements
 
 PHP 5.3+, Moodle 1.9, 2.2 or higher.
 
-# <a name="installation"></a>Installation
+Installation
+============
+
+Do not copy moosh files inside your Moodle installation as that may [break behat](https://github.com/tmuras/moosh/issues/288). 
 
 Installation from Ubuntu package
 --------------------------------
@@ -58,8 +61,19 @@ Installation from Ubuntu package
 Installation from Moodle package
 --------------------------------
 
-Download moosh package from Moodle: https://moodle.org/plugins/view.php?id=522, unpack and cd into the directory.
-Follow "common steps" below.
+Download moosh package from Moodle: https://moodle.org/plugins/view.php?id=522.
+
+Unpack somewhere in your system (but not inside Moodle's code).
+
+cd into the directory.
+
+Link to a location that is set in your $PATH, eg:
+
+    ln -s $PWD/moosh.php ~/bin/moosh
+
+Or system-wide:
+
+    sudo ln -s $PWD/moosh.php /usr/local/bin/moosh
 
 Installation from Moodle git
 ----------------------------
@@ -69,9 +83,6 @@ Install composer - see http://getcomposer.org/download .
     git clone git://github.com/tmuras/moosh.git
     cd moosh
     composer install
-
-Common steps for Moodle package and git
----------------------------------------
 
 Link to a location that is set in your $PATH, eg:
 
