@@ -1227,6 +1227,16 @@ Example 1:
 
     moosh info
 
+info-context
+---------------
+
+Show information about given context ID - as in mdl_context.id.
+
+Example 1: Show information about Moodle context 123.
+
+    moosh info-context 123
+
+
 info-plugins
 ---------------
 
