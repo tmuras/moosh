@@ -130,10 +130,8 @@ See <a href="https://moodle.org/mod/forum/discuss.php?d=368091">Moodle forum pos
 
 <p>Example 7. Add quiz named "moosh test quiz" with intro set to "Here is your quiz", and activity completion options enabled to course 33</p>
 
-<pre><code>moosh activity-add 'moosh test quiz' -o="--intro=\"Here is your quiz.\  --completion=2 --completionview=1 --complet
+<pre><code>moosh activity-add -n 'moosh test quiz' -o="--intro=Here is your quiz.  --completion=2 --completionview=1 --completionusegrade=1 --completionpass=1" quiz 33
 </code></pre>
-
-<p>ionusegrade=1 --completionpass=1" quiz 33</p>
 
 <a name="activity-delete"></a>
 <h2>activity-delete</h2>
@@ -1598,6 +1596,23 @@ If you do not have write permissions on the plugins' folder it will advice you w
 <p>Example: import question from file path/to/question.xml to quiz with id 2</p>
 
 <pre><code>moosh question-import path/to/question.xml 2
+</code></pre>
+
+<a name="questioncategory-create"></a>
+<h2>questioncategory-create</h2>
+
+<p>Creates a 'name' question category in a parent category with
+context. The --reuse option creates the category
+if and only if there is not exactly one already in existence with the
+same parent, context and name, returning the existing category id, otherwise.</p>
+
+<p>Other options are idnumber and infoformat, which defaults to
+FORMAT_MARKDOWN.</p>
+
+<p>Example: create a question category, 'noclass' in parent category 6044, with
+context 754 and info 'New Year'.</p>
+
+<pre><code> moosh questioncategory-create --reuse -p 6044 -c 754 -d 'New Year' noclass
 </code></pre>
 
 <a name="random-label"></a>
