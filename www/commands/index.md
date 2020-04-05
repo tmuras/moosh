@@ -227,6 +227,24 @@ Example 1. Display basic stats about backup-moodle2-course-2-course1-20200405-19
 
     moosh backup-info backup-moodle2-course-2-course1-20200405-1947.mbz
 
+base-path
+---------
+
+For a given path/file inside Moodle plugin, the command returns initial directories that are a base directory for that plugin.
+The path can be provided as a single argument or read from standard input. 
+
+Example 1. Displays mod/choice.
+
+    moosh base-path mod/choice/index.php
+
+Example 2. Displays theme/boost.
+
+    moosh base-path theme/boost/pix/mod/quiz/whitecircle.png
+
+Example 3. Like above but using stdin.
+
+    echo theme/boost/pix/mod/quiz/whitecircle.png | moosh base-path
+
 block-add
 ---------------
 

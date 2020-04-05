@@ -329,6 +329,27 @@ The command works by extracting files like users.xml, gradebook.xml, course/logs
 <pre><code>moosh backup-info backup-moodle2-course-2-course1-20200405-1947.mbz
 </code></pre>
 
+<a name="base-path"></a>
+<h2>base-path</h2>
+
+<p>For a given path/file inside Moodle plugin, the command returns initial directories that are a base directory for that plugin.
+The path can be provided as a single argument or read from standard input.</p>
+
+<p>Example 1. Displays mod/choice.</p>
+
+<pre><code>moosh base-path mod/choice/index.php
+</code></pre>
+
+<p>Example 2. Displays theme/boost.</p>
+
+<pre><code>moosh base-path theme/boost/pix/mod/quiz/whitecircle.png
+</code></pre>
+
+<p>Example 3. Like above but using stdin.</p>
+
+<pre><code>echo theme/boost/pix/mod/quiz/whitecircle.png | moosh base-path
+</code></pre>
+
 <a name="block-add"></a>
 <h2>block-add</h2>
 
