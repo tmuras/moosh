@@ -29,11 +29,13 @@ class UserAssignSystemRole extends MooshCommand
         list($userid, $roleshortname) = $this->arguments;
         $user = $DB->get_record('user', ['username' => $userid]);
         if(!$user)
-            cli_error(sprintf("User not found with id %s", $userid));
+            cli_error(sprintf("User not found with username %s", $userid));
 
         $role = $DB->get_record('role', ['shortname' => $roleshortname]);
         if(!$role)
             cli_error(sprintf("Role not found with shortname %s", $roleshortname));
+
+        $this->isSystemRole($role);
 
         try {
             $return = role_assign($role->id, $user->id, 1);
@@ -42,7 +44,17 @@ class UserAssignSystemRole extends MooshCommand
         }
 
         echo "OK!\n";
+    }
 
+    function isSystemRole($role) {
+        global $DB;
+
+        if($DB->count_records("role_context_levels", ["roleid" => $role->id]) > 1)
+            cli_error("Role is not a system role!");
+
+        $context_level = $DB->get_record("role_context_levels", ["roleid" => $role->id]);
+        if(!$context_level || $context_level->contextlevel != 10)
+            cli_error("Role is not a system role!");
 
     }
 
