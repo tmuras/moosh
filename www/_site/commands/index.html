@@ -130,10 +130,8 @@ See <a href="https://moodle.org/mod/forum/discuss.php?d=368091">Moodle forum pos
 
 <p>Example 7. Add quiz named "moosh test quiz" with intro set to "Here is your quiz", and activity completion options enabled to course 33</p>
 
-<pre><code>moosh activity-add 'moosh test quiz' -o="--intro=\"Here is your quiz.\  --completion=2 --completionview=1 --complet
+<pre><code>moosh activity-add -n 'moosh test quiz' -o="--intro=Here is your quiz.  --completion=2 --completionview=1 --completionusegrade=1 --completionpass=1" quiz 33
 </code></pre>
-
-<p>ionusegrade=1 --completionpass=1" quiz 33</p>
 
 <a name="activity-delete"></a>
 <h2>activity-delete</h2>
@@ -318,6 +316,17 @@ CREATE TABLE perflog (
 <p>Example 2. Move up Email-based self-registration (email).</p>
 
 <pre><code>moosh auth-manage up email 
+</code></pre>
+
+<a name="backup-info"></a>
+<h2>backup-info</h2>
+
+<p>Provides some basic information about Moodle backup file.
+The command works by extracting files like users.xml, gradebook.xml, course/logs.xml and getting the information from them</p>
+
+<p>Example 1. Display basic stats about backup-moodle2-course-2-course1-20200405-1947.mbz file.</p>
+
+<pre><code>moosh backup-info backup-moodle2-course-2-course1-20200405-1947.mbz
 </code></pre>
 
 <a name="block-add"></a>
@@ -1441,6 +1450,16 @@ necessary.</p>
 <pre><code>moosh info
 </code></pre>
 
+<a name="info-context"></a>
+<h2>info-context</h2>
+
+<p>Show information about given context ID - as in mdl_context.id.</p>
+
+<p>Example 1: Show information about Moodle context 123.</p>
+
+<pre><code>moosh info-context 123
+</code></pre>
+
 <a name="info-plugins"></a>
 <h2>info-plugins</h2>
 
@@ -1598,6 +1617,23 @@ If you do not have write permissions on the plugins' folder it will advice you w
 <p>Example: import question from file path/to/question.xml to quiz with id 2</p>
 
 <pre><code>moosh question-import path/to/question.xml 2
+</code></pre>
+
+<a name="questioncategory-create"></a>
+<h2>questioncategory-create</h2>
+
+<p>Creates a 'name' question category in a parent category with
+context. The --reuse option creates the category
+if and only if there is not exactly one already in existence with the
+same parent, context and name, returning the existing category id, otherwise.</p>
+
+<p>Other options are idnumber and infoformat, which defaults to
+FORMAT_MARKDOWN.</p>
+
+<p>Example: create a question category, 'noclass' in parent category 6044, with
+context 754 and info 'New Year'.</p>
+
+<pre><code> moosh questioncategory-create --reuse -p 6044 -c 754 -d 'New Year' noclass
 </code></pre>
 
 <a name="random-label"></a>

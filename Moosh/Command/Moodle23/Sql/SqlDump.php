@@ -26,6 +26,7 @@ class SqlDump extends MooshCommand
     {
         global $CFG, $DB;
 
+        $return = 0;
         switch ($CFG->dbtype) {
             case 'mysqli':
             case 'mariadb':
@@ -33,7 +34,8 @@ class SqlDump extends MooshCommand
                 if (!empty($CFG->dboptions['dbport'])) {
                     $portoption = '-P ' . $CFG->dboptions['dbport'];
                 }
-                passthru("mysqldump --lock-tables=false -h {$CFG->dbhost} -u {$CFG->dbuser} --password='{$CFG->dbpass}' $portoption {$CFG->dbname}");
+                passthru("mysqldump --lock-tables=false -h {$CFG->dbhost} -u {$CFG->dbuser} --password='{$CFG->dbpass}' $portoption {$CFG->dbname}", $return);
+                exit($return);
                 break;
             case 'pgsql':
                 $portoption = '';
@@ -41,7 +43,8 @@ class SqlDump extends MooshCommand
                     $portoption = '-p ' . $CFG->dboptions['dbport'];
                 }
                 putenv('PGPASSWORD='.$CFG->dbpass);
-                passthru("pg_dump -h $CFG->dbhost -U $CFG->dbuser $portoption $CFG->dbname");
+                passthru("pg_dump -h $CFG->dbhost -U $CFG->dbuser $portoption $CFG->dbname", $return);
+                exit($return);
                 break;
             default:
                 cli_error("Sorry, database type '$CFG->dbtype' is not supported yet.  Feel free to contribute!");
