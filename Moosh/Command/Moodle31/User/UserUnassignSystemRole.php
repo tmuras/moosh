@@ -51,13 +51,9 @@ class UserUnassignSystemRole extends MooshCommand
     function isSystemRole($role) {
         global $DB;
 
-        if($DB->count_records("role_context_levels", ["roleid" => $role->id]) > 1)
+        if(!$DB->count_records("role_context_levels", ["roleid" => $role->id, "contextlevel" => 10])) {
             cli_error("Role is not a system role!");
-
-        $context_level = $DB->get_record("role_context_levels", ["roleid" => $role->id]);
-        if(!$context_level || $context_level->contextlevel != 10)
-            cli_error("Role is not a system role!");
-
+        }
     }
 
 
