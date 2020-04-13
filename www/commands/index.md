@@ -1467,6 +1467,27 @@ Example 2: Delete role id 10.
     moosh role-delete -i 10
 
 
+role-list
+-----------
+Get list of roles
+
+Example 1: Get roles with id, shortname and name.
+
+    moosh role-list
+
+Result:
+
+    |   ID |Shortname                      |Name                           |
+    |    1 |manager                        | Manager                       |
+    |    2 |coursecreator                  | Course creator                |
+    |    3 |editingteacher                 | Teacher                       |
+    |    4 |teacher                        | Non-editing teacher           |
+    |    5 |student                        | Student                       |
+    |    6 |guest                          | Guest                         |
+    |    7 |user                           | Authenticated user            |
+    |    8 |frontpage                      |                               |
+
+
 role-reset
 -----------
 
@@ -1574,6 +1595,30 @@ Example 1: give the name of the exported file
 Example 2: specify a target theme name if you want to transfer settings to a different (but compatible) theme
 
     moosh theme-settings-import --targettheme boostfork boost_settings_1558197087.tar.gz
+
+user-assign-system-role
+-----------
+Assign system role to user.
+
+Example 1: assign "manager" role for "testuser"
+    
+    moosh user-assign-system-role testuser manager
+    
+Example 1: assign "coursecreator" role for "testuser2"
+    
+    moosh user-assign-system-role testuser2 coursecreator
+    
+user-unassign-system-role
+-----------
+Unassign system role to user.
+
+Example 1: unassign "manager" role for "testuser"
+    
+    moosh user-unassign-system-role testuser manager
+    
+Example 1: unassign "coursecreator" role for "testuser2"
+    
+    moosh user-unassign-system-role testuser2 coursecreator
 
 user-create
 -----------
