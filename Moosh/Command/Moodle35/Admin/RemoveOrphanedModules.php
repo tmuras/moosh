@@ -21,7 +21,7 @@ class RemoveOrphanedModules extends MooshCommand
     {
         parent::__construct('remove-orphaned-modules', 'admin');
 
-        $this->addOption('r|remove', 'remove all found orphaned modules', 0);
+        $this->addOption('r|remove', 'remove found orphaned modules: all or given ids separated by comma', 0);
 
         $this->addArgument('modulesmap');
         $this->minArguments = 0;
