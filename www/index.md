@@ -136,6 +136,14 @@ With NetBeans, add line in your code:
      
 # <a name="praise"></a>moosh praise
 
+> _Moosh saved me A LOT of time during a migration of a Moodle system, 
+> specifically the backup command that creates the backup file 
+> (have you ever tried to get the backup files from the moodledata? I did. 
+> Survived, but hell of a nightmare)._
+>
+> Daniele Pignedoli
+
+<br />
 
 > _Fan-effing-tastic! Thank you. I've used Drush and it is so incredibly
 > helpful. I just got this running on win 2k8 (not my choice) and it is
