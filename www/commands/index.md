@@ -610,6 +610,20 @@ Example 2: Enable self enrolment on a course with an enrolment key
 
     moosh course-enableselfenrol --key "an example enrolment key" 3
 
+course-info
+----------------------
+
+Shows basic information about given course ID.
+This command will also clear course cache, to measure how much time the cache rebuild takes.
+
+Example 1: Show statistics for course ID 2.
+
+    moosh course-info 2  
+
+Example 2: Show statistics for course ID 2 - display in CSV format.
+
+    moosh course-info -c 2  
+
 
 course-list
 ----------------------
@@ -740,6 +754,20 @@ Provides information on size of dataroot directory, dataroot/filedir subdirector
 
     moosh data-stats
 
+db-stats
+----------
+
+Shows the total size of the Moodle database and the biggest tables.
+With -H or -j options the sizes will be shown in bytes (ie "286720" instead of "280KB").
+
+Example 1: Show me basic database statistics, formatted for human consumption. 
+
+    moosh db-stats
+
+Example 2: Database statistics in JSON format. 
+
+    moosh db-stats -j
+    
 debug-off
 ---------
 
@@ -753,6 +781,15 @@ debug-on
 Turns on full debug - all the options in debugging section of the settings plus enables theme designer mode.
 
     moosh debug-on
+
+delete-missingplugins
+---------------------
+
+Uninstalls all plugins that are "missing" (PLUGIN_STATUS_MISSING) - meaning there is no source code for them.
+Running this command will delete database tables - destroying any data that may have been stored in plugin. 
+
+    moosh delete-missingplugins
+
 
 dev-versionbump
 ---------------

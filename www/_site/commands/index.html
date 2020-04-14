@@ -754,6 +754,22 @@ Use -i for providing username IDs.  Optionally add -S and -E to define start and
 <pre><code>moosh course-enableselfenrol --key "an example enrolment key" 3
 </code></pre>
 
+<a name="course-info"></a>
+<h2>course-info</h2>
+
+<p>Shows basic information about given course ID.
+This command will also clear course cache, to measure how much time the cache rebuild takes.</p>
+
+<p>Example 1: Show statistics for course ID 2.</p>
+
+<pre><code>moosh course-info 2  
+</code></pre>
+
+<p>Example 2: Show statistics for course ID 2 - display in CSV format.</p>
+
+<pre><code>moosh course-info -c 2  
+</code></pre>
+
 <a name="course-list"></a>
 <h2>course-list</h2>
 
@@ -894,6 +910,22 @@ There are also quite a few options that modify the behaviour - see <code>moosh c
 <pre><code>moosh data-stats
 </code></pre>
 
+<a name="db-stats"></a>
+<h2>db-stats</h2>
+
+<p>Shows the total size of the Moodle database and the biggest tables.
+With -H or -j options the sizes will be shown in bytes (ie "286720" instead of "280KB").</p>
+
+<p>Example 1: Show me basic database statistics, formatted for human consumption.</p>
+
+<pre><code>moosh db-stats
+</code></pre>
+
+<p>Example 2: Database statistics in JSON format.</p>
+
+<pre><code>moosh db-stats -j
+</code></pre>
+
 <a name="debug-off"></a>
 <h2>debug-off</h2>
 
@@ -908,6 +940,15 @@ There are also quite a few options that modify the behaviour - see <code>moosh c
 <p>Turns on full debug - all the options in debugging section of the settings plus enables theme designer mode.</p>
 
 <pre><code>moosh debug-on
+</code></pre>
+
+<a name="delete-missingplugins"></a>
+<h2>delete-missingplugins</h2>
+
+<p>Uninstalls all plugins that are "missing" (PLUGIN_STATUS_MISSING) - meaning there is no source code for them.
+Running this command will delete database tables - destroying any data that may have been stored in plugin.</p>
+
+<pre><code>moosh delete-missingplugins
 </code></pre>
 
 <a name="dev-versionbump"></a>
