@@ -329,6 +329,27 @@ The command works by extracting files like users.xml, gradebook.xml, course/logs
 <pre><code>moosh backup-info backup-moodle2-course-2-course1-20200405-1947.mbz
 </code></pre>
 
+<a name="base-path"></a>
+<h2>base-path</h2>
+
+<p>For a given path/file inside Moodle plugin, the command returns initial directories that are a base directory for that plugin.
+The path can be provided as a single argument or read from standard input.</p>
+
+<p>Example 1. Displays mod/choice.</p>
+
+<pre><code>moosh base-path mod/choice/index.php
+</code></pre>
+
+<p>Example 2. Displays theme/boost.</p>
+
+<pre><code>moosh base-path theme/boost/pix/mod/quiz/whitecircle.png
+</code></pre>
+
+<p>Example 3. Like above but using stdin.</p>
+
+<pre><code>echo theme/boost/pix/mod/quiz/whitecircle.png | moosh base-path
+</code></pre>
+
 <a name="block-add"></a>
 <h2>block-add</h2>
 
@@ -1656,7 +1677,7 @@ context 754 and info 'New Year'.</p>
 
 <p>Get information about concurrent users online.</p>
 
-<p>Use: -f and -t with date in either YYYYMMDD or YYYY-MM-DD date. Add -p te specify period.</p>
+<p>Use: -f and -t with date in either YYYYMMDD or YYYY-MM-DD date. Add -p to specify period.</p>
 
 <p>Example 1: Get concurrent users between 20-01-2014 and 27-01-2014 with 30 minut periods.</p>
 
@@ -1697,6 +1718,29 @@ the command creates and then backes up an empty course with short name "moosh001
 <p>Example 2: Delete role id 10.</p>
 
 <pre><code>moosh role-delete -i 10
+</code></pre>
+
+<a name="role-list"></a>
+<h2>role-list</h2>
+
+<p>Get list of roles</p>
+
+<p>Example 1: Get roles with id, shortname and name.</p>
+
+<pre><code>moosh role-list
+</code></pre>
+
+<p>Result:</p>
+
+<pre><code>|   ID |Shortname                      |Name                           |
+|    1 |manager                        | Manager                       |
+|    2 |coursecreator                  | Course creator                |
+|    3 |editingteacher                 | Teacher                       |
+|    4 |teacher                        | Non-editing teacher           |
+|    5 |student                        | Student                       |
+|    6 |guest                          | Guest                         |
+|    7 |user                           | Authenticated user            |
+|    8 |frontpage                      |                               |
 </code></pre>
 
 <a name="role-reset"></a>
@@ -1816,6 +1860,36 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 <p>Example 2: specify a target theme name if you want to transfer settings to a different (but compatible) theme</p>
 
 <pre><code>moosh theme-settings-import --targettheme boostfork boost_settings_1558197087.tar.gz
+</code></pre>
+
+<a name="user-assign-system-role"></a>
+<h2>user-assign-system-role</h2>
+
+<p>Assign system role to user.</p>
+
+<p>Example 1: assign "manager" role for "testuser"</p>
+
+<pre><code>moosh user-assign-system-role testuser manager
+</code></pre>
+
+<p>Example 1: assign "coursecreator" role for "testuser2"</p>
+
+<pre><code>moosh user-assign-system-role testuser2 coursecreator
+</code></pre>
+
+<a name="user-unassign-system-role"></a>
+<h2>user-unassign-system-role</h2>
+
+<p>Unassign system role to user.</p>
+
+<p>Example 1: unassign "manager" role for "testuser"</p>
+
+<pre><code>moosh user-unassign-system-role testuser manager
+</code></pre>
+
+<p>Example 1: unassign "coursecreator" role for "testuser2"</p>
+
+<pre><code>moosh user-unassign-system-role testuser2 coursecreator
 </code></pre>
 
 <a name="user-create"></a>
@@ -1974,12 +2048,12 @@ Image filename can be mapped to user ID, idnumber or username database field. Su
           <div class="bs-sidebar hidden-print">
             <ul class="nav bs-sidenav accordion">
             <li></li>
-                <p>Moodle development book:</p>
-                <a href="https://leanpub.com/moodle"><img class="img-responsive book above-index" src="/images/book.jpg" /></a>
+
 
                 <h4 class="short-navbar-title">command index</h4>
                 <ol class="short-navbar list-unstyled"></ol>
-             
+                <p>Moodle development book:</p>
+                <a href="https://leanpub.com/moodle"><img class="img-responsive book above-index" src="/images/book.jpg" /></a>
             </ul>
           </div>
         </div>

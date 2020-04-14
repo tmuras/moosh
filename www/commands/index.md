@@ -227,6 +227,24 @@ Example 1. Display basic stats about backup-moodle2-course-2-course1-20200405-19
 
     moosh backup-info backup-moodle2-course-2-course1-20200405-1947.mbz
 
+base-path
+---------
+
+For a given path/file inside Moodle plugin, the command returns initial directories that are a base directory for that plugin.
+The path can be provided as a single argument or read from standard input. 
+
+Example 1. Displays mod/choice.
+
+    moosh base-path mod/choice/index.php
+
+Example 2. Displays theme/boost.
+
+    moosh base-path theme/boost/pix/mod/quiz/whitecircle.png
+
+Example 3. Like above but using stdin.
+
+    echo theme/boost/pix/mod/quiz/whitecircle.png | moosh base-path
+
 block-add
 ---------------
 
@@ -1428,7 +1446,7 @@ report-concurrency
 
 Get information about concurrent users online.
 
-Use: -f and -t with date in either YYYYMMDD or YYYY-MM-DD date. Add -p te specify period.
+Use: -f and -t with date in either YYYYMMDD or YYYY-MM-DD date. Add -p to specify period.
 
 Example 1: Get concurrent users between 20-01-2014 and 27-01-2014 with 30 minut periods.
 
@@ -1465,6 +1483,27 @@ Example 1: Delete role "newstudentrole"
 Example 2: Delete role id 10.
 
     moosh role-delete -i 10
+
+
+role-list
+-----------
+Get list of roles
+
+Example 1: Get roles with id, shortname and name.
+
+    moosh role-list
+
+Result:
+
+    |   ID |Shortname                      |Name                           |
+    |    1 |manager                        | Manager                       |
+    |    2 |coursecreator                  | Course creator                |
+    |    3 |editingteacher                 | Teacher                       |
+    |    4 |teacher                        | Non-editing teacher           |
+    |    5 |student                        | Student                       |
+    |    6 |guest                          | Guest                         |
+    |    7 |user                           | Authenticated user            |
+    |    8 |frontpage                      |                               |
 
 
 role-reset
@@ -1574,6 +1613,30 @@ Example 1: give the name of the exported file
 Example 2: specify a target theme name if you want to transfer settings to a different (but compatible) theme
 
     moosh theme-settings-import --targettheme boostfork boost_settings_1558197087.tar.gz
+
+user-assign-system-role
+-----------
+Assign system role to user.
+
+Example 1: assign "manager" role for "testuser"
+    
+    moosh user-assign-system-role testuser manager
+    
+Example 1: assign "coursecreator" role for "testuser2"
+    
+    moosh user-assign-system-role testuser2 coursecreator
+    
+user-unassign-system-role
+-----------
+Unassign system role to user.
+
+Example 1: unassign "manager" role for "testuser"
+    
+    moosh user-unassign-system-role testuser manager
+    
+Example 1: unassign "coursecreator" role for "testuser2"
+    
+    moosh user-unassign-system-role testuser2 coursecreator
 
 user-create
 -----------
