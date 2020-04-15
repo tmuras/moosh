@@ -951,6 +951,26 @@ Running this command will delete database tables - destroying any data that may 
 <pre><code>moosh delete-missingplugins
 </code></pre>
 
+<a name="dev-langusage"></a>
+<h2>dev-langusage</h2>
+
+<p>The command parses PHP file given as an argument. If the argument points to directory,
+then all the .php files inside it ae parsed.
+A parser will look for the use of language strings, that is calls to get_string(), print_string(), string_for_js().
+It then checks if the string is known by the string_manager - that is, if the sting is listed in the lang file.
+With -l / --lang flag you may include and check against any lang file.</p>
+
+<p>Example 1: Check if strings used in mod/book exist in the lang file.
+Show only the ones missing (if any).</p>
+
+<pre><code>moosh dev-langusage mod/book | grep missing
+</code></pre>
+
+<p>Example 2: Check if "mod_book" component strings used in mod/book are defined in the lang file.</p>
+
+<pre><code>moosh dev-langusage -c mod_book mod/book
+</code></pre>
+
 <a name="dev-versionbump"></a>
 <h2>dev-versionbump</h2>
 
