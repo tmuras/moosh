@@ -904,6 +904,22 @@ Example 4: Remove all automated backups and reclaim the space
     moosh file-list -i 'component="backup" AND filearea="automated"' | moosh file-delete -s
     moosh file-delete --flush
 
+file-hash-delete
+----------------
+
+Delete files that match given hash from the dababase (mdl_files).
+
+Example:
+
+    moosh file-hash-delete 5f8e911d0da441e36f47c5c46f4393269211ca56
+    
+Resuls:
+
+    There is: 1 results of this hash. 
+    Successfully deleted files.
+    File ID: 1, contenthash: 5f8e911d0da441e36f47c5c46f4393269211ca56, itemid: 0, component: assignfeedback_editpdf, filearea: stamps, filename: smile.png
+
+
 file-list
 ---------
 
@@ -1345,6 +1361,31 @@ Example 1: Show all plugin types.
 
     moosh info-plugins
 
+lang-compare
+------------
+
+Compare 2 Moodle language files and lists the difference in strings (keys) between them.
+It does not compare the translations (values).
+
+Example: 
+
+    moosh.php lang-compare book.php book2.php
+    
+Result:
+
+    Comparing book.php and book2.php. Summary:
+    Number of strings in book.php: 72
+    Number of strings in book2.php: 72
+    Number of strings missing in book2.php: 1
+    Number of strings missing in book.php: 1
+
+    List of language strings that exist in book.php but are not present in book2.php
+    pluginname
+
+    List of language strings that exist in book2.php but are not present in book.php
+    pluginname2
+
+
 languages-update
 ----------------
 
@@ -1688,6 +1729,16 @@ Example 2: specify a target theme name if you want to transfer settings to a dif
 
     moosh theme-settings-import --targettheme boostfork boost_settings_1558197087.tar.gz
 
+top
+---
+
+Display the latest entries from the log table mdl_logstore_standard_log.
+If combined with "watch" command, it will imitate the poor man's "top" utility.
+
+Example:
+
+    watch moosh top
+ 
 user-assign-system-role
 -----------------------
 

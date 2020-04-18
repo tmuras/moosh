@@ -1075,6 +1075,23 @@ This command will find any extra files in "filedir".</p>
 moosh file-delete --flush
 </code></pre>
 
+<a name="file-hash-delete"></a>
+<h2>file-hash-delete</h2>
+
+<p>Delete files that match given hash from the dababase (mdl_files).</p>
+
+<p>Example:</p>
+
+<pre><code>moosh file-hash-delete 5f8e911d0da441e36f47c5c46f4393269211ca56
+</code></pre>
+
+<p>Resuls:</p>
+
+<pre><code>There is: 1 results of this hash. 
+Successfully deleted files.
+File ID: 1, contenthash: 5f8e911d0da441e36f47c5c46f4393269211ca56, itemid: 0, component: assignfeedback_editpdf, filearea: stamps, filename: smile.png
+</code></pre>
+
 <a name="file-list"></a>
 <h2>file-list</h2>
 
@@ -1571,6 +1588,32 @@ necessary.</p>
 <pre><code>moosh info-plugins
 </code></pre>
 
+<a name="lang-compare"></a>
+<h2>lang-compare</h2>
+
+<p>Compare 2 Moodle language files and lists the difference in strings (keys) between them.
+It does not compare the translations (values).</p>
+
+<p>Example:</p>
+
+<pre><code>moosh.php lang-compare book.php book2.php
+</code></pre>
+
+<p>Result:</p>
+
+<pre><code>Comparing book.php and book2.php. Summary:
+Number of strings in book.php: 72
+Number of strings in book2.php: 72
+Number of strings missing in book2.php: 1
+Number of strings missing in book.php: 1
+
+List of language strings that exist in book.php but are not present in book2.php
+pluginname
+
+List of language strings that exist in book2.php but are not present in book.php
+pluginname2
+</code></pre>
+
 <a name="languages-update"></a>
 <h2>languages-update</h2>
 
@@ -1942,6 +1985,17 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 <p>Example 2: specify a target theme name if you want to transfer settings to a different (but compatible) theme</p>
 
 <pre><code>moosh theme-settings-import --targettheme boostfork boost_settings_1558197087.tar.gz
+</code></pre>
+
+<a name="top"></a>
+<h2>top</h2>
+
+<p>Display the latest entries from the log table mdl_logstore_standard_log.
+If combined with "watch" command, it will imitate the poor man's "top" utility.</p>
+
+<p>Example:</p>
+
+<pre><code>watch moosh top
 </code></pre>
 
 <a name="user-assign-system-role"></a>
