@@ -1013,6 +1013,24 @@ moosh dev-versionbump
 <pre><code>moosh event-list
 </code></pre>
 
+<a name="file-check"></a>
+<h2>file-check</h2>
+
+<p>For each file entry in the database, check that the file exists in moodledata (in filedir).
+With --stop <number> stop the search after number of missing files found.</p>
+
+<p>Example:</p>
+
+<pre><code>moosh file-check -s 1
+</code></pre>
+
+<p>Result:</p>
+
+<pre><code>Missing /opt/data/filedir/5f/8e/5f8e911d0da441e36f47c5c46f4393269211ca56
+assignfeedback_editpdf / stamps "smile.png" 2019-08-25 15:43 / 2019-08-25 15:43
+Found 1 missing files, not searching anymore. Set -s 0 option to disable the limit.
+</code></pre>
+
 <a name="file-datacheck"></a>
 <h2>file-datacheck</h2>
 
@@ -1024,7 +1042,8 @@ moosh dev-versionbump
 <a name="file-dbcheck"></a>
 <h2>file-dbcheck</h2>
 
-<p>Check that all files recorder in the DB do exist in Moodle data directory.</p>
+<p>For each file in moodledata, check that there is an entry in the Moodle DB.
+This command will find any extra files in "filedir".</p>
 
 <pre><code>moosh file-dbcheck
 </code></pre>

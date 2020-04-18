@@ -847,6 +847,22 @@ List all events available in current Moodle installation.
 
     moosh event-list
 
+file-check
+------------
+
+For each file entry in the database, check that the file exists in moodledata (in filedir).
+With --stop <number> stop the search after number of missing files found. 
+
+Example:
+
+    moosh file-check -s 1
+    
+Result:
+
+    Missing /opt/data/filedir/5f/8e/5f8e911d0da441e36f47c5c46f4393269211ca56
+    assignfeedback_editpdf / stamps "smile.png" 2019-08-25 15:43 / 2019-08-25 15:43
+    Found 1 missing files, not searching anymore. Set -s 0 option to disable the limit.
+
 
 file-datacheck
 --------------
@@ -859,7 +875,8 @@ Go through all files in Moodle data and check them for corruption. The check is 
 file-dbcheck
 ------------
 
-Check that all files recorder in the DB do exist in Moodle data directory.
+For each file in moodledata, check that there is an entry in the Moodle DB.
+This command will find any extra files in "filedir".
 
     moosh file-dbcheck
 
