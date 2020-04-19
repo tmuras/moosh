@@ -1751,19 +1751,6 @@ Example 1: assign "manager" role for "testuser"
 Example 1: assign "coursecreator" role for "testuser2"
     
     moosh user-assign-system-role testuser2 coursecreator
-    
-user-unassign-system-role
--------------------------
-
-Unassign system role to user.
-
-Example 1: unassign "manager" role for "testuser"
-    
-    moosh user-unassign-system-role testuser manager
-    
-Example 1: unassign "coursecreator" role for "testuser2"
-    
-    moosh user-unassign-system-role testuser2 coursecreator
 
 user-create
 -----------
@@ -1855,7 +1842,24 @@ Example 4: list teachers enrolled in course id 2 that never accessed that course
 
     moosh user-list --course 2 --course-role editingteacher --course-inactive
 
+user-login
+----------
 
+Logs given user in and return the session cookie.
+This can then be used in another HTTP call to impersonate that user. 
+It is important that you run moosh as correct www user.
+If you run it as another user than your web server, then the server may not be able 
+to read session file and you will see the error: 
+
+    error/An error occurred whilst communicating with the server 
+
+Example: login as student1 and fetch his dashboard page.
+
+    $ moosh.php user-login student1
+    MoodleSession:h6v2l11946ne16tejogs55vhcn
+    $ curl -b 'MoodleSession=h6v2l11946ne16tejogs55vhcn' http://localhost/vanilla37/my/index.php
+    
+    
 user-mod
 --------
 
@@ -1884,6 +1888,19 @@ Example 5: set user as global super user
 Example 6: change admin's password while ignoring password's policy
 
     moosh user-mod --ignorepolicy --password weakpassword admin
+
+user-unassign-system-role
+-------------------------
+
+Unassign system role to user.
+
+Example 1: unassign "manager" role for "testuser"
+    
+    moosh user-unassign-system-role testuser manager
+    
+Example 1: unassign "coursecreator" role for "testuser2"
+    
+    moosh user-unassign-system-role testuser2 coursecreator
 
 webservice-call
 ---------------

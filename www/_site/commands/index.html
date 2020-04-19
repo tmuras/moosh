@@ -2013,21 +2013,6 @@ If combined with "watch" command, it will imitate the poor man's "top" utility.<
 <pre><code>moosh user-assign-system-role testuser2 coursecreator
 </code></pre>
 
-<a name="user-unassign-system-role"></a>
-<h2>user-unassign-system-role</h2>
-
-<p>Unassign system role to user.</p>
-
-<p>Example 1: unassign "manager" role for "testuser"</p>
-
-<pre><code>moosh user-unassign-system-role testuser manager
-</code></pre>
-
-<p>Example 1: unassign "coursecreator" role for "testuser2"</p>
-
-<pre><code>moosh user-unassign-system-role testuser2 coursecreator
-</code></pre>
-
 <a name="user-create"></a>
 <h2>user-create</h2>
 
@@ -2132,6 +2117,25 @@ Image filename can be mapped to user ID, idnumber or username database field. Su
 <pre><code>moosh user-list --course 2 --course-role editingteacher --course-inactive
 </code></pre>
 
+<a name="user-login"></a>
+<h2>user-login</h2>
+
+<p>Logs given user in and return the session cookie.
+This can then be used in another HTTP call to impersonate that user.
+It is important that you run moosh as correct www user.
+If you run it as another user than your web server, then the server may not be able
+to read session file and you will see the error:</p>
+
+<pre><code>error/An error occurred whilst communicating with the server 
+</code></pre>
+
+<p>Example: login as student1 and fetch his dashboard page.</p>
+
+<pre><code>$ moosh.php user-login student1
+MoodleSession:h6v2l11946ne16tejogs55vhcn
+$ curl -b 'MoodleSession=h6v2l11946ne16tejogs55vhcn' http://localhost/vanilla37/my/index.php
+</code></pre>
+
 <a name="user-mod"></a>
 <h2>user-mod</h2>
 
@@ -2165,6 +2169,21 @@ Image filename can be mapped to user ID, idnumber or username database field. Su
 <p>Example 6: change admin's password while ignoring password's policy</p>
 
 <pre><code>moosh user-mod --ignorepolicy --password weakpassword admin
+</code></pre>
+
+<a name="user-unassign-system-role"></a>
+<h2>user-unassign-system-role</h2>
+
+<p>Unassign system role to user.</p>
+
+<p>Example 1: unassign "manager" role for "testuser"</p>
+
+<pre><code>moosh user-unassign-system-role testuser manager
+</code></pre>
+
+<p>Example 1: unassign "coursecreator" role for "testuser2"</p>
+
+<pre><code>moosh user-unassign-system-role testuser2 coursecreator
 </code></pre>
 
 <a name="webservice-call"></a>
