@@ -1902,6 +1902,25 @@ Example 1: unassign "coursecreator" role for "testuser2"
     
     moosh user-unassign-system-role testuser2 coursecreator
 
+userprofilefields-export
+------------------------
+
+Export the definition of the defined user profile fields to CSV file
+named by default "user_profile_fields.csv".
+
+Example:
+
+    moosh userprofilefields-export
+
+userprofilefields-import
+------------------------
+
+Import user profile fields defined in given CSV file.
+
+Example: import user profie fields from user_profile_fields.csv
+ 
+    moosh userprofilefields-import user_profile_fields.csv
+
 webservice-call
 ---------------
 
