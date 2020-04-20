@@ -1637,7 +1637,7 @@ function make_upload_directory($directory, $exceptiononerror = true) {
  * @param   bool    $forcecreate Force creation of a new parent directory
  * @return  string  Returns full path to directory if successful, false if not; may throw exception
  */
-function get_request_storage_directory($exceptiononerror = true, bool $forcecreate = false) {
+function get_request_storage_directory($exceptiononerror = true, $forcecreate = false) {
     global $CFG;
 
     static $requestdir = null;
