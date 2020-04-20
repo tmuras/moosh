@@ -138,29 +138,46 @@ class PerfAnalyse extends MooshCommand
         $this->save_csv('top5-requests-per-hour.csv', [$header], $top5hourscombined);
 
         // Scripts by the database usage - which cause the most reads / writes.
-        $top5 = $this->get_by_metric("SUM(db_queries_time)", 5);
-        $top5calc = [];
+        $top5dbqueries = $this->get_by_metric("SUM(db_queries_time)", 5);
+        $top5dbqueriescalc = [];
         echo "Top 5 scripts by the sum of DB queries time:\n";
-        foreach ($top5 as $topscript) {
+        foreach ($top5dbqueries as $topscript) {
             echo "\t" . $topscript->script . "\t" . $topscript->total . "\n";
 
             // Analyze single script in given $fromdate - $todate time frame.
-            $top5calc[] = $this->script_analyse($topscript->script, "SUM(db_queries_time)");
+            $top5dbqueriescalc[] = $this->script_analyse($topscript->script, "SUM(db_queries_time)");
         }
 
         // Number of requests per hour in one graph - 5 top scripts + the rest.
-        $hoursindex = $top5calc[0]->get_hours();
+        $hoursindex = $top5dbqueriescalc[0]->get_hours();
         $top5hours = [];
-        foreach ($top5calc as $topcalc) {
+        foreach ($top5dbqueriescalc as $topcalc) {
             $top5hours[] = $topcalc->get_hours();
         }
         $top5hourscombined = self::combine_arrays($top5hours, 'sum');
         $header = [];
-        foreach ($top5 as $topscript) {
+        foreach ($top5dbqueries as $topscript) {
             $header[] = $topscript->script;
         }
         $header = array_merge(['date'], $header);
         $this->save_csv('top5-db-query-time-per-hour.csv', [$header], $top5hourscombined);
+
+        // Save each of the top 5 scripts with no of requests and DB usage columns.
+        // If they happen to be in both top 5 categories.
+        // Combine $top5calc and $top5dbqueriescalc.
+        $topall = [];
+        foreach ($top5 as $topcount) {
+            if (!isset($topall[$topcount->script])) {
+                $topall[$topcount->script] = ['header' => []];
+            }
+            $topall[$topcount->script];
+        }
+        foreach ($top5dbqueries as $topdb) {
+            $topall[$topdb->script] = true;
+        }
+
+        var_dump($topall);
+        $header = [];
 
         // Scripts by the CPU usage.
 
