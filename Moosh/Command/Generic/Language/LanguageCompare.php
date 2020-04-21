@@ -50,8 +50,10 @@ class LanguageCompare extends MooshCommand
         echo "Number of strings missing in $file1: " . count($notin1) . "\n";
 
         if(count($notin2)) {
+            echo "\n";
             echo "List of language strings that exist in $file1 but are not present in $file2\n";
             echo implode("\n", array_keys($notin2));
+            echo "\n\n";
         }
         if(count($notin1)) {
             echo "List of language strings that exist in $file2 but are not present in $file1\n";

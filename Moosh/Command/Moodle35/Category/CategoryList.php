@@ -16,6 +16,7 @@ class CategoryList extends MooshCommand
         parent::__construct('list', 'category');
 
         $this->addArgument('search');
+        $this->addOption('o|output:', 'output format: tab, csv, min-width-15 (space padded)', 'min-width-15');
 
         $this->minArguments = 0;
         $this->maxArguments = 255;
@@ -35,32 +36,65 @@ class CategoryList extends MooshCommand
             $this->expandOptionsManually(array($argument));
             $options = $this->expandedOptions;
 
-            $sql = "SELECT id,name,idnumber,description,parent FROM {course_categories} WHERE " . $DB->sql_like('name', ':catname', false);
+            $sql = "SELECT id,name,idnumber,description,parent,visible FROM {course_categories} WHERE " . $DB->sql_like('name', ':catname', false);
             $categories = $DB->get_records_sql($sql, array('catname' => "%$argument%"));
+        }
 
-            $outputheader = $outputcontent = "";
-            $doheader = 0;
-            foreach ($categories as $category) {
-                foreach ($category as $field => $value ) {
-                    if ($doheader == 0) {
-                        $outputheader .= str_pad ($field, 15);
-                    }
-                    if ($field == "parent" && $value > 0 ) {
-                        $value = $this->get_parent($value);
-                    } elseif($field == "parent") {
-                        $value = "Top";
-                    }
+        $this->display_categories($categories);
+    }
 
-                    $outputcontent.= str_pad ($value, 15);
+    private function display_categories($categories) {
+        $options = $this->expandedOptions;
+
+        $outputheader = $outputcontent = "";
+        $doheader = 0;
+        $header = array();
+        $output = array();
+        foreach ($categories as $category) {
+            $line = array();
+            foreach ($category as $field => $value ) {
+                if ($doheader == 0) {
+                    $header[] = $field;
+                    // $outputheader .= str_pad ($field, 15);
                 }
-                $outputcontent .= "\n";
-                $doheader++;
+                if ($field == "parent" && $value > 0 ) {
+                    $value = $this->get_parent($value);
+                } elseif($field == "parent") {
+                    $value = "Top";
+                }
+                $line[] = $value;
+                // $outputcontent.= str_pad ($value, 15);
             }
-            echo $outputheader . "\n";
-            echo $outputcontent;
+            $output[] = $line;
+            // $outputcontent .= "\n";
+            $doheader++;
+        }
 
+        array_unshift($output, $header);
+        // echo $outputheader . "\n";
+        // echo $outputcontent;
+
+        foreach ($output as $line) {
+            if ($options['output'] == 'min-width-15') {
+
+                foreach ($line as $k => $l) {
+                    $line[$k] = str_pad ($l, 15);
+                }
+                echo implode('', $line) . "\n";
+
+            } elseif ($options['output'] == 'csv') {
+
+                foreach ($line as $k => $l) {
+                    $line[$k] = "\"$l\"";
+                }
+                echo implode(',', $line) . "\n";
+
+            } elseif ($options['output'] == 'tab') {
+                echo implode("\t", $line) . "\n";
+            }
         }
     }
+
     private function get_parent($id,$parentname = NULL) {
         global $DB;
 
@@ -76,4 +110,3 @@ class CategoryList extends MooshCommand
 
     }
 }
-

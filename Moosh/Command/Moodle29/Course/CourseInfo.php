@@ -121,7 +121,7 @@ class CourseInfo extends MooshCommand
         // Get users enrolled.
         $enrolledtotal = $DB->get_record_sql("SELECT COUNT(DISTINCT userid) AS c FROM {role_assignments} WHERE contextid = ? ", array($coursecontext->id));
         $this->enrolledtotal = $enrolledtotal->c;
-        $usersbyrole = $DB->get_records_sql("SELECT roleid, COUNT(*) AS c FROM {role_assignments} WHERE contextid = ?", array($coursecontext->id));
+        $usersbyrole = $DB->get_records_sql("SELECT roleid, COUNT(*) AS c FROM {role_assignments} WHERE contextid = ? GROUP BY roleid", array($coursecontext->id));
         foreach ($usersbyrole as $u) {
             if ($u->c > 0) {
                 $this->usersbyrole[$u->roleid] = $u->c;

@@ -6,6 +6,36 @@ layout: default
 FAQ
 ========
 
+<span class="anchor" id="bulf-restore"></span>
+Course bulk restore with moosh.
+------------------------
+
+Moosh does not have a command to restore more than one course at the time.
+
+Instead, you can create a simple bash script with each execution done separately, e.g.:
+
+    #!/bin/bash
+    moosh course-restore -e backup1.mbz 3
+    moosh course-restore -e backup2.mbz 3
+    ....
+    moosh course-restore -e backup800.mbz 3
+
+This is much easier approach: 
+
+ * You don't need to worry too much about any memory leaks - after each restore a new PHP process is started.
+ * If one restore dies, it does not affect the start of the following ones.
+
+I also put "date" command between each restore to have an idea about time each one took, e.g.:
+
+    #!/bin/bash
+    date
+    echo restoring backup1.mbz
+    moosh course-restore -e backup1.mbz 3
+    ....
+    date
+    echo restoring backup800.mbz
+    moosh course-restore -e backup800.mbz 3
+
 <span class="anchor" id="windows"></span>
 Does it run on Windows?
 ------------------------

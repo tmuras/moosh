@@ -1,35 +1,37 @@
 {% include header.html %}
-    <div class="container">
+    <!-- <div class="container"> -->
 
       <div class="row row-offcanvas row-offcanvas-right">
 
 
           <div class="col-xs-12 col-sm-9">
-          <div class="">
+          <!--<div class="">-->
             {{ content }}
-          </div>
+          <!--</div>-->
         </div>
 
-        <div class="col-md-3">
+        <div class="col-sm-3">
           <div class="bs-sidebar hidden-print">
             <ul class="nav bs-sidenav accordion">
             <li></li>
-                <p>Moodle development book:</p>
-                <a href="https://leanpub.com/moodle"><img src="/images/book.png" /></a>
 
-                <div class="short-navbar"></div>
-             
+
+                <h4 class="short-navbar-title">command index</h4>
+                <ol class="short-navbar list-unstyled"></ol>
+                <p>Moodle development book:</p>
+                <a href="https://leanpub.com/moodle"><img class="img-responsive book above-index" src="/images/book.jpg" /></a>
             </ul>
           </div>
         </div>
       </div>
 
-    </div>
+    <!--</div>-->
 {% include footer.html %}
 
 <script type="text/javascript">
     var strings = [];
-    $(".command-name").each(function() { strings.push($(this).text()) });
+    //$(".command-name").each(function() { strings.push($(this).text()) });
+    $("a[name] + h2").each(function() { strings.push($(this).text()) });
     var per_group = 8;
 
     var grouped = [];
@@ -47,7 +49,7 @@
         }
 
         console.log(last);
-        $('.short-navbar').append('<li><a data-toggle="collapse" data-parent="#accordion" href="#' + first + '-' + last + '">' + first + ' : ' + last + '</a><ul id="' + first + '-' + last + '" class="panel-collapse collapse">');
+        $('.short-navbar').append('<li><a data-toggle="collapse" data-parent="#accordion" href="#' + first + '-' + last + '">' + first + ' - ' + last + '</a><ul id="' + first + '-' + last + '" class="panel-collapse collapse">');
         for(var j=i; j<=max_in_group; j++) {
             $('#' + first + '-' + last).append('<li><a href="#' + strings[j] + '"">' + strings[j] + '</li>');
         }

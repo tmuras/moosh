@@ -45,7 +45,7 @@ class CourseCleanup extends MooshCommand
     {
         global $DB, $CFG;
 
-        $records = $DB->get_records_sql("SELECT c.module AS id,m.name FROM {course_modules} c JOIN mdl_modules m ON c.module=m.id WHERE course=? group by module", array($courseid));
+        $records = $DB->get_records_sql("SELECT c.module AS id,m.name FROM {course_modules} c JOIN {modules} m ON c.module=m.id WHERE course=? group by module", array($courseid));
 
         foreach($records as $record) {
             $sql = "SELECT id,intro FROM {{$record->name}} WHERE intro IS NOT NULL AND intro <> '' AND intro <> '<p></p>' AND course = ?";

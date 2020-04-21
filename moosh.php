@@ -22,7 +22,6 @@ if (file_exists(__DIR__ . '/Moosh')) {
 }
 
 $loader = require $moosh_dir . '/vendor/autoload.php';
-$loader->add('Moosh\\', $moosh_dir);
 $loader->add('DiffMatchPatch\\', $moosh_dir . '/vendor/yetanotherape/diff-match-patch/src');
 
 $options = array('debug' => true, 'optimizations' => 0);
@@ -37,7 +36,7 @@ use GetOptionKit\OptionCollection;
 @error_reporting(E_ALL | E_STRICT);
 @ini_set('display_errors', '1');
 
-define('MOOSH_VERSION', '0.30');
+define('MOOSH_VERSION', '0.31');
 define('MOODLE_INTERNAL', true);
 
 $appspecs = new OptionCollection;
@@ -206,27 +205,20 @@ $bootstrap_level = $subcommand->bootstrapLevel();
 if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE ) {
  // Do nothing really.
 } else if($bootstrap_level === MooshCommand::$BOOTSTRAP_DB_ONLY) {
-    class fake_string_manager {
-        function string_exists() {
-            return false;
-        }
-
-    }
-    function get_string_manager() {
-        return new fake_string_manager();
-    }
     // Manually retrieve the information from config.php
     // and create $DB object.
-    $config = NULL;
+    $config = [];
     if(!is_file('config.php')) {
         cli_error('config.php not found.');
     }
     exec("php -w config.php", $config);
-    if(!isset($config[1])) {
+    if (count($config) == 0) {
         cli_error("config.php does not look right to me.");
     }
-    $config = $config[1];
+    $config = implode("\n", $config);
+    $config = str_replace('<?php', '', $config);
     $config = str_replace('require_once', '//require_once', $config);
+
     eval($config);
     if(!isset($CFG)) {
         cli_error('After evaluating config.php, $CFG is not set');
@@ -234,8 +226,19 @@ if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE ) {
     $CFG->libdir = $moosh_dir .  "/includes/moodle/lib/";
     $CFG->debugdeveloper = false;
 
+    require_once($CFG->libdir . "/moodlelib.php");
+    require_once($CFG->libdir . "/weblib.php");
     require_once($CFG->libdir . "/setuplib.php");
     require_once($CFG->libdir . "/dmllib.php");
+
+    if(!class_exists('core_string_manager_standard')) {
+        class core_string_manager_standard {
+            function string_exists() {
+                return false;
+            }
+        }
+    }
+
     setup_DB();
 } else {
     if ($bootstrap_level == MooshCommand::$BOOTSTRAP_FULL_NOCLI) {

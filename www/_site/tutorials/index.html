@@ -24,11 +24,24 @@
       .fa-check {
 	color: #2ECC40;
       }
-      .anchor {
-        display: block;
-        height: 20px;
-        margin-top: 20px;
-        visibility: hidden;
+
+      a[name] + h2 {
+        padding-top: 4rem; // Prevent navbar hiding heading when linking to a #command-name
+      }
+
+      .bs-sidebar {
+        position: static;
+      }
+
+      @media (min-width: 769px) {
+        img.book.above-index {
+          max-height: calc(100vh - 50rem);
+        }
+
+        .bs-sidebar {
+          position: fixed;
+          max-width: 25%;
+        }
       }
     </style>
 
@@ -67,20 +80,22 @@
 
     <div class="container">
 
-<div class="container">
 
      <div class="row row-offcanvas row-offcanvas-right">
 
 
           <div class="col-xs-12 col-sm-9">
                <div class="">
-                    <h1>Tutorials</h1>
+                    <a name="Tutorials"></a>
+<h1>Tutorials</h1>
 
+<a name="Moodle.code.generation"></a>
 <h2>Moodle code generation</h2>
 
 <iframe width="560" height="315" src="//www.youtube.com/embed/pIaH3MDIZhU" frameborder="0" allowfullscreen></iframe>
 
 
+<a name="Getting.theme.information"></a>
 <h2>Getting theme information</h2>
 
 <iframe width="560" height="315" src="//www.youtube.com/embed/dXAFQOgoHfA" frameborder="0" allowfullscreen></iframe>
@@ -91,11 +106,10 @@
                </div>
           </div>
 
-          <div class="col-md-3">
+          <div class="col-sm-3">
                <div class="bs-sidebar hidden-print">
                          <p>Moodle development book:</p>
-                         <a href="https://leanpub.com/moodle"><img src="/images/book.png" /></a>
-
+                          <a href="https://leanpub.com/moodle"><img class="img-responsive book" src="/images/book.jpg" /></a>
                </div>
           </div>
      </div>

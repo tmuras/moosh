@@ -24,11 +24,24 @@
       .fa-check {
 	color: #2ECC40;
       }
-      .anchor {
-        display: block;
-        height: 20px;
-        margin-top: 20px;
-        visibility: hidden;
+
+      a[name] + h2 {
+        padding-top: 4rem; // Prevent navbar hiding heading when linking to a #command-name
+      }
+
+      .bs-sidebar {
+        position: static;
+      }
+
+      @media (min-width: 769px) {
+        img.book.above-index {
+          max-height: calc(100vh - 50rem);
+        }
+
+        .bs-sidebar {
+          position: fixed;
+          max-width: 25%;
+        }
       }
     </style>
 
@@ -67,14 +80,14 @@
 
     <div class="container">
 
-<div class="container">
 
      <div class="row row-offcanvas row-offcanvas-right">
 
 
           <div class="col-xs-12 col-sm-9">
                <div class="">
-                    <h1>Introduction</h1>
+                    <a name="Introduction"></a>
+<h1>Introduction</h1>
 
 <p>Moosh stands for MOOdle SHell. It is a commandline tool that will allow you to perform most common Moodle tasks. It's inspired by Drush - a similar tool for Drupal.
 moosh is licenced under GNU GPL v3 or any later.</p>
@@ -86,6 +99,7 @@ Here is for example how you can create 5 Moodle user accounts with moosh:</p>
 moosh user-create user_{1..5}
 </code></pre>
 
+<a name="Basic.usage"></a>
 <h1>Basic usage</h1>
 
 <p>Basically cd into your Moodle installation &amp; run moosh and one of the many commands it implements. Some (few) commands will work when not in Moodle directory - for example:</p>
@@ -115,12 +129,17 @@ user-mod
 
 <p>will execute command <code>course-backup</code> for user with name <code>testuser</code></p>
 
+<a name="Requirements"></a>
 <h1>Requirements</h1>
 
 <p>PHP 5.3+, Moodle 1.9, 2.2 or higher.</p>
 
-<h1><a name="installation"></a>Installation</h1>
+<a name="Installation"></a>
+<h1>Installation</h1>
 
+<p>Do not copy moosh files inside your Moodle installation as that may <a href="https://github.com/tmuras/moosh/issues/288">break behat</a>.</p>
+
+<a name="Installation.from.Ubuntu.package"></a>
 <h2>Installation from Ubuntu package</h2>
 
 <pre><code> sudo apt-add-repository 'deb http://ppa.launchpad.net/zabuch/ppa/ubuntu trusty main'
@@ -128,21 +147,14 @@ user-mod
  sudo apt-get install moosh
 </code></pre>
 
+<a name="Installation.from.Moodle.package"></a>
 <h2>Installation from Moodle package</h2>
 
-<p>Download moosh package from Moodle: https://moodle.org/plugins/view.php?id=522, unpack and cd into the directory.
-Follow "common steps" below.</p>
+<p>Download moosh package from Moodle: https://moodle.org/plugins/view.php?id=522.</p>
 
-<h2>Installation from Moodle git</h2>
+<p>Unpack somewhere in your system (but not inside Moodle's code).</p>
 
-<p>Install composer - see http://getcomposer.org/download .</p>
-
-<pre><code>git clone git://github.com/tmuras/moosh.git
-cd moosh
-composer install
-</code></pre>
-
-<h2>Common steps for Moodle package and git</h2>
+<p>cd into the directory.</p>
 
 <p>Link to a location that is set in your $PATH, eg:</p>
 
@@ -154,6 +166,27 @@ composer install
 <pre><code>sudo ln -s $PWD/moosh.php /usr/local/bin/moosh
 </code></pre>
 
+<a name="Installation.from.Moodle.git"></a>
+<h2>Installation from Moodle git</h2>
+
+<p>Install composer - see http://getcomposer.org/download .</p>
+
+<pre><code>git clone git://github.com/tmuras/moosh.git
+cd moosh
+composer install
+</code></pre>
+
+<p>Link to a location that is set in your $PATH, eg:</p>
+
+<pre><code>ln -s $PWD/moosh.php ~/bin/moosh
+</code></pre>
+
+<p>Or system-wide:</p>
+
+<pre><code>sudo ln -s $PWD/moosh.php /usr/local/bin/moosh
+</code></pre>
+
+<a name="xdotool.integration"></a>
 <h1>xdotool integration</h1>
 
 <p>You can automate some of the manual tasks (like refreshing browser page after adding a form) by using xdotool. First, install xdotool:</p>
@@ -174,6 +207,7 @@ $defaultOptions['global']['browser_string'] = 'Mozilla Firefox';
 
 <p><span class="anchor" id="cfg-auto-completion"></span></p>
 
+<a name="L.CFG.auto-completion"></a>
 <h1>$CFG auto-completion</h1>
 
 <p>You can use moosh to generate fake class moodle_config which will contain public properties extracted from your current
@@ -200,7 +234,17 @@ $defaultOptions['global']['browser_string'] = 'Mozilla Firefox';
 
 <p><img src="/images/cfg_autocompletion_netbeans.png" alt="$CFG autocompletion in PHP Storm" /></p>
 
+<a name="L.a.name..praise....a.moosh.praise"></a>
 <h1><a name="praise"></a>moosh praise</h1>
+
+<blockquote><p><em>Moosh saved me A LOT of time during a migration of a Moodle system,
+specifically the backup command that creates the backup file
+(have you ever tried to get the backup files from the moodledata? I did.
+Survived, but hell of a nightmare).</em></p>
+
+<p>Daniele Pignedoli</p></blockquote>
+
+<p><br /></p>
 
 <blockquote><p><em>Fan-effing-tastic! Thank you. I've used Drush and it is so incredibly
 helpful. I just got this running on win 2k8 (not my choice) and it is
@@ -223,11 +267,10 @@ useful as hell. Thanks!</em></p>
                </div>
           </div>
 
-          <div class="col-md-3">
+          <div class="col-sm-3">
                <div class="bs-sidebar hidden-print">
                          <p>Moodle development book:</p>
-                         <a href="https://leanpub.com/moodle"><img src="/images/book.png" /></a>
-
+                          <a href="https://leanpub.com/moodle"><img class="img-responsive book" src="/images/book.jpg" /></a>
                </div>
           </div>
      </div>

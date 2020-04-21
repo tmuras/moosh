@@ -46,7 +46,10 @@ Requirements
 
 PHP 5.3+, Moodle 1.9, 2.2 or higher.
 
-# <a name="installation"></a>Installation
+Installation
+============
+
+Do not copy moosh files inside your Moodle installation as that may [break behat](https://github.com/tmuras/moosh/issues/288). 
 
 Installation from Ubuntu package
 --------------------------------
@@ -58,8 +61,19 @@ Installation from Ubuntu package
 Installation from Moodle package
 --------------------------------
 
-Download moosh package from Moodle: https://moodle.org/plugins/view.php?id=522, unpack and cd into the directory.
-Follow "common steps" below.
+Download moosh package from Moodle: https://moodle.org/plugins/view.php?id=522.
+
+Unpack somewhere in your system (but not inside Moodle's code).
+
+cd into the directory.
+
+Link to a location that is set in your $PATH, eg:
+
+    ln -s $PWD/moosh.php ~/bin/moosh
+
+Or system-wide:
+
+    sudo ln -s $PWD/moosh.php /usr/local/bin/moosh
 
 Installation from Moodle git
 ----------------------------
@@ -69,9 +83,6 @@ Install composer - see http://getcomposer.org/download .
     git clone git://github.com/tmuras/moosh.git
     cd moosh
     composer install
-
-Common steps for Moodle package and git
----------------------------------------
 
 Link to a location that is set in your $PATH, eg:
 
@@ -125,6 +136,14 @@ With NetBeans, add line in your code:
      
 # <a name="praise"></a>moosh praise
 
+> _Moosh saved me A LOT of time during a migration of a Moodle system, 
+> specifically the backup command that creates the backup file 
+> (have you ever tried to get the backup files from the moodledata? I did. 
+> Survived, but hell of a nightmare)._
+>
+> Daniele Pignedoli
+
+<br />
 
 > _Fan-effing-tastic! Thank you. I've used Drush and it is so incredibly
 > helpful. I just got this running on win 2k8 (not my choice) and it is
