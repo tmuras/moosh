@@ -2391,7 +2391,7 @@ function usertime($date, $timezone=99) {
  * @param string $format string (can be lang string) containing format chars: https://www.php.net/manual/en/dateinterval.format.php.
  * @return string the formatted string describing the time difference, e.g. '10d 11h 45m'.
  */
-function get_time_interval_string(int $time1, int $time2, string $format = ''): string {
+function get_time_interval_string($time1, $time2, $format = '') {
     $dtdate = new DateTime();
     $dtdate->setTimeStamp($time1);
     $dtdate2 = new DateTime();
