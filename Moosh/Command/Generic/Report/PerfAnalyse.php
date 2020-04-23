@@ -135,7 +135,7 @@ class PerfAnalyse extends MooshCommand
             $header[] = $topscript->script;
         }
         $header = array_merge(['date'], $header);
-        $this->save_csv('top5-requests-per-hour.csv', [$header], $top5hourscombined);
+        $this->save_csv('top5-requests-per-hour.csv', [[$header], $top5hourscombined]);
 
         // Scripts by the database usage - which cause the most reads / writes.
         $top5dbqueries = $this->get_by_metric("SUM(db_queries_time)", 5);
@@ -160,7 +160,7 @@ class PerfAnalyse extends MooshCommand
             $header[] = $topscript->script;
         }
         $header = array_merge(['date'], $header);
-        $this->save_csv('top5-db-query-time-per-hour.csv', [$header], $top5hourscombined);
+        $this->save_csv('top5-db-query-time-per-hour.csv', [[$header], $top5hourscombined]);
 
         // Save each of the top 5 scripts with no of requests and DB usage columns.
         // If they happen to be in both top 5 categories.
@@ -216,7 +216,7 @@ class PerfAnalyse extends MooshCommand
     /**
      * @param $metric
      */
-    private function get_by_metric($metric, int $top = 0)
+    private function get_by_metric($metric, $top = 0)
     {
         global $DB;
 
@@ -250,7 +250,7 @@ class PerfAnalyse extends MooshCommand
         return $merged;
     }
 
-    private function save_csv($name, ...$arrays)
+    private function save_csv($name, $arrays)
     {
         $filename = ltrim($name, '/');
         $filename = str_replace('/', '_', $filename);
