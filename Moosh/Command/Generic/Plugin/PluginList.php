@@ -46,38 +46,43 @@ class PluginList extends MooshCommand
             unlink($filepath);
             cli_error("Invalid JSON file, deleted $filepath. Run command again.");
         }
-        $fulllist = array();
-        foreach($data->plugins as $k=>$plugin) {
-            $highestpluginversion = 0;
+	$fulllist = array();
+
+	foreach($data->plugins as $k=>$plugin) {
             if (!$plugin->component) {
                 continue;
-            }
-            $fulllist[$plugin->component] = array('releases' => array(), 'latestversion' => "");
-            foreach ($plugin->versions as $v => $version) {
-                if ($version->version >= $highestpluginversion) {
-                    $highestpluginversion = $version->version;
-                    $fulllist[$plugin->component]['latestversion'] = $version;
+	    }
+		
+	    foreach($plugin->versions as $version){
 
-                    if($this->expandedOptions['versions']) {
-                        $fulllist[$plugin->component]['releases'][$version->version] = $version;
-                    } else {
-                        foreach ($version->supportedmoodles as $supportedmoodle) {
-                            $fulllist[$plugin->component]['releases'][$supportedmoodle->release] = $version;
-                        }
-                    }
-                }
-            }
-            $fulllist[$plugin->component]['url'] = $fulllist[$plugin->component]['latestversion']->downloadurl;
-        }
+	     	$fulllist[$plugin->component][$version->version] = array('url' => "", "supported" => array());
 
+		$fulllist[$plugin->component][$version->version]['url'] = $version->downloadurl;
+		$fulllist[$plugin->component][$version->version]['supported'] = $version->supportedmoodles;
+	    }
 
-        ksort($fulllist);
-        foreach($fulllist as $k => $plugin) {
-            $versions = array_keys($plugin['releases']);
-            sort($versions);
+	}
 
-            echo "$k," .implode(",",$versions) . ",".$plugin['url'] ."\n";
-        }
+	ksort($fulllist);
+	foreach($fulllist as $k=>$plugin) {
+		krsort($plugin);	
+		foreach($plugin as $key => $value) {
+			echo $k;
+			echo " ($key) ";
+			echo "[";
+			$first = true;
+			foreach($value['supported'] as $moodlesupport) {
+				if(!$first) {
+					echo ", ";
+				} 
+				echo $moodlesupport->release;
+				$first = false;
+			}
+			echo "] ";
+			echo $value['url'];
+			echo "\n";
+		}
+	}
     }
 
     public function bootstrapLevel()
