@@ -1664,7 +1664,7 @@ Example 2: Prevent "manager" role to be set on course level
 sql-cli
 -------
 
-Open a connection to the Moodle DB using credentials in config.php. Currently supports PostgreSQL and MySQL.
+Open a connection to the Moodle DB using credentials in config.php. Currently supports PostgreSQL, Cockroachdb, and MySQL.
 
 Example:
 
@@ -1674,7 +1674,7 @@ Example:
 sql-dump
 --------
 
-Dump Moodle DB to sql file. Works for PostgreSQL and MySQL.
+Dump Moodle DB to sql file. Works for PostgreSQL, Cockroachdb, and MySQL.
 
 Example 1: dump database to backup.sql file
 
