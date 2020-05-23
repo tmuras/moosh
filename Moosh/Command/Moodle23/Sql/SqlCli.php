@@ -42,6 +42,14 @@ class SqlCli extends MooshCommand
                 putenv("PGPASSWORD={$CFG->dbpass}");
                 $connstr = "psql -h {$CFG->dbhost} -U {$CFG->dbuser} {$portoption} {$CFG->dbname}";
                 break;
+            case 'cockroachdb':
+                $portoption = '';
+                if (!empty($CFG->dboptions['dbport'])) {
+                    $portoption = '--port ' . $CFG->dboptions['dbport'];
+                }
+                putenv("COCKROACH_USER={$CFG->dbuser}");
+                $connstr = "cockroach sql --insecure --host {$CFG->dbhost} {$portoption} -d {$CFG->dbname}";
+                break;
             default:
                 cli_error("Sorry, database type '$CFG->dbtype' is not supported yet.  Feel free to contribute!");
                 break;
