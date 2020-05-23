@@ -200,9 +200,9 @@ See <a href="https://moodle.org/mod/forum/discuss.php?d=368091">Moodle forum pos
 <a name="apache-parse-missing-files"></a>
 <h2>apache-parse-missing-files</h2>
 
-<p>Looks for missing files in apache log when moodle files are accessed and reports them</p>
+<p>Looks through apache access log for potentially missing files.</p>
 
-<p>Example 1. Parse file <code>apache.log</code> and search for missing files</p>
+<p>Example 1. Parse file <code>apache.log</code> and search for missing files.</p>
 
 <pre><code>moosh apache-parse-missing-files apache.log
 </code></pre>
@@ -501,6 +501,26 @@ moosh category-create -r CategoryABC
 <pre><code>moosh category-move 3 0
 </code></pre>
 
+<a name="category-resortcourses"></a>
+<h2>category-resortcourses</h2>
+
+<p>Sort courses and/or categories by fullname, shortname or idnumber.</p>
+
+<p>Example 1: Sort courses in category id 1 by idnumber.</p>
+
+<pre><code>moosh category-resortcourses 1 idnumber
+</code></pre>
+
+<p>Example 2: Sort courses and categories by shortname in category id 1 and all sub-categories below.</p>
+
+<pre><code>moosh category-resortcourses -r 1 shortname
+</code></pre>
+
+<p>Example 3: Sort courses by fullname in category id 1 and all sub-categories below. Do not change the ordering of categories.</p>
+
+<pre><code>moosh category-resortcourses -n -r 1 fullname
+</code></pre>
+
 <a name="chkdatadir"></a>
 <h2>chkdatadir</h2>
 
@@ -515,7 +535,7 @@ You usually want to run the check as the same user that runs web server.</p>
 <a name="code-check"></a>
 <h2>code-check</h2>
 
-<p>Checks files if they are compatible with moodle code standards</p>
+<p>Run Moodle code checker against the files.</p>
 
 <p>Example 1:</p>
 
@@ -905,7 +925,8 @@ There are also quite a few options that modify the behaviour - see <code>moosh c
 <a name="data-stats"></a>
 <h2>data-stats</h2>
 
-<p>Provides information on size of dataroot directory, dataroot/filedir subdirectory and total size of non-external files in moodle. Outpus data in json format when run using --json option.</p>
+<p>Provides information on size of dataroot directory, dataroot/filedir subdirectory and total size of non-external files in Moodle.
+Outputs data in json format when run using --json option.</p>
 
 <pre><code>moosh data-stats
 </code></pre>
@@ -1706,7 +1727,7 @@ moosh module-reinstall mod_book
 <pre><code>moosh plugin-install --release 20160101 mod_quickmail
 </code></pre>
 
-<p>Example 2: install the latest release supported by current moodle version</p>
+<p>Example 2: install the latest release supported by current Moodle version.</p>
 
 <pre><code>moosh plugin-install block_checklist
 </code></pre>
@@ -1915,7 +1936,7 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 <a name="sql-cli"></a>
 <h2>sql-cli</h2>
 
-<p>Open a connection to the Moodle DB using credentials in config.php. Currently supports PostgreSQL and MySQL.</p>
+<p>Open a connection to the Moodle DB using credentials in config.php. Currently supports PostgreSQL, Cockroachdb, and MySQL.</p>
 
 <p>Example:</p>
 
@@ -1925,7 +1946,7 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 <a name="sql-dump"></a>
 <h2>sql-dump</h2>
 
-<p>Dump Moodle DB to sql file. Works for PostgreSQL and MySQL.</p>
+<p>Dump Moodle DB to sql file. Works for PostgreSQL, Cockroachdb, and MySQL.</p>
 
 <p>Example 1: dump database to backup.sql file</p>
 
@@ -1967,7 +1988,7 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 <pre><code>moosh theme-settings-export
 </code></pre>
 
-<p>Example 2: run it anywhere within the moodle dir if you specify the theme name</p>
+<p>Example 2: run it anywhere within the Moodle dir if you specify the theme name</p>
 
 <pre><code>moosh theme-settings-export --themename boost
 </code></pre>

@@ -105,9 +105,9 @@ You can then parse resulting moodle.log file with moosh:
 apache-parse-missing-files
 --------------------------
 
-Looks for missing files in apache log when moodle files are accessed and reports them
+Looks through apache access log for potentially missing files.
 
-Example 1. Parse file `apache.log` and search for missing files
+Example 1. Parse file `apache.log` and search for missing files.
 
     moosh apache-parse-missing-files apache.log
 
@@ -384,6 +384,25 @@ Example 2: Make the category with id 3 a top-level category
 
     moosh category-move 3 0
 
+category-resortcourses
+----------------------
+
+Sort courses and/or categories by fullname, shortname or idnumber.
+
+
+Example 1: Sort courses in category id 1 by idnumber. 
+
+    moosh category-resortcourses 1 idnumber
+
+Example 2: Sort courses and categories by shortname in category id 1 and all sub-categories below. 
+
+    moosh category-resortcourses -r 1 shortname
+    
+Example 3: Sort courses by fullname in category id 1 and all sub-categories below. Do not change the ordering of categories. 
+
+    moosh category-resortcourses -n -r 1 fullname
+
+
 chkdatadir
 ----------
 
@@ -398,7 +417,7 @@ Example:
 code-check
 ----------
 
-Checks files if they are compatible with moodle code standards
+Run Moodle code checker against the files.
 
 Example 1:
 
@@ -750,7 +769,8 @@ Example 1: Unenrol users with id 7, 9, 12 and 16 from course with id 2.
 data-stats
 ----------
 
-Provides information on size of dataroot directory, dataroot/filedir subdirectory and total size of non-external files in moodle. Outpus data in json format when run using --json option.
+Provides information on size of dataroot directory, dataroot/filedir subdirectory and total size of non-external files in Moodle.
+Outputs data in json format when run using --json option.
 
     moosh data-stats
 
@@ -1472,7 +1492,7 @@ Example 1: install a specific version
 
     moosh plugin-install --release 20160101 mod_quickmail
 
-Example 2: install the latest release supported by current moodle version
+Example 2: install the latest release supported by current Moodle version.
 
     moosh plugin-install block_checklist
 
@@ -1712,7 +1732,7 @@ Example 1: run within a theme directory and it will know which theme you want
 
     moosh theme-settings-export
 
-Example 2: run it anywhere within the moodle dir if you specify the theme name
+Example 2: run it anywhere within the Moodle dir if you specify the theme name
 
     moosh theme-settings-export --themename boost
 

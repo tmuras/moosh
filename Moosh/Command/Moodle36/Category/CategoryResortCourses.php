@@ -24,6 +24,17 @@ class CategoryResortCourses extends MooshCommand
         $this->maxArguments = 2;
     }
 
+
+    protected function getArgumentsHelp() {
+        $ret = "\n\nARGUMENTS:";
+        $ret .= "\n\t";
+        $ret .= implode(' ', $this->argumentNames);
+        $ret .= "\n\n\tsort can be: fullname, shortname or idnumber";
+
+        return $ret;
+    }
+
+
     public function execute() {
         global $DB;
 
