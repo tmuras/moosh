@@ -426,6 +426,10 @@ class MooshCommand {
         if (!is_file($filepath)) {
             cli_error("'$filepath' is not a file");
         }
+        if (!is_readable($filepath)) {
+            cli_error("'$filepath' is not readable");
+        }
+
         return $filepath;
     }
 
