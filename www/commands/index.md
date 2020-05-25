@@ -755,6 +755,14 @@ Example 2: Restore backup.mbz into existing course with id=3
 
     moosh course-restore -e backup.mbz 3
 
+Example 3: Ignore pre-check warnings, like restoring backup from higher Moodle version.
+
+    moosh course-restore --ignore-warnings backup.mbz 1
+
+Example 4: Restore backup.mbz into existing course with id=3, overwrite course content.
+
+    moosh course-restore --overwrite backup.mbz 3
+
 course-unenrol
 --------------
 

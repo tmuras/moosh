@@ -912,6 +912,16 @@ There are also quite a few options that modify the behaviour - see <code>moosh c
 <pre><code>moosh course-restore -e backup.mbz 3
 </code></pre>
 
+<p>Example 3: Ignore pre-check warnings, like restoring backup from higher Moodle version.</p>
+
+<pre><code>moosh course-restore --ignore-warnings backup.mbz 1
+</code></pre>
+
+<p>Example 4: Restore backup.mbz into existing course with id=3, overwrite course content.</p>
+
+<pre><code>moosh course-restore --overwrite backup.mbz 3
+</code></pre>
+
 <a name="course-unenrol"></a>
 <h2>course-unenrol</h2>
 
