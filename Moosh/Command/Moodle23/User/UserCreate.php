@@ -2,7 +2,8 @@
 /**
  * moosh user-create [--password=<password> --email=<email>
  *                   --city=<city> --country=<CN>
- *                   --firstname=<firstname> --lastname=<lastname>]
+ *                   --firstname=<firstname> --lastname=<lastname>
+                     --department=<department> --institution=<institution>]
  *                   <username1> [<username2> ...]
  * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -25,6 +26,8 @@ class UserCreate extends MooshCommand
         $this->addOption('l|lastname:','last name');
         $this->addOption('i|idnumber:','idnumber');
         $this->addOption('d|digest:', 'mail digest type as int (0=No digest, 1=Complete, 2=Subjects)');
+        $this->addOption('I|institution:','institution');
+        $this->addOption('D|department:','department');
 
         $this->addArgument('username');
         $this->maxArguments = 255;
@@ -64,6 +67,8 @@ class UserCreate extends MooshCommand
             $user->firstname = $options['firstname'];
             $user->lastname = $options['lastname'];
             $user->idnumber = $options['idnumber'];
+            $user->institution = $options['institution'];
+            $user->department = $options['department'];
             $user->timecreated = time();
             $user->timemodified = $user->timecreated;
             $user->username = $argument;
