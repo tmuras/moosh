@@ -1879,7 +1879,7 @@ Example 1: create user "testuser" with the all default profile fields.
 
 Example 2: create user "testuser" with the all the optional values
 
-    moosh user-create --password pass --email me@example.com --digest 2 --city Szczecin --country PL --firstname "first name" --lastname name testuser
+    moosh user-create --password pass --email me@example.com --digest 2 --city Szczecin --country PL --institution "State University" --department "Technology" --firstname "first name" --lastname name testuser
 
 Example 3: use bash/zsh expansion to create 10 users
 
