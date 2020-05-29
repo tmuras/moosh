@@ -11,8 +11,7 @@ use Moosh\MooshCommand;
 
 class CourseCreate extends MooshCommand
 {
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct('create', 'course');
 
         $this->addOption('c|category:', 'category id');
@@ -23,43 +22,55 @@ class CourseCreate extends MooshCommand
         $this->addOption('i|idnumber:', 'id number');
         $this->addOption('v|visible:', 'visible (y or n, by default created visible)');
         $this->addOption('r|reuse', 'do not create new course if it a matching one already exists', false);
+        $this->addOption('N|newsitems:', 'the number of newsitems');
 
         $this->addArgument('shortname');
 
         $this->maxArguments = 255;
     }
 
-    public function execute()
-    {
+    public function execute() {
         global $CFG;
 
-        require_once $CFG->dirroot . '/course/lib.php';
+        require_once($CFG->dirroot . '/course/lib.php');
 
         foreach ($this->arguments as $argument) {
+
             $this->expandOptionsManually(array($argument));
             $options = $this->expandedOptions;
+
             $course = new \stdClass();
             $course->fullname = $options['fullname'];
             $course->shortname = $argument;
             $course->description = $options['description'];
+            $course->idnumber = $options['idnumber'];
+
             $format = $options['format'];
-            if(!$format){
-            	$format = get_config('moodlecourse', 'format');
+            if (!$format) {
+                $format = get_config('moodlecourse', 'format');
             }
             $course->format = $format;
+
             $numsections = $options['numsections'];
-            if(!$numsections){
-            	$numsections = get_config('moodlecourse', 'numsections');
+            if (!$numsections) {
+                $numsections = get_config('moodlecourse', 'numsections');
             }
             $course->numsections = $numsections;
-            $course->idnumber = $options['idnumber'];
+
+            $newsitems = $options['newsitems'];
+            if (!$newsitems || $newsitems > 10 || $newsitems < 0) {
+                $newsitems = get_config('moodlecourse', 'newsitems');
+            }
+            $course->newsitems = $newsitems;
+
             $visible = strtolower($options['visible']);
-            if($visible == 'n' || $visible == 'no' ){
-            	$visible = 0;
-            }else{
-            	$visible = 1;
+            if ($visible == 'n' || $visible == 'no' ) {
+                $visible = 0;
+            } else {
+                $visible = 1;
             }
             $course->visible = $visible;
+
             $course->category = $options['category'];
             $course->summary = '';
             $course->summaryformat = FORMAT_HTML;
@@ -68,7 +79,7 @@ class CourseCreate extends MooshCommand
             if ($options['reuse'] && $existing = $this->find_course($course)) {
                 $newcourse = $existing;
             } else {
-                //either use API create_course
+                // Either use API create_course.
                 $newcourse = create_course($course);
             }
 
@@ -76,8 +87,7 @@ class CourseCreate extends MooshCommand
         }
     }
 
-    public function find_course($course)
-    {
+    public function find_course($course) {
         global $DB;
         $params = array('shortname' => $course->shortname);
         foreach (array('category', 'fullname', 'format', 'idnumber') as $param) {

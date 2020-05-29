@@ -561,9 +561,9 @@ Example 2: Create new course
 
     moosh course-create --category 1 --fullname "full course name" --description "course description" --idnumber "course idnumber" shortname
 
-Example 3: Create new course with section format, number options
+Example 3: Create new course with section format, number sections and news items
 
-    moosh course-create --category 4 --format topics --numsections 2 test
+    moosh course-create --category 4 --format topics --numsections 2 --newsitems 8 test
 
 
 course-delete
