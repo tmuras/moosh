@@ -512,7 +512,7 @@ Example 2: Set URL to logo for Sky High theme.
 course-backup
 -------------
 
-Backup course with provided id.
+Backup course with provided id.  By default, logs and grade histories are excluded.
 
 Example 1: Backup course id=3 into default .mbz file in current directory:
 
@@ -521,6 +521,14 @@ Example 1: Backup course id=3 into default .mbz file in current directory:
 Example 2: Backup course id=3 and save it as /tmp/mybackup.mbz:
 
     moosh course-backup -f /tmp/mybackup.mbz 3
+
+Example 3: Backup course id=3, including logs and grade histories:
+
+    moosh course-backup --fullbackup 3
+
+Example 3: Backup course id=3 without any user data (excludes users, logs, grade historyies, role assignments, comments, and filters):
+
+    moosh course-backup --template 3
 
 
 course-cleanup
