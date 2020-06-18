@@ -18,6 +18,22 @@
       "type": "package",
       "package": {
         "version": "dev-master",
+        "name": "moodlehq/moodle-local_amos",
+        "source": {
+          "url": "https://github.com/moodlehq/moodle-local_amos",
+          "type": "git",
+          "reference": "master"
+        },
+        "dist": {
+          "url": "https://github.com/moodlehq/moodle-local_amos/archive/master.zip",
+          "type": "zip"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "version": "dev-master",
         "name": "moodlehq/moodle-mod_newmodule",
         "source": {
           "url": "https://github.com/moodlehq/moodle-mod_newmodule.git",
@@ -225,7 +241,8 @@
     "danielneis/moodle-enrol_newenrol": "dev-master",
     "blackboard-open-source/moodle-coding-standard": "2.0.3",
     "squizlabs/php_codesniffer": "^2.5",
-    "nikic/php-parser": "^4.0"
+    "nikic/php-parser": "^4.0",
+    "moodlehq/moodle-local_amos": "dev-master"
   },
   "bin": [
     "moosh.php"
