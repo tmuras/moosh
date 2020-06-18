@@ -4,6 +4,6 @@
 
         //only display "other tags" section
         //$options = array('display' => 'noofficial');
-        $mform->addElement('tag', '{{ id }}', get_string('langkey', '{{ langCategory }}'), $options);
+        $mform->addElement('tag', '{{ id }}', get_string('{{ id }}', '{{ langCategory }}'), $options);
         $mform->setType('{{ id }}', PARAM_TEXT);
 {% include 'form/form-common-element.twig' %}

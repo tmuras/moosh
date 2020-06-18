@@ -1,4 +1,4 @@
         $editoroptions = array();
-        $mform->addElement('editor', '{{ id }}', get_string('langkey', '{{ langCategory }}'), '', $editoroptions);
+        $mform->addElement('editor', '{{ id }}', get_string('{{ id }}', '{{ langCategory }}'), '', $editoroptions);
         $mform->setType('{{ id }}', PARAM_CLEANHTML);
 {% include 'form/form-common-element.twig' %}
