@@ -1,0 +1,4 @@
+        $options = [1 => 'User 1', 2 => 'User 2', 3 => 'User 3'];
+        $mform->addElement('searchableselector', '{{ id }}', get_string('user'), $options);
+        $mform->setType('{{ id }}', PARAM_INT);
+{% include 'form/form-common-element.twig' %}

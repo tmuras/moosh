@@ -1,0 +1,9 @@
+// Sample code to search & add users to selection.
+$options = array(
+    'ajax' => 'tool_lp/form-user-selector',
+    'multiple' => true,
+    'noselectionstring' => 'No selection',
+    'placeholder' => 'Search',
+);
+$mform->addElement('autocomplete', 'userids', get_string('selectusers', 'tool_cohortroles'), array(), $options);
+{% include 'form/form-common-element.twig' %}
