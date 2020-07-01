@@ -1687,6 +1687,23 @@ pluginname2
 moosh module-config get dropbox dropbox_secret ?
 </code></pre>
 
+<a name="module-copy"></a>
+<h2>module-copy</h2>
+
+<p>Copy a module from one course to another.</p>
+
+<p>Example 1: Copy module id 27 to course id 34.</p>
+
+<pre><code>moosh module-copy 27 34 </code></pre>
+
+<p>Example 2: Copy module id 27 to course id 34 and name the new module "Assignment 1".</p>
+
+<pre><code>moosh module-copy --name "Assignment 1" 27 34</code></pre>
+
+<p>Example 3: Copy module id 27 to course id 34 and name the new module "Assignment 1", placing it in section 2.</p>
+
+<pre><code>moosh module-copy --name "Assignment 1" --section 2 27 34</code></pre>
+
 <a name="module-manage"></a>
 <h2>module-manage</h2>
 
