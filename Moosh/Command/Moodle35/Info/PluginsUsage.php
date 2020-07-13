@@ -36,7 +36,10 @@ class PluginsUsage extends MooshCommand {
             $result = $this->get_assignsubmission_stats($plugincheck);
         }
         $this->display($result, false, false);
-        return;
+
+        if($plugincheck != 'all') {
+            return;
+        }
 
         // filters
         //filter - key
@@ -226,29 +229,29 @@ class PluginsUsage extends MooshCommand {
         }
 
         $this->display($result);
-        //foreach ($result as $category => $plugins) {
-        //    echo '====' . $category . "====\n";
-        //    foreach ($plugins as $name => $usages) {
-        //        $showpluginname = true;
-        //        foreach ($usages as $usageType => $usage) {
-        //            if ($usageType != '0') {
-        //                if ($showpluginname) {
-        //                    echo $name . ":\n";
-        //                }
-        //
-        //                $retusagetype = str_pad($usageType, 30, '-', STR_PAD_RIGHT);
-        //                $retstr = '  ► ' . $retusagetype . ' ' . $usage . "\n";
-        //
-        //                $showpluginname = false;
-        //            } else {
-        //                $retname = str_pad($name, 30, '-', STR_PAD_RIGHT);
-        //                $retstr = $retname . ' ' . $usage . "\n";
-        //            }
-        //
-        //            echo $retstr;
-        //        }
-        //    }
-        //}
+        foreach ($result as $category => $plugins) {
+            echo '====' . $category . "====\n";
+            foreach ($plugins as $name => $usages) {
+                $showpluginname = true;
+                foreach ($usages as $usageType => $usage) {
+                    if ($usageType != '0') {
+                        if ($showpluginname) {
+                            echo $name . ":\n";
+                        }
+
+                        $retusagetype = str_pad($usageType, 30, '-', STR_PAD_RIGHT);
+                        $retstr = '  ► ' . $retusagetype . ' ' . $usage . "\n";
+
+                        $showpluginname = false;
+                    } else {
+                        $retname = str_pad($name, 30, '-', STR_PAD_RIGHT);
+                        $retstr = $retname . ' ' . $usage . "\n";
+                    }
+
+                    echo $retstr;
+                }
+            }
+        }
     }
 
     /**

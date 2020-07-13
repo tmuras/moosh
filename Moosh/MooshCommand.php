@@ -447,6 +447,10 @@ class MooshCommand {
             return;
         }
 
+        if(!$data) {
+            return;
+        }
+
         foreach ($data as $k => $v) {
             echo "$k: ";
             if ($humanreadable && is_numeric($v)) {
