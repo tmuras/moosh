@@ -201,8 +201,16 @@ class ReportConcurrency extends MooshCommand {
             if (!$date) {
                 die("Invalid date for " . $v->unixtime);
             }
-            $fulldata[$v->unixtime]['message_users_from'] = $v->users_from;
-            $fulldata[$v->unixtime]['number_messages'] = $v->number_messages;
+            if(isset($v->users_from)) {
+                $fulldata[$v->unixtime]['message_users_from'] = $v->users_from;
+            } else {
+                $fulldata[$v->unixtime]['message_users_from'] = 0;
+            }
+            if(isset($v->number_messages)) {
+                $fulldata[$v->unixtime]['number_messages'] = $v->number_messages;
+            } else {
+                $fulldata[$v->unixtime]['number_messages'] = 0;
+            }
         }
 
         $weekstats =
