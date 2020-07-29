@@ -1840,6 +1840,11 @@ context 754 and info 'New Year'.</p>
 <pre><code>moosh report-concurrency -f 20140120 -t 20140127 -p 30
 </code></pre>
 
+<p>Example 2: Create the report for the last week. Could be used in a cronjob.</p>
+
+<pre><code>start=$(date --date="7 days ago" +"%Y-%m-%d");finish=$(date +"%Y-%m-%d");moosh report-concurrency --from $start --to $finish
+</code></pre>
+
 <a name="restore-settings"></a>
 <h2>restore-settings</h2>
 

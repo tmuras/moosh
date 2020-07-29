@@ -221,7 +221,7 @@ class ReportConcurrency extends MooshCommand {
 				(SELECT ROUND( timecreated / ( $period ) ) AS period,
 				COUNT( DISTINCT useridto ) AS users_to,
 				COUNT( id ) AS number_notifications
-				FROM {messages}
+				FROM {notifications}
 				WHERE timecreated >= $tsutcfrom AND timecreated < $tsutcto
 				GROUP BY period
 				) AS notifications_report";
@@ -235,12 +235,12 @@ class ReportConcurrency extends MooshCommand {
             if (!$date) {
                 die("Invalid date for " . $v->unixtime);
             }
-            if(isset($v->users_from)) {
+            if(isset($v->users_to)) {
                 $fulldata[$v->unixtime]['notification_users_to'] = $v->users_to;
             } else {
                 $fulldata[$v->unixtime]['notification_users_to'] = 0;
             }
-            if(isset($v->number_messages)) {
+            if(isset($v->number_notifications)) {
                 $fulldata[$v->unixtime]['number_notifications'] = $v->number_notifications;
             } else {
                 $fulldata[$v->unixtime]['number_notifications'] = 0;

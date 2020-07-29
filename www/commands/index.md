@@ -1594,6 +1594,10 @@ Example 1: Get concurrent users between 20-01-2014 and 27-01-2014 with 30 minut 
 
     moosh report-concurrency -f 20140120 -t 20140127 -p 30
 
+Example 2: Create the report for the last week. Could be used in a cronjob.
+
+    start=$(date --date="7 days ago" +"%Y-%m-%d");finish=$(date +"%Y-%m-%d");moosh report-concurrency --from $start --to $finish
+
 restore-settings
 ----------------
 
