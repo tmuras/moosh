@@ -61,7 +61,7 @@ Installation from Ubuntu package
 Installation from Moodle package
 --------------------------------
 
-Download moosh package from Moodle: https://moodle.org/plugins/view.php?id=522.
+Download moosh [package on Moodle plugins website](https://moodle.org/plugins/view.php?id=522).
 
 Unpack somewhere in your system (but not inside Moodle's code).
 
@@ -78,7 +78,7 @@ Or system-wide:
 Installation from Moodle git
 ----------------------------
 
-Install composer - see http://getcomposer.org/download .
+Install composer - see [http://getcomposer.org/download](http://getcomposer.org/download).
 
     git clone git://github.com/tmuras/moosh.git
     cd moosh
