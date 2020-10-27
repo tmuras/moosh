@@ -191,7 +191,7 @@
             "time": "2015-05-13T17:39:58+00:00"
         },
         {
-            "name": "jamiepratt/moodle-qtype_TEMPLATE",
+            "name": "jamiepratt/moodle-qtype_template",
             "version": "dev-master",
             "source": {
                 "type": "git",
