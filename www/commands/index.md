@@ -1570,6 +1570,23 @@ context 754 and info 'New Year'.
 
      moosh questioncategory-create --reuse -p 6044 -c 754 -d 'New Year' noclass
 
+quiz-delete-attempts
+--------------------
+
+Deletes all quiz-attempts with given quiz id.
+
+Example 1: delete all attempts from quiz id 2.
+
+    moosh quiz-delete-attempts 2
+
+Resuls:
+
+    Deleted attempt: 15
+    Deleted attempt: 16
+    Deleted attempt: 17
+    Deleted attempt: 18
+    Deleted 4 questions
+
 random-label
 ------------
 
