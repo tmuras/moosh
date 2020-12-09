@@ -1484,6 +1484,23 @@ Example:
     moosh module-config set dropbox dropbox_secret 123
     moosh module-config get dropbox dropbox_secret ?
 
+module-config
+-------------
+Copy a module from one course to another.
+
+Example 1: Copy module id 27 to course id 34.
+
+    moosh module-copy 27 34
+
+Example 2: Copy module id 27 to course id 34 and name the new module "Assignment 1".
+
+    moosh module-copy --name "Assignment 1" 27 34
+
+Example 3: Copy module id 27 to course id 34 and name the new module "Assignment 1",
+placing it in section 2.
+
+    moosh module-copy --name "Assignment 1" --section 2 27 34
+
 module-manage
 -------------
 
