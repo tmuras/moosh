@@ -11,8 +11,6 @@ namespace Moosh\Command\Generic\Download;
 use Moosh\MooshCommand;
 
 class DownloadMoodle extends MooshCommand {
-    const downloadUrl = "https://download.moodle.org/download.php/direct/stable<version>/moodle-<major>.<minor>.<point>.tgz";
-
     public function __construct() {
         parent::__construct('moodle', 'download');
 
@@ -38,39 +36,32 @@ class DownloadMoodle extends MooshCommand {
 
         if (!$options['version']) {
             $releasepage = file_get_contents('https://download.moodle.org/releases/latest/');
-            preg_match('(https:\/\/download.moodle.org\/download.php\/stable[0-9].\/moodle-[0-9]\.[0-9]\.tgz)',
-                $releasepage, $downloadurl);
-            $downloadpage = file_get_contents($downloadurl[0]);
-            preg_match('(\/download\.php\/direct\/stable[0-9].\/moodle-[0-9]\.[0-9]\.tgz)', $downloadpage, $downloadurl);
-            $url = 'https://download.moodle.org' . $downloadurl[0];
-            run_external_command("wget --continue --timestamping '$url'", "Fetching file failed");
-            die();
-        }
+            $lateststable = null;
 
-        $version = explode('.', $options['version']);
-        if (count($version) == 3) {
-            $major = $version[0];
-            $minor = $version[1];
-            $point = $version[2];
-        } else if (count($version) == 2) {
-            $major = $version[0];
-            $minor = $version[1];
-            $point = -1; // Latest $major.$minor.
+            // Example: https://download.moodle.org/download.php/stable310/moodle-latest-310.tgz
+            preg_match('|https://download.moodle.org/download.php/stable(\d+)/moodle-latest-\d+\.tgz|',
+                $releasepage, $lateststable);
+            if (!$lateststable) {
+                cli_error("Couldn't find the latest stable version of Moodle on https://download.moodle.org/releases/latest/");
+            }
+
+            $versioncollapsed = $lateststable[1];
+            $exactversion = 'latest-' . $versioncollapsed;
         } else {
-            die("Provide version in X.Y or X.Y.Z format");
+            $version = explode('.', $options['version']);
+            if (count($version) == 3) {
+                $versioncollapsed  = $version[0]. $version[1];
+                $exactversion = $version[0] . '.' .  $version[1] . '.' . $version[2];
+            } else if (count($version) == 2) {
+                // Latest version requested
+                $versioncollapsed  = $version[0]. $version[1];
+                $exactversion = "latest-$versioncollapsed";
+            } else {
+                die("Provide version in X.Y or X.Y.Z format");
+            }
         }
-
-        $url = str_replace('<version>', $major . $minor, self::downloadUrl);
-        if ($point != -1) {
-            $url = str_replace('<major>', $major, $url);
-            $url = str_replace('<minor>', $minor, $url);
-            $url = str_replace('<point>', $point, $url);
-        } else {
-            // If no point release given, assume latest for that major.minor.
-            $url = str_replace('<major>.<minor>', 'latest-' . $major . $minor, $url);
-            $url = str_replace('<point>.', '', $url);
-        }
-
+        // Download example: https://download.moodle.org/download.php/direct/stable310/moodle-latest-310.tgz
+        $url =  "https://download.moodle.org/download.php/direct/stable$versioncollapsed/moodle-$exactversion.tgz";
         run_external_command("wget --continue --timestamping '$url'", "Fetching file failed");
     }
 }

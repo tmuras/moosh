@@ -849,16 +849,19 @@ Example:
 download-moodle
 ---------------
 
-Download latest Moodle version from the latest branch (default) or previous one if -v given.
+Download latest stable Moodle version (default) or another version -v is provided.
 
-Example 1: Download latest Moodle (as set up in default_options.php).
+Example 1: Download latest Moodle
 
     moosh download-moodle
 
-Example 2: Download latest Moodle 2.3.
+Example 2: Download latest Moodle 3.10.
 
-        moosh download-moodle -v 2.3
+    moosh download-moodle -v 3.10
 
+Example 2: Download Moodle 3.5.15.
+
+    moosh download-moodle -v 3.5.15
 
 event-fire
 ----------
