@@ -1721,6 +1721,23 @@ Example 2: Prevent "manager" role to be set on course level
 
     moosh manager -course-off
 
+section-config-set
+-------------------
+
+Follows the course-config-set pattern, updating a field in the Moodle {course_sections} table, for all the course sections (or optionally a single section), in all the courses in a course category, or alternatively in one course.
+
+Example 1: set the name of the second section in course with id 45 to "Describe a picture"
+
+    moosh section-config-set -s 2 course 45 name "Describe a picture"
+
+Example 2: set summaryformat to markdown in all sections in courses in the Miscellaneous category
+
+    moosh section-config-set category 1 summaryformat 4
+
+Example 3: Hide all sections in course with id 45
+
+    moosh section-config-set course 45 visible 0
+
 sql-cli
 -------
 
