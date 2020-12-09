@@ -577,6 +577,24 @@ You usually want to run the check as the same user that runs web server.</p>
 <pre><code>moosh cohort-enrol -c 4 "my cohort18"
 </code></pre>
 
+<a name="cohort-enrolfile"></a>
+<h2>cohort-enrolfile</h2>
+
+<p>Add users to cohorts from a CSV file. The valid fields for the CSV file
+include: username, email, cohortid, cohortname
+<p>The CSV must include at least one of username/email and one of cohortid/cohortname. If more than one of either category is given, username and cohortid take precendence over the other values.  </p>
+
+<p>Example 1: Add users to specified cohorts from /home/me/testing.csv. If the contents of testing.csv are
+<pre><code>
+username,cohortid
+johndoe,1
+janedoe,2
+</code></pre>
+then user johndoe is enrolled in cohort with id 1, and user janedoe is enrolled in cohort with id 2 by:</p>
+
+<pre><code>moosh cohort-enrolfile /home/me/testing.csv
+</code></pre>
+
 <a name="cohort-unenrol"></a>
 <h2>cohort-unenrol</h2>
 

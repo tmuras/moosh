@@ -453,6 +453,28 @@ Example 2: Enroll cohort "my cohort18" to course id 4.
 
     moosh cohort-enrol -c 4 "my cohort18"
 
+cohort-enrolfile
+--------------
+
+Add users to cohorts from a CSV file. The vaild fields for the CSV file include: username,
+email, cohortid, cohortname
+
+The CSV must include at least one of username/email and one of cohortid/cohortname. If
+more than one of either category is given, username and cohortid take precedence over the
+other values
+
+Example 1: Add users to specified cohorts from /home/me/testing.csv. If the contents of
+testing.csv are
+
+	username,cohortid
+	johndoe,1
+	janedoe,2
+
+then user johndoe is enrolled in cohort id 1, and user janedoe is enrolled in cohort with
+id 2 by:
+
+	moosh cohort-enrolfile /home/me/testing.csv
+
 cohort-unenrol
 --------------
 
