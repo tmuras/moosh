@@ -453,6 +453,28 @@ Example 2: Enroll cohort "my cohort18" to course id 4.
 
     moosh cohort-enrol -c 4 "my cohort18"
 
+cohort-enrolfile
+--------------
+
+Add users to cohorts from a CSV file. The vaild fields for the CSV file include: username,
+email, cohortid, cohortname
+
+The CSV must include at least one of username/email and one of cohortid/cohortname. If
+more than one of either category is given, username and cohortid take precedence over the
+other values
+
+Example 1: Add users to specified cohorts from /home/me/testing.csv. If the contents of
+testing.csv are
+
+	username,cohortid
+	johndoe,1
+	janedoe,2
+
+then user johndoe is enrolled in cohort id 1, and user janedoe is enrolled in cohort with
+id 2 by:
+
+	moosh cohort-enrolfile /home/me/testing.csv
+
 cohort-unenrol
 --------------
 
@@ -537,7 +559,7 @@ Example 2: Set URL to logo for Sky High theme.
 course-backup
 -------------
 
-Backup course with provided id.
+Backup course with provided id.  By default, logs and grade histories are excluded.
 
 Example 1: Backup course id=3 into default .mbz file in current directory:
 
@@ -546,6 +568,14 @@ Example 1: Backup course id=3 into default .mbz file in current directory:
 Example 2: Backup course id=3 and save it as /tmp/mybackup.mbz:
 
     moosh course-backup -f /tmp/mybackup.mbz 3
+
+Example 3: Backup course id=3, including logs and grade histories:
+
+    moosh course-backup --fullbackup 3
+
+Example 3: Backup course id=3 without any user data (excludes users, logs, grade historyies, role assignments, comments, and filters):
+
+    moosh course-backup --template 3
 
 
 course-cleanup
@@ -874,16 +904,19 @@ Example:
 download-moodle
 ---------------
 
-Download latest Moodle version from the latest branch (default) or previous one if -v given.
+Download latest stable Moodle version (default) or another version -v is provided.
 
-Example 1: Download latest Moodle (as set up in default_options.php).
+Example 1: Download latest Moodle
 
     moosh download-moodle
 
-Example 2: Download latest Moodle 2.3.
+Example 2: Download latest Moodle 3.10.
 
-        moosh download-moodle -v 2.3
+    moosh download-moodle -v 3.10
 
+Example 2: Download Moodle 3.5.15.
+
+    moosh download-moodle -v 3.5.15
 
 event-fire
 ----------
@@ -1476,6 +1509,23 @@ Example:
     moosh module-config set dropbox dropbox_secret 123
     moosh module-config get dropbox dropbox_secret ?
 
+module-config
+-------------
+Copy a module from one course to another.
+
+Example 1: Copy module id 27 to course id 34.
+
+    moosh module-copy 27 34
+
+Example 2: Copy module id 27 to course id 34 and name the new module "Assignment 1".
+
+    moosh module-copy --name "Assignment 1" 27 34
+
+Example 3: Copy module id 27 to course id 34 and name the new module "Assignment 1",
+placing it in section 2.
+
+    moosh module-copy --name "Assignment 1" --section 2 27 34
+
 module-manage
 -------------
 
@@ -1735,6 +1785,23 @@ Example 2: Prevent "manager" role to be set on course level
 
     moosh manager -course-off
 
+section-config-set
+-------------------
+
+Follows the course-config-set pattern, updating a field in the Moodle {course_sections} table, for all the course sections (or optionally a single section), in all the courses in a course category, or alternatively in one course.
+
+Example 1: set the name of the second section in course with id 45 to "Describe a picture"
+
+    moosh section-config-set -s 2 course 45 name "Describe a picture"
+
+Example 2: set summaryformat to markdown in all sections in courses in the Miscellaneous category
+
+    moosh section-config-set category 1 summaryformat 4
+
+Example 3: Hide all sections in course with id 45
+
+    moosh section-config-set course 45 visible 0
+
 sql-cli
 -------
 
@@ -1837,7 +1904,7 @@ Example 1: create user "testuser" with the all default profile fields.
 
 Example 2: create user "testuser" with the all the optional values
 
-    moosh user-create --password pass --email me@example.com --digest 2 --city Szczecin --country PL --firstname "first name" --lastname name testuser
+    moosh user-create --password pass --email me@example.com --digest 2 --city Szczecin --country PL --institution "State University" --department "Technology" --firstname "first name" --lastname name testuser
 
 Example 3: use bash/zsh expansion to create 10 users
 

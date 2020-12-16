@@ -577,6 +577,24 @@ You usually want to run the check as the same user that runs web server.</p>
 <pre><code>moosh cohort-enrol -c 4 "my cohort18"
 </code></pre>
 
+<a name="cohort-enrolfile"></a>
+<h2>cohort-enrolfile</h2>
+
+<p>Add users to cohorts from a CSV file. The valid fields for the CSV file
+include: username, email, cohortid, cohortname
+<p>The CSV must include at least one of username/email and one of cohortid/cohortname. If more than one of either category is given, username and cohortid take precendence over the other values.  </p>
+
+<p>Example 1: Add users to specified cohorts from /home/me/testing.csv. If the contents of testing.csv are
+<pre><code>
+username,cohortid
+johndoe,1
+janedoe,2
+</code></pre>
+then user johndoe is enrolled in cohort with id 1, and user janedoe is enrolled in cohort with id 2 by:</p>
+
+<pre><code>moosh cohort-enrolfile /home/me/testing.csv
+</code></pre>
+
 <a name="cohort-unenrol"></a>
 <h2>cohort-unenrol</h2>
 
@@ -1687,6 +1705,23 @@ pluginname2
 moosh module-config get dropbox dropbox_secret ?
 </code></pre>
 
+<a name="module-copy"></a>
+<h2>module-copy</h2>
+
+<p>Copy a module from one course to another.</p>
+
+<p>Example 1: Copy module id 27 to course id 34.</p>
+
+<pre><code>moosh module-copy 27 34 </code></pre>
+
+<p>Example 2: Copy module id 27 to course id 34 and name the new module "Assignment 1".</p>
+
+<pre><code>moosh module-copy --name "Assignment 1" 27 34</code></pre>
+
+<p>Example 3: Copy module id 27 to course id 34 and name the new module "Assignment 1", placing it in section 2.</p>
+
+<pre><code>moosh module-copy --name "Assignment 1" --section 2 27 34</code></pre>
+
 <a name="module-manage"></a>
 <h2>module-manage</h2>
 
@@ -2061,7 +2096,7 @@ If combined with "watch" command, it will imitate the poor man's "top" utility.<
 
 <p>Example 2: create user "testuser" with the all the optional values</p>
 
-<pre><code>moosh user-create --password pass --email me@example.com --digest 2 --city Szczecin --country PL --firstname "first name" --lastname name testuser
+<pre><code>moosh user-create --password pass --email me@example.com --digest 2 --city Szczecin --country PL --institution "State University" --department "Technology" --firstname "first name" --lastname name testuser
 </code></pre>
 
 <p>Example 3: use bash/zsh expansion to create 10 users</p>
