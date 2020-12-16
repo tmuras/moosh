@@ -479,6 +479,31 @@ Example 3: Show core setting "dirroot"
 
     moosh config-get core dirroot
 
+
+config-plugin-export
+--------------
+
+Exports whole configuration of selected plugin to .xml
+
+Example 1: Export mod_book plugin configuration to Book_config_{timestamp}.xml in current directory. 
+
+    moosh config-plugin-export book
+
+Example 2: Export mod_book plugin configuration to /tmp/plugin/Book_config_{timestamp}.xml
+
+    moosh config-plugin-export -o /tmp/plugin/ mod_book
+
+config-plugin-import
+--------------
+
+Imports configuration of plugin from .xml created by **config-plugin-export**
+
+Example 1: Import configuration of plugin mod_book into moodle.
+
+    moosh config-plugin-import /tmp/Book_config_1608106580.xml
+
+To see changes in Moodle you need to execute `moosh cache-clear`
+
 config-plugins
 --------------
 
