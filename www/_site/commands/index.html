@@ -1762,6 +1762,28 @@ moosh module-reinstall mod_book
 <pre><code>moosh php-eval 'var_dump(get_object_vars($CFG))'
 </code></pre>
 
+<a name="plugin-download"></a>
+<h2>plugin-download</h2>
+
+<p>Download plugin for a given Moodle version to current directory.
+    Requires plugin short name, and optional Moodle version.
+    You can obtain avalible plugins names by using `plugin-list -n' command</p>
+
+<p>Example 1: Download block_fastnav for moodle 3.9 into ./block_fastnav.zip</p>
+
+<pre><code>moosh plugin-download -v 3.9 block_fastnav
+</code></pre>
+
+<p>Example 2: Only show link for block_fastnav moodle current version</p>
+
+<pre><code>moosh plugin-download -u block_fastnav
+</code></pre>
+
+<p>Output:</p>
+
+<pre><code>https://moodle.org/plugins/download.php/23108/block_fastnav_moodle310_2020120800.zip
+</code></pre>
+
 <a name="plugin-install"></a>
 <h2>plugin-install</h2>
 

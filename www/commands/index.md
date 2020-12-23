@@ -1566,6 +1566,26 @@ Example:
     moosh php-eval 'var_dump(get_object_vars($CFG))'
 
 
+plugin-download
+---------------
+
+Download plugin for a given Moodle version to current directory.
+Requires plugin short name, and optional Moodle version.
+You can obtain avalible plugins names by using `plugin-list -n' command
+
+Example 1: Download block_fastnav for moodle 3.9 into ./block_fastnav.zip
+
+    moosh plugin-download -v 3.9 block_fastnav
+
+Example 2: Only show link for block_fastnav moodle current version
+
+    moosh plugin-download -u block_fastnav
+
+Output:
+
+    https://moodle.org/plugins/download.php/23108/block_fastnav_moodle310_2020120800.zip
+
+
 plugin-install
 --------------
 
