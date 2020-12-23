@@ -625,6 +625,33 @@ then user johndoe is enrolled in cohort with id 1, and user janedoe is enrolled 
 <pre><code>moosh config-get core dirroot
 </code></pre>
 
+<a name="config-plugin-export"></a>
+<h2>config-plugin-export</h2>
+
+<p>Exports whole configuration of selected plugin to .xml</p>
+
+<p>Example 1: Export mod_book plugin configuration to Book_config_{timestamp}.xml in current directory.</p>
+
+<pre><code>moosh config-plugin-export book
+</code></pre>
+
+<p>Example 2: Export mod_book plugin configuration to /tmp/plugin/Book_config_{timestamp}.xml</p>
+
+<pre><code>moosh config-plugin-export -o /tmp/plugin/ mod_book
+</code></pre>
+
+<a name="config-plugin-import"></a>
+<p>config-plugin-import</p>
+
+<p>Imports configuration of plugin from .xml created by <b>config-plugin-export</b></p>
+
+<p>Example 1: Import configuration of plugin mod_book into moodle.</p>
+
+<pre><code>moosh config-plugin-import /tmp/Book_config_1608106580.xml
+</code></pre>
+
+<p>To see changes in Moodle you need to execute <b>moosh cache-clear</b></p>
+
 <a name="config-plugins"></a>
 <h2>config-plugins</h2>
 
