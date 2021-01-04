@@ -60,13 +60,11 @@ class ConfigPluginexport extends MooshCommand
 
         if (is_dir($outputdir)){
             if (!is_writable($outputdir)) {
-                echo "Output directory $outputdir is not writable \n";
-                exit(0);
+                cli_error("Output directory $outputdir is not writable \n");
             }
         }
         else{
-            echo "$outputdir is not a directory or doesn't exist \n";
-            exit(0);
+            cli_error("$outputdir is not a directory or doesn't exist \n");
         }
 
         //get name of plugin from user
@@ -77,9 +75,8 @@ class ConfigPluginexport extends MooshCommand
             $pluginname = $pluginmanager->plugin_name($componenttoexport);
         }
         catch (\Exception $e) {
-            echo "Cought exception: " . $e->getMessage() . " \n";
-            echo "Not found plugin: $componenttoexport\n";
-            exit(0);
+            cli_error("Cought exception: " . $e->getMessage() . " \n".
+                "Not found plugin: $componenttoexport\n");
         }
 
         // Load plugin settings
@@ -137,8 +134,7 @@ class ConfigPluginexport extends MooshCommand
             exit(0);
         }
         else {
-            echo "No config to export \n";
-            exit(0);
+            cli_error("No config to export \n");
         }
     }
 }

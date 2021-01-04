@@ -47,13 +47,11 @@ class ConfigPluginimport extends MooshCommand {
 
         if (is_file($this->inputfilepath)){
             if (!is_readable($this->inputfilepath)) {
-                echo "Output file is not readable: $this->inputfilepath \n";
-                exit(0);
+                cli_error("Output file is not readable: $this->inputfilepath \n");
             }
         }
         else {
-            echo "$this->inputfilepath is not a file \n";
-            exit(0);
+            cli_error("$this->inputfilepath is not a file \n");
         }
 
         $this->import_settings();
