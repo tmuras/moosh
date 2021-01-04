@@ -1,6 +1,6 @@
         $choices = array();
         $default = '';
-        $select = $mform->addElement('select', '{{ id }}', get_string('langkey', '{{ langCategory }}'), $choices);
+        $select = $mform->addElement('select', '{{ id }}', get_string('{{ id }}', '{{ langCategory }}'), $choices);
         $mform->setDefault('{{ id }}', $default);
         $mform->setType('{{ id }}', PARAM_ALPHA);
         // Allow for multiple selection

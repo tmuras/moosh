@@ -1,0 +1,3 @@
+        $options = ['optional' => true, 'defaultunit' => DAYSECS, 'units'=>[DAYSECS, WEEKSECS]];
+        $mform->addElement('duration', '{{ id }}', get_string('{{ id }}', '{{ langCategory }}'), $options);
+{% include 'form/form-common-element.twig' %}

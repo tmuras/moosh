@@ -29,23 +29,13 @@ class SettingsImport extends MooshCommand {
 
         require_once "$CFG->libdir/classes/plugin_manager.php";
 
-        if (is_dir($this->arguments[0])) {
-            $this->inputfilepath = $this->arguments[0];
-        } else {
-            $this->inputfilepath =  "{$this->cwd}/{$this->arguments[0]}";
-        }
-
-        if (!is_readable($this->inputfilepath)) {
-            echo "Input file not readable \n";
-            exit(0);
-        }
-
+        $this->inputfilepath = $this->checkFileArg($this->arguments[0]);
         $filename = basename($this->inputfilepath);
         $outputdirname = rtrim($filename, '.tar.gz');
         $this->extractiondir = "{$this->cwd}/{$outputdirname}/";
 
         if (!is_writable($this->cwd)) {
-            echo "Directory not writable \n";
+            echo "Directory {$this->cwd} not writable \n";
             exit(0);
         } else {
             try {

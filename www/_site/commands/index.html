@@ -200,9 +200,9 @@ See <a href="https://moodle.org/mod/forum/discuss.php?d=368091">Moodle forum pos
 <a name="apache-parse-missing-files"></a>
 <h2>apache-parse-missing-files</h2>
 
-<p>Looks for missing files in apache log when moodle files are accessed and reports them</p>
+<p>Looks through apache access log for potentially missing files.</p>
 
-<p>Example 1. Parse file <code>apache.log</code> and search for missing files</p>
+<p>Example 1. Parse file <code>apache.log</code> and search for missing files.</p>
 
 <pre><code>moosh apache-parse-missing-files apache.log
 </code></pre>
@@ -501,6 +501,26 @@ moosh category-create -r CategoryABC
 <pre><code>moosh category-move 3 0
 </code></pre>
 
+<a name="category-resortcourses"></a>
+<h2>category-resortcourses</h2>
+
+<p>Sort courses and/or categories by fullname, shortname or idnumber.</p>
+
+<p>Example 1: Sort courses in category id 1 by idnumber.</p>
+
+<pre><code>moosh category-resortcourses 1 idnumber
+</code></pre>
+
+<p>Example 2: Sort courses and categories by shortname in category id 1 and all sub-categories below.</p>
+
+<pre><code>moosh category-resortcourses -r 1 shortname
+</code></pre>
+
+<p>Example 3: Sort courses by fullname in category id 1 and all sub-categories below. Do not change the ordering of categories.</p>
+
+<pre><code>moosh category-resortcourses -n -r 1 fullname
+</code></pre>
+
 <a name="chkdatadir"></a>
 <h2>chkdatadir</h2>
 
@@ -515,7 +535,7 @@ You usually want to run the check as the same user that runs web server.</p>
 <a name="code-check"></a>
 <h2>code-check</h2>
 
-<p>Checks files if they are compatible with moodle code standards</p>
+<p>Run Moodle code checker against the files.</p>
 
 <p>Example 1:</p>
 
@@ -557,6 +577,24 @@ You usually want to run the check as the same user that runs web server.</p>
 <pre><code>moosh cohort-enrol -c 4 "my cohort18"
 </code></pre>
 
+<a name="cohort-enrolfile"></a>
+<h2>cohort-enrolfile</h2>
+
+<p>Add users to cohorts from a CSV file. The valid fields for the CSV file
+include: username, email, cohortid, cohortname
+<p>The CSV must include at least one of username/email and one of cohortid/cohortname. If more than one of either category is given, username and cohortid take precendence over the other values.  </p>
+
+<p>Example 1: Add users to specified cohorts from /home/me/testing.csv. If the contents of testing.csv are
+<pre><code>
+username,cohortid
+johndoe,1
+janedoe,2
+</code></pre>
+then user johndoe is enrolled in cohort with id 1, and user janedoe is enrolled in cohort with id 2 by:</p>
+
+<pre><code>moosh cohort-enrolfile /home/me/testing.csv
+</code></pre>
+
 <a name="cohort-unenrol"></a>
 <h2>cohort-unenrol</h2>
 
@@ -586,6 +624,33 @@ You usually want to run the check as the same user that runs web server.</p>
 
 <pre><code>moosh config-get core dirroot
 </code></pre>
+
+<a name="config-plugin-export"></a>
+<h2>config-plugin-export</h2>
+
+<p>Exports whole configuration of selected plugin to .xml</p>
+
+<p>Example 1: Export mod_book plugin configuration to Book_config_{timestamp}.xml in current directory.</p>
+
+<pre><code>moosh config-plugin-export book
+</code></pre>
+
+<p>Example 2: Export mod_book plugin configuration to /tmp/plugin/Book_config_{timestamp}.xml</p>
+
+<pre><code>moosh config-plugin-export -o /tmp/plugin/ mod_book
+</code></pre>
+
+<a name="config-plugin-import"></a>
+<p>config-plugin-import</p>
+
+<p>Imports configuration of plugin from .xml created by <b>config-plugin-export</b></p>
+
+<p>Example 1: Import configuration of plugin mod_book into moodle.</p>
+
+<pre><code>moosh config-plugin-import /tmp/Book_config_1608106580.xml
+</code></pre>
+
+<p>To see changes in Moodle you need to execute <b>moosh cache-clear</b></p>
 
 <a name="config-plugins"></a>
 <h2>config-plugins</h2>
@@ -892,6 +957,16 @@ There are also quite a few options that modify the behaviour - see <code>moosh c
 <pre><code>moosh course-restore -e backup.mbz 3
 </code></pre>
 
+<p>Example 3: Ignore pre-check warnings, like restoring backup from higher Moodle version.</p>
+
+<pre><code>moosh course-restore --ignore-warnings backup.mbz 1
+</code></pre>
+
+<p>Example 4: Restore backup.mbz into existing course with id=3, overwrite course content.</p>
+
+<pre><code>moosh course-restore --overwrite backup.mbz 3
+</code></pre>
+
 <a name="course-unenrol"></a>
 <h2>course-unenrol</h2>
 
@@ -905,7 +980,8 @@ There are also quite a few options that modify the behaviour - see <code>moosh c
 <a name="data-stats"></a>
 <h2>data-stats</h2>
 
-<p>Provides information on size of dataroot directory, dataroot/filedir subdirectory and total size of non-external files in moodle. Outpus data in json format when run using --json option.</p>
+<p>Provides information on size of dataroot directory, dataroot/filedir subdirectory and total size of non-external files in Moodle.
+Outputs data in json format when run using --json option.</p>
 
 <pre><code>moosh data-stats
 </code></pre>
@@ -1656,6 +1732,23 @@ pluginname2
 moosh module-config get dropbox dropbox_secret ?
 </code></pre>
 
+<a name="module-copy"></a>
+<h2>module-copy</h2>
+
+<p>Copy a module from one course to another.</p>
+
+<p>Example 1: Copy module id 27 to course id 34.</p>
+
+<pre><code>moosh module-copy 27 34 </code></pre>
+
+<p>Example 2: Copy module id 27 to course id 34 and name the new module "Assignment 1".</p>
+
+<pre><code>moosh module-copy --name "Assignment 1" 27 34</code></pre>
+
+<p>Example 3: Copy module id 27 to course id 34 and name the new module "Assignment 1", placing it in section 2.</p>
+
+<pre><code>moosh module-copy --name "Assignment 1" --section 2 27 34</code></pre>
+
 <a name="module-manage"></a>
 <h2>module-manage</h2>
 
@@ -1696,6 +1789,28 @@ moosh module-reinstall mod_book
 <pre><code>moosh php-eval 'var_dump(get_object_vars($CFG))'
 </code></pre>
 
+<a name="plugin-download"></a>
+<h2>plugin-download</h2>
+
+<p>Download plugin for a given Moodle version to current directory.
+    Requires plugin short name, and optional Moodle version.
+    You can obtain avalible plugins names by using `plugin-list -n' command</p>
+
+<p>Example 1: Download block_fastnav for moodle 3.9 into ./block_fastnav.zip</p>
+
+<pre><code>moosh plugin-download -v 3.9 block_fastnav
+</code></pre>
+
+<p>Example 2: Only show link for block_fastnav moodle current version</p>
+
+<pre><code>moosh plugin-download -u block_fastnav
+</code></pre>
+
+<p>Output:</p>
+
+<pre><code>https://moodle.org/plugins/download.php/23108/block_fastnav_moodle310_2020120800.zip
+</code></pre>
+
 <a name="plugin-install"></a>
 <h2>plugin-install</h2>
 
@@ -1706,7 +1821,7 @@ moosh module-reinstall mod_book
 <pre><code>moosh plugin-install --release 20160101 mod_quickmail
 </code></pre>
 
-<p>Example 2: install the latest release supported by current moodle version</p>
+<p>Example 2: install the latest release supported by current Moodle version.</p>
 
 <pre><code>moosh plugin-install block_checklist
 </code></pre>
@@ -1807,6 +1922,11 @@ context 754 and info 'New Year'.</p>
 <p>Example 1: Get concurrent users between 20-01-2014 and 27-01-2014 with 30 minut periods.</p>
 
 <pre><code>moosh report-concurrency -f 20140120 -t 20140127 -p 30
+</code></pre>
+
+<p>Example 2: Create the report for the last week. Could be used in a cronjob.</p>
+
+<pre><code>start=$(date --date="7 days ago" +"%Y-%m-%d");finish=$(date +"%Y-%m-%d");moosh report-concurrency --from $start --to $finish
 </code></pre>
 
 <a name="restore-settings"></a>
@@ -1915,7 +2035,7 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 <a name="sql-cli"></a>
 <h2>sql-cli</h2>
 
-<p>Open a connection to the Moodle DB using credentials in config.php. Currently supports PostgreSQL and MySQL.</p>
+<p>Open a connection to the Moodle DB using credentials in config.php. Currently supports PostgreSQL, Cockroachdb, and MySQL.</p>
 
 <p>Example:</p>
 
@@ -1925,7 +2045,7 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 <a name="sql-dump"></a>
 <h2>sql-dump</h2>
 
-<p>Dump Moodle DB to sql file. Works for PostgreSQL and MySQL.</p>
+<p>Dump Moodle DB to sql file. Works for PostgreSQL, Cockroachdb, and MySQL.</p>
 
 <p>Example 1: dump database to backup.sql file</p>
 
@@ -1967,7 +2087,7 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 <pre><code>moosh theme-settings-export
 </code></pre>
 
-<p>Example 2: run it anywhere within the moodle dir if you specify the theme name</p>
+<p>Example 2: run it anywhere within the Moodle dir if you specify the theme name</p>
 
 <pre><code>moosh theme-settings-export --themename boost
 </code></pre>
@@ -2025,7 +2145,7 @@ If combined with "watch" command, it will imitate the poor man's "top" utility.<
 
 <p>Example 2: create user "testuser" with the all the optional values</p>
 
-<pre><code>moosh user-create --password pass --email me@example.com --digest 2 --city Szczecin --country PL --firstname "first name" --lastname name testuser
+<pre><code>moosh user-create --password pass --email me@example.com --digest 2 --city Szczecin --country PL --institution "State University" --department "Technology" --firstname "first name" --lastname name testuser
 </code></pre>
 
 <p>Example 3: use bash/zsh expansion to create 10 users</p>

@@ -1,4 +1,4 @@
-        $mform->addElement('selectyesno', '{{ id }}', get_string('langkey', '{{ langCategory }}'));
+        $mform->addElement('selectyesno', '{{ id }}', get_string('{{ id }}', '{{ langCategory }}'));
         $mform->setDefault('{{ id }}', 1);
         $mform->setType('{{ id }}', PARAM_BOOL);
 {% include 'form/form-common-element.twig' %}

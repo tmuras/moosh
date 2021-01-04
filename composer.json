@@ -18,6 +18,22 @@
       "type": "package",
       "package": {
         "version": "dev-master",
+        "name": "moodlehq/moodle-local_amos",
+        "source": {
+          "url": "https://github.com/moodlehq/moodle-local_amos",
+          "type": "git",
+          "reference": "master"
+        },
+        "dist": {
+          "url": "https://github.com/moodlehq/moodle-local_amos/archive/master.zip",
+          "type": "zip"
+        }
+      }
+    },
+    {
+      "type": "package",
+      "package": {
+        "version": "dev-master",
         "name": "moodlehq/moodle-mod_newmodule",
         "source": {
           "url": "https://github.com/moodlehq/moodle-mod_newmodule.git",
@@ -66,7 +82,7 @@
       "type": "package",
       "package": {
         "version": "dev-master",
-        "name": "jamiepratt/moodle-qtype_TEMPLATE",
+        "name": "jamiepratt/moodle-qtype_template",
         "source": {
           "url": "https://github.com/jamiepratt/moodle-qtype_TEMPLATE",
           "type": "git",
@@ -213,7 +229,7 @@
     "twig/twig": "1.18.2",
     "moodlehq/moodle-mod_newmodule": "dev-master#e1f112be8842291259ece87de3000cd5f0e18711",
     "danielneis/moodle-block_newblock": "dev-master#1fc89fb0845ad282426140feeb6bc3653efd1d7f",
-    "jamiepratt/moodle-qtype_TEMPLATE": "dev-master",
+    "jamiepratt/moodle-qtype_template": "dev-master",
     "danielneis/moodle-gradereport_newgradereport": "dev-master#691f53a15de352c3fe25da03c001a97a76b18358",
     "moodlehq/moodle-local_wstemplate": "dev-master#add2ad0949e72f025c0aad36c4b822e8c6479d3b",
     "yetanotherape/diff-match-patch": "dev-master#0726dbb4e59e68574326821c174013cf6fdfe20e",
@@ -225,7 +241,8 @@
     "danielneis/moodle-enrol_newenrol": "dev-master",
     "blackboard-open-source/moodle-coding-standard": "2.0.3",
     "squizlabs/php_codesniffer": "^2.5",
-    "nikic/php-parser": "^4.0"
+    "nikic/php-parser": "^4.0",
+    "moodlehq/moodle-local_amos": "dev-master"
   },
   "bin": [
     "moosh.php"

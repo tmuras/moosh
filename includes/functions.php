@@ -138,7 +138,7 @@ function moosh_moodle_version($topdir, $default = 23) {
                 return '22';
             }
             $matches = array();
-            if (preg_match('/^\$branch\s+=\s+\'(\d\d)\'.*/', $line, $matches)) {
+            if (preg_match('/^\$branch\s+=\s+\'(\d+)\'.*/', $line, $matches)) {
                 return $matches[1];
             }
         }

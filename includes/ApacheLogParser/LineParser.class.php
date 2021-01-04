@@ -10,7 +10,7 @@ class LineParser
     public function __construct($re, $params)
     {
 
-        if (!is_array($params) || !count($re) || !count($params)) {
+        if (!is_array($params) || !$re || !count($params)) {
             throw new \Exception("You must provide arrays to the constructor");
         }
 
@@ -43,8 +43,6 @@ class LineParser
                 'format' => 'm', 'parser' => new StringElement(), 're' => '(options|get|head|post|put|delete|trace|connect)'),
             'note' => array(
                 'format' => 'n', 'parser' => new StringElement(), 're' => '(.*)'),
-            'remote_user' => array(
-                'format' => 'u', 'parser' => new StringElement(), 're' => '(.*)'),
             'reply_header_line' => array(
                 'format' => 'o', 'parser' => new StringElement(), 're' => '(.*)'),
             'port' => array(

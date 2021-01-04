@@ -134,14 +134,14 @@ class ReportConcurrency extends MooshCommand {
         $recordsto = $record->max;
         $recordscount = $record->count;
         if ($this->verbose) {
-            echo "To retrieve $recordscount records from id $recordsfrom to $recordsto\n";
+            echo "About to retrieve $recordscount records from id $recordsfrom to $recordsto\n";
         }
 
         // Get the number of concurrent users for each period.
-        $sql = "SELECT 
+        $sql = "SELECT
                   period * ( $period ) AS unixtime,
 				  online_users,
-				  number_actions FROM 
+				  number_actions FROM
 				
 				(SELECT ROUND( timecreated / ( $period ) ) AS period,
 				COUNT( DISTINCT userid ) AS online_users,
@@ -151,11 +151,11 @@ class ReportConcurrency extends MooshCommand {
 				AND origin = 'web'
 				GROUP BY period
 				) AS concurrent_users_report";
-        $query = $DB->get_records_sql($sql);
+        $results = $DB->get_records_sql($sql);
 
         $fulldata = [];
         $previoustime = null;
-        foreach ($query as $k => $v) {
+        foreach ($results as $k => $v) {
             $date = date_create('@' . $v->unixtime, new \DateTimeZone('UTC'));
             $date->setTimezone($timezone);
             if ($date < $fromdate || $date > $todate) {
@@ -178,6 +178,76 @@ class ReportConcurrency extends MooshCommand {
             }
             $previoustime = $v->unixtime;
         }
+        unset($results);
+
+        // Get number of messages created.
+        $sql = "SELECT
+                  period * ( $period ) AS unixtime,
+                  users_from, number_messages FROM
+				(SELECT ROUND( timecreated / ( $period ) ) AS period,
+				COUNT( DISTINCT useridfrom ) AS users_from,
+				COUNT( id ) AS number_messages
+				FROM {messages}
+				WHERE timecreated >= $tsutcfrom AND timecreated < $tsutcto
+				GROUP BY period
+				) AS messages_report";
+        $results = $DB->get_records_sql($sql);
+        foreach ($results as $k => $v) {
+            $date = date_create('@' . $v->unixtime, new \DateTimeZone('UTC'));
+            $date->setTimezone($timezone);
+            if ($date < $fromdate || $date > $todate) {
+                continue;
+            }
+            if (!$date) {
+                die("Invalid date for " . $v->unixtime);
+            }
+            if(isset($v->users_from)) {
+                $fulldata[$v->unixtime]['message_users_from'] = $v->users_from;
+            } else {
+                $fulldata[$v->unixtime]['message_users_from'] = 0;
+            }
+            if(isset($v->number_messages)) {
+                $fulldata[$v->unixtime]['number_messages'] = $v->number_messages;
+            } else {
+                $fulldata[$v->unixtime]['number_messages'] = 0;
+            }
+        }
+        unset($results);
+
+        // Get number of notifications created.
+        $sql = "SELECT
+                  period * ( $period ) AS unixtime,
+                  users_to, number_notifications FROM
+				(SELECT ROUND( timecreated / ( $period ) ) AS period,
+				COUNT( DISTINCT useridto ) AS users_to,
+				COUNT( id ) AS number_notifications
+				FROM {notifications}
+				WHERE timecreated >= $tsutcfrom AND timecreated < $tsutcto
+				GROUP BY period
+				) AS notifications_report";
+        $results = $DB->get_records_sql($sql);
+        foreach ($results as $k => $v) {
+            $date = date_create('@' . $v->unixtime, new \DateTimeZone('UTC'));
+            $date->setTimezone($timezone);
+            if ($date < $fromdate || $date > $todate) {
+                continue;
+            }
+            if (!$date) {
+                die("Invalid date for " . $v->unixtime);
+            }
+            if(isset($v->users_to)) {
+                $fulldata[$v->unixtime]['notification_users_to'] = $v->users_to;
+            } else {
+                $fulldata[$v->unixtime]['notification_users_to'] = 0;
+            }
+            if(isset($v->number_notifications)) {
+                $fulldata[$v->unixtime]['number_notifications'] = $v->number_notifications;
+            } else {
+                $fulldata[$v->unixtime]['number_notifications'] = 0;
+            }
+        }
+        unset($results);
+
         $weekstats =
             new weekday_stats_calculator($options['zero-days-include'], $options['work-hours-from'], $options['work-hours-to'],
                 $options['work-days']);
@@ -188,7 +258,10 @@ class ReportConcurrency extends MooshCommand {
             //echo $row['date']->format(self::DATE_FORMAT), " - ", $row['users'], "\n";
 
             if ($options['csv']) {
-                fputcsv($csvfile, [$row['date']->format(self::DATE_FORMAT), $row['users'], $row['actions']]);
+                fputcsv($csvfile, [$row['date']->format(self::DATE_FORMAT), $row['users'], $row['actions'],
+                        $row['message_users_from'], $row['number_messages'],
+                        $row['notification_users_to'], $row['number_notifications']]
+                );
             }
             if ($row['users'] > $maxconcurrent['users']) {
                 $maxconcurrent['users'] = $row['users'];

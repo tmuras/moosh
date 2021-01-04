@@ -1,0 +1,6 @@
+        $options = [];
+        $options['type1'] = ['key1'=>'value1', 'key2'=>'value2'];
+        $options['type2'] = ['key3'=>'value3', 'key4'=>'value4'];
+        $mform->addElement('selectgroups', '{{ id }}', get_string('{{ id }}', '{{ langCategory }}'), $options,
+            ['multiple'=>'multiple', 'size'=>7]);
+{% include 'form/form-common-element.twig' %}
