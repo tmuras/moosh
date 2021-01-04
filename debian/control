@@ -3,7 +3,7 @@ Section: devel
 Priority: extra
 Maintainer: Tomasz Muras <nexor1984@gmail.com>
 Build-Depends: debhelper (>= 8.0.0),dh-exec
-Standards-Version: 3.9.2
+Standards-Version: 4.4.0
 Homepage: https://github.com/tmuras/moosh
 Vcs-Git: https://github.com/tmuras/moosh.git
 Vcs-Browser: https://github.com/tmuras/moosh
