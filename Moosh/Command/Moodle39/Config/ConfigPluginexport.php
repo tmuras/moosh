@@ -131,8 +131,7 @@ class ConfigPluginexport extends MooshCommand
                 }
             }
 
-            $date = new DateTime();
-            $xmlfilename = "{$pluginname}_config_{$date->getTimestamp()}.xml";
+            $xmlfilename = "{$pluginname}_config_{$time}.xml";
             $outputxml = "{$outputdir}/{$xmlfilename}";
 
             $dom->save($outputxml);
