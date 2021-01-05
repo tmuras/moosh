@@ -70,13 +70,19 @@ class ConfigPluginexport extends MooshCommand
         //get name of plugin from user
         $componenttoexport = $this->arguments[0];
 
+        $pluginname = $pluginmanager->plugintype_name($componenttoexport);
+
+        if (strpos($pluginname, 'mod_') === 0) {
+            $pluginname = substr($pluginname, 4);
+        }
+
         //check if plugin exist, set correct name
         try {
-            $pluginname = $pluginmanager->plugin_name($componenttoexport);
+            $pluginmanager->plugin_name($pluginname);
         }
         catch (\Exception $e) {
             cli_error("Cought exception: " . $e->getMessage() . " \n".
-                "Not found plugin: $componenttoexport\n");
+                "Not found plugin: $pluginname");
         }
 
         // Load plugin settings
