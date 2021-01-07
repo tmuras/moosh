@@ -1783,11 +1783,11 @@ and finally, "contextid" (where 1 is system wide)
 
 Example 1: update "student" role (roleid=5) "mod/forumng:grade" capability, system wide (contextid=1)
 
-    moosh student mod/forumng:grade allow 1
+    moosh role-update-capability student mod/forumng:grade allow 1
 
 Example 2: update "editingteacher" role (roleid=3) "mod/forumng:grade" capability, system wide (contextid=1)
 
-    moosh -i 3 mod/forumng:grade prevent 1
+    moosh role-update-capability -i 3 mod/forumng:grade prevent 1
 
 role-update-contextlevel
 ------------------------
@@ -1803,7 +1803,7 @@ Example 1: Allow "student" role to be set on block level
 
 Example 2: Prevent "manager" role to be set on course level
 
-    moosh manager -course-off
+    moosh role-update-contextlevel manager -course-off
 
 section-config-set
 -------------------
