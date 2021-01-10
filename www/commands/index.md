@@ -1799,7 +1799,7 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.
 
 Example 1: Allow "student" role to be set on block level
 
-    moosh student -block-on
+    moosh role-update-contextlevel student -block-on
 
 Example 2: Prevent "manager" role to be set on course level
 
