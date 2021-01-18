@@ -66,6 +66,8 @@ class ConfigPluginimport extends MooshCommand {
 
         $filename = basename($this->inputfilepath); //here
         $filenameparts = explode('_', $filename);
+        $lastpart = end($filenameparts);
+        $timestamp = substr($lastpart, 0, -4);
 
         $dom = new DOMDocument();
         $dom->load($this->inputfilepath);
@@ -73,6 +75,51 @@ class ConfigPluginimport extends MooshCommand {
 
         $component = $configdom->getAttribute('plugin');
         $settingsdom = $configdom->getElementsByTagName('setting');
+
+        //Read files
+        $pathtofiles =  dirname($this->inputfilepath) . '/' . $component . '_data_' . $timestamp;
+        if (file_exists($pathtofiles)){
+
+            $pathtojson = $pathtofiles . '/files.json';
+            if (!file_exists($pathtojson)){
+                cli_error("JSON is missing!");
+            }
+
+            $serialize = file_get_contents($pathtojson);
+            $files = unserialize($serialize);
+
+            $fs = get_file_storage();
+            foreach ($files as &$file){
+                //print_r($file);
+                if ($fs->file_exists_by_hash($file->pathnamehash)){
+                    echo "File $file->filename already exists in database\n";
+                    continue;
+                }
+
+                $filerecord = array(
+                    'id' => $file->id,
+                    'contextid' => $file->contextid,
+                    'component' => $file->component,
+                    'filearea' => $file->filearea,
+                    'itemid' => $file->itemid,
+                    'filepath' => $file->filepath,
+                    'filename' => $file->filename,
+                    'userid' => $file->userid,
+                    'source' => $file->source,
+                    'author' => $file->author,
+                    'license' => $file->license
+                );
+
+                if ($fs->create_file_from_pathname($filerecord, $pathtofiles . '/' . $file->filename) ){
+                    echo "Imported file $file->filename\n";
+                }
+                else {
+                    cli_error("Uploading file failed\n");
+                }
+            }
+        }
+
+
 
         $settingscount = 0;
         if ($settingsdom->length) {
