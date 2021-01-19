@@ -33,25 +33,22 @@ class PluginDownload extends MooshCommand
 
     private function setupRelease()
     {
-        global $CFG;
-        $this->moodlerelease = moodle_major_version();
-
         if (!empty($this->expandedOptions['version'])) {
             $this->moodlerelease = $this->expandedOptions['version'];
         }
+        else {
+            global $CFG;
+            require_once($CFG->libdir.'/adminlib.php');       // various admin-only functions
+            require_once($CFG->libdir.'/upgradelib.php');     // general upgrade/install related functions
+            require_once($CFG->libdir.'/environmentlib.php');
+            require_once($CFG->dirroot.'/course/lib.php');
 
-        //$this->moodleversion = $CFG->version;
+            $this->moodlerelease = moodle_major_version();
+        }
     }
 
     public function execute()
     {
-        global $CFG;
-
-        require_once($CFG->libdir.'/adminlib.php');       // various admin-only functions
-        require_once($CFG->libdir.'/upgradelib.php');     // general upgrade/install related functions
-        require_once($CFG->libdir.'/environmentlib.php');
-        require_once($CFG->dirroot.'/course/lib.php');
-
         $this->setupRelease();
 
         $pluginname     = $this->arguments[0];
@@ -167,6 +164,12 @@ class PluginDownload extends MooshCommand
         $decodeddata = json_decode($pluginsdata);
 
         return $decodeddata;
+    }
+
+    public function bootstrapLevel() {
+        if ($_SERVER['argv'][2] == '-v' ){
+            return self::$BOOTSTRAP_NONE;
+        }
     }
 
     public function requireHomeWriteable() {
