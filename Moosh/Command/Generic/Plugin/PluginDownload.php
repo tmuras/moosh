@@ -9,7 +9,7 @@
  * Only show link for block_fastnav moodle 3.9
  * @example moosh plugin-download -v 3.9 -u block_fastnav
  *
- * @author     2020 Jakub Kleban <jakub.kleban2000@gmail.com>
+ * @author     2021 Jakub Kleban <jakub.kleban2000@gmail.com>
  * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -64,16 +64,14 @@ class PluginDownload extends MooshCommand
         $downloadurl    = $version->downloadurl;
 
         if (!empty($this->expandedOptions['url'])) {
-            echo "$downloadurl\n";
-            return 0;
+            cli_error("$downloadurl\n");
         }
 
         $tempdir        = $this->cwd;
         $downloadedfile = $tempdir . '/' . $pluginname . ".zip";
 
         if (!fopen($downloadedfile, 'w')) {
-            echo "Failed to save plugin - check permissions on $tempdir.\n";
-            return;
+            cli_error("Failed to save plugin - check permissions on $tempdir.\n");
         }
 
         try {
