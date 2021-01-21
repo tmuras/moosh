@@ -227,6 +227,25 @@ Example 1. Display basic stats about backup-moodle2-course-2-course1-20200405-19
 
     moosh backup-info backup-moodle2-course-2-course1-20200405-1947.mbz
 
+badge-delete
+------------
+
+Deletes badges by **criteria**
+
+**criteria** - a string with SQL fragment that selects the records from mdl_bagdes table. The same idea as with `moosh user-list` command.
+
+Example 1: Show all badges without deleting.
+
+    moosh badge-delete --no-action "1 = 1"
+
+Example 2: Delete badge WHERE id = 1.
+
+    moosh badge-delete "id = 4"
+
+Example 3: Delete all badges WHERE courseid = 433 and status = 0.
+
+    moosh badge-delete "courseid=433 AND status=0"
+
 base-path
 ---------
 

@@ -329,6 +329,28 @@ The command works by extracting files like users.xml, gradebook.xml, course/logs
 <pre><code>moosh backup-info backup-moodle2-course-2-course1-20200405-1947.mbz
 </code></pre>
 
+<a name="badge-delete"></a>
+<h2>badge-delete</h2>
+
+<p>Deletes badges by <strong>criteria</strong></p>
+
+<p><strong>criteria</strong> - a string with SQL fragment that selects the records from mdl_bagdes table. The same idea as with <code>moosh user-list</code> command.</p>
+
+<p>Example 1: Show all badges without deleting.</p>
+
+<pre><code>moosh badge-delete --no-action "1 = 1"
+</code></pre>
+
+<p>Example 2: Delete badge WHERE id = 1.</p>
+
+<pre><code>moosh badge-delete "id = 4"
+</code></pre>
+
+<p>Example 3: Delete all badges WHERE courseid = 433 and status = 0.</p>
+
+<pre><code>moosh badge-delete "courseid=433 AND status=0"
+</code></pre>
+
 <a name="base-path"></a>
 <h2>base-path</h2>
 
