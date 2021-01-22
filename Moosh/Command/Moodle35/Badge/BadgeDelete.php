@@ -17,7 +17,7 @@
  * @author     Jakub Kleban <jakub.kleban2000@gmail.com>
  */
 
-namespace Moosh\Command\Moodle39\Badge;
+namespace Moosh\Command\Moodle35\Badge;
 use Moosh\MooshCommand;
 
 class BadgeDelete extends MooshCommand
@@ -40,7 +40,7 @@ class BadgeDelete extends MooshCommand
         $criteria = $this->arguments[0];
         $do_action = !($this->parsedOptions->has('no-action'));
 
-        require_once($CFG->dirroot.'/badges/classes/badge.php');
+        require_once($CFG->dirroot.'/lib/badgeslib.php');
 
         $sql = 'SELECT * FROM {badge} WHERE '.$criteria;
         $badge_records = $DB->get_records_sql($sql);
