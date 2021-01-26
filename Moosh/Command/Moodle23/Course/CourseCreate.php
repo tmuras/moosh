@@ -64,6 +64,7 @@ class CourseCreate extends MooshCommand
             $course->summary = '';
             $course->summaryformat = FORMAT_HTML;
             $course->startdate = time();
+            $course->enablecompletion = true;
 
             if ($options['reuse'] && $existing = $this->find_course($course)) {
                 $newcourse = $existing;
