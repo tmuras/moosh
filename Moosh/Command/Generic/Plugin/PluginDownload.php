@@ -9,9 +9,10 @@
  * Only show link for block_fastnav moodle 3.9
  * @example moosh plugin-download -v 3.9 -u block_fastnav
  *
- * @author     2021 Jakub Kleban <jakub.kleban2000@gmail.com>
  * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @introduced 2020-12-23
+ * @author     Jakub Kleban <jakub.kleban2000@gmail.com>
  */
 
 namespace Moosh\Command\Generic\Plugin;

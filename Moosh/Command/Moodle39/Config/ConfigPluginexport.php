@@ -6,8 +6,10 @@
  * @example moosh config-plugin-export book
  * @example moosh config-plugin-export -o /tmp/plugin/ mod_book
  *
- * @copyright  2020 onwards Jakub Kleban
+ * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @introduced 2021-01-28
+ * @author     Jakub Kleban <jakub.kleban2000@gmail.com>
  */
 
 namespace Moosh\Command\Moodle39\Config;

@@ -5,8 +5,10 @@
  *
  * @example moosh config-plugin-import /tmp/Book_config_1608106580.xml
  *
- * @copyright  2020 onwards Jakub Kleban
+ * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @introduced 2021-01-28
+ * @author     Jakub Kleban <jakub.kleban2000@gmail.com>
  */
 
 namespace Moosh\Command\Moodle39\Config;
