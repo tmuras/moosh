@@ -289,6 +289,18 @@ Example:
     moosh block-manage hide calendar
     moosh block-manage show calendar
 
+cache-add-redis-store
+---------------------
+
+Adds a new redis store instance to cache.
+
+Example 1: Add new instance "Test" with server set to "localhost"
+    
+    moosh cache-add-redis-store "Test" "localhost"
+
+Example 2: Add new instance "Test2" with server set to "localhost", password set to "123456" and key prefix set to "key_"
+
+    moosh cache-add-redis-store --password "123456" -k "key_" "Test2" "localhost"
 
 cache-clear
 -----------

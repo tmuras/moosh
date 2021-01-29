@@ -399,6 +399,21 @@ moosh block-add course 32 calendar_month course-view-* side-post 0
 moosh block-manage show calendar
 </code></pre>
 
+<a name="cache-add-redis-store"></a>
+<h2>cache-add-redis-store</h2>
+
+<p>Adds a new redis store instance to cache.</p>
+
+<p>Example 1: Add new instance "Test" with server set to "localhost"</p>
+
+<pre><code>moosh cache-add-redis-store "Test" "localhost"
+</code></pre>
+
+<p>Example 2: Add new instance "Test2" with server set to "localhost", password set to "123456" and key prefix set to "key_"</p>
+
+<pre><code>moosh cache-add-redis-store --password "123456" -k "key_" "Test2" "localhost"
+</code></pre>
+
 <a name="cache-clear"></a>
 <h2>cache-clear</h2>
 
