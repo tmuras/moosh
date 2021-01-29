@@ -122,4 +122,9 @@ class UserList extends MooshCommand {
             echo $to_print . "\n";
         }
     }
+
+    public function bootstrapLevel()
+    {
+        return self::$BOOTSTRAP_FULL_NO_ADMIN_CHECK;
+    }
 }

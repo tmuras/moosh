@@ -48,6 +48,11 @@ class MooshCommand {
     public static $BOOTSTRAP_DB_ONLY = 4;
 
     /**
+     * @var int set CLI_SCRIPT and include config.php, don't check for admin
+     */
+    public static $BOOTSTRAP_FULL_NO_ADMIN_CHECK = 5;
+
+    /**
      * @var \GetOptionKit\OptionSpecCollection
      */
     public $spec;

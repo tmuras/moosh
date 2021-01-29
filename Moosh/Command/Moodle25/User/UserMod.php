@@ -106,4 +106,9 @@ class UserMod extends MooshCommand
             echo $DB->update_record('user',$user) . "\n";
         }
     }
+
+    public function bootstrapLevel()
+    {
+        return self::$BOOTSTRAP_FULL_NO_ADMIN_CHECK;
+    }
 }

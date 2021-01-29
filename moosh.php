@@ -281,7 +281,9 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
     @ini_set('display_errors', '1');
 
 
-    if ($subcommand->bootstrapLevel() != MooshCommand::$BOOTSTRAP_CONFIG) {
+    if ($subcommand->bootstrapLevel() != MooshCommand::$BOOTSTRAP_CONFIG
+        && $subcommand->bootstrapLevel() != MooshCommand::$BOOTSTRAP_FULL_NO_ADMIN_CHECK
+    ) {
         // By default set up $USER to admin user.
         if ($app_options->has('user')) {
             $user = get_user_by_name($app_options['user']->value);
