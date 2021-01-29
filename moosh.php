@@ -164,7 +164,7 @@ try {
     $subcommand_options[$subcommand] = $parser->continueParse();
 } catch (Exception $e) {
     echo $e->getMessage() . "\n";
-    die("Moosh global options should be passed before command not after it.");
+    die("Moosh global options should be passed before command not after it.\n");
 }
 
 while (!$parser->isEnd()) {
