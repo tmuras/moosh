@@ -297,6 +297,22 @@ The same as "purge all caches" page.
 
     moosh cache-clear
 
+cache-config-get
+----------------
+
+Gets cache config and print_r() it
+
+Example 1: Show every cache config
+
+    moosh cache-config-get --all
+
+Example 2: Show all of the configured stores
+
+    moosh cache-config-get --stores
+
+Example 3: Show all the known definitions and definition mappings
+
+    moosh cache-config-get -dD
 
 cache-course-rebuild
 --------------------
