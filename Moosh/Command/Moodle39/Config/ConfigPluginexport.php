@@ -6,8 +6,10 @@
  * @example moosh config-plugin-export book
  * @example moosh config-plugin-export -o /tmp/plugin/ mod_book
  *
- * @copyright  2020 onwards Jakub Kleban
+ * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @introduced 2021-01-28
+ * @author     Jakub Kleban <jakub.kleban2000@gmail.com>
  */
 
 namespace Moosh\Command\Moodle39\Config;
@@ -33,12 +35,14 @@ class ConfigPluginexport extends MooshCommand
     public function execute()
     {
         global $CFG;
+        global $DB;
 
         require_once($CFG->dirroot.'/lib/classes/plugin_manager.php');
 
         // Init vars
         $componenttoexport = null;
         $pluginmanager = \core_plugin_manager::instance();
+        $time = time();
 
 
         // Validate output dir
@@ -60,33 +64,67 @@ class ConfigPluginexport extends MooshCommand
 
         if (is_dir($outputdir)){
             if (!is_writable($outputdir)) {
-                echo "Output directory $outputdir is not writable \n";
-                exit(0);
+                cli_error("Output directory $outputdir is not writable \n");
             }
         }
         else{
-            echo "$outputdir is not a directory or doesn't exist \n";
-            exit(0);
+            cli_error("$outputdir is not a directory or doesn't exist \n");
         }
 
         //get name of plugin from user
         $componenttoexport = $this->arguments[0];
 
+        $pluginname = $pluginmanager->plugintype_name($componenttoexport);
+
+        if (strpos($pluginname, 'mod_') === 0) {
+            $pluginname = substr($pluginname, 4);
+        }
+
         //check if plugin exist, set correct name
         try {
-            $pluginname = $pluginmanager->plugin_name($componenttoexport);
+            $pluginmanager->plugin_name($pluginname);
         }
         catch (\Exception $e) {
-            echo "Cought exception: " . $e->getMessage() . " \n";
-            echo "Not found plugin: $componenttoexport\n";
-            exit(0);
+            cli_error("Cought exception: " . $e->getMessage() . " \n".
+                "Not found plugin: $pluginname");
         }
 
         // Load plugin settings
         $config = get_config($pluginname);
 
+        // Get plugin files
+        $sql = "SELECT * FROM mdl_files WHERE component LIKE ? AND filename <> '.'";
+        $files = $DB->get_records_sql($sql, array($pluginname));
+
+        $fs = get_file_storage();
+
+        $plugindatafolder = $outputdir . '/' . $pluginname . '_data_' . $time;
+        if (!file_exists($plugindatafolder)) {
+            mkdir($plugindatafolder, 0777, true);
+        }
+
+        $serialize = serialize($files);
+        file_put_contents($plugindatafolder . '/files.json', $serialize);
+
+        foreach ($files as &$file){
+            //print_r($file);
+
+            $newfile = $fs->get_file_by_hash($file->pathnamehash);
+
+            // Read contents
+            if ($newfile) {
+                $filelocation = $plugindatafolder . '/' . $file->filename;
+                $newfile->copy_content_to($filelocation);
+                echo "File $file->filename saved in $filelocation\n";
+            }
+            else {
+                cli_error("File doesn't exist\n");
+            }
+        }
+
+        // make and save XML
         if (!empty($config)) {
-            $time = time();
+
             $tarname = "{$outputdir}/{$pluginname}_config_{$time}.tar";
             $phar = new PharData($tarname);
 
@@ -128,8 +166,7 @@ class ConfigPluginexport extends MooshCommand
                 }
             }
 
-            $date = new DateTime();
-            $xmlfilename = "{$pluginname}_config_{$date->getTimestamp()}.xml";
+            $xmlfilename = "{$pluginname}_config_{$time}.xml";
             $outputxml = "{$outputdir}/{$xmlfilename}";
 
             $dom->save($outputxml);
@@ -137,8 +174,7 @@ class ConfigPluginexport extends MooshCommand
             exit(0);
         }
         else {
-            echo "No config to export \n";
-            exit(0);
+            cli_error("No config to export \n");
         }
     }
 }

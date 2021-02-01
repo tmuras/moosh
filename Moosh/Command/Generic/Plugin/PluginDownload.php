@@ -9,9 +9,10 @@
  * Only show link for block_fastnav moodle 3.9
  * @example moosh plugin-download -v 3.9 -u block_fastnav
  *
- * @author     2020 Jakub Kleban <jakub.kleban2000@gmail.com>
  * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @introduced 2020-12-23
+ * @author     Jakub Kleban <jakub.kleban2000@gmail.com>
  */
 
 namespace Moosh\Command\Generic\Plugin;
@@ -33,25 +34,22 @@ class PluginDownload extends MooshCommand
 
     private function setupRelease()
     {
-        global $CFG;
-        $this->moodlerelease = moodle_major_version();
-
         if (!empty($this->expandedOptions['version'])) {
             $this->moodlerelease = $this->expandedOptions['version'];
         }
+        else {
+            global $CFG;
+            require_once($CFG->libdir.'/adminlib.php');       // various admin-only functions
+            require_once($CFG->libdir.'/upgradelib.php');     // general upgrade/install related functions
+            require_once($CFG->libdir.'/environmentlib.php');
+            require_once($CFG->dirroot.'/course/lib.php');
 
-        //$this->moodleversion = $CFG->version;
+            $this->moodlerelease = moodle_major_version();
+        }
     }
 
     public function execute()
     {
-        global $CFG;
-
-        require_once($CFG->libdir.'/adminlib.php');       // various admin-only functions
-        require_once($CFG->libdir.'/upgradelib.php');     // general upgrade/install related functions
-        require_once($CFG->libdir.'/environmentlib.php');
-        require_once($CFG->dirroot.'/course/lib.php');
-
         $this->setupRelease();
 
         $pluginname     = $this->arguments[0];
@@ -64,16 +62,14 @@ class PluginDownload extends MooshCommand
         $downloadurl    = $version->downloadurl;
 
         if (!empty($this->expandedOptions['url'])) {
-            echo "$downloadurl\n";
-            return 0;
+            cli_error("$downloadurl\n");
         }
 
         $tempdir        = $this->cwd;
         $downloadedfile = $tempdir . '/' . $pluginname . ".zip";
 
         if (!fopen($downloadedfile, 'w')) {
-            echo "Failed to save plugin - check permissions on $tempdir.\n";
-            return;
+            cli_error("Failed to save plugin - check permissions on $tempdir.\n");
         }
 
         try {
@@ -169,6 +165,12 @@ class PluginDownload extends MooshCommand
         $decodeddata = json_decode($pluginsdata);
 
         return $decodeddata;
+    }
+
+    public function bootstrapLevel() {
+        if ($_SERVER['argv'][2] == '-v' ){
+            return self::$BOOTSTRAP_NONE;
+        }
     }
 
     public function requireHomeWriteable() {

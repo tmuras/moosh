@@ -329,6 +329,28 @@ The command works by extracting files like users.xml, gradebook.xml, course/logs
 <pre><code>moosh backup-info backup-moodle2-course-2-course1-20200405-1947.mbz
 </code></pre>
 
+<a name="badge-delete"></a>
+<h2>badge-delete</h2>
+
+<p>Deletes badges by <strong>criteria</strong></p>
+
+<p><strong>criteria</strong> - a string with SQL fragment that selects the records from mdl_bagdes table. The same idea as with <code>moosh user-list</code> command.</p>
+
+<p>Example 1: Show all badges without deleting.</p>
+
+<pre><code>moosh badge-delete --no-action "1 = 1"
+</code></pre>
+
+<p>Example 2: Delete badge WHERE id = 1.</p>
+
+<pre><code>moosh badge-delete "id = 4"
+</code></pre>
+
+<p>Example 3: Delete all badges WHERE courseid = 433 and status = 0.</p>
+
+<pre><code>moosh badge-delete "courseid=433 AND status=0"
+</code></pre>
+
 <a name="base-path"></a>
 <h2>base-path</h2>
 
@@ -377,12 +399,47 @@ moosh block-add course 32 calendar_month course-view-* side-post 0
 moosh block-manage show calendar
 </code></pre>
 
+<a name="cache-add-redis-store"></a>
+<h2>cache-add-redis-store</h2>
+
+<p>Adds a new redis store instance to cache.</p>
+
+<p>Example 1: Add new instance "Test" with server set to "localhost"</p>
+
+<pre><code>moosh cache-add-redis-store "Test" "localhost"
+</code></pre>
+
+<p>Example 2: Add new instance "Test2" with server set to "localhost", password set to "123456" and key prefix set to "key_"</p>
+
+<pre><code>moosh cache-add-redis-store --password "123456" -k "key_" "Test2" "localhost"
+</code></pre>
+
 <a name="cache-clear"></a>
 <h2>cache-clear</h2>
 
 <p>The same as "purge all caches" page.</p>
 
 <pre><code>moosh cache-clear
+</code></pre>
+
+<a name="cache-config-get"></a>
+<h2>cache-config-get</h2>
+
+<p>Gets cache config and print_r() it</p>
+
+<p>Example 1: Show every cache config</p>
+
+<pre><code>moosh cache-config-get --all
+</code></pre>
+
+<p>Example 2: Show all of the configured stores</p>
+
+<pre><code>moosh cache-config-get --stores
+</code></pre>
+
+<p>Example 3: Show all the known definitions and definition mappings</p>
+
+<pre><code>moosh cache-config-get -dD
 </code></pre>
 
 <a name="cache-course-rebuild"></a>
@@ -580,17 +637,23 @@ You usually want to run the check as the same user that runs web server.</p>
 <a name="cohort-enrolfile"></a>
 <h2>cohort-enrolfile</h2>
 
-<p>Add users to cohorts from a CSV file. The valid fields for the CSV file
-include: username, email, cohortid, cohortname
-<p>The CSV must include at least one of username/email and one of cohortid/cohortname. If more than one of either category is given, username and cohortid take precendence over the other values.  </p>
+<p>Add users to cohorts from a CSV file. The vaild fields for the CSV file include: username,
+email, cohortid, cohortname</p>
 
-<p>Example 1: Add users to specified cohorts from /home/me/testing.csv. If the contents of testing.csv are
-<pre><code>
-username,cohortid
+<p>The CSV must include at least one of username/email and one of cohortid/cohortname. If
+more than one of either category is given, username and cohortid take precedence over the
+other values</p>
+
+<p>Example 1: Add users to specified cohorts from /home/me/testing.csv. If the contents of
+testing.csv are</p>
+
+<pre><code>username,cohortid
 johndoe,1
 janedoe,2
 </code></pre>
-then user johndoe is enrolled in cohort with id 1, and user janedoe is enrolled in cohort with id 2 by:</p>
+
+<p>then user johndoe is enrolled in cohort id 1, and user janedoe is enrolled in cohort with
+id 2 by:</p>
 
 <pre><code>moosh cohort-enrolfile /home/me/testing.csv
 </code></pre>
@@ -641,16 +704,16 @@ then user johndoe is enrolled in cohort with id 1, and user janedoe is enrolled 
 </code></pre>
 
 <a name="config-plugin-import"></a>
-<p>config-plugin-import</p>
+<h2>config-plugin-import</h2>
 
-<p>Imports configuration of plugin from .xml created by <b>config-plugin-export</b></p>
+<p>Imports configuration of plugin from .xml created by <strong>config-plugin-export</strong></p>
 
 <p>Example 1: Import configuration of plugin mod_book into moodle.</p>
 
 <pre><code>moosh config-plugin-import /tmp/Book_config_1608106580.xml
 </code></pre>
 
-<p>To see changes in Moodle you need to execute <b>moosh cache-clear</b></p>
+<p>To see changes in Moodle you need to execute <code>moosh cache-clear</code></p>
 
 <a name="config-plugins"></a>
 <h2>config-plugins</h2>
@@ -690,7 +753,7 @@ then user johndoe is enrolled in cohort with id 1, and user janedoe is enrolled 
 <a name="course-backup"></a>
 <h2>course-backup</h2>
 
-<p>Backup course with provided id.</p>
+<p>Backup course with provided id.  By default, logs and grade histories are excluded.</p>
 
 <p>Example 1: Backup course id=3 into default .mbz file in current directory:</p>
 
@@ -700,6 +763,16 @@ then user johndoe is enrolled in cohort with id 1, and user janedoe is enrolled 
 <p>Example 2: Backup course id=3 and save it as /tmp/mybackup.mbz:</p>
 
 <pre><code>moosh course-backup -f /tmp/mybackup.mbz 3
+</code></pre>
+
+<p>Example 3: Backup course id=3, including logs and grade histories:</p>
+
+<pre><code>moosh course-backup --fullbackup 3
+</code></pre>
+
+<p>Example 3: Backup course id=3 without any user data (excludes users, logs, grade historyies, role assignments, comments, and filters):</p>
+
+<pre><code>moosh course-backup --template 3
 </code></pre>
 
 <a name="course-cleanup"></a>
@@ -1061,16 +1134,21 @@ moosh dev-versionbump
 <a name="download-moodle"></a>
 <h2>download-moodle</h2>
 
-<p>Download latest Moodle version from the latest branch (default) or previous one if -v given.</p>
+<p>Download latest stable Moodle version (default) or another version -v is provided.</p>
 
-<p>Example 1: Download latest Moodle (as set up in default_options.php).</p>
+<p>Example 1: Download latest Moodle</p>
 
 <pre><code>moosh download-moodle
 </code></pre>
 
-<p>Example 2: Download latest Moodle 2.3.</p>
+<p>Example 2: Download latest Moodle 3.10.</p>
 
-<pre><code>    moosh download-moodle -v 2.3
+<pre><code>moosh download-moodle -v 3.10
+</code></pre>
+
+<p>Example 2: Download Moodle 3.5.15.</p>
+
+<pre><code>moosh download-moodle -v 3.5.15
 </code></pre>
 
 <a name="event-fire"></a>
@@ -1732,22 +1810,26 @@ pluginname2
 moosh module-config get dropbox dropbox_secret ?
 </code></pre>
 
-<a name="module-copy"></a>
-<h2>module-copy</h2>
+<a name="module-config"></a>
+<h2>module-config</h2>
 
 <p>Copy a module from one course to another.</p>
 
 <p>Example 1: Copy module id 27 to course id 34.</p>
 
-<pre><code>moosh module-copy 27 34 </code></pre>
+<pre><code>moosh module-copy 27 34
+</code></pre>
 
 <p>Example 2: Copy module id 27 to course id 34 and name the new module "Assignment 1".</p>
 
-<pre><code>moosh module-copy --name "Assignment 1" 27 34</code></pre>
+<pre><code>moosh module-copy --name "Assignment 1" 27 34
+</code></pre>
 
-<p>Example 3: Copy module id 27 to course id 34 and name the new module "Assignment 1", placing it in section 2.</p>
+<p>Example 3: Copy module id 27 to course id 34 and name the new module "Assignment 1",
+placing it in section 2.</p>
 
-<pre><code>moosh module-copy --name "Assignment 1" --section 2 27 34</code></pre>
+<pre><code>moosh module-copy --name "Assignment 1" --section 2 27 34
+</code></pre>
 
 <a name="module-manage"></a>
 <h2>module-manage</h2>
@@ -1793,8 +1875,8 @@ moosh module-reinstall mod_book
 <h2>plugin-download</h2>
 
 <p>Download plugin for a given Moodle version to current directory.
-    Requires plugin short name, and optional Moodle version.
-    You can obtain avalible plugins names by using `plugin-list -n' command</p>
+Requires plugin short name, and optional Moodle version.
+You can obtain avalible plugins names by using `plugin-list -n' command</p>
 
 <p>Example 1: Download block_fastnav for moodle 3.9 into ./block_fastnav.zip</p>
 
@@ -1895,6 +1977,25 @@ FORMAT_MARKDOWN.</p>
 context 754 and info 'New Year'.</p>
 
 <pre><code> moosh questioncategory-create --reuse -p 6044 -c 754 -d 'New Year' noclass
+</code></pre>
+
+<a name="quiz-delete-attempts"></a>
+<h2>quiz-delete-attempts</h2>
+
+<p>Deletes all quiz-attempts with given quiz id.</p>
+
+<p>Example 1: delete all attempts from quiz id 2.</p>
+
+<pre><code>moosh quiz-delete-attempts 2
+</code></pre>
+
+<p>Resuls:</p>
+
+<pre><code>Deleted attempt: 15
+Deleted attempt: 16
+Deleted attempt: 17
+Deleted attempt: 18
+Deleted 4 questions
 </code></pre>
 
 <a name="random-label"></a>
@@ -2006,12 +2107,12 @@ and finally, "contextid" (where 1 is system wide)</p>
 
 <p>Example 1: update "student" role (roleid=5) "mod/forumng:grade" capability, system wide (contextid=1)</p>
 
-<pre><code>moosh student mod/forumng:grade allow 1
+<pre><code>moosh role-update-capability student mod/forumng:grade allow 1
 </code></pre>
 
 <p>Example 2: update "editingteacher" role (roleid=3) "mod/forumng:grade" capability, system wide (contextid=1)</p>
 
-<pre><code>moosh -i 3 mod/forumng:grade prevent 1
+<pre><code>moosh role-update-capability -i 3 mod/forumng:grade prevent 1
 </code></pre>
 
 <a name="role-update-contextlevel"></a>
@@ -2024,12 +2125,32 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 
 <p>Example 1: Allow "student" role to be set on block level</p>
 
-<pre><code>moosh student -block-on
+<pre><code>moosh role-update-contextlevel student -block-on
 </code></pre>
 
 <p>Example 2: Prevent "manager" role to be set on course level</p>
 
-<pre><code>moosh manager -course-off
+<pre><code>moosh role-update-contextlevel manager -course-off
+</code></pre>
+
+<a name="section-config-set"></a>
+<h2>section-config-set</h2>
+
+<p>Follows the course-config-set pattern, updating a field in the Moodle {course_sections} table, for all the course sections (or optionally a single section), in all the courses in a course category, or alternatively in one course.</p>
+
+<p>Example 1: set the name of the second section in course with id 45 to "Describe a picture"</p>
+
+<pre><code>moosh section-config-set -s 2 course 45 name "Describe a picture"
+</code></pre>
+
+<p>Example 2: set summaryformat to markdown in all sections in courses in the Miscellaneous category</p>
+
+<pre><code>moosh section-config-set category 1 summaryformat 4
+</code></pre>
+
+<p>Example 3: Hide all sections in course with id 45</p>
+
+<pre><code>moosh section-config-set course 45 visible 0
 </code></pre>
 
 <a name="sql-cli"></a>

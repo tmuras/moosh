@@ -36,7 +36,7 @@ use GetOptionKit\OptionCollection;
 @error_reporting(E_ALL | E_STRICT);
 @ini_set('display_errors', '1');
 
-define('MOOSH_VERSION', '0.33');
+define('MOOSH_VERSION', '0.34');
 define('MOODLE_INTERNAL', true);
 
 $appspecs = new OptionCollection;
@@ -164,7 +164,7 @@ try {
     $subcommand_options[$subcommand] = $parser->continueParse();
 } catch (Exception $e) {
     echo $e->getMessage() . "\n";
-    die("Moosh global options should be passed before command not after it.");
+    die("Moosh global options should be passed before command not after it.\n");
 }
 
 while (!$parser->isEnd()) {
@@ -281,7 +281,9 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
     @ini_set('display_errors', '1');
 
 
-    if ($subcommand->bootstrapLevel() != MooshCommand::$BOOTSTRAP_CONFIG) {
+    if ($subcommand->bootstrapLevel() != MooshCommand::$BOOTSTRAP_CONFIG
+        && $subcommand->bootstrapLevel() != MooshCommand::$BOOTSTRAP_FULL_NO_ADMIN_CHECK
+    ) {
         // By default set up $USER to admin user.
         if ($app_options->has('user')) {
             $user = get_user_by_name($app_options['user']->value);

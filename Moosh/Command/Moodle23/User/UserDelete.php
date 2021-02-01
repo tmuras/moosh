@@ -41,4 +41,9 @@ class UserDelete extends MooshCommand
             }
          }
     }
+
+    public function bootstrapLevel()
+    {
+        return self::$BOOTSTRAP_FULL_NO_ADMIN_CHECK;
+    }
 }

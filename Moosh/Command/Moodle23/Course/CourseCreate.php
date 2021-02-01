@@ -4,6 +4,7 @@
  *
  * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @author     Jakub Kleban <jakub.kleban2000@gmail.com>
  */
 
 namespace Moosh\Command\Moodle23\Course;
@@ -64,6 +65,7 @@ class CourseCreate extends MooshCommand
             $course->summary = '';
             $course->summaryformat = FORMAT_HTML;
             $course->startdate = time();
+            $course->enablecompletion = true;
 
             if ($options['reuse'] && $existing = $this->find_course($course)) {
                 $newcourse = $existing;

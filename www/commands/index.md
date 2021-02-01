@@ -227,6 +227,25 @@ Example 1. Display basic stats about backup-moodle2-course-2-course1-20200405-19
 
     moosh backup-info backup-moodle2-course-2-course1-20200405-1947.mbz
 
+badge-delete
+------------
+
+Deletes badges by **criteria**
+
+**criteria** - a string with SQL fragment that selects the records from mdl_bagdes table. The same idea as with `moosh user-list` command.
+
+Example 1: Show all badges without deleting.
+
+    moosh badge-delete --no-action "1 = 1"
+
+Example 2: Delete badge WHERE id = 1.
+
+    moosh badge-delete "id = 4"
+
+Example 3: Delete all badges WHERE courseid = 433 and status = 0.
+
+    moosh badge-delete "courseid=433 AND status=0"
+
 base-path
 ---------
 
@@ -270,6 +289,18 @@ Example:
     moosh block-manage hide calendar
     moosh block-manage show calendar
 
+cache-add-redis-store
+---------------------
+
+Adds a new redis store instance to cache.
+
+Example 1: Add new instance "Test" with server set to "localhost"
+    
+    moosh cache-add-redis-store "Test" "localhost"
+
+Example 2: Add new instance "Test2" with server set to "localhost", password set to "123456" and key prefix set to "key_"
+
+    moosh cache-add-redis-store --password "123456" -k "key_" "Test2" "localhost"
 
 cache-clear
 -----------
@@ -278,6 +309,22 @@ The same as "purge all caches" page.
 
     moosh cache-clear
 
+cache-config-get
+----------------
+
+Gets cache config and print_r() it
+
+Example 1: Show every cache config
+
+    moosh cache-config-get --all
+
+Example 2: Show all of the configured stores
+
+    moosh cache-config-get --stores
+
+Example 3: Show all the known definitions and definition mappings
+
+    moosh cache-config-get -dD
 
 cache-course-rebuild
 --------------------
@@ -1783,11 +1830,11 @@ and finally, "contextid" (where 1 is system wide)
 
 Example 1: update "student" role (roleid=5) "mod/forumng:grade" capability, system wide (contextid=1)
 
-    moosh student mod/forumng:grade allow 1
+    moosh role-update-capability student mod/forumng:grade allow 1
 
 Example 2: update "editingteacher" role (roleid=3) "mod/forumng:grade" capability, system wide (contextid=1)
 
-    moosh -i 3 mod/forumng:grade prevent 1
+    moosh role-update-capability -i 3 mod/forumng:grade prevent 1
 
 role-update-contextlevel
 ------------------------
@@ -1799,11 +1846,11 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.
 
 Example 1: Allow "student" role to be set on block level
 
-    moosh student -block-on
+    moosh role-update-contextlevel student -block-on
 
 Example 2: Prevent "manager" role to be set on course level
 
-    moosh manager -course-off
+    moosh role-update-contextlevel manager -course-off
 
 section-config-set
 -------------------
