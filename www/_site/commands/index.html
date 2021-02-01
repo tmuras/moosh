@@ -402,7 +402,8 @@ moosh block-manage show calendar
 <a name="cache-add-redis-store"></a>
 <h2>cache-add-redis-store</h2>
 
-<p>Adds a new redis store instance to cache.</p>
+<p>Adds a new redis store instance to cache like in
+<code>Dashboard > Site administration > Plugins > Caching > Configuration > Redis > Add instance</code></p>
 
 <p>Example 1: Add new instance "Test" with server set to "localhost"</p>
 
@@ -425,7 +426,8 @@ moosh block-manage show calendar
 <a name="cache-config-get"></a>
 <h2>cache-config-get</h2>
 
-<p>Gets cache config and print_r() it</p>
+<p>Gets cache config and print_r() it. You can find cache configuration in
+<code>Dashboard > Site administration > Plugins > Caching > Configuration</code></p>
 
 <p>Example 1: Show every cache config</p>
 
@@ -455,6 +457,26 @@ moosh block-manage show calendar
 <p>Example 2: Rebuild cache for all the courses.</p>
 
 <pre><code>moosh cache-course-rebuild -a
+</code></pre>
+
+<a name="cache-edit-mappings"></a>
+<h2>cache-edit-mappings</h2>
+
+<p>Edits default mode mappings like in <code>Dashboard > Site administration > Plugins > Caching > Configuration > Edit mappings</code></p>
+
+<p>Example 1: Show default mode mappings without changing</p>
+
+<pre><code>moosh cache-edit-mappings
+</code></pre>
+
+<p>Example 2: Set MODE_APPLICATION to "new"</p>
+
+<pre><code>moosh cache-edit-mappings --application new
+</code></pre>
+
+<p>Example 3: Set Application to "store name", Session to "Tests" and Request to "default_request"</p>
+
+<pre><code>moosh cache-edit-mappings -a "store name" -s Tests -r default_request
 </code></pre>
 
 <a name="category-config-set"></a>

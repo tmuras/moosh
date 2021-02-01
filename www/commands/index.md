@@ -292,7 +292,8 @@ Example:
 cache-add-redis-store
 ---------------------
 
-Adds a new redis store instance to cache.
+Adds a new redis store instance to cache like in
+`Dashboard > Site administration > Plugins > Caching > Configuration > Redis > Add instance`
 
 Example 1: Add new instance "Test" with server set to "localhost"
     
@@ -312,7 +313,8 @@ The same as "purge all caches" page.
 cache-config-get
 ----------------
 
-Gets cache config and print_r() it
+Gets cache config and print_r() it. You can find cache configuration in
+`Dashboard > Site administration > Plugins > Caching > Configuration`
 
 Example 1: Show every cache config
 
@@ -338,6 +340,24 @@ Example 1: Rebuild cache for course with id 2
 Example 2: Rebuild cache for all the courses.
 
     moosh cache-course-rebuild -a
+
+cache-edit-mappings
+-------------------
+
+Edits default mode mappings like in `Dashboard > Site administration > Plugins > Caching > Configuration > Edit mappings`
+
+
+Example 1: Show default mode mappings without changing
+    
+    moosh cache-edit-mappings
+
+Example 2: Set MODE_APPLICATION to "new"
+
+    moosh cache-edit-mappings --application new
+
+Example 3: Set Application to "store name", Session to "Tests" and Request to "default_request"
+
+    moosh cache-edit-mappings -a "store name" -s Tests -r default_request
 
 category-config-set
 -------------------
