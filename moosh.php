@@ -36,7 +36,7 @@ use GetOptionKit\OptionCollection;
 @error_reporting(E_ALL | E_STRICT);
 @ini_set('display_errors', '1');
 
-define('MOOSH_VERSION', '0.33');
+define('MOOSH_VERSION', '0.34');
 define('MOODLE_INTERNAL', true);
 
 $appspecs = new OptionCollection;
