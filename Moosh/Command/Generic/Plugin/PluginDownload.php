@@ -127,7 +127,7 @@ class PluginDownload extends MooshCommand
                 }
                 if (!$bestversion && $altversion) {
                     $message =
-                        "This plugin is not supported for your Moodle version (release $this->moodlerelease). ";
+                        "This plugin is not supported for your Moodle version (release $this->moodlerelease).\n";
                     die($message);
                 }
 
@@ -139,7 +139,7 @@ class PluginDownload extends MooshCommand
             }
         }
 
-        die("Couldn't find $pluginname $pluginversion\n");
+        die("Couldn't find $pluginname with version - $pluginversion\n");
     }
 
     private function is_supported_by_moodle($version)
@@ -168,7 +168,15 @@ class PluginDownload extends MooshCommand
     }
 
     public function bootstrapLevel() {
-        if ($_SERVER['argv'][2] == '-v' ){
+        $argc = count($_SERVER['argv']);
+
+        $nomoodleargv = ['-v', '--version', '-uv', '-h', '--help'];
+
+        if (array_intersect($nomoodleargv, $_SERVER['argv'])) {
+            return self::$BOOTSTRAP_NONE;
+        }
+
+        if ( $argc == 2 ) {
             return self::$BOOTSTRAP_NONE;
         }
     }
