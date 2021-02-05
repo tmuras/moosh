@@ -201,6 +201,15 @@ class ReportConcurrency extends MooshCommand {
             if (!$date) {
                 die("Invalid date for " . $v->unixtime);
             }
+            if (!isset($fulldata[$v->unixtime]['date'])){
+                $fulldata[$v->unixtime]['date'] = $date;
+            }
+            if (!isset($fulldata[$v->unixtime]['users'])){
+                $fulldata[$v->unixtime]['users'] = 0;
+            }
+            if (!isset($fulldata[$v->unixtime]['actions'])){
+                $fulldata[$v->unixtime]['actions'] = 0;
+            }
             if(isset($v->users_from)) {
                 $fulldata[$v->unixtime]['message_users_from'] = $v->users_from;
             } else {
@@ -234,6 +243,15 @@ class ReportConcurrency extends MooshCommand {
             }
             if (!$date) {
                 die("Invalid date for " . $v->unixtime);
+            }
+            if (!isset($fulldata[$v->unixtime]['date'])){
+                $fulldata[$v->unixtime]['date'] = $date;
+            }
+            if (!isset($fulldata[$v->unixtime]['users'])){
+                $fulldata[$v->unixtime]['users'] = 0;
+            }
+            if (!isset($fulldata[$v->unixtime]['actions'])){
+                $fulldata[$v->unixtime]['actions'] = 0;
             }
             if(isset($v->users_to)) {
                 $fulldata[$v->unixtime]['notification_users_to'] = $v->users_to;
