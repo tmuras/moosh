@@ -1,3 +1,9 @@
+moosh (0.35-1) trusty; urgency=medium
+
+  * Upstream release 0.35
+
+ -- Tomasz Muras <nexor1984@gmail.com>  Fri, 05 Feb 2021 16:17:01 +0100
+
 moosh (0.34-1) trusty; urgency=medium
 
   * Upstream release 0.34
