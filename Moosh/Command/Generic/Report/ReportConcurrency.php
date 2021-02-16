@@ -181,90 +181,10 @@ class ReportConcurrency extends MooshCommand {
         unset($results);
 
         // Get number of messages created.
-        $sql = "SELECT
-                  period * ( $period ) AS unixtime,
-                  users_from, number_messages FROM
-				(SELECT ROUND( timecreated / ( $period ) ) AS period,
-				COUNT( DISTINCT useridfrom ) AS users_from,
-				COUNT( id ) AS number_messages
-				FROM {messages}
-				WHERE timecreated >= $tsutcfrom AND timecreated < $tsutcto
-				GROUP BY period
-				) AS messages_report";
-        $results = $DB->get_records_sql($sql);
-        foreach ($results as $k => $v) {
-            $date = date_create('@' . $v->unixtime, new \DateTimeZone('UTC'));
-            $date->setTimezone($timezone);
-            if ($date < $fromdate || $date > $todate) {
-                continue;
-            }
-            if (!$date) {
-                die("Invalid date for " . $v->unixtime);
-            }
-            if (!isset($fulldata[$v->unixtime]['date'])){
-                $fulldata[$v->unixtime]['date'] = $date;
-            }
-            if (!isset($fulldata[$v->unixtime]['users'])){
-                $fulldata[$v->unixtime]['users'] = 0;
-            }
-            if (!isset($fulldata[$v->unixtime]['actions'])){
-                $fulldata[$v->unixtime]['actions'] = 0;
-            }
-            if(isset($v->users_from)) {
-                $fulldata[$v->unixtime]['message_users_from'] = $v->users_from;
-            } else {
-                $fulldata[$v->unixtime]['message_users_from'] = 0;
-            }
-            if(isset($v->number_messages)) {
-                $fulldata[$v->unixtime]['number_messages'] = $v->number_messages;
-            } else {
-                $fulldata[$v->unixtime]['number_messages'] = 0;
-            }
-        }
-        unset($results);
+        $this->process_messages($period, $timezone, $fromdate, $todate, $fulldata);
 
         // Get number of notifications created.
-        $sql = "SELECT
-                  period * ( $period ) AS unixtime,
-                  users_to, number_notifications FROM
-				(SELECT ROUND( timecreated / ( $period ) ) AS period,
-				COUNT( DISTINCT useridto ) AS users_to,
-				COUNT( id ) AS number_notifications
-				FROM {notifications}
-				WHERE timecreated >= $tsutcfrom AND timecreated < $tsutcto
-				GROUP BY period
-				) AS notifications_report";
-        $results = $DB->get_records_sql($sql);
-        foreach ($results as $k => $v) {
-            $date = date_create('@' . $v->unixtime, new \DateTimeZone('UTC'));
-            $date->setTimezone($timezone);
-            if ($date < $fromdate || $date > $todate) {
-                continue;
-            }
-            if (!$date) {
-                die("Invalid date for " . $v->unixtime);
-            }
-            if (!isset($fulldata[$v->unixtime]['date'])){
-                $fulldata[$v->unixtime]['date'] = $date;
-            }
-            if (!isset($fulldata[$v->unixtime]['users'])){
-                $fulldata[$v->unixtime]['users'] = 0;
-            }
-            if (!isset($fulldata[$v->unixtime]['actions'])){
-                $fulldata[$v->unixtime]['actions'] = 0;
-            }
-            if(isset($v->users_to)) {
-                $fulldata[$v->unixtime]['notification_users_to'] = $v->users_to;
-            } else {
-                $fulldata[$v->unixtime]['notification_users_to'] = 0;
-            }
-            if(isset($v->number_notifications)) {
-                $fulldata[$v->unixtime]['number_notifications'] = $v->number_notifications;
-            } else {
-                $fulldata[$v->unixtime]['number_notifications'] = 0;
-            }
-        }
-        unset($results);
+        $this->process_notifications($period, $timezone, $fromdate, $todate, $fulldata);
 
         $weekstats =
             new weekday_stats_calculator($options['zero-days-include'], $options['work-hours-from'], $options['work-hours-to'],
@@ -342,6 +262,135 @@ class ReportConcurrency extends MooshCommand {
                 return 'Sunday';
         }
         throw new \Exception("Invalid day number: '$number'");
+    }
+
+    /**
+     * @param $period
+     * @param \DateTimeZone $timezone
+     * @param \DateTime $fromdate
+     * @param \DateTime $todate
+     * @param array $fulldata
+     */
+    public function process_notifications($period, \DateTimeZone $timezone, \DateTime $fromdate, \DateTime $todate, &$fulldata) {
+        global $DB, $CFG;
+
+        // Skip if {messages} table does not exist.
+        $sql = "SELECT * FROM information_schema.tables
+        WHERE table_schema = '{$CFG->dbname}'
+        AND table_name = '{notifications}'";
+        if (!$DB->record_exists_sql($sql)) {
+            return;
+        }
+
+        $tsutcfrom = $fromdate->getTimestamp();
+        $tsutcto = $todate->getTimestamp();
+
+        $sql = "SELECT
+                  period * ( $period ) AS unixtime,
+                  users_to, number_notifications FROM
+				(SELECT ROUND( timecreated / ( $period ) ) AS period,
+				COUNT( DISTINCT useridto ) AS users_to,
+				COUNT( id ) AS number_notifications
+				FROM {notifications}
+				WHERE timecreated >= $tsutcfrom AND timecreated < $tsutcto
+				GROUP BY period
+				) AS notifications_report";
+        $results = $DB->get_records_sql($sql);
+        foreach ($results as $k => $v) {
+            $date = date_create('@' . $v->unixtime, new \DateTimeZone('UTC'));
+            $date->setTimezone($timezone);
+            if ($date < $fromdate || $date > $todate) {
+                continue;
+            }
+            if (!$date) {
+                die("Invalid date for " . $v->unixtime);
+            }
+            if (!isset($fulldata[$v->unixtime]['date'])){
+                $fulldata[$v->unixtime]['date'] = $date;
+            }
+            if (!isset($fulldata[$v->unixtime]['users'])){
+                $fulldata[$v->unixtime]['users'] = 0;
+            }
+            if (!isset($fulldata[$v->unixtime]['actions'])){
+                $fulldata[$v->unixtime]['actions'] = 0;
+            }
+            if(isset($v->users_to)) {
+                $fulldata[$v->unixtime]['notification_users_to'] = $v->users_to;
+            } else {
+                $fulldata[$v->unixtime]['notification_users_to'] = 0;
+            }
+            if(isset($v->number_notifications)) {
+                $fulldata[$v->unixtime]['number_notifications'] = $v->number_notifications;
+            } else {
+                $fulldata[$v->unixtime]['number_notifications'] = 0;
+            }
+        }
+        unset($results);
+
+    }
+
+    /**
+     * @param $period
+     * @param \DateTimeZone $timezone
+     * @param \DateTime $fromdate
+     * @param \DateTime $todate
+     * @param array $fulldata
+     */
+    public function process_messages($period, \DateTimeZone $timezone, \DateTime $fromdate, \DateTime $todate, &$fulldata)  {
+        global $DB, $CFG;
+
+        // Skip if {messages} table does not exist.
+        $sql = "SELECT * FROM information_schema.tables
+        WHERE table_schema = '{$CFG->dbname}'
+        AND table_name = '{messages}'";
+        if (!$DB->record_exists_sql($sql)) {
+            return;
+        }
+
+        $tsutcfrom = $fromdate->getTimestamp();
+        $tsutcto = $todate->getTimestamp();
+
+        $sql = "SELECT
+                  period * ( $period ) AS unixtime,
+                  users_from, number_messages FROM
+				(SELECT ROUND( timecreated / ( $period ) ) AS period,
+				COUNT( DISTINCT useridfrom ) AS users_from,
+				COUNT( id ) AS number_messages
+				FROM {messages}
+				WHERE timecreated >= $tsutcfrom AND timecreated < $tsutcto
+				GROUP BY period
+				) AS messages_report";
+        $results = $DB->get_records_sql($sql);
+        foreach ($results as $k => $v) {
+            $date = date_create('@' . $v->unixtime, new \DateTimeZone('UTC'));
+            $date->setTimezone($timezone);
+            if ($date < $fromdate || $date > $todate) {
+                continue;
+            }
+            if (!$date) {
+                die("Invalid date for " . $v->unixtime);
+            }
+            if (!isset($fulldata[$v->unixtime]['date'])) {
+                $fulldata[$v->unixtime]['date'] = $date;
+            }
+            if (!isset($fulldata[$v->unixtime]['users'])) {
+                $fulldata[$v->unixtime]['users'] = 0;
+            }
+            if (!isset($fulldata[$v->unixtime]['actions'])) {
+                $fulldata[$v->unixtime]['actions'] = 0;
+            }
+            if (isset($v->users_from)) {
+                $fulldata[$v->unixtime]['message_users_from'] = $v->users_from;
+            } else {
+                $fulldata[$v->unixtime]['message_users_from'] = 0;
+            }
+            if (isset($v->number_messages)) {
+                $fulldata[$v->unixtime]['number_messages'] = $v->number_messages;
+            } else {
+                $fulldata[$v->unixtime]['number_messages'] = 0;
+            }
+        }
+        unset($results);
     }
 }
 
