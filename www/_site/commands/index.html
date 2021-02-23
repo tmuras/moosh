@@ -2338,7 +2338,8 @@ If combined with "watch" command, it will imitate the poor man's "top" utility.<
 
 <p>Provides capability of importing user pictures from a specific directory (recursively including subdirectories).
 Image filename can be mapped to user ID, idnumber or username database field. Supported image types are jpg, gif and png.
---overwrite option flag can be used to force overwriting of existing user pictures.</p>
+--overwrite option flag can be used to force overwriting of existing user pictures.
+To make this command compliant with RGPD, --policy option can be use to check policy acceptance by user before importing picture.</p>
 
 <p>Example 1: import user pictures from directory and map file names to user's ID value.</p>
 
@@ -2353,6 +2354,11 @@ Image filename can be mapped to user ID, idnumber or username database field. Su
 <p>Example 3: import user pictures from directory and map file names to user's username value.</p>
 
 <pre><code>moosh user-import-pictures -u /path/to/import/dir
+</code></pre>
+
+<p>Example 4: import user pictures from directory and map file names to user's username value. Before importing, check if user has accepted the policy with id 4.</p>
+
+<pre><code>moosh user-import-pictures -u --policy 4 /path/to/import/dir
 </code></pre>
 
 <a name="user-list"></a>

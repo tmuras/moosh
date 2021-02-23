@@ -2036,6 +2036,7 @@ user-import-pictures
 Provides capability of importing user pictures from a specific directory (recursively including subdirectories). 
 Image filename can be mapped to user ID, idnumber or username database field. Supported image types are jpg, gif and png.
 --overwrite option flag can be used to force overwriting of existing user pictures.
+To make this command compliant with RGPD, --policy option can be use to check policy acceptance by user before importing picture.
 
 Example 1: import user pictures from directory and map file names to user's ID value. 
 
@@ -2048,6 +2049,10 @@ Example 2: import user pictures from directory and map file names to user's idnu
 Example 3: import user pictures from directory and map file names to user's username value. 
 
     moosh user-import-pictures -u /path/to/import/dir
+
+Example 4: import user pictures from directory and map file names to user's username value. Before importing, check if user has accepted the policy with id 4.
+
+    moosh user-import-pictures -u --policy 4 /path/to/import/dir
 
 user-list
 ---------
