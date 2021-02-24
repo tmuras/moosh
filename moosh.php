@@ -216,13 +216,16 @@ if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE ) {
         cli_error("config.php does not look right to me.");
     }
     $config = implode("\n", $config);
-    $config = str_replace('<?php', '', $config);
+    $config = str_ireplace('<?php', '', $config);
     $config = str_replace('require_once', '//require_once', $config);
 
     eval($config);
     if(!isset($CFG)) {
         cli_error('After evaluating config.php, $CFG is not set');
     }
+    echo '$CFG - ';
+    print_r($CFG);
+
     $CFG->libdir = $moosh_dir .  "/includes/moodle/lib/";
     $CFG->debugdeveloper = false;
 
