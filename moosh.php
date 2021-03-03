@@ -36,7 +36,7 @@ use GetOptionKit\OptionCollection;
 @error_reporting(E_ALL | E_STRICT);
 @ini_set('display_errors', '1');
 
-define('MOOSH_VERSION', '0.37');
+define('MOOSH_VERSION', '0.38');
 define('MOODLE_INTERNAL', true);
 
 $appspecs = new OptionCollection;
@@ -223,8 +223,10 @@ if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE ) {
     if(!isset($CFG)) {
         cli_error('After evaluating config.php, $CFG is not set');
     }
-    echo '$CFG - ';
-    print_r($CFG);
+    if($app_options->has('verbose')) {
+        echo '$CFG - ';
+        print_r($CFG);
+    }
 
     $CFG->libdir = $moosh_dir .  "/includes/moodle/lib/";
     $CFG->debugdeveloper = false;

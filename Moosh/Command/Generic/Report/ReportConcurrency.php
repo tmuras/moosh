@@ -114,7 +114,29 @@ class ReportConcurrency extends MooshCommand {
 
         $tsutcfrom = $fromdate->getTimestamp();
         $tsutcto = $todate->getTimestamp();
+        $period = $options['period'] * 60;
 
+        // If table logstore_standard_log does not exist, then revert back to old command.
+        // Query mdl_log only.
+        $sql = "SELECT 1 FROM {logstore_standard_log}";
+        try {
+            $DB->get_record_sql($sql);
+        } catch (\Exception $ex) {
+            $sql = "SELECT (FROM_UNIXTIME(period * ( $period ))) AS time,
+				online_users FROM (SELECT ROUND( time / ( $period ) ) AS period,
+				COUNT( DISTINCT userid ) AS online_users
+				FROM {log}
+				WHERE action <> 'error' AND module <> 'library'
+				AND time >= $tsutcfrom AND time <= $tsutcto
+				GROUP BY period
+				) AS concurrent_users_report";
+
+            $query = $DB->get_records_sql($sql);
+            foreach ($query as $k => $v) {
+                echo $k . " users online: " . $v->online_users . "\n";
+            }
+            return;
+        }
         if ($options['csv']) {
             $filepath = $this->cwd . '/' . $options['csv'];
             $csvfile = fopen($filepath, 'w');
@@ -122,8 +144,6 @@ class ReportConcurrency extends MooshCommand {
                 cli_error("Can't open '$filepath' for writing");
             }
         }
-
-        $period = $options['period'] * 60;
 
         // Number of entries in the log for given from-to range.
         $sql = "SELECT COUNT(*) AS 'count', MIN(id) AS 'min', MAX(id) AS 'max'

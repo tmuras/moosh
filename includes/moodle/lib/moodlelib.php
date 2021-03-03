@@ -2378,28 +2378,6 @@ function usertime($date, $timezone=99) {
     return $date - $userdate->getOffset() + $dst;
 }
 
-/**
- * Get a formatted string representation of an interval between two unix timestamps.
- *
- * E.g.
- * $intervalstring = get_time_interval_string(12345600, 12345660);
- * Will produce the string:
- * '0d 0h 1m'
- *
- * @param int $time1 unix timestamp
- * @param int $time2 unix timestamp
- * @param string $format string (can be lang string) containing format chars: https://www.php.net/manual/en/dateinterval.format.php.
- * @return string the formatted string describing the time difference, e.g. '10d 11h 45m'.
- */
-function get_time_interval_string(int $time1, int $time2, string $format = ''): string {
-    $dtdate = new DateTime();
-    $dtdate->setTimeStamp($time1);
-    $dtdate2 = new DateTime();
-    $dtdate2->setTimeStamp($time2);
-    $interval = $dtdate2->diff($dtdate);
-    $format = empty($format) ? get_string('dateintervaldayshoursmins', 'langconfig') : $format;
-    return $interval->format($format);
-}
 
 /**
  * Given a time, return the GMT timestamp of the most recent midnight
@@ -9140,7 +9118,10 @@ function getremoteaddr($default='0.0.0.0') {
 
             $forwardedaddresses = array_filter($forwardedaddresses, function($ip) {
                 global $CFG;
-                return !\core\ip_utils::is_ip_in_subnet_list($ip, $CFG->reverseproxyignore ?? '', ',');
+                if(!isset($CFG->reverseproxyignore) ) {
+                    $CFG->reverseproxyignore = '';
+                }
+                return !\core\ip_utils::is_ip_in_subnet_list($ip, $CFG->reverseproxyignore, ',');
             });
 
             // Multiple proxies can append values to this header including an
@@ -9359,7 +9340,10 @@ function get_performance_info() {
     $info['txt'] .= 'time: '.$info['realtime'].'s ';
 
     // GET/POST (or NULL if $_SERVER['REQUEST_METHOD'] is undefined) is useful for txt logged information.
-    $info['txt'] .= 'method: ' . ($_SERVER['REQUEST_METHOD'] ?? "NULL") . ' ';
+    if(!isset($_SERVER['REQUEST_METHOD'])) {
+        $_SERVER['REQUEST_METHOD'] = "NULL";
+    }
+    $info['txt'] .= 'method: ' . ($_SERVER['REQUEST_METHOD']) . ' ';
 
     if (function_exists('memory_get_usage')) {
         $info['memory_total'] = memory_get_usage();
