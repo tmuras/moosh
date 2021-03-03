@@ -103,6 +103,10 @@ class SettingsExport extends MooshCommand {
                                 $root->appendChild($element);
                             }
                         }
+                    } else {
+                        // The value of this setting looked like a filename, but no matching file was found.
+                        // Append as a standard setting value.
+                        $root->appendChild($element);
                     }
                 } else {
                     $root->appendChild($element);

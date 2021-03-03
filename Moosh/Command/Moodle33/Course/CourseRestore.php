@@ -75,7 +75,14 @@ class CourseRestore extends MooshCommand {
         if (!$options['directory']) {
             //unzip into $CFG->tempdir / "backup" / "auto_restore_" . $split[1];
             $backupdir = "moosh_restore_" . uniqid();
-            $path = $CFG->tempdir . DIRECTORY_SEPARATOR . "backup" . DIRECTORY_SEPARATOR . $backupdir;
+
+            if (isset($CFG->backuptempdir)){
+                $path = $CFG->backuptempdir . DIRECTORY_SEPARATOR . $backupdir;
+            }
+            else{
+                $path = $CFG->tempdir . DIRECTORY_SEPARATOR . "backup" . DIRECTORY_SEPARATOR . $backupdir;
+            }
+
             if ($this->verbose) {
                 echo "Extracting Moode backup file to: '" . $path . "'\n";
             }
