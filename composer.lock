@@ -251,15 +251,15 @@
         },
         {
             "name": "mudrd8mz/moodle-tool_pluginskel",
-            "version": "dev-master",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mudrd8mz/moodle-tool_pluginskel",
-                "reference": "master"
+                "reference": "main"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/mudrd8mz/moodle-tool_pluginskel/archive/master.zip"
+                "url": "https://github.com/mudrd8mz/moodle-tool_pluginskel/archive/main.zip"
             },
             "type": "library"
         },
