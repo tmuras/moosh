@@ -8,7 +8,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle27\Role;
+namespace Moosh\Command\Moodle39\Role;
 use Moosh\MooshCommand;
 
 class RoleReset extends MooshCommand

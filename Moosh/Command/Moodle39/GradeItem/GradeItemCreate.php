@@ -7,7 +7,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle23\GradeItem;
+namespace Moosh\Command\Moodle39\GradeItem;
 use Moosh\MooshCommand;
 
 use GetOptionKit\Argument;

@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle19\Info;
+namespace Moosh\Command\Moodle39\Info;
 use Moosh\MooshCommand;
 
 class ChkDataDir extends MooshCommand

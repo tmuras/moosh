@@ -16,7 +16,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle23\Course;
+namespace Moosh\Command\Moodle39\Course;
 use Moosh\MooshCommand;
 use course_enrolment_manager;
 use context_course;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Moosh\Command\Moodle27\Theme;
+namespace Moosh\Command\Moodle39\Theme;
 use Moosh\MooshCommand;
 use \Phar,
     \PharData;

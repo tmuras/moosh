@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle27\Event;
+namespace Moosh\Command\Moodle39\Event;
 
 use Moosh\MooshCommand;
 

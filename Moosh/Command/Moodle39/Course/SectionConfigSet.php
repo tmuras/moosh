@@ -8,7 +8,7 @@
  * @link      http://github.com/tmuras/moosh
  */
 
-namespace Moosh\Command\Moodle23\Course;
+namespace Moosh\Command\Moodle39\Course;
 use Moosh\MooshCommand;
 
 /**

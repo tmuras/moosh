@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle23\Info;
+namespace Moosh\Command\Moodle39\Info;
 use Moosh\MooshCommand;
 
 class Info extends MooshCommand

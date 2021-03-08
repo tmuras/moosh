@@ -7,7 +7,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle23\Role;
+namespace Moosh\Command\Moodle39\Role;
 use Moosh\MooshCommand;
 
 class RoleUpdateCapability extends MooshCommand

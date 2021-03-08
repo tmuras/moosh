@@ -7,7 +7,7 @@
  * @author     Nadav Kavalerchik <nadavkav@gmail.com>
  */
 
-namespace Moosh\Command\Moodle26\Filter;
+namespace Moosh\Command\Moodle39\Filter;
 use Moosh\MooshCommand;
 use core_plugin_manager;
 

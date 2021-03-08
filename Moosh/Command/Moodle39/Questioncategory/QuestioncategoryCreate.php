@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle23\Questioncategory;
+namespace Moosh\Command\Moodle39\Questioncategory;
 use Moosh\MooshCommand;
 
 class QuestioncategoryCreate extends MooshCommand

@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle23\Sql;
+namespace Moosh\Command\Moodle39\Sql;
 use Moosh\MooshCommand;
 
 class SqlRun extends MooshCommand

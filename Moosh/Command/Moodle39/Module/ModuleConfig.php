@@ -7,7 +7,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle23\Module;
+namespace Moosh\Command\Moodle39\Module;
 use Moosh\MooshCommand;
 
 class ModuleConfig extends MooshCommand

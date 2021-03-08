@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle27\Dev;
+namespace Moosh\Command\Moodle39\Dev;
 use Moosh\MooshCommand;
 
 class GenerateLocal extends MooshCommand {

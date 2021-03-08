@@ -8,7 +8,7 @@
  */
 
 
-namespace Moosh\Command\Moodle25\User;
+namespace Moosh\Command\Moodle39\User;
 use Moosh\MooshCommand;
 
 class UserExport extends MooshCommand

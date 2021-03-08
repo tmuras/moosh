@@ -1,6 +1,6 @@
 <?php
 
-namespace Moosh\Command\Moodle31\Report;
+namespace Moosh\Command\Moodle39\Report;
 
 use Moosh\MooshCommand;
 

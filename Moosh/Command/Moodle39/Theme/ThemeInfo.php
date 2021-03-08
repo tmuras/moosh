@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle26\Theme;
+namespace Moosh\Command\Moodle39\Theme;
 use Moosh\MooshCommand;
 
 class ThemeInfo extends MooshCommand

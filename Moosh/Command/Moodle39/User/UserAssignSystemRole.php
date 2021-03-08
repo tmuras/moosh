@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle31\User;
+namespace Moosh\Command\Moodle39\User;
 use Moosh\MooshCommand;
 
 class UserAssignSystemRole extends MooshCommand

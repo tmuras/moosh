@@ -5,7 +5,7 @@
  * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace Moosh\Command\Moodle25\Activity;
+namespace Moosh\Command\Moodle39\Activity;
 use Moosh\MooshCommand;
 
 class ActivityDelete extends MooshCommand

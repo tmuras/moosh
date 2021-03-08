@@ -7,7 +7,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle28\Module;
+namespace Moosh\Command\Moodle39\Module;
 use Moosh\MooshCommand;
 
 use restore_controller;

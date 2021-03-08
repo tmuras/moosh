@@ -17,7 +17,7 @@
  * @author     Jakub Kleban <jakub.kleban2000@gmail.com>
  */
 
-namespace Moosh\Command\Moodle35\Badge;
+namespace Moosh\Command\Moodle39\Badge;
 use Moosh\MooshCommand;
 
 class BadgeDelete extends MooshCommand

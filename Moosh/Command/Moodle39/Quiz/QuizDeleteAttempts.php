@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle38\Quiz;
+namespace Moosh\Command\Moodle39\Quiz;
 use Moosh\MooshCommand;
 
 class QuizDeleteAttempts extends MooshCommand

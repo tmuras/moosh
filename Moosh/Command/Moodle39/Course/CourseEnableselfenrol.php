@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle23\Course;
+namespace Moosh\Command\Moodle39\Course;
 use Moosh\MooshCommand;
 
 class CourseEnableselfenrol extends MooshCommand

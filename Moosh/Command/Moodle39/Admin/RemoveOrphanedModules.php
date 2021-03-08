@@ -9,7 +9,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle35\Admin;
+namespace Moosh\Command\Moodle39\Admin;
 
 use Moosh\MooshCommand;
 use core_plugin_manager;

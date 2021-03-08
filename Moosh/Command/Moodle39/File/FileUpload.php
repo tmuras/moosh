@@ -7,7 +7,7 @@
  * @author     Kacper Golewski <k.golewski@gmail.com>
  */
 
-namespace Moosh\Command\Moodle23\File;
+namespace Moosh\Command\Moodle39\File;
 use Moosh\MooshCommand;
 
 class FileUpload extends MooshCommand

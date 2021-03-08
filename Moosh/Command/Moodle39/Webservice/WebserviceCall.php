@@ -4,7 +4,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle23\Webservice;
+namespace Moosh\Command\Moodle39\Webservice;
 use Moosh\MooshCommand;
 
 class WebserviceCall extends MooshCommand

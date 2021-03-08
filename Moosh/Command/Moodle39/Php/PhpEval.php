@@ -7,7 +7,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle25\Php;
+namespace Moosh\Command\Moodle39\Php;
 use Moosh\MooshCommand;
 
 class PhpEval extends MooshCommand

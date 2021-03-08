@@ -5,7 +5,7 @@
  * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace Moosh\Command\Moodle36\Category;
+namespace Moosh\Command\Moodle39\Category;
 
 use Moosh\MooshCommand;
 use core_course_category;

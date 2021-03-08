@@ -7,7 +7,7 @@
  * @author     Jakub Kleban <jakub.kleban2000@gmail.com>
  */
 
-namespace Moosh\Command\Moodle23\Course;
+namespace Moosh\Command\Moodle39\Course;
 use Moosh\MooshCommand;
 
 class CourseCreate extends MooshCommand

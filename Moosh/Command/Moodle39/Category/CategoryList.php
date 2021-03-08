@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle35\Category;
+namespace Moosh\Command\Moodle39\Category;
 use Moosh\MooshCommand;
 
 class CategoryList extends MooshCommand

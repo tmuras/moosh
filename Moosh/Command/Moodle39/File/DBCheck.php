@@ -7,7 +7,7 @@
  * DBCheck - Darío Gómez <dario.gomez@solutionsad.com>
  */
 
-namespace Moosh\Command\Moodle23\File;
+namespace Moosh\Command\Moodle39\File;
 
 use Moosh\MooshCommand;
 

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Moosh\Command\Moodle31\Role;
+namespace Moosh\Command\Moodle39\Role;
 
 use Moosh\MooshCommand;
 
