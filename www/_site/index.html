@@ -166,7 +166,7 @@ user-mod
 <pre><code>sudo ln -s $PWD/moosh.php /usr/local/bin/moosh
 </code></pre>
 
-<a name="Installation.from.Moodle.git"></a>
+<a name="Installation.from.git"></a>
 <h2>Installation from Moodle git</h2>
 
 <p>Install composer - see <a href="http://getcomposer.org/download">http://getcomposer.org/download</a>.</p>
@@ -184,6 +184,22 @@ composer install
 <p>Or system-wide:</p>
 
 <pre><code>sudo ln -s $PWD/moosh.php /usr/local/bin/moosh
+</code></pre>
+
+<a name="Update"></a>
+<h1>Update</h1>
+
+<a name="Update.from.git"></a>
+<h2>Update from git</h2>
+
+<p>Update your local version of a repository from a remote</p>
+
+<pre><code>git pull
+</code></pre>
+
+<p>Regenerate the list of all classes that need to be included in the project</p>
+
+<pre><code>composer dump
 </code></pre>
 
 <a name="xdotool.integration"></a>
