@@ -75,7 +75,7 @@ Or system-wide:
 
     sudo ln -s $PWD/moosh.php /usr/local/bin/moosh
 
-Installation from Moodle git
+Installation from git
 ----------------------------
 
 Install composer - see [http://getcomposer.org/download](http://getcomposer.org/download).
@@ -92,6 +92,18 @@ Or system-wide:
 
     sudo ln -s $PWD/moosh.php /usr/local/bin/moosh
 
+Update
+======
+
+Update from git
+----------------------
+Update your local version of a repository from a remote
+
+    git pull
+
+Regenerate the list of all classes that need to be included in the project
+
+    composer dump
 
 xdotool integration
 ===================
