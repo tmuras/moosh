@@ -118,7 +118,7 @@ class ReportConcurrency extends MooshCommand {
 
         // If table logstore_standard_log does not exist, then revert back to old command.
         // Query mdl_log only.
-        $sql = "SELECT 1 FROM {logstore_standard_log}";
+        $sql = "SELECT 1 FROM {logstore_standard_log} LIMIT 1";
         try {
             $DB->get_record_sql($sql);
         } catch (\Exception $ex) {
