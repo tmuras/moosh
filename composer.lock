@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "316a4eb60388549cccabff0570c3e2c1",
+    "content-hash": "ec7be5a7c57e89793c32c2a941789893",
     "packages": [
         {
             "name": "blackboard-open-source/moodle-coding-standard",
@@ -192,6 +192,20 @@
             "type": "library"
         },
         {
+            "name": "erickcomp/moodle-local_wstemplate",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/erickcomp/moodle-local_wstemplate",
+                "reference": "main"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://github.com/erickcomp/moodle-local_wstemplate/archive/main.zip"
+            },
+            "type": "library"
+        },
+        {
             "name": "jamiepratt/moodle-qtype_template",
             "version": "dev-master",
             "source": {
@@ -216,21 +230,6 @@
             "dist": {
                 "type": "zip",
                 "url": "https://github.com/moodlehq/moodle-local_amos/archive/master.zip"
-            },
-            "type": "library"
-        },
-        {
-            "name": "moodlehq/moodle-local_wstemplate",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/moodlehq/moodle-local_wstemplate",
-                "reference": "add2ad0949e72f025c0aad36c4b822e8c6479d3b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/moodlehq/moodle-local_wstemplate/archive/master.zip",
-                "reference": "add2ad0949e72f025c0aad36c4b822e8c6479d3b"
             },
             "type": "library"
         },
@@ -1637,7 +1636,7 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.22.0",
+            "version": "v1.22.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
@@ -1696,7 +1695,7 @@
                 "portable"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.22.0"
+                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.22.1"
             },
             "funding": [
                 {
@@ -1787,30 +1786,35 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "1.9.1",
+            "version": "1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozarts/assert.git",
-                "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389"
+                "reference": "6964c76c7804814a842473e0c8fd15bab0f18e25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozarts/assert/zipball/bafc69caeb4d49c39fd0779086c03a3738cbb389",
-                "reference": "bafc69caeb4d49c39fd0779086c03a3738cbb389",
+                "url": "https://api.github.com/repos/webmozarts/assert/zipball/6964c76c7804814a842473e0c8fd15bab0f18e25",
+                "reference": "6964c76c7804814a842473e0c8fd15bab0f18e25",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.3.3 || ^7.0 || ^8.0",
+                "php": "^7.2 || ^8.0",
                 "symfony/polyfill-ctype": "^1.8"
             },
             "conflict": {
                 "phpstan/phpstan": "<0.12.20",
-                "vimeo/psalm": "<3.9.1"
+                "vimeo/psalm": "<4.6.1 || 4.6.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8.36 || ^7.5.13"
+                "phpunit/phpunit": "^8.5.13"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.10-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Webmozart\\Assert\\": "src/"
@@ -1834,9 +1838,9 @@
             ],
             "support": {
                 "issues": "https://github.com/webmozarts/assert/issues",
-                "source": "https://github.com/webmozarts/assert/tree/1.9.1"
+                "source": "https://github.com/webmozarts/assert/tree/1.10.0"
             },
-            "time": "2020-07-08T17:02:28+00:00"
+            "time": "2021-03-09T10:59:23+00:00"
         }
     ],
     "aliases": [],
@@ -1848,7 +1852,7 @@
         "danielneis/moodle-block_newblock": 20,
         "jamiepratt/moodle-qtype_template": 20,
         "danielneis/moodle-gradereport_newgradereport": 20,
-        "moodlehq/moodle-local_wstemplate": 20,
+        "erickcomp/moodle-local_wstemplate": 20,
         "yetanotherape/diff-match-patch": 20,
         "danielneis/moodle-gradeexport_newgradeexport": 20,
         "danielneis/moodle-message_newprocessor": 20,
