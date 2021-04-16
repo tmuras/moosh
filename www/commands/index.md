@@ -1790,7 +1790,7 @@ Example 1: Dump all possible restore settings
 role-create
 -----------
 
-Create new role, optionally provide description, archetype and name. Role id is returned.
+Create new role, optionally provide description, archetype, context and name. Role id is returned.
 
 Example 1: Create role with short name "newstudentrole" a description, name an archetype
 

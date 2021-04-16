@@ -53,7 +53,7 @@ class RoleCreate extends MooshCommand
         if($options['context'] && $options['archetype'])
         {
             #echo ("You can use only one of this switch (-c, -a)");
-            throw new \Exception('You can use only one of this switch (-c, -a)');
+            cli_error('You can use only one of this switch (-c, -a)');
         }
 
         $options['shortname'] = $arguments[0];
