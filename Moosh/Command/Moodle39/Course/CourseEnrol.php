@@ -43,7 +43,8 @@ class CourseEnrol extends MooshCommand {
 
         $options = $this->expandedOptions;
         $arguments = $this->arguments;
-
+        if($arguments[0]==1)
+            cli_error("Nie mozna uzyc kursu o id=1");
         //find role id for given role
         $role = $DB->get_record('role', array('shortname' => $options['role']), '*', MUST_EXIST);
 
