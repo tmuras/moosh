@@ -2066,13 +2066,19 @@ the command creates and then backes up an empty course with short name "moosh001
 <a name="role-create"></a>
 <h2>role-create</h2>
 
-<p>Create new role, optionally provide description, archetype and name. Role id is returned.</p>
+<p>Create new role, optionally provide description, archetype, context and name. Role id is returned.</p>
 
 <p>Example 1: Create role with short name "newstudentrole" a description, name an archetype</p>
 
 <pre><code>moosh role-create -d "Role description" -a student -n "Role name" newstudentrole
 </code></pre>
+<p>Example 2: Create role with short name "newrole" a description, context level</p>
 
+<pre><code>moosh role-create -d "Description" -c system,user,block newrole
+</code></pre>
+
+<p> This command will create a role named "newrole" with system,user and block contextlevels checked.</p>
+<p>Note: If neither an archetype nor the context level is defined, system context would be checked by default.</p>
 <a name="role-delete"></a>
 <h2>role-delete</h2>
 

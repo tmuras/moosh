@@ -1796,6 +1796,13 @@ Example 1: Create role with short name "newstudentrole" a description, name an a
 
     moosh role-create -d "Role description" -a student -n "Role name" newstudentrole
 
+Example 2: Create role with short name "newrole" a description, context level
+
+    moosh role-create -d "Description" -c system,user,block newrole
+ 
+This command will create a role named "newrole" with system,user and block contextlevels checked.
+Note: If neither an archetype nor the context level is defined, system context would be checked by default.
+
 role-delete
 -----------
 
