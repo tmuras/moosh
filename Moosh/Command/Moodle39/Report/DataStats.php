@@ -34,19 +34,8 @@ class DataStats extends MooshCommand {
         $sql_query = "SELECT SUM(filesize) AS total FROM {files}";
         $all_files = $DB->get_record_sql($sql_query);
 
-        $sql_query = "SELECT DISTINCT contenthash, SUM(filesize) AS total FROM {files}";
-        if (is_a($DB, 'pgsql_native_moodle_database')) {
-            $sql_query .= " GROUP BY contenthash";
-            $distinct_contenthash = $DB->get_records_sql($sql_query);
-            $total = 0;
-            foreach ($distinct_contenthash as $k => $v) {
-                $total += $v->total;
-            }
-            $distinctfilestotal = $total;
-        } else {
-            $distinct_contenthash = $DB->get_record_sql($sql_query);
-            $distinctfilestotal = $distinct_contenthash->total;
-        }
+        $sql = "SELECT SUM(filesize) AS 'total' FROM (SELECT filesize FROM mdl_files GROUP BY contenthash,filesize) sizes ";
+        $distinctfilestotal = $DB->get_record_sql($sql)->total;
 
         // TODO: get sizes of:
         // all files, including the duplicates.
