@@ -322,8 +322,18 @@ function get_files($contextid) {
 
     $sql = 'SELECT f.id, f.contenthash, f.filesize FROM {files} f 
                 WHERE f.contextid = ? 
-
                 AND f.filesize > 0';
+    $param = array($contextid);
+    return $DB->get_records_sql($sql, $param);
+}
+
+function get_distinct_files($contextid) {
+    global $DB;
+
+    $sql = 'SELECT contenthash, filesize FROM {files}  
+                WHERE contextid = ? 
+                AND filesize > 0
+                GROUP BY contenthash, filesize';
     $param = array($contextid);
     return $DB->get_records_sql($sql, $param);
 }

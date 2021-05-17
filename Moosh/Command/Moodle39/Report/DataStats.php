@@ -46,11 +46,19 @@ class DataStats extends MooshCommand {
         if ($courses = get_all_courses()) {
             foreach ($courses as $course) {
                 $subcontexts = get_sub_context_ids($course->ctxpath);
-                $filesbycourse[$course->id] = array('unique' => 0, 'all' => 0);
+                $filesbycourse[$course->id] = array('unique' => 0, 'uniquedistinct' => 0, 'distinct' => 0, 'all' => 0);
                 foreach ($subcontexts as $subcontext) {
                     if ($files = get_files($subcontext->id)) {
                         foreach ($files as $file) {
                             $filesbycourse[$course->id]['unique'] += file_is_unique($file->contenthash, $subcontext->id) ?
+                                    $file->filesize : 0;
+                            $filesbycourse[$course->id]['all'] += $file->filesize;
+                        }
+                    }
+                    if ($files = get_distinct_files($subcontext->id)) {
+                        foreach ($files as $file) {
+                            $filesbycourse[$course->id]['distinct'] += $file->filesize;
+                            $filesbycourse[$course->id]['uniquedistinct'] += file_is_unique($file->contenthash, $subcontext->id) ?
                                     $file->filesize : 0;
                             $filesbycourse[$course->id]['all'] += $file->filesize;
                         }
@@ -72,6 +80,8 @@ class DataStats extends MooshCommand {
             $data["Course $i id"] = 'id ' . $courseid;
             $data["Course $i files total"] = strval($values['all']);
             $data["Course $i files unique"] = strval($values['unique']);
+            $data["Course $i files distinct"] = strval($values['distinct']);
+            $data["Course $i files unique and distinct"] = strval($values['uniquedistinct']);
         }
 
         $i = 0;
