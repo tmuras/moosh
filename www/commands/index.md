@@ -1929,6 +1929,19 @@ Example 2: Count the number of rows is log table
 
     moosh sql-run "select count(*) from {log}"
 
+task-lock-check
+---------------
+
+Show locked tasks. The command only works with MySQL. 
+
+Example 1: show list of locked tasks (if any)
+
+    moosh task-lock-check
+
+Example 2: show all tasks and their status (locked/unlocked)
+
+    moosh task-lock-check -a
+
 theme-info
 ----------
 

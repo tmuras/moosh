@@ -2218,6 +2218,21 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 <pre><code>moosh sql-run "select count(*) from {log}"
 </code></pre>
 
+<a name="task-lock-check"></a>
+<h2>task-lock-check</h2>
+
+<p>Show locked tasks. The command only works with MySQL.</p>
+
+<p>Example 1: show list of locked tasks (if any)</p>
+
+<pre><code>moosh task-lock-check
+</code></pre>
+
+<p>Example 2: show all tasks and their status (locked/unlocked)</p>
+
+<pre><code>moosh task-lock-check -a
+</code></pre>
+
 <a name="theme-info"></a>
 <h2>theme-info</h2>
 
