@@ -53,8 +53,8 @@ Do not copy moosh files inside your Moodle installation as that may [break behat
 
 Installation from Ubuntu package
 --------------------------------
-
-     sudo apt-add-repository 'deb http://ppa.launchpad.net/zabuch/ppa/ubuntu trusty main'
+     sudo apt-get install software-properties-common 
+     sudo apt-add-repository ppa:zabuch/ppa
      sudo apt-get update
      sudo apt-get install moosh
 
