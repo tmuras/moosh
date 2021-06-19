@@ -411,7 +411,7 @@ Example 1: Export all categories to XML.
 
     moosh category-export 0
 
-Example 2: Export category with id 3 and all its sub categiries.
+Example 2: Export category with id 3 and all its sub categories.
 
     moosh category-export 3
 
