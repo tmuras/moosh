@@ -50,14 +50,14 @@
       "type": "package",
       "package": {
         "version": "dev-master",
-        "name": "moodlehq/moodle-local_wstemplate",
+        "name": "erickcomp/moodle-local_wstemplate",
         "source": {
-          "url": "https://github.com/moodlehq/moodle-local_wstemplate",
+          "url": "https://github.com/erickcomp/moodle-local_wstemplate",
           "type": "git",
-          "reference": "master"
+          "reference": "main"
         },
         "dist": {
-          "url": "https://github.com/moodlehq/moodle-local_wstemplate/archive/master.zip",
+          "url": "https://github.com/erickcomp/moodle-local_wstemplate/archive/main.zip",
           "type": "zip"
         }
       }
@@ -209,29 +209,29 @@
     {
       "type": "package",
       "package": {
-        "version": "dev-master",
+        "version": "dev-main",
         "name": "mudrd8mz/moodle-tool_pluginskel",
         "source": {
           "url": "https://github.com/mudrd8mz/moodle-tool_pluginskel",
           "type": "git",
-          "reference": "master"
+          "reference": "main"
         },
         "dist": {
-          "url": "https://github.com/mudrd8mz/moodle-tool_pluginskel/archive/master.zip",
+          "url": "https://github.com/mudrd8mz/moodle-tool_pluginskel/archive/main.zip",
           "type": "zip"
         }
       }
     }
   ],
   "require": {
-    "mudrd8mz/moodle-tool_pluginskel":"dev-master",
+    "mudrd8mz/moodle-tool_pluginskel":"dev-main",
     "corneltek/getoptionkit": "dev-master#3fd84905bb13d713477f1356beac1f9f9367ddcf",
     "twig/twig": "1.18.2",
     "moodlehq/moodle-mod_newmodule": "dev-master#e1f112be8842291259ece87de3000cd5f0e18711",
     "danielneis/moodle-block_newblock": "dev-master#1fc89fb0845ad282426140feeb6bc3653efd1d7f",
     "jamiepratt/moodle-qtype_template": "dev-master",
     "danielneis/moodle-gradereport_newgradereport": "dev-master#691f53a15de352c3fe25da03c001a97a76b18358",
-    "moodlehq/moodle-local_wstemplate": "dev-master#add2ad0949e72f025c0aad36c4b822e8c6479d3b",
+    "erickcomp/moodle-local_wstemplate": "dev-master",
     "yetanotherape/diff-match-patch": "dev-master#0726dbb4e59e68574326821c174013cf6fdfe20e",
     "danielneis/moodle-gradeexport_newgradeexport": "dev-master#4d13e3f6e9f4f53d54d6e8ad348278248968412d",
     "danielneis/moodle-message_newprocessor": "dev-master#e2b82f0776b13a30a79f4f20de89d597a15f58c5",

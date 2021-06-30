@@ -403,7 +403,7 @@ moosh block-manage show calendar
 <h2>cache-add-redis-store</h2>
 
 <p>Adds a new redis store instance to cache like in
-<code>Dashboard > Site administration > Plugins > Caching > Configuration > Redis > Add instance</code></p>
+<code>Dashboard &gt; Site administration &gt; Plugins &gt; Caching &gt; Configuration &gt; Redis &gt; Add instance</code></p>
 
 <p>Example 1: Add new instance "Test" with server set to "localhost"</p>
 
@@ -427,7 +427,7 @@ moosh block-manage show calendar
 <h2>cache-config-get</h2>
 
 <p>Gets cache config and print_r() it. You can find cache configuration in
-<code>Dashboard > Site administration > Plugins > Caching > Configuration</code></p>
+<code>Dashboard &gt; Site administration &gt; Plugins &gt; Caching &gt; Configuration</code></p>
 
 <p>Example 1: Show every cache config</p>
 
@@ -462,7 +462,7 @@ moosh block-manage show calendar
 <a name="cache-edit-mappings"></a>
 <h2>cache-edit-mappings</h2>
 
-<p>Edits default mode mappings like in <code>Dashboard > Site administration > Plugins > Caching > Configuration > Edit mappings</code></p>
+<p>Edits default mode mappings like in <code>Dashboard &gt; Site administration &gt; Plugins &gt; Caching &gt; Configuration &gt; Edit mappings</code></p>
 
 <p>Example 1: Show default mode mappings without changing</p>
 
@@ -2066,12 +2066,20 @@ the command creates and then backes up an empty course with short name "moosh001
 <a name="role-create"></a>
 <h2>role-create</h2>
 
-<p>Create new role, optionally provide description, archetype and name. Role id is returned.</p>
+<p>Create new role, optionally provide description, archetype, context and name. Role id is returned.</p>
 
 <p>Example 1: Create role with short name "newstudentrole" a description, name an archetype</p>
 
 <pre><code>moosh role-create -d "Role description" -a student -n "Role name" newstudentrole
 </code></pre>
+
+<p>Example 2: Create role with short name "newrole" a description, context level</p>
+
+<pre><code>moosh role-create -d "Description" -c system,user,block newrole
+</code></pre>
+
+<p>This command will create a role named "newrole" with system,user and block contextlevels checked.
+Note: If neither an archetype nor the context level is defined, system context would be checked by default.</p>
 
 <a name="role-delete"></a>
 <h2>role-delete</h2>
@@ -2208,6 +2216,21 @@ and add "-on" or "-off" to the caontext level name to turn it on or off.</p>
 <p>Example 2: Count the number of rows is log table</p>
 
 <pre><code>moosh sql-run "select count(*) from {log}"
+</code></pre>
+
+<a name="task-lock-check"></a>
+<h2>task-lock-check</h2>
+
+<p>Show locked tasks. The command only works with MySQL.</p>
+
+<p>Example 1: show list of locked tasks (if any)</p>
+
+<pre><code>moosh task-lock-check
+</code></pre>
+
+<p>Example 2: show all tasks and their status (locked/unlocked)</p>
+
+<pre><code>moosh task-lock-check -a
 </code></pre>
 
 <a name="theme-info"></a>

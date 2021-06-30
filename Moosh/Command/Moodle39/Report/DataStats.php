@@ -34,19 +34,8 @@ class DataStats extends MooshCommand {
         $sql_query = "SELECT SUM(filesize) AS total FROM {files}";
         $all_files = $DB->get_record_sql($sql_query);
 
-        $sql_query = "SELECT DISTINCT contenthash, SUM(filesize) AS total FROM {files}";
-        if (is_a($DB, 'pgsql_native_moodle_database')) {
-            $sql_query .= " GROUP BY contenthash";
-            $distinct_contenthash = $DB->get_records_sql($sql_query);
-            $total = 0;
-            foreach ($distinct_contenthash as $k => $v) {
-                $total += $v->total;
-            }
-            $distinctfilestotal = $total;
-        } else {
-            $distinct_contenthash = $DB->get_record_sql($sql_query);
-            $distinctfilestotal = $distinct_contenthash->total;
-        }
+        $sql = "SELECT SUM(filesize) AS 'total' FROM (SELECT filesize FROM mdl_files GROUP BY contenthash,filesize) sizes ";
+        $distinctfilestotal = $DB->get_record_sql($sql)->total;
 
         // TODO: get sizes of:
         // all files, including the duplicates.
@@ -57,11 +46,19 @@ class DataStats extends MooshCommand {
         if ($courses = get_all_courses()) {
             foreach ($courses as $course) {
                 $subcontexts = get_sub_context_ids($course->ctxpath);
-                $filesbycourse[$course->id] = array('unique' => 0, 'all' => 0);
+                $filesbycourse[$course->id] = array('unique' => 0, 'uniquedistinct' => 0, 'distinct' => 0, 'all' => 0);
                 foreach ($subcontexts as $subcontext) {
                     if ($files = get_files($subcontext->id)) {
                         foreach ($files as $file) {
                             $filesbycourse[$course->id]['unique'] += file_is_unique($file->contenthash, $subcontext->id) ?
+                                    $file->filesize : 0;
+                            $filesbycourse[$course->id]['all'] += $file->filesize;
+                        }
+                    }
+                    if ($files = get_distinct_files($subcontext->id)) {
+                        foreach ($files as $file) {
+                            $filesbycourse[$course->id]['distinct'] += $file->filesize;
+                            $filesbycourse[$course->id]['uniquedistinct'] += file_is_unique($file->contenthash, $subcontext->id) ?
                                     $file->filesize : 0;
                             $filesbycourse[$course->id]['all'] += $file->filesize;
                         }
@@ -83,6 +80,8 @@ class DataStats extends MooshCommand {
             $data["Course $i id"] = 'id ' . $courseid;
             $data["Course $i files total"] = strval($values['all']);
             $data["Course $i files unique"] = strval($values['unique']);
+            $data["Course $i files distinct"] = strval($values['distinct']);
+            $data["Course $i files unique and distinct"] = strval($values['uniquedistinct']);
         }
 
         $i = 0;

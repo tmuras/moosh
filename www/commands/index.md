@@ -411,7 +411,7 @@ Example 1: Export all categories to XML.
 
     moosh category-export 0
 
-Example 2: Export category with id 3 and all its sub categiries.
+Example 2: Export category with id 3 and all its sub categories.
 
     moosh category-export 3
 
@@ -1790,11 +1790,18 @@ Example 1: Dump all possible restore settings
 role-create
 -----------
 
-Create new role, optionally provide description, archetype and name. Role id is returned.
+Create new role, optionally provide description, archetype, context and name. Role id is returned.
 
 Example 1: Create role with short name "newstudentrole" a description, name an archetype
 
     moosh role-create -d "Role description" -a student -n "Role name" newstudentrole
+
+Example 2: Create role with short name "newrole" a description, context level
+
+    moosh role-create -d "Description" -c system,user,block newrole
+ 
+This command will create a role named "newrole" with system,user and block contextlevels checked.
+Note: If neither an archetype nor the context level is defined, system context would be checked by default.
 
 role-delete
 -----------
@@ -1921,6 +1928,19 @@ Example 1: Set the country of all the users to Poland
 Example 2: Count the number of rows is log table
 
     moosh sql-run "select count(*) from {log}"
+
+task-lock-check
+---------------
+
+Show locked tasks. The command only works with MySQL. 
+
+Example 1: show list of locked tasks (if any)
+
+    moosh task-lock-check
+
+Example 2: show all tasks and their status (locked/unlocked)
+
+    moosh task-lock-check -a
 
 theme-info
 ----------
