@@ -623,6 +623,19 @@ Example 2: Set URL to logo for Sky High theme.
 
     moosh config-set logo http://example.com/logo.png theme_sky_high
 
+context-rebuild
+---------------
+
+Rebuild context paths - it works the same way as command bellow with \context_helper::build_all_paths(true);
+
+    php admin/tool/task/cli/schedule_task.php --execute='\core\task\context_cleanup_task' --showdebugging
+
+(see https://docs.moodle.org/311/en/How_to_rebuild_context_paths)
+
+Example:
+
+    moosh context-rebuild
+
 course-backup
 -------------
 

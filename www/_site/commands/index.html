@@ -772,6 +772,21 @@ id 2 by:</p>
 <pre><code>moosh config-set logo http://example.com/logo.png theme_sky_high
 </code></pre>
 
+<a name="context-rebuild"></a>
+<h2>context-rebuild</h2>
+
+<p>Rebuild context paths - it works the same way as command bellow with \context_helper::build_all_paths(true);</p>
+
+<pre><code>php admin/tool/task/cli/schedule_task.php --execute='\core\task\context_cleanup_task' --showdebugging
+</code></pre>
+
+<p>(see https://docs.moodle.org/311/en/How_to_rebuild_context_paths)</p>
+
+<p>Example:</p>
+
+<pre><code>moosh context-rebuild
+</code></pre>
+
 <a name="course-backup"></a>
 <h2>course-backup</h2>
 

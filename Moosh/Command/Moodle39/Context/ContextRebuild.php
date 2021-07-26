@@ -1,13 +1,12 @@
 <?php
 /**
- * Adds a new redis store instance to cache.
- * moosh cache-add-redis-store [-p, --password] [-k, --key-prefix] <name> <server>
+ * Rebuild context paths - it works the same way as command with \context_helper::build_all_paths(true);
+ * (php admin/tool/task/cli/schedule_task.php --execute='\core\task\context_cleanup_task' --showdebugging)
+ * https://docs.moodle.org/311/en/How_to_rebuild_context_paths
+ * moosh context-rebuild
  *
- * Add new instance "Test" with server set to "localhost"
- * @example moosh cache-add-redis-store "Test" "localhost"
- *
- * Add new instance "Test2" with server set to "localhost", password set to "123456" and key prefix set to "key_"
- * @example moosh cache-add-redis-store --password "123456" -k "key_" "Test2" "localhost"
+ * rebuild context paths
+ * @example moosh context-rebuild
  *
  * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
