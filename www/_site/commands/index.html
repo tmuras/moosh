@@ -1471,6 +1471,33 @@ moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 
 <pre><code>moosh generate-filemanager
 </code></pre>
 
+<a name="generate-files"></a>
+<h2>generate-files</h2>
+
+<p>This command creates new mod_resource in choosen course with a selected number of files and their size.</p>
+
+<p>moosh generate-files [-n, --name] [-s, --section] (courseid) (filescount) (filesize)</p>
+
+<p>Example of total sizes:</p>
+<ul>
+<li>1KB (1 file x 1024 Bytes),</li>
+<li>1MB (64 files x 16384 Bytes),</li>
+<li>10MB (128 files x 81920 Bytes),</li>
+<li>100MB (1024 files x 102400 Bytes),</li>
+<li>1GB (16384 files x 65536 Bytes)</li>
+<li>2GB (32768 files x 65536 Bytes)</li>
+</ul>
+
+<p>Example 1: Add 1 file that weighs 1MB into course with id = 4</p>
+
+<pre><code>moosh generate-files 4 1 1048576
+</code></pre>
+
+<p>Example 2: Add 1000 files (1KB each) into course with id=4, the file should be named 'Test' and placed in section number 3</p>
+
+<pre><code>moosh generate-files -n 'Test' -s 3 4 1000 1024
+</code></pre>
+
 <a name="generate-form"></a>
 <h2>generate-form</h2>
 
