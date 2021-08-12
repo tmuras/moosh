@@ -626,7 +626,7 @@ Example 2: Set URL to logo for Sky High theme.
 context-rebuild
 ---------------
 
-Rebuild context paths - it works the same way as command bellow with \context_helper::build_all_paths(true);
+Rebuild context paths - it does the same thing as command bellow with \context_helper::build_all_paths(true)
 
     php admin/tool/task/cli/schedule_task.php --execute='\core\task\context_cleanup_task' --showdebugging
 
