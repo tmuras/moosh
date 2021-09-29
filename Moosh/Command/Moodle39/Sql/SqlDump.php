@@ -30,6 +30,7 @@ class SqlDump extends MooshCommand
         switch ($CFG->dbtype) {
             case 'mysqli':
             case 'mariadb':
+            case 'auroramysql':
                 $portoption = '';
                 if (!empty($CFG->dboptions['dbport'])) {
                     $portoption = '-P ' . $CFG->dboptions['dbport'];
