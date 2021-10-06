@@ -623,6 +623,19 @@ Example 2: Set URL to logo for Sky High theme.
 
     moosh config-set logo http://example.com/logo.png theme_sky_high
 
+context-rebuild
+---------------
+
+Rebuild context paths - it does the same thing as command bellow with \context_helper::build_all_paths(true)
+
+    php admin/tool/task/cli/schedule_task.php --execute='\core\task\context_cleanup_task' --showdebugging
+
+(see https://docs.moodle.org/311/en/How_to_rebuild_context_paths)
+
+Example:
+
+    moosh context-rebuild
+
 course-backup
 -------------
 
@@ -1237,6 +1250,29 @@ generate-filemanager
 Shows how to code filepicker, based on https://github.com/AndyNormore/filemanager. Takes no arguments.
 
     moosh generate-filemanager
+
+generate-files
+--------------
+
+This command creates new mod_resource in choosen course with a selected number of files and their size.
+
+moosh generate-files [-n, --name] [-s, --section] (courseid) (filescount) (filesize)
+
+Example of total sizes:
+- 1KB (1 file x 1024 Bytes),
+- 1MB (64 files x 16384 Bytes),
+- 10MB (128 files x 81920 Bytes),
+- 100MB (1024 files x 102400 Bytes),
+- 1GB (16384 files x 65536 Bytes)
+- 2GB (32768 files x 65536 Bytes)
+
+Example 1: Add 1 file that weighs 1MB into course with id = 4
+
+    moosh generate-files 4 1 1048576
+
+Example 2: Add 1000 files (1KB each) into course with id=4, the file should be named 'Test' and placed in section number 3
+
+    moosh generate-files -n 'Test' -s 3 4 1000 1024
 
 generate-form
 -------------

@@ -772,6 +772,21 @@ id 2 by:</p>
 <pre><code>moosh config-set logo http://example.com/logo.png theme_sky_high
 </code></pre>
 
+<a name="context-rebuild"></a>
+<h2>context-rebuild</h2>
+
+<p>Rebuild context paths - it does the same thing as command bellow with \context_helper::build_all_paths(true)</p>
+
+<pre><code>php admin/tool/task/cli/schedule_task.php --execute='\core\task\context_cleanup_task' --showdebugging
+</code></pre>
+
+<p>(see https://docs.moodle.org/311/en/How_to_rebuild_context_paths)</p>
+
+<p>Example:</p>
+
+<pre><code>moosh context-rebuild
+</code></pre>
+
 <a name="course-backup"></a>
 <h2>course-backup</h2>
 
@@ -1454,6 +1469,33 @@ moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 
 <p>Shows how to code filepicker, based on https://github.com/AndyNormore/filemanager. Takes no arguments.</p>
 
 <pre><code>moosh generate-filemanager
+</code></pre>
+
+<a name="generate-files"></a>
+<h2>generate-files</h2>
+
+<p>This command creates new mod_resource in choosen course with a selected number of files and their size.</p>
+
+<p>moosh generate-files [-n, --name] [-s, --section] (courseid) (filescount) (filesize)</p>
+
+<p>Example of total sizes:</p>
+<ul>
+<li>1KB (1 file x 1024 Bytes),</li>
+<li>1MB (64 files x 16384 Bytes),</li>
+<li>10MB (128 files x 81920 Bytes),</li>
+<li>100MB (1024 files x 102400 Bytes),</li>
+<li>1GB (16384 files x 65536 Bytes)</li>
+<li>2GB (32768 files x 65536 Bytes)</li>
+</ul>
+
+<p>Example 1: Add 1 file that weighs 1MB into course with id = 4</p>
+
+<pre><code>moosh generate-files 4 1 1048576
+</code></pre>
+
+<p>Example 2: Add 1000 files (1KB each) into course with id=4, the file should be named 'Test' and placed in section number 3</p>
+
+<pre><code>moosh generate-files -n 'Test' -s 3 4 1000 1024
 </code></pre>
 
 <a name="generate-form"></a>
