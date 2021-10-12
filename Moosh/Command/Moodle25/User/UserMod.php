@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle39\User;
+namespace Moosh\Command\Moodle25\User;
 use Moosh\MooshCommand;
 
 class UserMod extends MooshCommand
@@ -21,7 +21,6 @@ class UserMod extends MooshCommand
         $this->addOption('a|auth:', 'auth');
         $this->addOption('p|password:', 'password');
         $this->addOption('e|email:','email address');
-        $this->addOption('u|username:','username');
 
         $this->addOption('g|global', 'user(s) to be set as global admin.', false);
         $this->addOption('n|ignorepolicy', 'ignore password policy.', false);
@@ -95,9 +94,6 @@ class UserMod extends MooshCommand
             }
             if($this->parsedOptions->has('email')) {
                 $user->email = $this->parsedOptions['email']->value;
-            }
-            if($this->parsedOptions->has('username')) {
-                $user->username = $this->parsedOptions['username']->value;
             }
             if($this->parsedOptions->has('auth')) {
                 $user->auth = $this->parsedOptions['auth']->value;
