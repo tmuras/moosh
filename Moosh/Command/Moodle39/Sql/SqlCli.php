@@ -32,6 +32,7 @@ class SqlCli extends MooshCommand
         switch ($CFG->dbtype) {
             case 'mysqli':
             case 'mariadb':
+            case 'auroramysql':
                 $connstr = "mysql -h {$CFG->dbhost} -u {$CFG->dbuser} -p'{$CFG->dbpass}' {$CFG->dbname}";
                 break;
             case 'pgsql':
