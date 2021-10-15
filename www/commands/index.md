@@ -246,6 +246,23 @@ Example 3: Delete all badges WHERE courseid = 433 and status = 0.
 
     moosh badge-delete "courseid=433 AND status=0"
 
+badge-delete-duplicates
+------------
+
+This command detects badge duplicates (with the same timecreated and courseid) and removes them.
+
+It will keep only one (with the lowest ID) duplicate which has the same timecreated and courseid.
+
+    moosh badge-delete-duplicates [-n, --no-action]
+
+Example 1: Just show all duplicates.
+
+    moosh badge-delete-duplicates --no-action
+
+Example 2: Delete all duplicates. 
+
+    moosh badge-delete-duplicates
+
 base-path
 ---------
 
