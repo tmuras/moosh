@@ -381,4 +381,8 @@ CODE;
 
         return $files;
     }
+    
+    public function bootstrapLevel() {
+        return self::$BOOTSTRAP_FULL_NO_ADMIN_CHECK;
+    }
 }
