@@ -12,6 +12,9 @@
  * Delete all badges with courseid=433 and status=0:
  * @example moosh badge-delete "courseid=433 AND status=0"
  *
+ * Delete all badges with timecreated = 1617009565 without the badge with the lowest ID:
+ * @example moosh badge-delete -n --keepfirst 'timecreated=1617009565'
+ *
  * @copyright  2021 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @author     Jakub Kleban <jakub.kleban2000@gmail.com>
@@ -29,6 +32,7 @@ class BadgeDelete extends MooshCommand
 
         $this->addArgument('sqlcriteria');
         $this->addOption('n|no-action', "Don't delete records, just show what is to be removed");
+        $this->addOption('k|keepfirst', "Don't delete badge with lowest id from given criteria");
 
         $this->minArguments = 1;
         $this->maxArguments = 1;
@@ -38,9 +42,9 @@ class BadgeDelete extends MooshCommand
     {
         $sqlcriteria = $this->arguments[0];
         $noaction = $this->parsedOptions->has('no-action');
-
+        $keepfirst = $this->parsedOptions->has('keepfirst');
         $badgeremover = new BadgesRemove($sqlcriteria, $noaction);
-        $badgeremover->remove();
+        $badgeremover->remove($keepfirst);
 
         exit(0);
     }

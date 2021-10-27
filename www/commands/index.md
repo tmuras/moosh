@@ -246,6 +246,10 @@ Example 3: Delete all badges WHERE courseid = 433 and status = 0.
 
     moosh badge-delete "courseid=433 AND status=0"
 
+Example 4: Delete all badges with timecreated = 1617009565 without the badge with the lowest ID.
+
+    moosh badge-delete -n --keepfirst 'timecreated=1617009565'
+
 badge-delete-duplicates
 ------------
 
