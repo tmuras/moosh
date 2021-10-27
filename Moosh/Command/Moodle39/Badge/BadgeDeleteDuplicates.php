@@ -34,7 +34,7 @@ class BadgeDeleteDuplicates extends MooshCommand
         $noaction = $this->parsedOptions->has('no-action');
 
         // Get duplicates.
-        $duplicates = $DB->get_records_sql('SELECT @rownum := @rownum + 1 AS num, count(*), timecreated, courseid FROM {badge}, (SELECT @rownum :=0) r WHERE status=0 GROUP BY timecreated, courseid having count(*) > 1 ORDER BY num');
+        $duplicates = $DB->get_records_sql('SELECT MIN(id) AS num, count(*) as c, timecreated, courseid, usercreated FROM {badge} WHERE status=0 GROUP BY timecreated, courseid, usercreated having c > 1 ORDER BY c DESC');
         foreach($duplicates as $duplicate) {
             $sql = 'status=0 AND timecreated=' . $duplicate->timecreated . ' AND courseid=' . $duplicate->courseid;
             $badgesremover = new BadgesRemove($sql, $noaction);
