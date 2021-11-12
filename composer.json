@@ -17,15 +17,15 @@
     {
       "type": "package",
       "package": {
-        "version": "dev-master",
+        "version": "dev-main",
         "name": "moodlehq/moodle-local_amos",
         "source": {
           "url": "https://github.com/moodlehq/moodle-local_amos",
           "type": "git",
-          "reference": "master"
+          "reference": "main"
         },
         "dist": {
-          "url": "https://github.com/moodlehq/moodle-local_amos/archive/master.zip",
+          "url": "https://github.com/moodlehq/moodle-local_amos/archive/main.zip",
           "type": "zip"
         }
       }
@@ -242,7 +242,7 @@
     "blackboard-open-source/moodle-coding-standard": "2.0.3",
     "squizlabs/php_codesniffer": "^2.5",
     "nikic/php-parser": "^3.0",
-    "moodlehq/moodle-local_amos": "dev-master"
+    "moodlehq/moodle-local_amos": "dev-main"
   },
   "bin": [
     "moosh.php"
