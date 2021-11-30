@@ -351,6 +351,31 @@ The command works by extracting files like users.xml, gradebook.xml, course/logs
 <pre><code>moosh badge-delete "courseid=433 AND status=0"
 </code></pre>
 
+<p>Example 4: Delete all badges with timecreated = 1617009565 without the badge with the lowest ID.</p>
+
+<pre><code>moosh badge-delete -n --keepfirst 'timecreated=1617009565'
+</code></pre>
+
+<a name="badge-delete-duplicates"></a>
+<h2>badge-delete-duplicates</h2>
+
+<p>This command detects badge duplicates (with the same timecreated and courseid) and removes them.</p>
+
+<p>It will keep only one (with the lowest ID) duplicate which has the same timecreated and courseid.</p>
+
+<pre><code>moosh badge-delete-duplicates [-n, --no-action]
+</code></pre>
+
+<p>Example 1: Just show all duplicates.</p>
+
+<pre><code>moosh badge-delete-duplicates --no-action
+</code></pre>
+
+<p>Example 2: Delete all duplicates.</p>
+
+<pre><code>moosh badge-delete-duplicates
+</code></pre>
+
 <a name="base-path"></a>
 <h2>base-path</h2>
 

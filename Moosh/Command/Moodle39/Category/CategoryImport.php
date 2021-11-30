@@ -67,8 +67,8 @@ class CategoryImport extends MooshCommand
     public function create_category($category)
     {
         global $CFG;
-        require_once $CFG->libdir . '/coursecatlib.php';
-        return \coursecat::create($category);
+        require_once $CFG->dirroot . '/course/renderer.php';
+        return \core_course_category::create($category);
     }
 
     public function start_element($parser, $name, $attrs)

@@ -23,7 +23,7 @@ class CategoryExport extends MooshCommand
         global $CFG;
 
         require_once $CFG->dirroot . '/course/lib.php';
-        require_once $CFG->libdir . '/coursecatlib.php';
+        require_once $CFG->dirroot . '/course/renderer.php';
 
         $categoryid = intval($this->arguments[0]);
 
@@ -43,7 +43,7 @@ class CategoryExport extends MooshCommand
             $category = NULL;
         }
 
-        $parentcategory = \coursecat::get($id);
+        $parentcategory = \core_course_category::get($id);
         if ($parentcategory->has_children()) {
             $parentschildren = $parentcategory->get_children();
             foreach($parentschildren as $singlecategory) {
