@@ -90,7 +90,7 @@ class FileCheck extends MooshCommand
         $missing = 0;
         $filestorage = get_file_storage();
         $filesystem = $filestorage->get_file_system();
-        $rs = $DB->get_recordset_sql("SELECT MAX(id) AS id, contenthash FROM {files} GROUP BY contenthash");
+        $rs = $DB->get_recordset_sql("SELECT MAX(id) AS id, contenthash FROM {files} WHERE referencefileid IS NULL GROUP BY contenthash");
         foreach ($rs as $file) {
             $line = array();
             /** @var \stored_file $fileobject */
