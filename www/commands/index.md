@@ -763,15 +763,6 @@ Example 1: Enroll user with firstname test42 and lastname user42 into the course
 
     moosh course-enrolbyname -r editingteacher -f test42 -l user42 -c T12345
 
-course-enrolleduser
--------------------
-
-Returns all enrolled user in a course, which have a specific role. First argument is the shortname of a role, second argument is a course ID.
-
-Example 1:
-
-    moosh course-enrolleduser student 4
-
 course-enableselfenrol
 ----------------------
 
@@ -2208,7 +2199,7 @@ Example 1: unassign "manager" role for "testuser"
     
     moosh user-unassign-system-role testuser manager
     
-Example 1: unassign "coursecreator" role for "testuser2"
+Example 2: unassign "coursecreator" role for "testuser2"
     
     moosh user-unassign-system-role testuser2 coursecreator
 
@@ -2218,9 +2209,13 @@ userprofilefields-export
 Export the definition of the defined user profile fields to CSV file
 named by default "user_profile_fields.csv".
 
-Example:
+Example 1: export to "user_profile_fields.csv" in current directory
 
     moosh userprofilefields-export
+
+Example 2: save CSV file as /tmp/fields.csv
+
+    moosh userprofilefields-export -p /tmp/fields.csv
 
 userprofilefields-import
 ------------------------

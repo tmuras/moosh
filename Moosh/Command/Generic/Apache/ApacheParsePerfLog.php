@@ -109,18 +109,17 @@ class ApacheParsePerfLog extends MooshCommand {
             //[Sun Dec 22 06:29:01 2013]
             //[Sun Dec 22 06:29:01.731010 2013]
             //[28-Jul-2016 13:54:36 Europe/Paris]
+            $valid = false;
             $row['timestamp'] = $this->parse($line, '\[(.*?)\]');
-            if(!$row['timestamp']) {
-                $valid = false;
-            } else if(preg_match('/\d/',$row['timestamp']) !== 1) {
-                // It can no be valid if it does not contain any digits
-                $valid = false;
+            if(preg_match('/\d/',$row['timestamp']) === 1) {
+                // At the moment it's valid if it does contain a digits
+                $valid = true;
             }
+
             if($valid) {
                 $row['timestamp'] = preg_replace('/\.\d+/', '', $row['timestamp']);
                 $tmp = date_parse($row['timestamp']);
             }
-
             if(!$valid || !$tmp || $tmp['year'] == false) {
                 //If above are not found then try with nginx formatting:
                 //2020/11/18 06:25:16

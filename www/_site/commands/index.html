@@ -560,7 +560,7 @@ moosh category-create -r CategoryABC
 <pre><code>moosh category-export 0
 </code></pre>
 
-<p>Example 2: Export category with id 3 and all its sub categiries.</p>
+<p>Example 2: Export category with id 3 and all its sub categories.</p>
 
 <pre><code>moosh category-export 3
 </code></pre>
@@ -927,16 +927,6 @@ Use -i for providing username IDs.  Optionally add -S and -E to define start and
 <p>Example 1: Enroll user with firstname test42 and lastname user42 into the course with shortname T12345 as an editing teacher.</p>
 
 <pre><code>moosh course-enrolbyname -r editingteacher -f test42 -l user42 -c T12345
-</code></pre>
-
-<a name="course-enrolleduser"></a>
-<h2>course-enrolleduser</h2>
-
-<p>Returns all enrolled user in a course, which have a specific role. First argument is the shortname of a role, second argument is a course ID.</p>
-
-<p>Example 1:</p>
-
-<pre><code>moosh course-enrolleduser student 4
 </code></pre>
 
 <a name="course-enableselfenrol"></a>
@@ -1503,15 +1493,13 @@ moosh forum-newdiscussion --subject "Forum Name" --message "I am a long text" 3 
 
 <p>moosh generate-files [-n, --name] [-s, --section] (courseid) (filescount) (filesize)</p>
 
-<p>Example of total sizes:</p>
-<ul>
-<li>1KB (1 file x 1024 Bytes),</li>
-<li>1MB (64 files x 16384 Bytes),</li>
-<li>10MB (128 files x 81920 Bytes),</li>
-<li>100MB (1024 files x 102400 Bytes),</li>
-<li>1GB (16384 files x 65536 Bytes)</li>
-<li>2GB (32768 files x 65536 Bytes)</li>
-</ul>
+<p>Example of total sizes:
+- 1KB (1 file x 1024 Bytes),
+- 1MB (64 files x 16384 Bytes),
+- 10MB (128 files x 81920 Bytes),
+- 100MB (1024 files x 102400 Bytes),
+- 1GB (16384 files x 65536 Bytes)
+- 2GB (32768 files x 65536 Bytes)</p>
 
 <p>Example 1: Add 1 file that weighs 1MB into course with id = 4</p>
 
