@@ -40,7 +40,7 @@ class CategoryExport extends MooshCommand
         if ($id && !$category) {
             cli_error("Wrong category '$id'");
         } elseif (!$id) {
-            $category = NULL;
+            $category = new \stdClass();
         }
 
         $parentcategory = \core_course_category::get($id);
