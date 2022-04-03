@@ -4,25 +4,25 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c9d1576648b5cb705fb532f14228860f",
+    "content-hash": "effacc599ef3fc321b25101a8fe05ba0",
     "packages": [
         {
             "name": "blackboard-open-source/moodle-coding-standard",
-            "version": "2.0.3",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/blackboard-open-source/moodle-coding-standard.git",
-                "reference": "d40d6b6d73e124179a65ddf5522b8f1a61db7f5e"
+                "reference": "2ac20cf82a586a6b6cfea341be0f478edddefafe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/blackboard-open-source/moodle-coding-standard/zipball/d40d6b6d73e124179a65ddf5522b8f1a61db7f5e",
-                "reference": "d40d6b6d73e124179a65ddf5522b8f1a61db7f5e",
+                "url": "https://api.github.com/repos/blackboard-open-source/moodle-coding-standard/zipball/2ac20cf82a586a6b6cfea341be0f478edddefafe",
+                "reference": "2ac20cf82a586a6b6cfea341be0f478edddefafe",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0",
-                "squizlabs/php_codesniffer": "2.6.2"
+                "squizlabs/php_codesniffer": "^2.5.1"
             },
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
@@ -36,9 +36,9 @@
             ],
             "support": {
                 "issues": "https://github.com/blackboard-open-source/moodle-coding-standard/issues",
-                "source": "https://github.com/blackboard-open-source/moodle-coding-standard/tree/2.0.3"
+                "source": "https://github.com/blackboard-open-source/moodle-coding-standard/tree/2.0.0"
             },
-            "time": "2016-10-06T15:43:49+00:00"
+            "time": "2016-02-02T21:14:43+00:00"
         },
         {
             "name": "corneltek/getoptionkit",
@@ -331,16 +331,16 @@
         },
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "2.6.2",
+            "version": "2.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "4edb770cb853def6e60c93abb088ad5ac2010c83"
+                "reference": "2acf168de78487db620ab4bc524135a13cfe6745"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/4edb770cb853def6e60c93abb088ad5ac2010c83",
-                "reference": "4edb770cb853def6e60c93abb088ad5ac2010c83",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/2acf168de78487db620ab4bc524135a13cfe6745",
+                "reference": "2acf168de78487db620ab4bc524135a13cfe6745",
                 "shasum": ""
             },
             "require": {
@@ -410,7 +410,7 @@
                 "source": "https://github.com/squizlabs/PHP_CodeSniffer",
                 "wiki": "https://github.com/squizlabs/PHP_CodeSniffer/wiki"
             },
-            "time": "2016-07-13T23:29:13+00:00"
+            "time": "2018-11-07T22:31:41+00:00"
         },
         {
             "name": "symfony/finder",
