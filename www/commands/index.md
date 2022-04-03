@@ -2199,7 +2199,7 @@ Example 1: unassign "manager" role for "testuser"
     
     moosh user-unassign-system-role testuser manager
     
-Example 1: unassign "coursecreator" role for "testuser2"
+Example 2: unassign "coursecreator" role for "testuser2"
     
     moosh user-unassign-system-role testuser2 coursecreator
 
@@ -2209,9 +2209,13 @@ userprofilefields-export
 Export the definition of the defined user profile fields to CSV file
 named by default "user_profile_fields.csv".
 
-Example:
+Example 1: export to "user_profile_fields.csv" in current directory
 
     moosh userprofilefields-export
+
+Example 2: save CSV file as /tmp/fields.csv
+
+    moosh userprofilefields-export -p /tmp/fields.csv
 
 userprofilefields-import
 ------------------------

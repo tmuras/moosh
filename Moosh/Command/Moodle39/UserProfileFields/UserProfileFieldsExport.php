@@ -15,7 +15,7 @@ class UserProfileFieldsExport extends MooshCommand
     public function __construct() {
         parent::__construct('export', 'userprofilefields');
 
-        $this->addOption('p|path', 'path to save exported file.', 'user_profile_fields.csv');
+        $this->addOption('p|path:', 'path to save exported file.', 'user_profile_fields.csv');
     }
 
     public function execute() {
