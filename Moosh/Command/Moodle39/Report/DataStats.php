@@ -34,7 +34,7 @@ class DataStats extends MooshCommand {
         $sql_query = "SELECT SUM(filesize) AS total FROM {files}";
         $all_files = $DB->get_record_sql($sql_query);
 
-        $sql = "SELECT SUM(filesize) AS 'total' FROM (SELECT filesize FROM mdl_files GROUP BY contenthash,filesize) sizes ";
+        $sql = "SELECT SUM(filesize) AS total FROM (SELECT filesize FROM mdl_files GROUP BY contenthash,filesize) sizes ";
         $distinctfilestotal = $DB->get_record_sql($sql)->total;
 
         // TODO: get sizes of:
