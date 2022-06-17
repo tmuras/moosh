@@ -14,7 +14,6 @@
 namespace Moosh\Command\Moodle39\Config;
 use Moosh\MooshCommand;
 use \DOMDocument;
-use \core_plugin_manager;
 use \stdClass;
 use \context_system;
 
@@ -37,24 +36,19 @@ class ConfigPluginimport extends MooshCommand {
         require_once "$CFG->libdir/classes/plugin_manager.php";
 
         $this->inputfilepath = $this->arguments[0];
-        if (substr($this->inputfilepath, 0, 2) == '..'){
-            $this->inputfilepath = $this->cwd . '/' . $this->inputfilepath;
-        }
-        else if ($this->inputfilepath[0] == '.'){
-            $this->inputfilepath = $this->cwd . substr($this->inputfilepath, 1);
-        }
-        else {
-            $this->inputfilepath = $this->cwd . '/' . $this->inputfilepath;
-        }
 
-        if (is_file($this->inputfilepath)){
-            if (!is_readable($this->inputfilepath)) {
-                cli_error("Output file is not readable: $this->inputfilepath \n");
+        $resolvedPath = realpath($this->inputfilepath);
+
+        if($resolvedPath) {
+            if (!is_readable($resolvedPath)) {
+                cli_error("Output file is not readable: $resolvedPath \n");
             }
         }
         else {
             cli_error("$this->inputfilepath is not a file \n");
         }
+
+        $this->inputfilepath = $resolvedPath;
 
         $this->import_settings();
         exit(0);
