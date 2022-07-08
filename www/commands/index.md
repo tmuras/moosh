@@ -324,6 +324,31 @@ Example 2: Add new instance "Test2" with server set to "localhost", password set
 
     moosh cache-add-redis-store --password "123456" -k "key_" "Test2" "localhost"
 
+cache-add-mem-store
+--------------------
+
+Adds a new mem  store instance to cache.
+
+Example 1: Add new instance "Test" with server set to "localhost".
+
+    moosh cache-add-mem-store "Test" "localhost"
+
+Example 2: Add new instance "Test2" with multiple servers
+
+    moosh cache-add-mem-store "Test2" "192.168.0.1,192.168.0.2"
+
+Example 3: Add new instance "Test3" with server set to "localhost", password set to "123456" and key prefix set to "key_"
+
+    moosh cache-add-mem-store --password "123456" -k "key_" "Test3" "localhost"
+
+Example 4: Add new instance "Test4" with server set to "localhost", with serialiser and compression enabled and password set to "12345"
+
+    moosh cache-add-mem-store --compression "1" --serialiser "1" --password "12345" "Test4" "localhost"
+
+Example 5: Add new instance "Test5" with server set to "localhost", with hash set to "md5" and password set to "12345"
+
+    moosh cache-add-mem-store --hash "md5" --password "12345" "Test5" "localhost"
+
 cache-clear
 -----------
 
