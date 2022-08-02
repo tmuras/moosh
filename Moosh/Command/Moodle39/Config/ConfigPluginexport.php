@@ -140,7 +140,8 @@ class ConfigPluginexport extends MooshCommand
             foreach ($config as $settingname => $settingvalue) {
                 if ($settingname == 'version') continue;
 
-                $element = $dom->createElement('setting', $settingvalue);
+                $element = $dom->createElement('setting');
+                $element->appendChild($dom->createTextNode($settingvalue));
                 $element->setAttribute('name', $settingname);
 
                 if ($settingvalue && $settingvalue[0] == '/' && strpos($settingvalue, '.') !== FALSE) {
