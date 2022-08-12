@@ -11,6 +11,9 @@
   "autoload": {
     "classmap": [
       "Moosh/"
+    ],
+    "files": [
+      "includes/memcached-constants-polyfill.php"
     ]
   },
   "repositories": [
