@@ -26,20 +26,19 @@ use Moosh\MooshCommand;
 
 class CacheAddMemStore extends MooshCommand
 {
-
     private const PLUGIN_NAME = 'memcached';
     private const DEFAULT_EDITING = 0;
     private const DEFAULT_LOCKING = null;
 
     private const MAP_HASH = array(
-        "md5" => 1,
-        "crc" => 2,
-        "fnv1_64" => 3,
-        "fnv1a_64" => 4,
-        "fnv1_32" => 5,
-        "fnv1a_32" => 6,
-        "hsieh" => 7,
-        "murmur" => 8
+        "md5"      => \Memcached::HASH_MD5,
+        "crc"      => \Memcached::HASH_CRC,
+        "fnv1_64"  => \Memcached::HASH_FNV1_64,
+        "fnv1a_64" => \Memcached::HASH_FNV1A_64,
+        "fnv1_32"  => \Memcached::HASH_FNV1_32,
+        "fnv1a_32" => \Memcached::HASH_FNV1A_64,
+        "hsieh"    => \Memcached::HASH_HSIEH,
+        "murmur"   => \Memcached::HASH_MURMUR
     );
 
     public function __construct()

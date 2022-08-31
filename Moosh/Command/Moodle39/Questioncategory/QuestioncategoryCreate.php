@@ -16,10 +16,10 @@ class QuestioncategoryCreate extends MooshCommand
         parent::__construct('create', 'questioncategory');
 
         $this->addOption('d|description:', 'info');
-        $this->addOption('f|infoformat', 'info: description format. Defaults to FORMAT_MARKDOWN', 4);
+        $this->addOption('f|infoformat:', 'info: description format. Defaults to FORMAT_MARKDOWN', 4);
         $this->addOption('p|parent:', 'categoryid of the parent category');
         $this->addOption('c|context:', 'contextid of the parent, new category');
-        $this->addOption('i|idnumber', 'idnumber');
+        $this->addOption('i|idnumber:', 'idnumber');
         $this->addOption('r|reuse', 'reuse existing category if it is the only matching one', false);
 
         $this->addArgument('name');
