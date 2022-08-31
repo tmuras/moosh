@@ -1857,7 +1857,7 @@ It does not compare the translations (values).</p>
 
 <p>Example:</p>
 
-<pre><code>moosh.php lang-compare book.php book2.php
+<pre><code>moosh lang-compare book.php book2.php
 </code></pre>
 
 <p>Result:</p>
@@ -1873,6 +1873,16 @@ pluginname
 
 List of language strings that exist in book2.php but are not present in book.php
 pluginname2
+</code></pre>
+
+<a name="language-install"></a>
+<h2>language-install</h2>
+
+<p>Install language pack.</p>
+
+<p>Example: Install French language pack.</p>
+
+<pre><code>moosh language-install fr
 </code></pre>
 
 <a name="languages-update"></a>
@@ -2067,6 +2077,16 @@ If you do not have write permissions on the plugins' folder it will advice you w
 <p>Example: import question from file path/to/question.xml to quiz with id 2</p>
 
 <pre><code>moosh question-import path/to/question.xml 2
+</code></pre>
+
+<a name="questionbank-import"></a>
+<h2>questionbank-import</h2>
+
+<p>Import questions in XML or GIFT format into question bank.</p>
+
+<p>Example: import questions from file path/to/question.xml to question bank category id 10</p>
+
+<pre><code>moosh questionbank-import path/to/question.xml 10
 </code></pre>
 
 <a name="questioncategory-create"></a>
@@ -2508,7 +2528,7 @@ to read session file and you will see the error:</p>
 
 <p>Example: login as student1 and fetch his dashboard page.</p>
 
-<pre><code>$ moosh.php user-login student1
+<pre><code>$ moosh user-login student1
 MoodleSession:h6v2l11946ne16tejogs55vhcn
 $ curl -b 'MoodleSession=h6v2l11946ne16tejogs55vhcn' http://localhost/vanilla37/my/index.php
 </code></pre>

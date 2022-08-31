@@ -1595,7 +1595,7 @@ It does not compare the translations (values).
 
 Example: 
 
-    moosh.php lang-compare book.php book2.php
+    moosh lang-compare book.php book2.php
     
 Result:
 
@@ -1611,6 +1611,14 @@ Result:
     List of language strings that exist in book2.php but are not present in book.php
     pluginname2
 
+language-install
+----------------
+
+Install language pack.
+
+Example: Install French language pack.
+
+    moosh language-install fr
 
 languages-update
 ----------------
@@ -1788,6 +1796,16 @@ Import quiz question from xml file into selected quiz.
 Example: import question from file path/to/question.xml to quiz with id 2
 
     moosh question-import path/to/question.xml 2
+
+questionbank-import
+-----------------------
+
+Import questions in XML or GIFT format into question bank.
+
+Example: import questions from file path/to/question.xml to question bank category id 10
+
+    moosh questionbank-import path/to/question.xml 10
+
 
 questioncategory-create
 -----------------------
@@ -2181,7 +2199,7 @@ to read session file and you will see the error:
 
 Example: login as student1 and fetch his dashboard page.
 
-    $ moosh.php user-login student1
+    $ moosh user-login student1
     MoodleSession:h6v2l11946ne16tejogs55vhcn
     $ curl -b 'MoodleSession=h6v2l11946ne16tejogs55vhcn' http://localhost/vanilla37/my/index.php
     
