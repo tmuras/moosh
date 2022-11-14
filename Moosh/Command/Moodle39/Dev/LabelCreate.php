@@ -17,12 +17,13 @@
  *
  *PARAMETERS
  * section [-s|--section numsection, default 1] indicate the section where the label is added
- * completion [-cp|--completion 0 or 1, default 0] indicate if the activity completion is enabled. Default no
+ * completion [-c|--completion 0 or 1, default 0] indicate if the activity completion is enabled. Default 0 (no)
  * text: -t --text
+ * course id, compulsory argument, at the end
  *
  * EXAMPLE 1
  * adds "my text" in section 3 of course 2 with completion
- * moosh -n label-create -s 3 -cp 1 -t "my text" 2 
+ * moosh -n label-create -s 3 -c 1 -t "my text" 2 
  *
  * EXAMPLE 2
  * adds a a title and a paragraph in section 3 of course 2 without completion
@@ -44,10 +45,11 @@ class LabelCreate extends MooshCommand
 		// added fxp
 		$this->addOption('s|section:', 'section number', '1');
 		$this->addOption('cp|completion:', 'completion status', '0');
+		$this->addOption('t|text:', 'make sure this piece of text is included in the random content', NULL);
 		
         $this->addArgument('courseid');
 
-        $this->addOption('t|text:', 'make sure this piece of text is included in the random content', NULL);
+        
 
     }
 
