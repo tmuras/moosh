@@ -41,11 +41,11 @@ class Roleimport extends MooshCommand {
             $this->exitError('PHP DOMDocument and libxml support is mandatory. Unable to continue.');
         }
 
-        if ($filepath = $this->parsedOptions->get('file')) {
+        if ($filepath = $this->expandedOptions['file']) {
             if (!is_readable($filepath) || false === ($xmlData = file_get_contents($filepath))) {
                 $this->exitError(sprintf("Could not read input XML file '%s'\n", $filepath));
             }
-        } else if ($this->parsedOptions->get('stdin')) {
+        } else if ($this->expandedOptions['stdin']) {
             $xmlData = stream_get_contents(STDIN);
         } else {
             $this->exitError('You need to specify input file or use STDIN.');
@@ -55,7 +55,7 @@ class Roleimport extends MooshCommand {
             $this->exitError('Invalid or empty XML contents. Please check your input.');
         }
 
-        if (!$this->parsedOptions->get('skip-validate')) {
+        if (!$this->expandedOptions['skip-validate']) {
             $this->validateSchema($xmlData);
             $this->output('XML file validated successfully.', true);
         }
