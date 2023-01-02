@@ -2077,7 +2077,25 @@ If combined with "watch" command, it will imitate the poor man's "top" utility.
 Example:
 
     watch moosh top
- 
+
+user-online
+---
+
+Display currently online users in a simple table. In a contrast to TOP command this command uses Fetcher API and queries user table instead of standard log store.
+Available options:
+
+| Option           | Description                                                   |
+|------------------|---------------------------------------------------------------|
+| -t, --time       | Show users online in last N seconds. Default 15 sec.          |
+| -l, --limit      | Show maximum number of users. If empty all users are fetched. |
+| -e, --hideheader | Print header with table column names.                         |
+
+Use linux "watch" command to refresh screen periodically.
+
+Example: Show online users in last 5 minutes and refresh list every 5 seconds.
+
+    watch moosh user-online -t 300
+
 user-assign-system-role
 -----------------------
 
