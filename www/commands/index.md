@@ -1908,6 +1908,40 @@ Example 2: Delete role id 10.
     moosh role-delete -i 10
 
 
+role-export
+-----------
+
+Export role data, including permissions, role overrides, allow view settings and other related data.
+
+Example 1: Export specific role data to a an output XML file.
+
+    moosh role-export -f target_file.xml ROLENAME
+
+Example 2: Export specific role data, generate output XML export and print to stdout.
+
+    moosh role-export ROLENAME
+Example 3: Format XML with whitespaces (pretty format) and output XML contents to stdout.
+
+    moosh role-export --pretty ROLENAME
+
+role-import
+-----------
+
+Import role data from an XML file that was produced either by role-export command or Moodle permissions UI. 
+
+Example 1: Import role from a specific XML file.
+
+    moosh role-import -f source_file.xml
+
+Example 2: Import role by reading XML data from STDIN.
+
+    moosh role-import --stdin < source_file.xml
+
+You can either load XML data from a file or from STDIN.
+If XML defines an existing rolename then this command will sync changes to an existing role.
+If role does not exist and archetype is defined this command will create a new role with archetype defaults and xml permissions.
+If neither role nor archetype exist the new role will be created with INHERITED permissions defaults.
+
 role-list
 ---------
 
