@@ -30,6 +30,7 @@ class Roleimport extends MooshCommand {
         parent::__construct('import', 'role');
         $this->addOption('f|file:', 'Input file path. If empty then STDIN will be read.');
         $this->addOption('i|stdin:', 'Read data from STDIN');
+        $this->addOption('s|skip-validate', 'Skip XSD schema validation of input XML contents.');
     }
 
     public function execute() {
