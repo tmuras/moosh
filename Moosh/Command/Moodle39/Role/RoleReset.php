@@ -49,7 +49,7 @@ class RoleReset extends MooshCommand
                 'allowassign'   => 1,
                 'allowoverride' => 1,
                 'allowswitch'   => 1,
-                'permissions'   => 1);
+                'allowview'   => 1);
             $definitiontable = new \core_role_define_role_table_advanced($systemcontext, $roleid);
 
             // Add all permissions from definition file to $_POST, otherwise, they won't be applied.
