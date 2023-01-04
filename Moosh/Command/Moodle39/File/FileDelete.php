@@ -55,16 +55,22 @@ class FileDelete extends MooshCommand
 
     private function fileDelete($id)
     {
+        $id = trim($id);
+        if ($id !==  strval(intval($id))) {
+            cli_problem("Not deleting file '$id' as it doesn't look like an integer to me.");
+            return false;
+        }
         $id = intval($id);
         $fs = get_file_storage();
         $file = $fs->get_file_by_id($id);
         if ($file) {
             echo "deleting file '$id'\n";
             $file->delete();
+            return true;
         } else {
             echo "File '$id' does not exist\n";
+            return false;
         }
-
     }
 }
 

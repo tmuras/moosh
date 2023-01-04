@@ -15,6 +15,13 @@ class moodle_config {
     public $CSV_ENCODE;
 
     /**
+
+     *
+     * @var string additionalhtmlbottomofbody 
+     */
+    public $additionalhtmlbottomofbody;
+
+    /**
 Content here will be added in to every page right before the body tag is closed.
      *
      * @var string additionalhtmlfooter Before BODY is closed
@@ -38,6 +45,20 @@ Content here will be added in to every page immediately after the opening body t
     /**
 
      *
+     * @var string adhoctaskageerror 
+     */
+    public $adhoctaskageerror;
+
+    /**
+
+     *
+     * @var string adhoctaskagewarn 
+     */
+    public $adhoctaskagewarn;
+
+    /**
+
+     *
      * @var string admin Admin
      */
     public $admin;
@@ -57,7 +78,21 @@ Content here will be added in to every page immediately after the opening body t
     public $adminsetuppending;
 
     /**
-The access key to use when connecting to the airnotifier server.
+
+     *
+     * @var string agedigitalconsentmap 
+     */
+    public $agedigitalconsentmap;
+
+    /**
+Enables verification of the digital age of consent before displaying the sign-up page for self-registration users. This protects your site from minors signing up without parental/guardian consent. <a target="_blank" href="{$a}">Support contact</a> details are provided to minors for further assistance.
+     *
+     * @var string agedigitalconsentverification Digital age of consent verification
+     */
+    public $agedigitalconsentverification;
+
+    /**
+The access key for connecting to the Airnotifier server. You can obtain an access key by clicking the "Request access key" link below (registered sites only) or by creating an account on the <a href="https://apps.moodle.com">Moodle Apps Portal</a>.
      *
      * @var string airnotifieraccesskey Airnotifier access key
      */
@@ -85,7 +120,7 @@ The port to use when connecting to the airnotifier server.
     public $airnotifierport;
 
     /**
-The server url to connect to to send push notifications.
+The server URL to connect to for sending push notifications.
      *
      * @var string airnotifierurl Airnotifier URL
      */
@@ -120,13 +155,6 @@ If enabled, emails sent from the site can have attachments, such as badges.
     public $allowbeforeblock;
 
     /**
-If enabled and supported by the selected theme users can choose to move blocks to a special dock.
-     *
-     * @var string allowblockstodock Allow blocks to use the dock
-     */
-    public $allowblockstodock;
-
-    /**
 If you enable this, then themes can be set at the category level. This will affect all child categories and courses unless they have specifically set their own theme. WARNING: Enabling category themes may affect performance.
      *
      * @var string allowcategorythemes Allow category themes
@@ -134,7 +162,14 @@ If you enable this, then themes can be set at the category level. This will affe
     public $allowcategorythemes;
 
     /**
-If you enable this, then courses will be allowed to set their own themes.  Course themes override all other theme choices (site, user, or session themes)
+If you enable this, then themes can be set at the cohort level. This will affect all users with only one cohort or more than one but with the same theme.
+     *
+     * @var string allowcohortthemes Allow cohort themes
+     */
+    public $allowcohortthemes;
+
+    /**
+If enabled, then courses will be allowed to set their own themes.  Course themes override all other theme choices (site, user, category, cohort or URL-defined themes).
      *
      * @var string allowcoursethemes Allow course themes
      */
@@ -162,18 +197,32 @@ To restrict new email addresses to particular domains, list them here separated 
     public $allowemailaddresses;
 
     /**
-If enabled, this site may be embedded in a frame in a remote system, as recommended when using the \'Publish as LTI tool\' enrolment plugin. Otherwise, it is recommended to leave frame embedding disabled for security reasons.
+The emoji picker enables users to select emojis, such as smilies, to add to messages and other text areas via an emoji picker button in the Atto toolbar.
+     *
+     * @var string allowemojipicker Emoji picker
+     */
+    public $allowemojipicker;
+
+    /**
+If enabled, this site may be embedded in a frame in a remote system, as recommended when using the \'Publish as LTI tool\' enrolment plugin. Otherwise, it is recommended to leave frame embedding disabled for security reasons. Please note that for the mobile app this setting is ignored and frame embedding is always allowed.
      *
      * @var string allowframembedding Allow frame embedding
      */
     public $allowframembedding;
 
     /**
-If enabled guests can access Dashboard, otherwise guests are redirected to the site front page.
+If enabled, guests can access the Dashboard. Otherwise guests are redirected to the site home.
      *
      * @var string allowguestmymoodle Allow guest access to Dashboard
      */
     public $allowguestmymoodle;
+
+    /**
+This determines whether to allow search engines to index your site. "Everywhere" will allow the search engines to search everywhere including login and signup pages, which means sites with Force Login turned on are still indexed. To avoid the risk of spam involved with the signup page being searchable, use "Everywhere except login and signup pages". "Nowhere" will tell search engines not to index any page. Note this is only a tag in the header of the site. It is up to the search engine to respect the tag.
+     *
+     * @var string allowindexing Allow indexing by search engines
+     */
+    public $allowindexing;
 
     /**
 As a default security measure, normal users are not allowed to embed multimedia (like Flash) within texts using explicit EMBED and OBJECT tags in their HTML (although it can still be done safely using the mediaplugins filter).  If you wish to allow these tags then enable this option.
@@ -183,9 +232,9 @@ As a default security measure, normal users are not allowed to embed multimedia 
     public $allowobjectembed;
 
     /**
-     * If enabled, activities can be made available but not shown in visible sections of the course page. If so, links to stealth activities must be provided from elsewhere, such as from a page resource. Stealth activities are still listed in the gradebook and other reports.
+
      *
-     * @var string allowstealth Allow stealth activities
+     * @var string allowstealth 
      */
     public $allowstealth;
 
@@ -246,6 +295,13 @@ If you enable this, then users will be allowed to set their own themes.  User th
     public $alternateloginurl;
 
     /**
+
+     *
+     * @var string alternative_cache_factory_class 
+     */
+    public $alternative_cache_factory_class;
+
+    /**
      * 
      *
      * @var string alternative_component_cache Alternative component cache
@@ -253,12 +309,9 @@ If you enable this, then users will be allowed to set their own themes.  User th
     public $alternative_component_cache;
 
     /**
-     * Since 3.3 it is possible to override file_storage and file_system API and use alternative storage systems (e.g. S3,
-     * Rackspace Cloud Files, Google Cloud Storage, Azure Storage, etc.).
-     * To set the alternative file storage system in config.php you can use the following setting, providing the
-     * alternative system class name that will be auto-loaded by file_storage API.
+
      *
-     * @var string alternative_file_system_class  Alternative file system
+     * @var string alternative_file_system_class 
      */
     public $alternative_file_system_class;
 
@@ -346,6 +399,13 @@ Detect default language from browser setting, if disabled site default is used.
     public $autolang;
 
     /**
+If enabled, when a user\'s account is created automatically on first login (e.g. using LDAP or OAuth 2 authentication), the user\'s browser language is set as their preferred language. Otherwise, the default language for the site is set as the user\'s preferred language.
+     *
+     * @var string autolangusercreation On account creation set user\'s browser language as their preferred language
+     */
+    public $autolangusercreation;
+
+    /**
 Should visitors be logged in as guests automatically when entering courses with guest access?
      *
      * @var string autologinguests Auto-login guests
@@ -409,11 +469,18 @@ Should visitors be logged in as guests automatically when entering courses with 
     public $backup_release;
 
     /**
-     * 
+Publication date of the licence version being utilised.
      *
-     * @var string backup_version Backup version
+     * @var string backup_version Licence version
      */
     public $backup_version;
+
+    /**
+
+     *
+     * @var string backuptempdir 
+     */
+    public $backuptempdir;
 
     /**
 Allow badges to be created and awarded in the course context.
@@ -423,11 +490,9 @@ Allow badges to be created and awarded in the course context.
     public $badges_allowcoursebadges;
 
     /**
-Allow users to set up connections and display badges from their external backpack providers.
-
-Note: It is recommended to leave this option disabled if the website cannot be accessed from the Internet (e.g. because of the firewall).
+If enabled, users can connect to an external backpack and share their badges from this site. Users may also choose to display any public badge collections from their external backpack on their profile page on this site. It is recommended to leave this option disabled if your site is not accessible from the Internet.
      *
-     * @var string badges_allowexternalbackpack Enable connection to external backpacks
+     * @var string badges_allowexternalbackpack External backpack connection
      */
     public $badges_allowexternalbackpack;
 
@@ -441,16 +506,16 @@ Note: For recipient verification purposes, please avoid changing this setting on
     public $badges_badgesalt;
 
     /**
-An email address associated with the badge issuer.
+An email address associated with the badge issuer. For an Open Badges v2.0 backpack, this is used for authentication when publishing badges to a backpack.
      *
-     * @var string badges_defaultissuercontact Default badge issuer contact details
+     * @var string badges_defaultissuercontact Badge issuer email address
      */
     public $badges_defaultissuercontact;
 
     /**
 Name of the issuing agent or authority.
      *
-     * @var string badges_defaultissuername Default badge issuer name
+     * @var string badges_defaultissuername Badge issuer name
      */
     public $badges_defaultissuername;
 
@@ -470,6 +535,13 @@ Name of the issuing agent or authority.
      * @var string behat_additionalfeatures Behat additional features
      */
     public $behat_additionalfeatures;
+
+    /**
+
+     *
+     * @var string behat_cli_added_config 
+     */
+    public $behat_cli_added_config;
 
     /**
      *  You can override default Moodle configuration for Behat and add your own
@@ -513,6 +585,20 @@ Name of the issuing agent or authority.
     public $behat_dataroot_parent;
 
     /**
+Type database server IP address or host name. Use a system DSN name if using ODBC. Use a PDO DSN if using PDO.
+     *
+     * @var string behat_dbhost Host server
+     */
+    public $behat_dbhost;
+
+    /**
+Leave empty if using a DSN name in database host.
+     *
+     * @var string behat_dbname Database name
+     */
+    public $behat_dbname;
+
+    /**
      * All this page's extra Moodle settings are compared against a white list of allowed settings
      *  (the basic and behat_* ones) to avoid problems with production environments. This setting can be
      *  used to expand the default white list with an array of extra settings.
@@ -533,6 +619,27 @@ Name of the issuing agent or authority.
      * @var string behat_faildump_path Behat faildump path
      */
     public $behat_faildump_path;
+
+    /**
+
+     *
+     * @var string behat_host 
+     */
+    public $behat_host;
+
+    /**
+
+     *
+     * @var string behat_increasetimeout 
+     */
+    public $behat_increasetimeout;
+
+    /**
+
+     *
+     * @var string behat_ionic_wwwroot 
+     */
+    public $behat_ionic_wwwroot;
 
     /**
      *  You can specify db, selenium wd_host etc. for behat parallel run by setting following variable.
@@ -557,34 +664,25 @@ Name of the issuing agent or authority.
     public $behat_parallel_run;
 
     /**
-This prefix is used for all key names on the Redis server.
-* If you only have one Moodle instance using this server, you can leave this value default.
-* Due to key length restrictions, a maximum of 5 characters is permitted.
+
      *
-     * @var string behat_prefix Key prefix
+     * @var string behat_pause_on_fail 
+     */
+    public $behat_pause_on_fail;
+
+    /**
+The above prefix gets used for all keys being stored in this APC store instance. By default the database prefix is used.
+     *
+     * @var string behat_prefix Prefix
      */
     public $behat_prefix;
 
     /**
-     * You can also use the following config to override default Moodle configuration for Behat.
-     * // This config is limited to default suite and will be supported in later versions.
-     * // It will have precedence over $CFG->behat_config.
+
      *
-     * @var string behat_profiles behat_profiles
+     * @var string behat_profiles 
      */
     public $behat_profiles;
-
-    /**
-     * You can force the browser session (not user's sessions) to restart after N seconds. This could
-     *  be useful if you are using a cloud-based service with time restrictions in the browser side.
-     *  Setting this value the browser session that Behat is using will be restarted. Set the time in
-     *  seconds. Is not recommended to use this setting if you don't explicitly need it.
-     *  Example:
-     *    $CFG->behat_restart_browser_after = 7200;     // Restarts the browser session after 2 hours
-     *
-     * @var string behat_restart_browser_after Behat restart browser after
-     */
-    public $behat_restart_browser_after;
 
     /**
      * You should explicitly allow the usage of the deprecated behat steps, otherwise an exception will
@@ -595,6 +693,13 @@ This prefix is used for all key names on the Redis server.
      * @var string behat_usedeprecated Behat use deprecated
      */
     public $behat_usedeprecated;
+
+    /**
+
+     *
+     * @var string behat_window_size_modifier 
+     */
+    public $behat_window_size_modifier;
 
     /**
      * 
@@ -609,6 +714,62 @@ This prefix is used for all key names on the Redis server.
      * @var string behatrunprocess Behat run process
      */
     public $behatrunprocess;
+
+    /**
+
+     *
+     * @var string bigbluebuttonbn BigBlueButton
+     */
+    public $bigbluebuttonbn;
+
+    /**
+
+     *
+     * @var string bigbluebuttonbn_meetingevents_enabled 
+     */
+    public $bigbluebuttonbn_meetingevents_enabled;
+
+    /**
+
+     *
+     * @var string bigbluebuttonbn_preuploadpresentation_editable 
+     */
+    public $bigbluebuttonbn_preuploadpresentation_editable;
+
+    /**
+
+     *
+     * @var string bigbluebuttonbn_recording_hide_button_default 
+     */
+    public $bigbluebuttonbn_recording_hide_button_default;
+
+    /**
+
+     *
+     * @var string bigbluebuttonbn_recording_hide_button_editable 
+     */
+    public $bigbluebuttonbn_recording_hide_button_editable;
+
+    /**
+
+     *
+     * @var string bigbluebuttonbn_recording_protect_editable 
+     */
+    public $bigbluebuttonbn_recording_protect_editable;
+
+    /**
+
+     *
+     * @var string bigbluebuttonbn_recordings_enabled 
+     */
+    public $bigbluebuttonbn_recordings_enabled;
+
+    /**
+
+     *
+     * @var string bigbluebuttonbn_recordings_sortorder 
+     */
+    public $bigbluebuttonbn_recordings_sortorder;
 
     /**
      * Admin view
@@ -632,6 +793,13 @@ This prefix is used for all key names on the Redis server.
     public $block_html_allowcssclasses;
 
     /**
+
+     *
+     * @var string block_online_users_onlinestatushiding 
+     */
+    public $block_online_users_onlinestatushiding;
+
+    /**
      * Remove after inactivity (minutes)
      *
      * @var string block_online_users_timetosee Online users time to see
@@ -651,13 +819,6 @@ This prefix is used for all key names on the Redis server.
      * @var string block_rss_client_timeout RSS client timeout
      */
     public $block_rss_client_timeout;
-
-    /**
-     * Show course tags
-     *
-     * @var string block_tags_showcoursetags Show course tags
-     */
-    public $block_tags_showcoursetags;
 
     /**
      * Blocked IP List
@@ -719,6 +880,13 @@ This setting allows you to restrict the level to which user blogs can be viewed 
     public $blogusecomments;
 
     /**
+
+     *
+     * @var string bootstraphash 
+     */
+    public $bootstraphash;
+
+    /**
      * The following line is for handling email bounces
      *
      * @var string bounceratio Bounce ratio
@@ -745,6 +913,13 @@ Javascript caching and compression greatly improves page loading performance. it
      * @var string cachejs Cache Javascript
      */
     public $cachejs;
+
+    /**
+Template caching will improve page loading performance and is strongly recommended for production sites. Developers will probably want to disable this feature.
+     *
+     * @var string cachetemplates Cache templates
+     */
+    public $cachetemplates;
 
     /**
      * Admins see all
@@ -803,6 +978,13 @@ Javascript caching and compression greatly improves page loading performance. it
     public $calendar_showicalsource;
 
     /**
+
+     *
+     * @var string calendar_site_timeformat 
+     */
+    public $calendar_site_timeformat;
+
+    /**
      * Which day starts the week in the calendar?
      *
      * @var string calendar_startwday Start of week
@@ -815,6 +997,13 @@ Javascript caching and compression greatly improves page loading performance. it
      * @var string calendar_weekend Weekend days
      */
     public $calendar_weekend;
+
+    /**
+
+     *
+     * @var string calendareventsmaxseconds 
+     */
+    public $calendareventsmaxseconds;
 
     /**
 Choose a default calendar type for the whole site. This setting can be overridden in the course settings or by users in their personal profile.
@@ -831,7 +1020,7 @@ Choose a default calendar type for the whole site. This setting can be overridde
     public $chart_colorset;
 
     /**
-The ajax chat method provide an ajax based chat interface, it contacts server regularly for update. The normal chat method involves the clients regularly contacting the server for updates. It requires no configuration and works everywhere, but it can create a large load on the server with many chatters.  Using a server daemon requires shell access to Unix, but it results in a fast scalable chat environment.
+The AJAX chat method provide an AJAX-based chat interface which contacts the server regularly for updates. The normal chat method involves clients regularly contacting the server for updates. It requires no configuration and works everywhere, but can create a large load on the server if many users are chatting.  Using a server daemon requires shell access to Unix, but it results in a fast scalable chat environment.
      *
      * @var string chat_method Method
      */
@@ -894,13 +1083,6 @@ Port to use on the server for the daemon
     public $chat_serverport;
 
     /**
-If you have configured clam to scan uploaded files, but it is configured incorrectly or fails to run for some unknown reason, how should it behave?  If you choose \'Treat files like viruses\', they\'ll be moved into the quarantine area, or deleted. If you choose \'Treat files as OK\', the files will be moved to the destination directory like normal. Either way, admins will be alerted that clam has failed.  If you choose \'Treat files like viruses\' and for some reason clam fails to run (usually because you have entered an invalid pathtoclam), ALL files that are uploaded will be moved to the given quarantine area, or deleted. Be careful with this setting.
-     *
-     * @var string clamfailureonupload On ClamAV failure
-     */
-    public $clamfailureonupload;
-
-    /**
 
      *
      * @var string commentsperpage Comments displayed per page
@@ -920,6 +1102,27 @@ The default setting for completion tracking when creating new activities.
      * @var string config_php_settings Config PHP settings
      */
     public $config_php_settings;
+
+    /**
+
+     *
+     * @var string contentbank_plugins_sortorder 
+     */
+    public $contentbank_plugins_sortorder;
+
+    /**
+If disabled, administrators remain with write access to any frozen contexts.
+     *
+     * @var string contextlockappliestoadmin Context freezing applies to administrators
+     */
+    public $contextlockappliestoadmin;
+
+    /**
+This setting enables read-only access to be set for selected categories, courses, activities or blocks.
+     *
+     * @var string contextlocking Context freezing
+     */
+    public $contextlocking;
 
     /**
 
@@ -950,30 +1153,16 @@ If server is accepting only https connections it is recommended to enable sendin
     public $core_competency_url_resolver;
 
     /**
-     * Set to 'true' to enable FLV support
+
      *
-     * @var string core_media_enable_flv Core media enable FLV
+     * @var string core_h5p_library_config 
      */
-    public $core_media_enable_flv;
+    public $core_h5p_library_config;
 
     /**
-     * Set to 'true' to enable MP3 support
+Country of the site
      *
-     * @var string core_media_enable_mp3 Core media enable MP3
-     */
-    public $core_media_enable_mp3;
-
-    /**
-     * Set to 'true' to enable youtube support
-     *
-     * @var string core_media_enable_youtube Core media enable youtube
-     */
-    public $core_media_enable_youtube;
-
-    /**
-If you set a country here, then this country will be selected by default on new user accounts.  To force users to choose a country, just leave this unset.
-     *
-     * @var string country Default country
+     * @var string country Country
      */
     public $country;
 
@@ -985,6 +1174,20 @@ This setting allows you to control who appears on the course description. Users 
     public $coursecontact;
 
     /**
+Classify past courses as in progress for these many days after the course end date.
+     *
+     * @var string coursegraceperiodafter Grace period for past courses
+     */
+    public $coursegraceperiodafter;
+
+    /**
+Classify future courses as in progress for these many days prior to the course start date.
+     *
+     * @var string coursegraceperiodbefore Grace period for future courses
+     */
+    public $coursegraceperiodbefore;
+
+    /**
 If enabled, course short names will be displayed in addition to full names in course lists. If required, extended course names may be customised by editing the \'courseextendednamedisplay\' language string using the language customisation feature.
      *
      * @var string courselistshortnames Display extended course names
@@ -992,16 +1195,16 @@ If enabled, course short names will be displayed in addition to full names in co
     public $courselistshortnames;
 
     /**
-A comma-separated list of allowed course summary files extensions.
+A comma-separated list of allowed course image file extensions.
      *
-     * @var string courseoverviewfilesext Course summary files extensions
+     * @var string courseoverviewfilesext Course image file extensions
      */
     public $courseoverviewfilesext;
 
     /**
-The maximum number of files that can be attached to a course summary.
+The maximum number of files that can be displayed next to the course summary on the list of courses page. The first image file added is used as the course image in the course overview on users\' Dashboards; any additional files are displayed on the list of courses page only.
      *
-     * @var string courseoverviewfileslimit Course summary files limit
+     * @var string courseoverviewfileslimit Course image files limit
      */
     public $courseoverviewfileslimit;
 
@@ -1041,9 +1244,7 @@ Running the cron from a web browser can expose privileged information to anonymo
     public $cronclionly;
 
     /**
-This means that the cron.php script cannot be run from a web browser without supplying the password using the following form of URL:<pre>
-    http://site.example.com/admin/cron.php?password=opensesame
-</pre>If this is left empty, no password is required.
+This means that the cron.php script cannot be run from a web browser without supplying the password using the following form of URL:<pre> https://site.example.com/admin/cron.php?password=opensesame </pre>If this is left empty, no password is required.
      *
      * @var string cronremotepassword Cron password for remote access
      */
@@ -1110,20 +1311,34 @@ This setting is used to calculate an appropriate timeout during large cURL reque
     public $customfrontpageinclude;
 
     /**
-You can configure a custom menu here to be shown by themes. Each line consists of some menu text, a link URL (optional), a tooltip title (optional) and a language code or comma-separated list of codes (optional, for displaying the line to users of the specified language only), separated by pipe characters. Lines starting with a hyphen will appear as menu items in the previous top level menu, and dividers can be used by adding a line of one or more # characters where desired. For example:
+A custom menu may be configured here. Enter each menu item on a new line with format: menu text, a link URL (optional, not for a top menu item with sub-items), a tooltip title (optional) and a language code or comma-separated list of codes (optional, for displaying the line to users of the specified language only), separated by pipe characters. Lines starting with a hyphen will appear as menu items in the previous top level menu and ### makes a divider. For example:
 <pre>
-Moodle community|https://moodle.org
--Moodle free support|https://moodle.org/support
--Moodle Docs|http://docs.moodle.org|Moodle Docs
--German Moodle Docs|http://docs.moodle.org/de|Documentation in German|de
+Courses
+-All courses|/course/
+-Course search|/course/search.php
 -###
--Moodle development|https://moodle.org/development
-Moodle.com|http://moodle.com/
+-FAQ|https://example.org/faq
+-Preguntas más frecuentes|https://example.org/pmf||es
+Mobile app|https://example.org/app|Download our app
 </pre>
      *
      * @var string custommenuitems Custom menu items
      */
     public $custommenuitems;
+
+    /**
+The number of custom reports may be limited for performance reasons. If set to zero, then there is no limit.
+     *
+     * @var string customreportslimit Custom reports limit
+     */
+    public $customreportslimit;
+
+    /**
+If enabled, users can view report data while editing the report. This may be disabled for performance reasons.
+     *
+     * @var string customreportsliveediting Custom reports live editing
+     */
+    public $customreportsliveediting;
 
     /**
      * Enabling this will allow custom scripts to replace existing moodle scripts.
@@ -1146,7 +1361,7 @@ Moodle.com|http://moodle.com/
     public $customscripts;
 
     /**
-You can configure the contents of the user menu (with the exception of the log out link, which is automatically added). Each line is separated by pipe characters and consists of 1) a string in "langstringname, componentname" form or as plain text, 2) a URL, and 3) an icon either as a pix icon (in the folder pix/t, or prefix the icon name with ../ if icon is in another pix folder) or as a URL. Dividers can be used by adding a line of one or more # characters where desired.
+You can configure the contents of the user menu (with the exception of the log out link, which is automatically added). Each line is separated by pipe characters and consists of 1) a string in "langstringname, componentname" form or as plain text, and 2) a URL. Dividers can be used by adding a line of one or more # characters where desired.
      *
      * @var string customusermenuitems User menu items
      */
@@ -1277,9 +1492,9 @@ Set to on, the error reporting will go to the HTML page. This is practical, but 
     public $debugdisplay;
 
     /**
-     * Enable verbose debug information during fetching of email messages from IMAP server.
+
      *
-     * @var string debugimap debugimap
+     * @var string debugimap 
      */
     public $debugimap;
 
@@ -1291,14 +1506,28 @@ Enable if you want page information printed in page footer.
     public $debugpageinfo;
 
     /**
-Enable verbose debug information during sending of email messages to SMTP server.
+
+     *
+     * @var string debugsessionlock 
+     */
+    public $debugsessionlock;
+
+    /**
+     * Enable verbose debug information during sending of email messages to SMTP server.
      *
      * @var string debugsmtp Debug email sending
      */
     public $debugsmtp;
 
     /**
-This option is designed to help translators. When this option is enabled, if you add the parameter strings=1 to a request URL, it will show the language file and string id beside each string that is output.
+If enabled, a partial or full PHP stack trace is added into the SQL as a comment.
+     *
+     * @var string debugsqltrace Show origin of SQL calls
+     */
+    public $debugsqltrace;
+
+    /**
+If enabled, language string components and identifiers are displayed when ?strings=1 or &strings=1 is appended to the page URL.
      *
      * @var string debugstringids Show origin of languages strings
      */
@@ -1361,9 +1590,9 @@ A city entered here will be the default city when creating new user accounts.
     public $defaultfrontpageroleid;
 
     /**
-This determines the home page for logged in users
+Which page should users be redirected to after logging in to the site? The setting also determines the first link in the navigation for users of Classic-based themes.
      *
-     * @var string defaulthomepage Default home page for users
+     * @var string defaulthomepage Start page for users
      */
     public $defaulthomepage;
 
@@ -1373,6 +1602,13 @@ This determines the home page for logged in users
      * @var string defaultpreference_autosubscribe Default preference autosubscribe
      */
     public $defaultpreference_autosubscribe;
+
+    /**
+
+     *
+     * @var string defaultpreference_core_contentbank_visibility 
+     */
+    public $defaultpreference_core_contentbank_visibility;
 
     /**
      * [[emaildigest]]
@@ -1403,7 +1639,7 @@ This determines the home page for logged in users
     public $defaultpreference_trackforums;
 
     /**
-Courses requested by users will be automatically placed in this category.
+Courses requested by users with the capability to request new courses in the system context will be placed in this category unless users are able to select a different category.
      *
      * @var string defaultrequestcategory Default category for course requests
      */
@@ -1417,14 +1653,14 @@ All logged in users will be given the capabilities of the role you specify here,
     public $defaultuserroleid;
 
     /**
-After this period, old not fully setup accounts are deleted.
+After this period, any account without the first name, last name or email field filled in is deleted.
      *
      * @var string deleteincompleteusers Delete incomplete users after
      */
     public $deleteincompleteusers;
 
     /**
-If you are using email authentication, this is the period within which a response will be accepted from users.  After this period, old unconfirmed accounts are deleted.
+For certain authentication methods, such as email-based self-registration, users must confirm their account within a certain time. After this period, any old unconfirmed accounts are deleted.
      *
      * @var string deleteunconfirmed Delete not fully setup users after
      */
@@ -1487,11 +1723,32 @@ People who choose to have emails sent to them in digest form will be emailed the
     public $disablebyteserving;
 
     /**
+
+     *
+     * @var string disabledevlibdirscheck 
+     */
+    public $disabledevlibdirscheck;
+
+    /**
 Disable history tracking of changes in grades related tables. This may speed up the server a little and conserve space in database.
      *
      * @var string disablegradehistory Disable grade history
      */
     public $disablegradehistory;
+
+    /**
+
+     *
+     * @var string disablelogintoken 
+     */
+    public $disablelogintoken;
+
+    /**
+
+     *
+     * @var string disablemobileappsubscription 
+     */
+    public $disablemobileappsubscription;
 
     /**
      * 
@@ -1507,6 +1764,27 @@ Disable history tracking of changes in grades related tables. This may speed up 
      * @var string disableonclickaddoninstall Disable on click addon install
      */
     public $disableonclickaddoninstall;
+
+    /**
+
+     *
+     * @var string disableprofilingtodatabase 
+     */
+    public $disableprofilingtodatabase;
+
+    /**
+
+     *
+     * @var string disableserviceads_branded 
+     */
+    public $disableserviceads_branded;
+
+    /**
+
+     *
+     * @var string disableserviceads_partner 
+     */
+    public $disableserviceads_partner;
 
     /**
      * Prevent stats processing and hide the GUI
@@ -1556,17 +1834,19 @@ This will display information to users about previous failed logins.
     public $displayloginfailures;
 
     /**
-     * Except for certain email addresses you want to let through for testing. Accepts a comma separated list of regexes.
+A list of email exception rules separated by either commas or new lines. Each rule is interpreted as a regular expression e.g. <pre>simone@acme.com
+.*@acme.com
+fred(\\+.*)?@acme.com
+</pre>
      *
-     * @var string divertallemailsexcept divertallemailsexcept
+     * @var string divertallemailsexcept Email diversion exceptions
      */
     public $divertallemailsexcept;
 
     /**
-     *  Divert all outgoing emails to this address to test and debug emailing features
-     *  $CFG->divertallemailsto = 'root@localhost.local'; // NOT FOR PRODUCTION SERVERS!
+If set then all emails will be diverted to this single email address instead.
      *
-     * @var string divertallemailsto Divert all email
+     * @var string divertallemailsto Divert all emails
      */
     public $divertallemailsto;
 
@@ -1585,18 +1865,39 @@ This language will be used in links for the documentation pages.
     public $doclang;
 
     /**
-Defines the path to the Moodle Docs for providing context-specific documentation via \'Moodle Docs for this page\' links in the footer of each page. If the field is left blank, links will not be displayed.
+Defines the path to Moodle Docs for providing context-specific documentation via \'Help and documentation\' links in the footer of each page. If the field is left blank, links will not be displayed.
      *
      * @var string docroot Moodle Docs document root
      */
     public $docroot;
 
     /**
-If you enable this, then links to Moodle Docs will be shown in a new window.
+If enabled, then links to Moodle Docs will be shown in a new window.
      *
      * @var string doctonewwindow Open in new window
      */
     public $doctonewwindow;
+
+    /**
+Whether the download course content feature is available to courses. When available, course content downloads can be enabled/disabled using the "Enable download course content" setting within the course edit menu (the default for this can be set in <a href={$a} target="_blank">Course default settings</a>).
+     *
+     * @var string downloadcoursecontentallowed Download course content feature available
+     */
+    public $downloadcoursecontentallowed;
+
+    /**
+
+     *
+     * @var string draft_area_bucket_capacity 
+     */
+    public $draft_area_bucket_capacity;
+
+    /**
+
+     *
+     * @var string draft_area_bucket_leak 
+     */
+    public $draft_area_bucket_leak;
 
     /**
      * 
@@ -1632,11 +1933,32 @@ Require an email confirmation step when users change their email address in thei
     public $emailconnectionerrorsto;
 
     /**
+The DKIM selector is arbitrary and your DNS record(s) must match this.
+     *
+     * @var string emaildkimselector DKIM selector
+     */
+    public $emaildkimselector;
+
+    /**
 Add via information in the "From" section of outgoing email. This informs the recipient from where this email came from and also helps combat recipients accidentally replying to no-reply email addresses.
      *
      * @var string emailfromvia Email via information
      */
     public $emailfromvia;
+
+    /**
+Raw email headers to be added verbatim to all outgoing email.
+     *
+     * @var string emailheaders Email headers
+     */
+    public $emailheaders;
+
+    /**
+Text to be prefixed to the subject line of all outgoing mail.
+     *
+     * @var string emailsubjectprefix Email subject prefix text
+     */
+    public $emailsubjectprefix;
 
     /**
      * 
@@ -1658,14 +1980,49 @@ This form defines the emoticons (or smileys) used at your site. To remove a row 
     public $emoticons;
 
     /**
-When enabled, this lets you set conditions (based on date, grade, or completion) that control whether an activity or resource can be accessed.
+
+     *
+     * @var string enable_read_only_sessions 
+     */
+    public $enable_read_only_sessions;
+
+    /**
+
+     *
+     * @var string enable_read_only_sessions_debug 
+     */
+    public $enable_read_only_sessions_debug;
+
+    /**
+The accessibility toolkit helps identify accessibility issues in courses.
+     *
+     * @var string enableaccessibilitytools Enable accessibility tools
+     */
+    public $enableaccessibilitytools;
+
+    /**
+Analytics models, such as \'Students at risk of dropping out\' or \'Upcoming activities due\', can generate predictions, send insight notifications and offer further actions such as messaging users.
+     *
+     * @var string enableanalytics Analytics
+     */
+    public $enableanalytics;
+
+    /**
+If enabled, all backup and restore operations will be done asynchronously. This does not affect imports and exports. Asynchronous backups and restores allow users to do other operations while a backup or restore is in progress.
+     *
+     * @var string enableasyncbackup Enable asynchronous backups
+     */
+    public $enableasyncbackup;
+
+    /**
+If enabled, conditions (based on date, grade, completion etc.) may be set to control whether an activity or resource can be accessed.
      *
      * @var string enableavailability Enable restricted access
      */
     public $enableavailability;
 
     /**
-When enabled, this feature lets you create badges and award them to site users.
+If enabled, this feature lets you create badges and award them to site users.
      *
      * @var string enablebadges Enable badges
      */
@@ -1693,11 +2050,32 @@ If enabled, activity completion conditions may be set in the activity settings a
     public $enablecompletion;
 
     /**
-This will allow any user to request a course be created.
+Allow courses to be set up to display dates relative to the user\'s start date in the course.
+     *
+     * @var string enablecourserelativedates Enable course relative dates
+     */
+    public $enablecourserelativedates;
+
+    /**
+If enabled, users with the capability to request new courses (moodle/course:request) will have the option to request a course. This capability is not allowed for any of the default roles. It may be applied in the system or category context.
      *
      * @var string enablecourserequests Enable course requests
      */
     public $enablecourserequests;
+
+    /**
+If enabled, users can create and view Report builder custom reports.
+     *
+     * @var string enablecustomreports Enable custom reports
+     */
+    public $enablecustomreports;
+
+    /**
+The Dashboard shows Timeline, Calendar and Recently accessed items by default. You can set a different default Dashboard for everyone and allow users to customise their own Dashboard. If disabled, you need to set \'Start page for users\' to a value other than Dashboard.
+     *
+     * @var string enabledashboard Enable Dashboard
+     */
+    public $enabledashboard;
 
     /**
 Enables detection of mobiles, smartphones, tablets or default devices (desktop PCs, laptops, etc) for the application of themes and other features.
@@ -1707,7 +2085,7 @@ Enables detection of mobiles, smartphones, tablets or default devices (desktop P
     public $enabledevicedetection;
 
     /**
-If enabled, data will be indexed and syncronised by a scheduled task.
+If enabled, data will be indexed and synchronised by a scheduled task.
      *
      * @var string enableglobalsearch Enable global search
      */
@@ -1719,13 +2097,6 @@ When enabled Moodle will attempt to fetch a user profile picture from Gravatar i
      * @var string enablegravatar Enable Gravatar
      */
     public $enablegravatar;
-
-    /**
-     * $CFG->enablegroupmembersonly no longer exists.
-     *
-     * @var string enablegroupmembersonly Enable group members only
-     */
-    public $enablegroupmembersonly;
 
     /**
 Enable mobile service for the official Moodle app or other app requesting it. For more information, read the {$a}
@@ -1770,13 +2141,6 @@ If enabled, RSS feeds are generated by various features across the site, such as
     public $enablerssfeeds;
 
     /**
-This adds the choice \'Require Safe Exam Browser\' to the \'Browser security\' field on the quiz settings form. See http://www.safeexambrowser.org/ for more information.
-     *
-     * @var string enablesafebrowserintegration Enable Safe Exam Browser integration
-     */
-    public $enablesafebrowserintegration;
-
-    /**
 If you choose \'yes\' here, Moodle\'s cronjob will process the logs and gather some statistics.  Depending on the amount of traffic on your site, this can take awhile. If you enable this, you will be able to see some interesting graphs and statistics about each of your courses, or on a sitewide basis.
      *
      * @var string enablestats Enable statistics
@@ -1791,7 +2155,14 @@ By default Moodle will always thoroughly clean text that comes from users to rem
     public $enabletrusttext;
 
     /**
-Web services enable other systems to log in to this Moodle and perform operations.  For extra security this feature should be disabled unless you are really using it.
+If enabled, a \'Give feedback about this software\' link is displayed in the footer for users to give feedback about the Moodle software to Moodle HQ. If the \'Next feedback reminder\' option is set, the user is also shown a reminder on the Dashboard at the specified interval. Setting \'Next feedback reminder\' to \'Never\' disables the Dashboard reminder, while leaving the \'Give feedback about this software\' link in the footer.
+     *
+     * @var string enableuserfeedback Enable feedback about this software
+     */
+    public $enableuserfeedback;
+
+    /**
+Web services enable other systems, such as the Moodle app, to log in to the site and perform operations. For extra security, the setting should be disabled if you are not using the app, or an external tool/service that requires integration via web services.
      *
      * @var string enablewebservices Enable web services
      */
@@ -1812,6 +2183,20 @@ Enable auto-generation of web services documentation. A user can access to his o
     public $enrol_plugins_enabled;
 
     /**
+When an admin adds a new course, should they be automatically enrolled and assigned the creators\' role in new courses?
+     *
+     * @var string enroladminnewcourse Auto-enrol admin in new courses
+     */
+    public $enroladminnewcourse;
+
+    /**
+
+     *
+     * @var string enrolments_sync_interval 
+     */
+    public $enrolments_sync_interval;
+
+    /**
      * 
      *
      * @var string errordocroot Error doc root
@@ -1819,7 +2204,14 @@ Enable auto-generation of web services documentation. A user can access to his o
     public $errordocroot;
 
     /**
-Enable this setting to allow students to use any characters in their usernames (note this does not affect their actual names).  The default is "false" which restricts usernames to be alphanumeric lowercase characters, underscore (_), hyphen (-), period (.) or at symbol (@).
+
+     *
+     * @var string expectedcronfrequency 
+     */
+    public $expectedcronfrequency;
+
+    /**
+If enabled, usernames may include any characters except uppercase letters.  Otherwise, only alphanumeric characters with lowercase letters, underscore (_), hyphen (-), period (.) and at symbol (@) are allowed.
      *
      * @var string extendedusernamechars Allow extended characters in usernames
      */
@@ -1840,7 +2232,7 @@ Some scripts like search, backup/restore or cron require more memory. Set higher
     public $extramemorylimit;
 
     /**
-If set to \'yes\', users can complete a feedback activity on the front page without being required to log in.
+If set to \'yes\', users can complete a feedback activity on the site home without being required to log in.
      *
      * @var string feedback_allowfullanonymous Allow full anonymous
      */
@@ -1876,19 +2268,19 @@ If set to \'yes\', users can complete a feedback activity on the front page with
     public $filepermissions;
 
     /**
+How often trash pool files are deleted. These are files that are associated with a context that no longer exists, for example when a course is deleted. Please note: This setting can result in missing files in a course which is backed up, deleted and then restored if the setting \'Include files\' (backup_auto_files) in \'Automated backup settings\' is disabled.
+     *
+     * @var string filescleanupperiod Clean up trash pool files
+     */
+    public $filescleanupperiod;
+
+    /**
      * if you want to disable purging of trash put $CFG->fileslastcleanup=time(); into config.php
      * 
      *
      * @var string fileslastcleanup files last cleanup
      */
     public $fileslastcleanup;
-
-    /**
-     * Custom bad words list
-     *
-     * @var string filter_censor_badwords Filter censor bad words
-     */
-    public $filter_censor_badwords;
 
     /**
      * Multilang upgrade
@@ -1919,11 +2311,18 @@ Automatic linking filters will only generate a single link for the first matchin
     public $filtermatchoneperpage;
 
     /**
-Automatic linking filters will only generate a single link for the first matching text instance found in each item of text (e.g., resource, block) on the page. All others are ignored. This setting is ignored if the one per page setting is <i>yes</i>.
+Automatic linking filters will only generate a single link for the first matching text instance found in each item of text on the page. All others are ignored. This setting has no effect if \'Filter match once per page\' is enabled.
      *
      * @var string filtermatchonepertext Filter match once per text
      */
     public $filtermatchonepertext;
+
+    /**
+Normal use of the filtering is tied to the context in which it is used (e.g. course context), but for the site navigation, explicitly making everything filter with site context can yield performance improvements when using "content and headings" filtering.
+     *
+     * @var string filternavigationwithsystemcontext Filter navigation with system context
+     */
+    public $filternavigationwithsystemcontext;
 
     /**
 Process all uploaded HTML and text files with the filters before displaying them, only uploaded HTML files or none at all.
@@ -1931,6 +2330,20 @@ Process all uploaded HTML and text files with the filters before displaying them
      * @var string filteruploadedfiles Filter uploaded files
      */
     public $filteruploadedfiles;
+
+    /**
+
+     *
+     * @var string foo 
+     */
+    public $foo;
+
+    /**
+Content added to the site is normally cleaned before being displayed, to remove anything which might be a security threat. However, content is not cleaned in certain places such as activity descriptions, page resources or HTML blocks to allow scripts, media, inline frames etc. to be added. If this setting is enabled, ALL content will be cleaned. This may result in existing content no longer displaying correctly.
+     *
+     * @var string forceclean Content cleaning everywhere
+     */
+    public $forceclean;
 
     /**
      *  Plugin settings have to be put into a special array.
@@ -1985,7 +2398,7 @@ Process all uploaded HTML and text files with the filters before displaying them
     public $forcelastname;
 
     /**
-Normally, the front page of the site and the course listings (but not courses) can be read by people without logging in to the site.  If you want to force people to log in before they do ANYTHING on the site, then you should enable this setting.
+Normally, the site home and the course listings (but not courses) can be read by people without logging in to the site. If you want to force people to log in before they do ANYTHING on the site, then you should enable this setting.
      *
      * @var string forcelogin Force users to log in
      */
@@ -2043,7 +2456,7 @@ This setting forces people to log in as a real (non-guest) account before viewin
     /**
 The default display mode for discussions if one isn\'t set.
      *
-     * @var string forum_displaymode Display mode for the options
+     * @var string forum_displaymode Display mode
      */
     public $forum_displaymode;
 
@@ -2062,27 +2475,6 @@ If enabled, RSS feeds are generated by various features across the site, such as
     public $forum_enabletimedposts;
 
     /**
-     * 
-     *
-     * @var string forum_lastreadclean Forum last read clean
-     */
-    public $forum_lastreadclean;
-
-    /**
-Any post over this length (in characters not including HTML) is considered long. Posts displayed on the site front page, social format course pages, or user profiles are shortened to a natural break somewhere between the forum_shortpost and forum_longpost values.
-     *
-     * @var string forum_longpost Long post
-     */
-    public $forum_longpost;
-
-    /**
-Maximum number of discussions shown in a forum per page
-     *
-     * @var string forum_manydiscussions Discussions per page
-     */
-    public $forum_manydiscussions;
-
-    /**
 Default maximum number of attachments allowed per post.
      *
      * @var string forum_maxattachments Maximum number of attachments
@@ -2090,7 +2482,7 @@ Default maximum number of attachments allowed per post.
     public $forum_maxattachments;
 
     /**
-This specifies a maximum size that uploaded files can be throughout the whole site. This setting is limited by the PHP settings post_max_size and upload_max_filesize, as well as the Apache setting LimitRequestBody. In turn, maxbytes limits the range of sizes that can be chosen at course level or module level. If \'Server Limit\' is chosen, the server maximum allowed by the server will be used.
+This specifies a maximum size for files uploaded to the site. This setting is limited by the PHP settings post_max_size and upload_max_filesize, as well as the Apache setting LimitRequestBody. In turn, maxbytes limits the range of sizes that can be chosen at course or activity level. If \'Site upload limit\' is chosen, the maximum size allowed by the server will be used.
      *
      * @var string forum_maxbytes Maximum uploaded file size
      */
@@ -2104,14 +2496,14 @@ Number of days old any post is considered read.
     public $forum_oldpostdays;
 
     /**
-This setting specifies the number of glossary entry concepts to include in the RSS feed. Between 5 and 20 generally acceptable.
+This setting specifies the number of articles (either discussions or posts) to include in the RSS feed. Between 5 and 20 generally acceptable.
      *
      * @var string forum_rssarticles Number of RSS recent articles
      */
     public $forum_rssarticles;
 
     /**
-To enable the RSS feed for this activity, select either concepts with author or concepts without author to be included in the feed.
+To enable the RSS feed for this activity, select either discussions or posts to be included in the feed.
      *
      * @var string forum_rsstype RSS feed for this activity
      */
@@ -2123,6 +2515,13 @@ Any post under this length (in characters not including HTML) is considered shor
      * @var string forum_shortpost Short post
      */
     public $forum_shortpost;
+
+    /**
+If you are subscribed to a forum it means you will receive notification of new forum posts. Usually you can choose whether you wish to be subscribed, though sometimes subscription is forced so that everyone receives notifications.
+     *
+     * @var string forum_subscription Subscription
+     */
+    public $forum_subscription;
 
     /**
 Default setting for read tracking.
@@ -2146,9 +2545,9 @@ If \'yes\', the user must manually mark a post as read. If \'no\', when the post
     public $forum_usermarksread;
 
     /**
-The items selected above will be displayed on the site\'s front page.
+The items selected above will be displayed on the site home.
      *
-     * @var string frontpage Front page
+     * @var string frontpage Site home
      */
     public $frontpage;
 
@@ -2160,9 +2559,9 @@ The items selected above will be displayed on the site\'s front page.
     public $frontpagecourselimit;
 
     /**
-The items selected above will be displayed on the site\'s front page when a user is logged in.
+The items selected above will be displayed on the site home when a user is logged in.
      *
-     * @var string frontpageloggedin Front page items when logged in
+     * @var string frontpageloggedin Site home items when logged in
      */
     public $frontpageloggedin;
 
@@ -2171,7 +2570,7 @@ This defines how names are shown when they are displayed in full. The default va
 
 For most mono-lingual sites the most efficient setting is "firstname lastname", but you may choose to hide surnames altogether. Placeholders that can be used are: firstname, lastname, firstnamephonetic, lastnamephonetic, middlename, and alternatename.
      *
-     * @var string fullnamedisplay Full name format
+     * @var string fullnamedisplay {$a->firstname} {$a->lastname}
      */
     public $fullnamedisplay;
 
@@ -2190,7 +2589,7 @@ For most mono-lingual sites the most efficient setting is "firstname lastname", 
     public $geoip2file;
 
     /**
-Location of GeoLite2 City binary data file. This file is not part of Moodle distribution and must be obtained separately from <a href="http://www.maxmind.com/">MaxMind</a>. You can either buy a commercial version or use the free version. Simply download <a href="http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.mmdb.gz" >http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.mmdb.gz</a> and extract it into "{$a}" directory on your server.
+Location of GeoLite2 City binary data file. This file is not part of Moodle distribution and must be obtained separately from <a href="https://www.maxmind.com/">MaxMind</a>. You can either buy a commercial version or use the free version. You\'ll need to register to download the City database file, which you can do at <a href="https://dev.maxmind.com/geoip/geoip2/geolite2/" >https://dev.maxmind.com/geoip/geoip2/geolite2/</a>. Once you\'ve registered and downloaded the file, extract it into "{$a}" directory on your server.
      *
      * @var string geoipfile GeoLite2 City MaxMind DB
      */
@@ -2211,9 +2610,9 @@ If enabled, all participants with permission to create comments will be able to 
     public $glossary_allowcomments;
 
     /**
-This setting specifies whether matching exact upper and lower case is necessary when auto-linking to an entry.
+Tick the checkbox to use regular expressions for analysing responses.
      *
-     * @var string glossary_casesensitive Case sensitivity
+     * @var string glossary_casesensitive Use regular expressions
      */
     public $glossary_casesensitive;
 
@@ -2339,9 +2738,9 @@ This setting determines whether the category and course total columns are displa
     public $grade_aggregations_visible;
 
     /**
-This setting determines the number of decimal points to display for each grade. It has no effect on grade calculations, which are made with an accuracy of 5 decimal places.
+This setting determines the number of decimal places to display for each grade. It has no effect on grade calculations, which are made with an accuracy of 5 decimal places.
      *
-     * @var string grade_decimalpoints Overall decimal points
+     * @var string grade_decimalpoints Overall decimal places
      */
     public $grade_decimalpoints;
 
@@ -2386,6 +2785,13 @@ This setting enables a specified number of the lowest grades to be excluded from
      * @var string grade_export_displaytype Grade export display type
      */
     public $grade_export_displaytype;
+
+    /**
+
+     *
+     * @var string grade_export_exportfeedback 
+     */
+    public $grade_export_exportfeedback;
 
     /**
      * Include these user profile fields in the grade export, separated by commas.
@@ -2449,13 +2855,6 @@ This setting determines whether to use the initial minimum and maximum grades fr
      * @var string grade_mygrades_report Grade my grades report
      */
     public $grade_mygrades_report;
-
-    /**
-In Free navigation, questions may be answered in any order using navigation. In Sequential, questions must be answered in strict sequence.
-     *
-     * @var string grade_navmethod Navigation method
-     */
-    public $grade_navmethod;
 
     /**
 Grade report used on user profile page.
@@ -2590,7 +2989,7 @@ This setting allows you to control who appears on the gradebook.  Users need to 
     /**
 Choose which gradebook export formats are your primary methods for exporting grades.  Chosen plugins will then set and use a "last exported" field for every grade.  For example, this might result in exported records being identified as being "new" or "updated".  If you are not sure about this then leave everything unchecked.
      *
-     * @var string gradeexport Primary grade export methods
+     * @var string gradeexport Grade export
      */
     public $gradeexport;
 
@@ -2623,7 +3022,7 @@ This setting determines the maximum grade point value available in an activity.
     public $gradepointmax;
 
     /**
-Enable publishing in exports and imports: Exported grades can be accessed by accessing a URL, without having to log on to a Moodle site. Grades can be imported by accessing such a URL (which means that a Moodle site can import grades published by another site). By default only administrators may use this feature, please educate users before adding required capabilities to other roles (dangers of bookmark sharing and download accelerators, IP restrictions, etc.).
+Grade publishing is a way of importing and exporting grades via a URL without being logged in to Moodle. If enabled, administrators and users with the permission to publish grades (by default, users with the role of manager only) are provided with grade export publishing settings in each course gradebook.
      *
      * @var string gradepublishing Enable publishing
      */
@@ -2644,7 +3043,7 @@ Gravatar needs a default image to display if it is unable to find a picture for 
     public $gravatardefaulturl;
 
     /**
-Turning this on will make Moodle check group enrolment keys against a valid password policy.
+If enabled, group enrolment keys will be checked against the password policy as specified in the settings above.
      *
      * @var string groupenrolmentkeypolicy Group enrolment key policy
      */
@@ -2663,6 +3062,20 @@ This role is automatically assigned to the guest user. It is also temporarily as
      * @var string guestroleid Role for guest
      */
     public $guestroleid;
+
+    /**
+
+     *
+     * @var string h5pcrossorigin 
+     */
+    public $h5pcrossorigin;
+
+    /**
+The H5P framework used to display H5P content. The latest version is recommended.
+     *
+     * @var string h5plibraryhandler H5P framework handler
+     */
+    public $h5plibraryhandler;
 
     /**
      * The following line is for handling email bounces
@@ -2711,41 +3124,6 @@ When you click on an IP address (such as 34.12.222.93), such as in the logs, you
     public $iplookup;
 
     /**
-The server to connect to to send jabber message notifications
-     *
-     * @var string jabberhost Jabber host
-     */
-    public $jabberhost;
-
-    /**
-The password to use when connecting to the Jabber server
-     *
-     * @var string jabberpassword Jabber password
-     */
-    public $jabberpassword;
-
-    /**
-The port to use when connecting to the Jabber server
-     *
-     * @var string jabberport Jabber port
-     */
-    public $jabberport;
-
-    /**
-XMPP host ID (can be left empty if the same as Jabber host)
-     *
-     * @var string jabberserver Jabber server
-     */
-    public $jabberserver;
-
-    /**
-The user name to use when connecting to the Jabber server
-     *
-     * @var string jabberusername Jabber user name
-     */
-    public $jabberusername;
-
-    /**
      * When jsrev is positive, the function is minified and stored in a MUC cache for subsequent uses
      *
      * @var string jsrev JS rev
@@ -2773,12 +3151,12 @@ Check this if you want tag names to keep the original casing as entered by users
     /**
 Choose a default language for the whole site. Users can override this setting using the language menu or the setting in their personal profile.
      *
-     * @var string lang Default language
+     * @var string lang Lang
      */
     public $lang;
 
     /**
-Leave this blank to allow users to choose from any language you have in this installation of Moodle.  However, you can shorten the language menu by entering a comma-separated list of language codes that you want.  For example:  en,es_es,fr,it
+If left blank, all languages installed on the site will be displayed in the language menu. Alternatively, the language menu may be shortened by entering a list of language codes separated by commas e.g. en,de,fr. If desired, a different name for the language than the language pack name may be specified using the format: language code|language name e.g. en_kids|English,de_kids|Deutsch.
      *
      * @var string langlist Languages on language menu
      */
@@ -2841,62 +3219,6 @@ By default, legacy course files areas are available in upgraded courses only. Pl
     public $legacyfilesinnewcourses;
 
     /**
-     * Action after correct answer
-     *
-     * @var string lesson_defaultnextpage Lesson default next page
-     */
-    public $lesson_defaultnextpage;
-
-    /**
-     * Maximum number of answers
-     *
-     * @var string lesson_maxanswers Lesson max answers
-     */
-    public $lesson_maxanswers;
-
-    /**
-Displays a close button as part of the popup generated for a linked media file
-     *
-     * @var string lesson_mediaclose Show close button
-     */
-    public $lesson_mediaclose;
-
-    /**
-Sets the height of the popup displayed for a linked media file
-     *
-     * @var string lesson_mediaheight Popup window height
-     */
-    public $lesson_mediaheight;
-
-    /**
-Sets the width of the popup displayed for a linked media file
-     *
-     * @var string lesson_mediawidth Popup window width
-     */
-    public $lesson_mediawidth;
-
-    /**
-Background colour to for the slideshow if it is enabled
-     *
-     * @var string lesson_slideshowbgcolor Slideshow background colour
-     */
-    public $lesson_slideshowbgcolor;
-
-    /**
-Sets the height of the slideshow if it is enabled
-     *
-     * @var string lesson_slideshowheight Slideshow height
-     */
-    public $lesson_slideshowheight;
-
-    /**
-Sets the width of the slideshow if it is enabled
-     *
-     * @var string lesson_slideshowwidth Slideshow width
-     */
-    public $lesson_slideshowwidth;
-
-    /**
      * Path to moodles library folder on servers filesystem.
      *
      * @var string libdir Lib directory
@@ -2932,13 +3254,6 @@ Always try to provide a link for course sections. Course sections are usually on
     public $linkcoursesections;
 
     /**
-
-     *
-     * @var string linkcoursesectionsupgradescriptwasrun 
-     */
-    public $linkcoursesectionsupgradescriptwasrun;
-
-    /**
      *  for custom $CFG->localcachedir locations
      *
      * @var string localcachedir Local cache dir
@@ -2959,6 +3274,13 @@ Choose a sitewide locale - this will override the format and language of dates f
      * @var string locale en_AU.UTF-8
      */
     public $locale;
+
+    /**
+
+     *
+     * @var string localrequestdir 
+     */
+    public $localrequestdir;
 
     /**
      *  Moodle 2.7 introduces a locking api for critical tasks (e.g. cron).
@@ -3003,18 +3325,18 @@ Observation time for lockout threshold, if there are no failed attempts the thre
     public $lockoutwindow;
 
     /**
-This setting enables logging of actions by guest account and not logged in users. High profile sites may want to disable this logging for performance reasons. It is recommended to keep this setting enabled on production sites.
+If enabled, users with the capability to request new courses in the system context will not be able to select a category in the request a new course form. An alternative way of restricting users to requesting a new course in just one category is to apply the capability to request new courses in the category context.
      *
-     * @var string logguests Log guest access
+     * @var string lockrequestcategory Prevent category selection
      */
-    public $logguests;
+    public $lockrequestcategory;
 
     /**
-Turning this on will make Moodle use a secure https connection just for the login page (providing a secure login), and then afterwards revert back to the normal http URL for general speed.  CAUTION: this setting REQUIRES https to be specifically enabled on the web server - if it is not then YOU COULD LOCK YOURSELF OUT OF YOUR SITE.
+This setting enables logging of actions by guest account and not logged in users. High profile sites may want to disable this logging for performance reasons. It is recommended to keep this setting enabled on production sites.
      *
-     * @var string loginhttps Use HTTPS for logins
+     * @var string logguests Log guest actions
      */
-    public $loginhttps;
+    public $logguests;
 
     /**
 Enabling this option improves usability of the login page, but automatically focusing fields may be considered an accessibility issue.
@@ -3024,7 +3346,7 @@ Enabling this option improves usability of the login page, but automatically foc
     public $loginpageautofocus;
 
     /**
-This specifies the length of time you want to keep logs about user activity.  Logs that are older than this age are automatically deleted.  It is best to keep logs as long as possible, in case you need them, but if you have a very busy server and are experiencing performance problems, then you may want to lower the log lifetime. Values lower than 30 are not recommended because statistics may not work properly.
+This specifies the length of time you want to keep backup logs information. Logs that are older than this age are automatically deleted. It is recommended to keep this value small, because backup logged information can be huge.
      *
      * @var string loglifetime Keep logs for
      */
@@ -3056,7 +3378,7 @@ Newline characters used in mail messages. CRLF is required according to RFC 822b
     public $mailprefix;
 
     /**
-If enabled, the teacher will be able to create annotated PDF files when marking the assignments. This allows the teacher to add comments, drawing and stamps directly on top of the students work. The annotating is done in the browser and no extra software is required.
+If enabled, the marker can leave feedback comments for each submission. 
      *
      * @var string maintenance_enabled Enabled
      */
@@ -3077,7 +3399,7 @@ If enabled, the teacher will be able to create annotated PDF files when marking 
     public $maintenance_message;
 
     /**
-This specifies a maximum size that uploaded files can be throughout the whole site. This setting is limited by the PHP settings post_max_size and upload_max_filesize, as well as the Apache setting LimitRequestBody. In turn, maxbytes limits the range of sizes that can be chosen at course level or module level. If \'Server Limit\' is chosen, the server maximum allowed by the server will be used.
+This specifies a maximum size for files uploaded to the site. This setting is limited by the PHP settings post_max_size and upload_max_filesize, as well as the Apache setting LimitRequestBody. In turn, maxbytes limits the range of sizes that can be chosen at course or activity level. If \'Site upload limit\' is chosen, the maximum size allowed by the server will be used.
      *
      * @var string maxbytes Maximum uploaded file size
      */
@@ -3098,6 +3420,13 @@ Passwords must not have more than this number of consecutive identical character
     public $maxconsecutiveidentchars;
 
     /**
+
+     *
+     * @var string maxcoursesincategory 
+     */
+    public $maxcoursesincategory;
+
+    /**
 This specifies the amount of time people have to re-edit forum postings, glossary comments etc.  Usually 30 minutes is a good value.
      *
      * @var string maxeditingtime Maximum time to edit posts
@@ -3110,6 +3439,13 @@ The number of external blogs each user is allowed to link to their Moodle blog.
      * @var string maxexternalblogsperuser Maximum number of external blogs per user
      */
     public $maxexternalblogsperuser;
+
+    /**
+The maximum size of each file when downloading course content. Files exceeding this size will be omitted from the download.
+     *
+     * @var string maxsizeperdownloadcoursefile Maximum size per file
+     */
+    public $maxsizeperdownloadcoursefile;
 
     /**
 To restrict the maximum PHP execution time that Moodle will allow without any output being displayed, enter a value in seconds here. 0 means that Moodle default restrictions are used. If you have a front-end server with its own time limit, set this value lower to receive PHP errors in logs. Does not apply to CLI scripts.
@@ -3154,7 +3490,7 @@ Maximum number of users displayed within user selector in course, group, cohort,
     public $messageinbound_domain;
 
     /**
-If enabled, the teacher will be able to create annotated PDF files when marking the assignments. This allows the teacher to add comments, drawing and stamps directly on top of the students work. The annotating is done in the browser and no extra software is required.
+If enabled, the marker can leave feedback comments for each submission. 
      *
      * @var string messageinbound_enabled Enabled
      */
@@ -3166,6 +3502,13 @@ If enabled, the teacher will be able to create annotated PDF files when marking 
      * @var string messageinbound_host Message in bound host
      */
     public $messageinbound_host;
+
+    /**
+
+     *
+     * @var string messageinbound_hostoauth 
+     */
+    public $messageinbound_hostoauth;
 
     /**
      * 
@@ -3196,7 +3539,7 @@ If enabled, the teacher will be able to create annotated PDF files when marking 
     public $messageinbound_mailbox;
 
     /**
-Should the messaging system between site users be enabled?
+If enabled, users can send messages to other users on the site.
      *
      * @var string messaging Enable messaging system
      */
@@ -3210,18 +3553,32 @@ Allow users to have email message notifications sent to an email address other t
     public $messagingallowemailoverride;
 
     /**
+If enabled, users can view the list of all users on the site when selecting someone to message, and their message preferences include the option to accept messages from anyone on the site. If disabled, users can only view the list of users in their courses, and they have just two options in message preferences - to accept messages from their contacts only, or their contacts and anyone in their courses.
+     *
+     * @var string messagingallusers Allow site-wide messaging
+     */
+    public $messagingallusers;
+
+    /**
+Whether \'Use enter to send\' is enabled by default in users\' messaging settings.
+     *
+     * @var string messagingdefaultpressenter Use enter to send enabled by default
+     */
+    public $messagingdefaultpressenter;
+
+    /**
+Read and unread notifications can be deleted to save space. How long after a notification is created can it be deleted?
+     *
+     * @var string messagingdeleteallnotificationsdelay Delete all notifications
+     */
+    public $messagingdeleteallnotificationsdelay;
+
+    /**
 Read notifications can be deleted to save space. How long after a notification is read can it be deleted?
      *
      * @var string messagingdeletereadnotificationsdelay Delete read notifications
      */
     public $messagingdeletereadnotificationsdelay;
-
-    /**
-Hide read notifications of events like forum posts when viewing messaging history
-     *
-     * @var string messaginghidereadnotifications Hide read notifications
-     */
-    public $messaginghidereadnotifications;
 
     /**
 
@@ -3285,6 +3642,20 @@ Passwords must have at least these many upper case letters.
      * @var string minpasswordupper Uppercase letters
      */
     public $minpasswordupper;
+
+    /**
+
+     *
+     * @var string mlbackend_php_no_evaluation_limits 
+     */
+    public $mlbackend_php_no_evaluation_limits;
+
+    /**
+
+     *
+     * @var string mlbackend_php_no_memory_limit 
+     */
+    public $mlbackend_php_no_memory_limit;
 
     /**
      * 
@@ -3375,13 +3746,6 @@ A CSS file to customise your mobile app interface.
     public $mod_lti_log_users;
 
     /**
-Should the activity chooser be presented to users by default?
-     *
-     * @var string modchooserdefault Activity chooser default
-     */
-    public $modchooserdefault;
-
-    /**
      * 
      *
      * @var string moddata Mod data
@@ -3434,23 +3798,23 @@ Limits the number of courses shown to the user in the navigation.
     public $navcourselimit;
 
     /**
-This setting determines whether users who are enrolled in courses can see Courses (listing all courses) in the navigation, in addition to My Courses (listing courses in which they are enrolled).
+This setting determines whether users who are enrolled in courses can see Courses (listing all courses) in the navigation, in addition to My courses (listing courses in which they are enrolled).
      *
      * @var string navshowallcourses Show all courses
      */
     public $navshowallcourses;
 
     /**
-Show course categories in the navigation bar and navigation blocks. This does not occur with courses the user is currently enrolled in, they will still be listed under mycourses without categories.
+Show course categories in the navigation bar and navigation blocks. This does not occur with courses the user is currently enrolled in; they will still be listed under My courses without categories.
      *
      * @var string navshowcategories Show course categories
      */
     public $navshowcategories;
 
     /**
-If enabled, front page activities will be shown on the navigation under site pages.
+If enabled, site home activities will be shown on the navigation under site pages. This setting only applies to themes based on Classic.
      *
-     * @var string navshowfrontpagemods Show front page activities in the navigation
+     * @var string navshowfrontpagemods Show site home activities in the navigation
      */
     public $navshowfrontpagemods;
 
@@ -3462,11 +3826,18 @@ If enabled, course full names will be used in the navigation rather than short n
     public $navshowfullcoursenames;
 
     /**
-If enabled courses in the users my courses branch will be shown in categories.
+If enabled, courses in the user\'s My courses branch will be shown in categories in the navigation block (Classic-based themes only).
      *
      * @var string navshowmycoursecategories Show my course categories
      */
     public $navshowmycoursecategories;
+
+    /**
+If enabled, any hidden courses will be listed after visible courses (for users who can view hidden courses). Otherwise, all courses, regardless of their visibility, will be listed according to the \'Sort my courses\' setting.
+     *
+     * @var string navsortmycourseshiddenlast Sort my hidden courses last
+     */
+    public $navsortmycourseshiddenlast;
 
     /**
 This determines whether courses are listed under My courses according to the sort order (i.e. the order set in Site administration > Courses > Manage courses and categories) or alphabetically by course setting.
@@ -3498,6 +3869,13 @@ This determines whether courses are listed under My courses according to the sor
      * @var string nofixhour No fix hour
      */
     public $nofixhour;
+
+    /**
+
+     *
+     * @var string nokeygeneration 
+     */
+    public $nokeygeneration;
 
     /**
      * do not save $CFG->nolastloggedin in database!
@@ -3551,11 +3929,11 @@ Users who are not logged in to the site will be treated as if they have this rol
     public $opensslcnf;
 
     /**
-If you enable this setting, then Google will be allowed to enter your site as a Guest.  In addition, people coming in to your site via a Google search will automatically be logged in as a Guest.  Note that this only provides transparent access to courses that already allow guest access.
+If you enable this setting, then search engines will be allowed to enter your site as a guest.  In addition, people coming in to your site via a search engine will automatically be logged in as a guest.  Note that this only provides transparent access to courses that already allow guest access.
      *
-     * @var string opentogoogle Open to Google
+     * @var string opentowebcrawlers Open to search engines
      */
-    public $opentogoogle;
+    public $opentowebcrawlers;
 
     /**
      * 
@@ -3573,6 +3951,13 @@ If you enable this setting, then Google will be allowed to enter your site as a 
      * @var string ostype OS type
      */
     public $ostype;
+
+    /**
+
+     *
+     * @var string overridetossl HTTPS for logins has now been deprecated. This instance is now forced to SSL. To remedy this warning change your wwwroot in config.php to https://
+     */
+    public $overridetossl;
 
     /**
 
@@ -3596,11 +3981,19 @@ If enabled, when a password is changed, all the user web service access tokens a
     public $passwordchangetokendeletion;
 
     /**
-Turning this on will make Moodle check user passwords against a valid password policy. Use the settings below to specify your policy (they will be ignored if you set this to \'No\').
+If enabled, user passwords will be checked against the password policy as specified in the settings below. Enabling the password policy will not affect existing users until they decide to, or are required to, change their password, or the \'Check password on login\' setting is enabled.
      *
      * @var string passwordpolicy Password policy
      */
     public $passwordpolicy;
+
+    /**
+If enabled, user passwords will be checked against the password policy each time users log in. If the check fails, the user will be required to change their password before proceeding.
+It is useful to enable this setting after updating the password policy.
+     *
+     * @var string passwordpolicycheckonlogin Check password on login
+     */
+    public $passwordpolicycheckonlogin;
 
     /**
 Number of times a user must change their password before they are allowed to reuse a password. Hashes of previously used passwords are stored in local database table. This feature might not be compatible with some external authentication plugins.
@@ -3623,14 +4016,7 @@ Number of times a user must change their password before they are allowed to reu
     public $passwordsaltmain;
 
     /**
-
-     *
-     * @var string pathtoclam Command line
-     */
-    public $pathtoclam;
-
-    /**
-Path to dot. Probably something like /usr/bin/dot. To be able to generate graphics from DOT files, you must have installed the dot executable and point to it here. Note that, for now, this only used by the profiling features (Development->Profiling) built into Moodle.
+Path to dot. On Linux it is something like /usr/bin/dot. On Windows it is something like C:\Program Files (x86)\Graphviz2.38\bin\dot.exe. On Mac it is something like /opt/local/bin/dot. To be able to generate graphics from DOT files, you must have installed the dot executable and point to it here.
      *
      * @var string pathtodot Path to dot
      */
@@ -3651,6 +4037,34 @@ On most Linux installs, this can be left as \'/usr/bin/gs\'. On Windows it will 
     public $pathtogs;
 
     /**
+<a href="https://poppler.freedesktop.org/">Poppler</a> is a PDF rendering library which includes the tool pdftoppm for converting PDF files to PNG. Performance is generally better than when using Ghostscript, particularly for large files. If available, pdftoppm will be used in preference to Ghostscript. On most Linux installs, the path can be left as /usr/bin/pdftoppm. Otherwise, you need to install the poppler-utils or poppler package, depending on your Linux distribution. On Windows it is provided by Cygwin installs.
+     *
+     * @var string pathtopdftoppm Path to pdftoppm
+     */
+    public $pathtopdftoppm;
+
+    /**
+Path to PHP CLI. Probably something like /usr/bin/php. If you enter this, cron scripts can be executed from admin web interface.
+     *
+     * @var string pathtophp Path to PHP CLI
+     */
+    public $pathtophp;
+
+    /**
+
+     *
+     * @var string pathtopython Path to Python
+     */
+    public $pathtopython;
+
+    /**
+Specifying the location of the SassC binary will switch the SASS compiler from Moodle\'s PHP implementation to SassC. See https://github.com/sass/sassc for more information.
+     *
+     * @var string pathtosassc Path to SassC
+     */
+    public $pathtosassc;
+
+    /**
 Path to unoconv document converter. This is an executable that is capable of converting between document formats supported by LibreOffice. This is optional, but if specified, Moodle will use it to automatically convert between document formats. This is used to support a wider range of input files for the assignment annotate PDF feature.
      *
      * @var string pathtounoconv Path to unoconv document converter
@@ -3658,11 +4072,32 @@ Path to unoconv document converter. This is an executable that is capable of con
     public $pathtounoconv;
 
     /**
+
+     *
+     * @var string paygw_plugins_sortorder 
+     */
+    public $paygw_plugins_sortorder;
+
+    /**
+
+     *
+     * @var string pdfexportfont 
+     */
+    public $pdfexportfont;
+
+    /**
 If you turn this on, performance info will be printed in the footer of the standard theme
      *
      * @var string perfdebug Performance info
      */
     public $perfdebug;
+
+    /**
+
+     *
+     * @var string phpunit_cachestore_redis_time 
+     */
+    public $phpunit_cachestore_redis_time;
 
     /**
      *  $CFG->phpunit_dataroot = '/home/example/phpu_moodledata';
@@ -3736,11 +4171,9 @@ ADOdb database driver name, type of the external database engine.
     public $phpunit_extra_drivers;
 
     /**
-This prefix is used for all key names on the Redis server.
-* If you only have one Moodle instance using this server, you can leave this value default.
-* Due to key length restrictions, a maximum of 5 characters is permitted.
+The above prefix gets used for all keys being stored in this APC store instance. By default the database prefix is used.
      *
-     * @var string phpunit_prefix Key prefix
+     * @var string phpunit_prefix Prefix
      */
     public $phpunit_prefix;
 
@@ -3766,18 +4199,18 @@ If you enable this setting, then profiling will be available in this site and yo
     public $phpunit_test_get_config_5;
 
     /**
-     * 
+
      *
-     * @var string portfolio_high_dbsize_threshold Portfolio high databaze size threshold
+     * @var string portfolio_high_db_threshold 
      */
-    public $portfolio_high_dbsize_threshold;
+    public $portfolio_high_db_threshold;
 
     /**
-     * 
+
      *
-     * @var string portfolio_moderate_dbsize_threshold Portfolio moderate database size threshold
+     * @var string portfolio_moderate_db_threshold 
      */
-    public $portfolio_moderate_dbsize_threshold;
+    public $portfolio_moderate_db_threshold;
 
     /**
      * This setting will make some graphs (eg user logs) use lines instead of bars
@@ -3787,11 +4220,9 @@ If you enable this setting, then profiling will be available in this site and yo
     public $preferlinegraphs;
 
     /**
-This prefix is used for all key names on the Redis server.
-* If you only have one Moodle instance using this server, you can leave this value default.
-* Due to key length restrictions, a maximum of 5 characters is permitted.
+The above prefix gets used for all keys being stored in this APC store instance. By default the database prefix is used.
      *
-     * @var string prefix Key prefix
+     * @var string prefix Prefix
      */
     public $prefix;
 
@@ -3822,7 +4253,14 @@ This prefix is used for all key names on the Redis server.
     public $preventscheduledtaskchanges;
 
     /**
-List of roles that are visible on user profiles and participation page.
+
+     *
+     * @var string profilepotentialslowpage 
+     */
+    public $profilepotentialslowpage;
+
+    /**
+Roles that are listed in user profiles and on the participants page.
      *
      * @var string profileroles Profile visible roles
      */
@@ -3864,7 +4302,7 @@ If you enable this setting, then profiling will be available in this site and yo
     public $profilingenabled;
 
     /**
-List of (comma separated, absolute skipping wwwroot, callable) URLs that will be excluded from being profiled from the ones defined by \'Profile these\' setting.
+List of (comma or newline separated, absolute skipping wwwroot, callable) URLs that will be excluded from being profiled from the ones defined by \'Profile these\' setting.
      *
      * @var string profilingexcluded Exclude profiling
      */
@@ -3878,7 +4316,7 @@ For easier detection, all the imported profiling runs will be prefixed with the 
     public $profilingimportprefix;
 
     /**
-List of (comma separated, absolute skipping wwwroot, callable) URLs that will be automatically profiled. Examples: /index.php, /course/view.php. Also accepts the * wildchar at any position. Examples: /mod/forum/*, /mod/* /view.php.
+List of (comma or newline separated, absolute skipping wwwroot, callable) URLs that will be automatically profiled. Examples: /index.php, /course/view.php. Also accepts the * wildchar at any position. Examples: /mod/forum/*, /mod/*/view.php.
      *
      * @var string profilingincluded Profile these
      */
@@ -3892,7 +4330,14 @@ Specify the time you want to keep information about old profiling runs. Older on
     public $profilinglifetime;
 
     /**
-By default forget_password.php does not display any hints that would allow guessing of usernames or email addresses.
+By setting a minimum time in seconds all pages slower will be profiled. Only profiles which are slower than an existing profile for the same script will be kept. Set to 0 to disable. Note that this observes the exclude settings.
+     *
+     * @var string profilingslow Profile slow pages
+     */
+    public $profilingslow;
+
+    /**
+If enabled, the forgotten password form will not display any hints allowing account usernames or email addresses to be guessed.
      *
      * @var string protectusernames Protect usernames
      */
@@ -3906,11 +4351,25 @@ Comma separated list of (partial) hostnames or IPs that should bypass proxy (e.g
     public $proxybypass;
 
     /**
+
+     *
+     * @var string proxyfixunsafe Fix unproxied calls
+     */
+    public $proxyfixunsafe;
+
+    /**
 If this <b>server</b> needs to use a proxy computer (eg a firewall) to access the Internet, then provide the proxy hostname here.  Otherwise leave it blank.
      *
      * @var string proxyhost Proxy host
      */
     public $proxyhost;
+
+    /**
+
+     *
+     * @var string proxylogunsafe Log unproxied calls
+     */
+    public $proxylogunsafe;
 
     /**
 Password needed to access internet through proxy if required, empty if none (PHP cURL extension required).
@@ -3948,35 +4407,14 @@ Username needed to access internet through proxy if required, empty if none (PHP
     public $pwresettime;
 
     /**
-
-     *
-     * @var string quarantinedir Quarantine directory
-     */
-    public $quarantinedir;
-
-    /**
-     * 
-     *
-     * @var string questionbankcolumns Qestion bank columns
-     */
-    public $questionbankcolumns;
-
-    /**
-     * 
-     *
-     * @var string quizquestionbankcolumns Quiz question bank columns
-     */
-    public $quizquestionbankcolumns;
-
-    /**
-String of characters (private key) used to communicate between your Moodle server and the recaptcha server. ReCAPTCHA keys can be obtained from <a target="_blank" href="https://www.google.com/recaptcha">Google reCAPTCHA</a>.
+String of characters (secret key) used to communicate between your Moodle server and the recaptcha server. ReCAPTCHA keys can be obtained from <a target="_blank" href="https://www.google.com/recaptcha">Google reCAPTCHA</a>.
      *
      * @var string recaptchaprivatekey ReCAPTCHA secret key
      */
     public $recaptchaprivatekey;
 
     /**
-String of characters (public key) used to display the reCAPTCHA element in the signup form. ReCAPTCHA keys can be obtained from <a target="_blank" href="https://www.google.com/recaptcha">Google reCAPTCHA</a>.
+String of characters (site key) used to display the reCAPTCHA element in the signup form and site support form. ReCAPTCHA keys can be obtained from <a target="_blank" href="https://www.google.com/recaptcha">Google reCAPTCHA</a>.
      *
      * @var string recaptchapublickey ReCAPTCHA site key
      */
@@ -3990,6 +4428,13 @@ By default recover old grades when re-enrolling a user in a course.
     public $recovergradesdefault;
 
     /**
+
+     *
+     * @var string referrerpolicy Referrer policy
+     */
+    public $referrerpolicy;
+
+    /**
      * If an authentication plugin, such as email-based self-registration, is selected, then it enables potential users to register themselves and create accounts. This results in the possibility of spammers creating accounts in order to use forum posts, blog entries etc. for spam. To avoid this risk, self-registration should be disabled or limited by <em>Allowed email domains</em> setting.
      *
      * @var string registerauth Register authorization
@@ -3999,7 +4444,14 @@ By default recover old grades when re-enrolling a user in a course.
     /**
 
      *
-     * @var string release Release
+     * @var string registrationpending 
+     */
+    public $registrationpending;
+
+    /**
+
+     *
+     * @var string release Moodle release ({$a})
      */
     public $release;
 
@@ -4009,6 +4461,13 @@ Enable if you want to store permanent cookies with usernames during user login. 
      * @var string rememberusername Remember username
      */
     public $rememberusername;
+
+    /**
+
+     *
+     * @var string reposecretkey 
+     */
+    public $reposecretkey;
 
     /**
      * 
@@ -4046,13 +4505,6 @@ Enable if you want to store permanent cookies with usernames during user login. 
     public $repositorysyncimagetimeout;
 
     /**
-Allow the selection of a category when requesting a course.
-     *
-     * @var string requestcategoryselection Enable category selection
-     */
-    public $requestcategoryselection;
-
-    /**
 If enabled, users will be forced to enter a description for each activity.
      *
      * @var string requiremodintro Require activity description
@@ -4074,6 +4526,13 @@ If the user does not already have the permission to manage the newly restored co
     public $reverseproxy;
 
     /**
+If your server is behind multiple reverse proxies that append to the X-Forwarded-For header, then specify a comma-separated list of IP addresses or subnets of the reverse proxies to be ignored in order to find the user\'s correct IP address.
+     *
+     * @var string reverseproxyignore Ignore reverse proxies
+     */
+    public $reverseproxyignore;
+
+    /**
      * 
      *
      * @var string rolesactive Roles active
@@ -4081,19 +4540,18 @@ If the user does not already have the permission to manage the newly restored co
     public $rolesactive;
 
     /**
-     * If $CFG->runclamonupload is set, we scan a given file. (called from {@link preprocess_files()})
-     *   @deprecated since 2.7
-     *
-     * @var string runclamonupload Run clam on upload
-     */
-    public $runclamonupload;
-
-    /**
      * 
      *
      * @var string running_installer Running installer
      */
     public $running_installer;
+
+    /**
+
+     *
+     * @var string scheduled_tasks 
+     */
+    public $scheduled_tasks;
 
     /**
      * 
@@ -4105,9 +4563,51 @@ If the user does not already have the permission to manage the newly restored co
     /**
 
      *
+     * @var string searchbanner Search information
+     */
+    public $searchbanner;
+
+    /**
+If enabled, the text below will be displayed at the top of the search screen for all users. This can be used to inform users when search engine maintenance is being carried out.
+     *
+     * @var string searchbannerenable Display search information
+     */
+    public $searchbannerenable;
+
+    /**
+
+     *
      * @var string searchengine Search engine
      */
     public $searchengine;
+
+    /**
+This search engine will be used only for making queries, not indexing. By using this feature you can reindex in a different search engine, while user queries continue to work from this one.
+     *
+     * @var string searchenginequeryonly Query-only search engine
+     */
+    public $searchenginequeryonly;
+
+    /**
+If enabled, search results will include course information (name and summary) of courses which are visible to the user, even if they don\'t have access to the course content.
+     *
+     * @var string searchincludeallcourses Include all visible courses
+     */
+    public $searchincludeallcourses;
+
+    /**
+Allows the scheduled task to build the search index even when search is disabled. This is useful if you want to build the index before the search facility appears to students.
+     *
+     * @var string searchindexwhendisabled Index when disabled
+     */
+    public $searchindexwhendisabled;
+
+    /**
+
+     *
+     * @var string secretdataroot 
+     */
+    public $secretdataroot;
 
     /**
      * 
@@ -4152,20 +4652,6 @@ If the user does not already have the permission to manage the newly restored co
     public $session_handler_class;
 
     /**
-     * $CFG->session_memcache_acquire_lock_timeout = 120;
-     *
-     * @var string session_memcache_acquire_lock_timeout Session memcache qcquire lock timeout
-     */
-    public $session_memcache_acquire_lock_timeout;
-
-    /**
-     * $CFG->session_memcache_save_path = '127.0.0.1:11211';
-     *
-     * @var string session_memcache_save_path Session memcache save path
-     */
-    public $session_memcache_save_path;
-
-    /**
      * $CFG->session_memcached_acquire_lock_timeout = 120;
      * 
      *
@@ -4181,9 +4667,9 @@ If the user does not already have the permission to manage the newly restored co
     public $session_memcached_lock_expire;
 
     /**
-     *  Spin-lock retry sleeptime (msec). Only effective for tuning php-memcached 3.0.x (PHP 7)
+
      *
-     * @var string session_memcached_lock_retry_sleep session_memcached_lock_retry_sleep
+     * @var string session_memcached_lock_retry_sleep 
      */
     public $session_memcached_lock_retry_sleep;
 
@@ -4204,58 +4690,79 @@ If the user does not already have the permission to manage the newly restored co
     public $session_memcached_save_path;
 
     /**
-     * session_redis_acquire_lock_timeout
+
      *
-     * @var string session_redis_acquire_lock_timeout session_redis_acquire_lock_timeout
+     * @var string session_redis_acquire_lock_retry 
+     */
+    public $session_redis_acquire_lock_retry;
+
+    /**
+
+     *
+     * @var string session_redis_acquire_lock_timeout 
      */
     public $session_redis_acquire_lock_timeout;
 
     /**
-     * Optional, default is dont set one.
+
      *
-     * @var string session_redis_auth session_redis_auth
+     * @var string session_redis_acquire_lock_warn 
+     */
+    public $session_redis_acquire_lock_warn;
+
+    /**
+
+     *
+     * @var string session_redis_auth 
      */
     public $session_redis_auth;
 
     /**
-     * Optional, default is db 0.
+
      *
-     * @var string session_redis_database session_redis_database
+     * @var string session_redis_compressor 
+     */
+    public $session_redis_compressor;
+
+    /**
+
+     *
+     * @var string session_redis_database 
      */
     public $session_redis_database;
 
     /**
-     * session_redis_host
+
      *
-     * @var string session_redis_host session_redis_host
+     * @var string session_redis_host 
      */
     public $session_redis_host;
 
     /**
-     * session_redis_lock_expire
+
      *
-     * @var string session_redis_lock_expire session_redis_lock_expire
+     * @var string session_redis_lock_expire 
      */
     public $session_redis_lock_expire;
 
     /**
-     * session_redis_port
+
      *
-     * @var string session_redis_port session_redis_port
+     * @var string session_redis_port 
      */
     public $session_redis_port;
 
     /**
-     *  Optional, default is dont set one.
+
      *
-     * @var string session_redis_prefix session_redis_prefix
+     * @var string session_redis_prefix 
      */
     public $session_redis_prefix;
 
     /**
-     * Optional, default is PHP builtin serializer.
+
      *
-     * @var string session_redis_serializer_use_igbinary session_redis_serializer_use_igbinary
+     * @var string session_redis_serializer_use_igbinary 
      */
     public $session_redis_serializer_use_igbinary;
 
@@ -4295,6 +4802,27 @@ If people logged in to this site are idle for a long time (without loading pages
     public $sessiontimeout;
 
     /**
+If people logged in to this site are idle for a long time (without loading pages) then they are warned about their session is about to end.  This variable specifies how long this time should be.
+     *
+     * @var string sessiontimeoutwarning Timeout Warning
+     */
+    public $sessiontimeoutwarning;
+
+    /**
+
+     *
+     * @var string setsitepresetduringinstall 
+     */
+    public $setsitepresetduringinstall;
+
+    /**
+
+     *
+     * @var string showcampaigncontent 
+     */
+    public $showcampaigncontent;
+
+    /**
      * Force developer level debug and add debug info to the output of cron
      *  $CFG->showcrondebugging = true;
      *
@@ -4311,11 +4839,27 @@ If people logged in to this site are idle for a long time (without loading pages
     public $showcronsql;
 
     /**
+
+     *
+     * @var string showservicesandsupportcontent 
+     */
+    public $showservicesandsupportcontent;
+
+    /**
 When selecting or searching for users, and when displaying lists of users, these fields may be shown in addition to their full name. The fields are only shown to users who have the moodle/site:viewuseridentity capability; by default, teachers and managers. (This option makes most sense if you choose one or two fields that are mandatory at your institution.)
+
+Fields marked * are custom user profile fields. You can select these fields, but there are currently some screens on which they will not appear.
      *
      * @var string showuseridentity Show user identity
      */
     public $showuseridentity;
+
+    /**
+
+     *
+     * @var string site_is_public 
+     */
+    public $site_is_public;
 
     /**
      * [[administrationsite]]
@@ -4353,18 +4897,25 @@ This setting specifies the default charset for all emails sent from the site.
     public $sitemailcharset;
 
     /**
-If you have a site policy that all registered users must see and agree to before using this site, then specify the URL to it here, otherwise leave this field blank. This setting can contain any public URL.
+The URL of the site policy that all registered users must see and agree to before accessing the site. Note that this setting will only have an effect if the site policy handler is set to default (core).
      *
      * @var string sitepolicy Site policy URL
      */
     public $sitepolicy;
 
     /**
-If you have a site policy that all guests must see and agree to before using this site, then specify the URL to it here, otherwise leave this field blank. This setting can contain any public URL. Note: access of not-logged-in users may be prevented with forcelogin setting.
+The URL of the site policy that all guests must see and agree to before accessing the site. Note that this setting will only have an effect if the site policy handler is set to default (core).
      *
      * @var string sitepolicyguest Site policy URL for guests
      */
     public $sitepolicyguest;
+
+    /**
+This determines how policies and user consents are managed. The default (core) handler enables a site policy URL and a site policy URL for guests to be specified. The policies handler enables site, privacy and other policies to be set. It also enables user consents to be viewed and, if necessary, consent on behalf of minors to be given.
+     *
+     * @var string sitepolicyhandler Site policy handler
+     */
+    public $sitepolicyhandler;
 
     /**
      * 
@@ -4381,7 +4932,7 @@ If you have a site policy that all guests must see and agree to before using thi
     public $slasharguments;
 
     /**
-This sets the authentication type to use on smtp server.
+This sets the authentication type to use on SMTP server.
      *
      * @var string smtpauthtype SMTP Auth Type
      */
@@ -4400,6 +4951,13 @@ Maximum number of messages sent per SMTP session. Grouping messages may speed up
      * @var string smtpmaxbulk SMTP session limit
      */
     public $smtpmaxbulk;
+
+    /**
+
+     *
+     * @var string smtpoauthservice 
+     */
+    public $smtpoauthservice;
 
     /**
 
@@ -4459,20 +5017,6 @@ This specifies the maximum number of days processed in each statistics execution
     public $statsruntimedays;
 
     /**
-     * What time should the cronjob that does the statistics processing start? Specifying different times is recommended if there are multiple Moodle sites on one server.
-     *
-     * @var string statsruntimestarthour Run at
-     */
-    public $statsruntimestarthour;
-
-    /**
-     * What time should the cronjob that does the statistics processing start? Specifying different times is recommended if there are multiple Moodle sites on one server.
-     *
-     * @var string statsruntimestartminute Run at
-     */
-    public $statsruntimestartminute;
-
-    /**
 This setting specifies the minimum number of enrolled users for a course to be included in statistics calculations.
      *
      * @var string statsuserthreshold User threshold
@@ -4494,21 +5038,28 @@ If enabled, users are prevented from entering a space or line break only in requ
     public $stringfilters;
 
     /**
-This email address will be published to users of this site as the one to email when they need general help (for example, when new users create their own accounts).  If this email is left blank then no such helpful email address is supplied.
+Determines who has access to contact site support from the footer.
+     *
+     * @var string supportavailability Support availability
+     */
+    public $supportavailability;
+
+    /**
+If SMTP is configured on this site and a support page is not set, this email address will receive messages submitted through the support form. If sending fails, the email address will be displayed to logged-in users.
      *
      * @var string supportemail Support email
      */
     public $supportemail;
 
     /**
-This is the name of a person or other entity offering general help via the support email or web address.
+The name of the person or other entity providing support via the support form or support page.
      *
      * @var string supportname Support name
      */
     public $supportname;
 
     /**
-This web address will be published to users of this site as the one to go to when they need general help (for example, when new users create their own accounts).  If this address is left blank then no link will be supplied.
+A link to this page will be provided for users to contact the site support. If the field is left blank then a link to a support form will be provided instead.
      *
      * @var string supportpage Support page
      */
@@ -4548,6 +5099,55 @@ This web address will be published to users of this site as the one to go to whe
     public $target_release;
 
     /**
+
+     *
+     * @var string task_concurrency_limit 
+     */
+    public $task_concurrency_limit;
+
+    /**
+
+     *
+     * @var string task_concurrency_limit_default 
+     */
+    public $task_concurrency_limit_default;
+
+    /**
+
+     *
+     * @var string task_log_class 
+     */
+    public $task_log_class;
+
+    /**
+You can choose when you wish task logging to take place. By default logs are always captured. You can disable logging entirely, or change to only log tasks which fail.
+     *
+     * @var string task_logmode When to log
+     */
+    public $task_logmode;
+
+    /**
+The number of runs of each task to retain. This setting interacts with the \'Retention period\' setting: whichever is reached first will apply.
+     *
+     * @var string task_logretainruns Retain runs
+     */
+    public $task_logretainruns;
+
+    /**
+The maximum period that logs should be kept for. This setting interacts with the \'Retain runs\' setting: whichever is reached first will apply
+     *
+     * @var string task_logretention Retention period
+     */
+    public $task_logretention;
+
+    /**
+When jobs are running and the output is captured, whether the captured output should also be displayed as the task runs.
+     *
+     * @var string task_logtostdout Display log output
+     */
+    public $task_logtostdout;
+
+    /**
 Remove temporary data files from the data folder that are older than the selected time.
      *
      * @var string tempdatafoldercleanup Clean up temporary data files older than
@@ -4560,6 +5160,13 @@ Remove temporary data files from the data folder that are older than the selecte
      * @var string tempdir Temp dir
      */
     public $tempdir;
+
+    /**
+
+     *
+     * @var string templaterev 
+     */
+    public $templaterev;
 
     /**
      * 
@@ -4621,9 +5228,16 @@ For example:  standard,orangewhite.
     /**
 This is the default timezone for displaying dates - each user can override this setting in their profile. Cron tasks and other server settings are specified in this timezone. You should change the setting if it shows as "Invalid timezone"
      *
-     * @var string timezone Default timezone
+     * @var string timezone Timezone
      */
     public $timezone;
+
+    /**
+Length of time for which a web services token created by a user (for example via the mobile app) is valid.
+     *
+     * @var string tokenduration User created token duration
+     */
+    public $tokenduration;
 
     /**
      * 
@@ -4680,6 +5294,13 @@ This is the default timezone for displaying dates - each user can override this 
     public $undeletableblocktypes;
 
     /**
+
+     *
+     * @var string uninstallclionly 
+     */
+    public $uninstallclionly;
+
+    /**
      * 
      *
      * @var string unittestprefix Unit test prefix
@@ -4722,13 +5343,6 @@ If enabled, the available update for Moodle code is also reported when a new bui
     public $updatenotifybuilds;
 
     /**
-     * New installs should not run this upgrade step.
-     *
-     * @var string upgrade_calculatedgradeitemsignored Upgrade calculated grade items ignored
-     */
-    public $upgrade_calculatedgradeitemsignored;
-
-    /**
      * 
      *
      * @var string upgrade_calculatedgradeitemsonlyregrade Upgrade calculate grade items only regrade
@@ -4736,31 +5350,9 @@ If enabled, the available update for Moodle code is also reported when a new bui
     public $upgrade_calculatedgradeitemsonlyregrade;
 
     /**
-     * New installs should not run this upgrade step.
-     * 
-     *
-     * @var string upgrade_extracreditweightsstepignored Upgrade extrac r edit weights step ignored
-     */
-    public $upgrade_extracreditweightsstepignored;
-
-    /**
 
      *
-     * @var string upgrade_letterboundarycourses 
-     */
-    public $upgrade_letterboundarycourses;
-
-    /**
-     * New installs should not run this upgrade step.
-     *
-     * @var string upgrade_minmaxgradestepignored Upgrade min/max grade step ignored
-     */
-    public $upgrade_minmaxgradestepignored;
-
-    /**
-     * Upgrade key (leave empty to not set it)
-     *
-     * @var string upgradekey Upgrade key required
+     * @var string upgradekey 
      */
     public $upgradekey;
 
@@ -4823,14 +5415,35 @@ Instead of using local files, use online files available on Yahoo&#145;s servers
     public $usepaypalsandbox;
 
     /**
-The maximum number of bytes that a user can store in their own private file area. {$a->bytes} bytes == {$a->displaysize}
+
      *
-     * @var string userquota User quota
+     * @var string userfeedback_nextreminder 
+     */
+    public $userfeedback_nextreminder;
+
+    /**
+
+     *
+     * @var string userfeedback_remindafter 
+     */
+    public $userfeedback_remindafter;
+
+    /**
+Enter the RSS feed URL for your external blog.
+     *
+     * @var string userfeedback_url URL
+     */
+    public $userfeedback_url;
+
+    /**
+The maximum amount of data that each user can store in their private files area.
+     *
+     * @var string userquota Private files space
      */
     public $userquota;
 
     /**
-If enabled the site\'s shortname will be used for the site pages node in the navigation rather than the string \'Site pages\'
+If enabled the site\'s short name will be used for the site pages node in the navigation rather than the string \'Site pages\'.
      *
      * @var string usesitenameforsitepages Use site name for site pages
      */
@@ -4860,9 +5473,9 @@ Enables verification of changed email addresses using allowed and denied email d
     public $verifychangedemail;
 
     /**
-
+Publication date of the licence version being utilised.
      *
-     * @var string version Version
+     * @var string version Licence version
      */
     public $version;
 
@@ -4886,6 +5499,13 @@ Enables verification of changed email addresses using allowed and denied email d
      * @var string wwwroot Web address
      */
     public $wwwroot;
+
+    /**
+
+     *
+     * @var string xapitestforcegroupactors 
+     */
+    public $xapitestforcegroupactors;
 
     /**
      * Uncomment if you want to allow empty comments when modifying install.xml files.
@@ -4948,11 +5568,13 @@ This options enables combined file loading optimisation for YUI libraries. This 
     /**
      * Restrict which YUI logging statements are shown in the browser console.
      *  For details see the upstream documentation:
-     *  http://yuilibrary.com/yui/docs/api/classes/config.html#property_logInclude
-     *  http://yuilibrary.com/yui/docs/api/classes/config.html#property_logExclude
-     *  $CFG->yuiloginclude = array(
+     *    http://yuilibrary.com/yui/docs/api/classes/config.html#property_logExclude
+     *    $CFG->yuilogexclude = array(
+     *      'moodle-core-dock' => true,
+     *      'moodle-core-notification' => true,
+     *  );
      *
-     * @var string yuilogexclude yuilogexclude
+     * @var string yuilogexclude 
      */
     public $yuilogexclude;
 
