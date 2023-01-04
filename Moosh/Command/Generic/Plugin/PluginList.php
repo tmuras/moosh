@@ -33,7 +33,10 @@ class PluginList extends MooshCommand {
         }
         if (!$stat || time() - $stat['mtime'] > 60 * 60 * 24 || !$stat['size']) {
             @unlink($filepath);
-            file_put_contents($filepath, file_get_contents(self::$APIURL, false, $this->createProxyContext()));
+            file_put_contents(
+                $filepath,
+                file_get_contents(self::$APIURL, false, PluginDownload::createProxyContext($this->expandedOptions))
+            );
         }
 
         $jsonfile = file_get_contents($filepath);
@@ -82,37 +85,6 @@ class PluginList extends MooshCommand {
 
             echo "$pluginname," . implode(",", $versions) . "," . $plugin['url'] . "\n";
         }
-    }
-
-    /**
-     * @return resource|null
-     */
-    private function createProxyContext() {
-        $proxyUrl = !empty($this->expandedOptions['proxy'])
-            ? $this->expandedOptions['proxy']
-            : (getenv('http_proxy') ? getenv('http_proxy') : (getenv('HTTP_PROXY') ?: null));
-
-        if (!$proxyUrl) {
-            return null;
-        }
-
-        $uriParts = parse_url($proxyUrl);
-        $httpConfig = [
-            'proxy' => sprintf(
-                '%s://%s%s',
-                $uriParts['scheme'] ?? 'tcp',
-                $uriParts['host'],
-                empty($uriParts['port']) ? '443' : ':' . $uriParts['port']
-            ),
-            'request_fulluri' => true,
-        ];
-
-        if (!empty($uriParts['user']) && !empty($uriParts['pass'])) {
-            $authEncoded = base64_encode($uriParts['user'] . ':' . $uriParts['pass']);
-            $httpConfig['header'] = 'Proxy-Authorization: Basic ' . $authEncoded;
-        }
-
-        return stream_context_create(['http' => $httpConfig]);
     }
 
     public function bootstrapLevel() {

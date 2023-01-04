@@ -5,6 +5,7 @@
  * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @author     Kacper Golewski <k.golewski@gmail.com>
+ * @author     Andrej Vitez <contact@andrejvitez.com>
  */
 
 namespace Moosh\Command\Generic\Plugin;
@@ -24,6 +25,7 @@ class PluginInstall extends MooshCommand
         $this->addOption('r|release:', 'Specify exact version to install e.g. 2019010700');
         $this->addOption('f|force', 'Force installation even if current Moodle version is unsupported.');
         $this->addOption('d|delete', 'If it already exists, automatically delete plugin before installing.');
+        $this->addOption('r|proxy:', 'Proxy URI scheme. Example: tcp://user:pass@host:port. You may also use env var http_proxy.');
     }
 
     private function init()
@@ -73,7 +75,10 @@ class PluginInstall extends MooshCommand
         }
 
         try {
-            file_put_contents($downloadedfile, file_get_contents($downloadurl));
+            file_put_contents(
+                $downloadedfile,
+                file_get_contents($downloadurl, false, PluginDownload::createProxyContext($this->expandedOptions))
+            );
         }
         catch (Exception $e) {
             die("Failed to download plugin from $downloadurl. " . $e . "\n");
