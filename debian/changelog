@@ -1,3 +1,9 @@
+moosh (1.8-1) trusty; urgency=medium
+
+  * Upstream release 1.8
+
+ -- Tomasz Muras <nexor1984@gmail.com>  Wed, 04 Jan 2023 16:59:55 +0100
+
 moosh (1.7-1ubuntu1) trusty; urgency=medium
 
   * Upstream release 1.7 
