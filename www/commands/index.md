@@ -1908,6 +1908,40 @@ Example 2: Delete role id 10.
     moosh role-delete -i 10
 
 
+role-export
+-----------
+
+Export role data, including permissions, role overrides, allow view settings and other related data.
+
+Example 1: Export specific role data to a an output XML file.
+
+    moosh role-export -f target_file.xml ROLENAME
+
+Example 2: Export specific role data, generate output XML export and print to stdout.
+
+    moosh role-export ROLENAME
+Example 3: Format XML with whitespaces (pretty format) and output XML contents to stdout.
+
+    moosh role-export --pretty ROLENAME
+
+role-import
+-----------
+
+Import role data from an XML file that was produced either by role-export command or Moodle permissions UI. 
+
+Example 1: Import role from a specific XML file.
+
+    moosh role-import -f source_file.xml
+
+Example 2: Import role by reading XML data from STDIN.
+
+    moosh role-import --stdin < source_file.xml
+
+You can either load XML data from a file or from STDIN.
+If XML defines an existing rolename then this command will sync changes to an existing role.
+If role does not exist and archetype is defined this command will create a new role with archetype defaults and xml permissions.
+If neither role nor archetype exist the new role will be created with INHERITED permissions defaults.
+
 role-list
 ---------
 
@@ -2077,7 +2111,25 @@ If combined with "watch" command, it will imitate the poor man's "top" utility.
 Example:
 
     watch moosh top
- 
+
+user-online
+---
+
+Display currently online users in a simple table. In a contrast to TOP command this command uses Fetcher API and queries user table instead of standard log store.
+Available options:
+
+| Option           | Description                                                   |
+|------------------|---------------------------------------------------------------|
+| -t, --time       | Show users online in last N seconds. Default 15 sec.          |
+| -l, --limit      | Show maximum number of users. If empty all users are fetched. |
+| -e, --hideheader | Print header with table column names.                         |
+
+Use linux "watch" command to refresh screen periodically.
+
+Example: Show online users in last 5 minutes and refresh list every 5 seconds.
+
+    watch moosh user-online -t 300
+
 user-assign-system-role
 -----------------------
 

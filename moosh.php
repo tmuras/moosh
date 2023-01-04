@@ -36,7 +36,7 @@ use GetOptionKit\OptionCollection;
 @error_reporting(E_ALL | E_STRICT);
 @ini_set('display_errors', '1');
 
-define('MOOSH_VERSION', '1.7');
+define('MOOSH_VERSION', '1.8');
 define('MOODLE_INTERNAL', true);
 
 $appspecs = new OptionCollection;
@@ -302,6 +302,9 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
                 echo "Error: No admin account was found\n";
                 exit(1);
             }
+        }
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
         }
         @complete_user_login($user);
     }
