@@ -303,6 +303,9 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
                 exit(1);
             }
         }
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
         @complete_user_login($user);
     }
 }
