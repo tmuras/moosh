@@ -305,8 +305,13 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
         }
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
-        }
-        @complete_user_login($user);
+	}
+	//Deviceanalytics redirect on login event, we need to avoid that.
+        if(!is_dir($top_dir."/report/deviceanalytics")){
+		complete_user_login($user);
+	} else {
+		login_without_event($user);
+	}
     }
 }
 

@@ -48,8 +48,13 @@ class UserLogin extends MooshCommand
         }
         $authplugin = get_auth_plugin($auth);
         $authplugin->sync_roles($user);
-        login_attempt_valid($user);
-        complete_user_login($user);
+	login_attempt_valid($user);
+	//Deviceanalytics plugin redirect on login event,we need to avoid it.
+	if(!is_dir($CFG->libdir."/../report/deviceanalytics")){
+		complete_user_login($user);
+	} else {
+		login_without_event($user);
+	}
         printf("%s:%s\n", session_name(), session_id());
     }
 }
