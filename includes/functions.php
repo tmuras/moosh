@@ -461,59 +461,6 @@ function login_without_event($user){
 		}
 	}
 	return $USER;
-}function login_without_event($user){
-	global $CFG, $DB, $USER, $SESSION;
-
-	\core\session\manager::login_user($user);
-
-	// Reload preferences from DB.
-	unset($USER->preference);
-	check_user_preferences_loaded($USER);
-
-	// Update login times.
-	update_user_login_times();
-
-	// Extra session prefs init.
-	set_login_session_preferences();
-
-	// Queue migrating the messaging data, if we need to.
-	if (!get_user_preferences('core_message_migrate_data', false, $USER->id)) {
-		// Check if there are any legacy messages to migrate.
-		if (\core_message\helper::legacy_messages_exist($USER->id)) {
-			\core_message\task\migrate_message_data::queue_task($USER->id);
-		} else {
-			set_user_preference('core_message_migrate_data', true, $USER->id);
-		}
-	}
-
-	if (isguestuser()) {
-		// No need to continue when user is THE guest.
-		return $USER;
-	}
-
-	if (CLI_SCRIPT) {
-		// We can redirect to password change URL only in browser.
-		return $USER;
-	}
-
-	// Select password change url.
-	$userauth = get_auth_plugin($USER->auth);
-
-	// Check whether the user should be changing password.
-	if (get_user_preferences('auth_forcepasswordchange', false)) {
-		if ($userauth->can_change_password()) {
-			if ($changeurl = $userauth->change_password_url()) {
-				redirect($changeurl);
-			} else {
-				require_once($CFG->dirroot . '/login/lib.php');
-				$SESSION->wantsurl = core_login_get_return_url();
-				redirect($CFG->wwwroot.'/login/change_password.php');
-			}
-		} else {
-			print_error('nopasswordchangeforced', 'auth');
-		}
-	}
-	return $USER;
 }
 
 /**
