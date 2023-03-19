@@ -838,6 +838,19 @@ Example 3: List only empty courses from category 1
 
     moosh course-list -c 1 -e yes
 
+course-move
+-----------
+
+Moves one or more courses into a given category.
+
+Example 1: Move the course with ID 5 into the category with ID 2.
+
+    moosh course-move 5 2
+
+Example 2: Move courses with IDs 5, 6, 7, and 10 into the category with ID 2.
+
+    moosh course-move 5,6,7,10 2
+
 course-reset
 ------------
 
