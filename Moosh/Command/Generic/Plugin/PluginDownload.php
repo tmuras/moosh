@@ -13,6 +13,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @introduced 2020-12-23
  * @author     Jakub Kleban <jakub.kleban2000@gmail.com>
+ * @author     Andrej Vitez <contact@andrejvitez.com>
  */
 
 namespace Moosh\Command\Generic\Plugin;
@@ -30,6 +31,7 @@ class PluginDownload extends MooshCommand
 
         $this->addOption('v|version:', 'Moodle major version (eg. 3.9)');
         $this->addOption('u|url', 'Only display the download URL.');
+        $this->addOption('r|proxy:', 'Proxy URI scheme. Example: tcp://user:pass@host:port. You may also use env var http_proxy.');
     }
 
     private function setupRelease()
@@ -73,7 +75,10 @@ class PluginDownload extends MooshCommand
         }
 
         try {
-            file_put_contents($downloadedfile, file_get_contents($downloadurl));
+            file_put_contents(
+                $downloadedfile,
+                file_get_contents($downloadurl, false, self::createProxyContext($this->expandedOptions))
+            );
         }
         catch (Exception $e) {
             die("Failed to download plugin from $downloadurl. " . $e . "\n");
@@ -183,6 +188,37 @@ class PluginDownload extends MooshCommand
 
     public function requireHomeWriteable() {
         return true;
+    }
+
+    /**
+     * @return resource|null
+     */
+    public static function createProxyContext(array $expandedOptions) {
+        $proxyUrl = !empty($expandedOptions['proxy'])
+            ? $expandedOptions['proxy']
+            : (getenv('http_proxy') ? getenv('http_proxy') : (getenv('HTTP_PROXY') ?: null));
+
+        if (!$proxyUrl) {
+            return null;
+        }
+
+        $uriParts = parse_url($proxyUrl);
+        $httpConfig = [
+            'proxy' => sprintf(
+                '%s://%s%s',
+                $uriParts['scheme'] ?? 'tcp',
+                $uriParts['host'],
+                empty($uriParts['port']) ? '443' : ':' . $uriParts['port']
+            ),
+            'request_fulluri' => true,
+        ];
+
+        if (!empty($uriParts['user']) && !empty($uriParts['pass'])) {
+            $authEncoded = base64_encode($uriParts['user'] . ':' . $uriParts['pass']);
+            $httpConfig['header'] = 'Proxy-Authorization: Basic ' . $authEncoded;
+        }
+
+        return stream_context_create(['http' => $httpConfig]);
     }
 }
 

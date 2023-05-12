@@ -29,14 +29,10 @@ $options = array('debug' => true, 'optimizations' => 0);
 require_once $moosh_dir . '/includes/functions.php';
 require_once $moosh_dir . '/includes/default_options.php';
 
-
 use GetOptionKit\ContinuousOptionParser;
 use GetOptionKit\OptionCollection;
 
-@error_reporting(E_ALL | E_STRICT);
-@ini_set('display_errors', '1');
-
-define('MOOSH_VERSION', '1.8');
+define('MOOSH_VERSION', '1.9');
 define('MOODLE_INTERNAL', true);
 
 $appspecs = new OptionCollection;
@@ -305,8 +301,13 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
         }
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
-        }
-        @complete_user_login($user);
+	}
+	//Deviceanalytics redirect on login event, we need to avoid that.
+        if(!is_dir($top_dir."/report/deviceanalytics")){
+		complete_user_login($user);
+	} else {
+		login_without_event($user);
+	}
     }
 }
 

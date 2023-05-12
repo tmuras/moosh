@@ -1719,7 +1719,8 @@ plugin-download
 
 Download plugin for a given Moodle version to current directory.
 Requires plugin short name, and optional Moodle version.
-You can obtain avalible plugins names by using `plugin-list -n' command
+You can obtain avalible plugins names by using `plugin-list -n' command.
+You may specify proxy server with command line option or define ENV variable http_proxy.
 
 Example 1: Download block_fastnav for moodle 3.9 into ./block_fastnav.zip
 
@@ -1738,6 +1739,7 @@ plugin-install
 --------------
 
 Download and install plugin. Requires plugin short name, and optional version. You can obtain those data by using `plugin-list -v' command.
+You may specify proxy server with command line option or define ENV variable http_proxy.
 
 Example 1: install a specific version
 
@@ -1752,6 +1754,7 @@ plugin-list
 -----------
 
 List Moodle plugins filtered on given query. Returns plugin full name, short name, available Moodle versions and short description.
+You may specify proxy server with command line option or define ENV variable http_proxy.
 
 Example 1: list all plugins available on https://moodle.org/plugins
 
