@@ -25,7 +25,7 @@ class PluginInstall extends MooshCommand
         $this->addOption('r|release:', 'Specify exact version to install e.g. 2019010700');
         $this->addOption('f|force', 'Force installation even if current Moodle version is unsupported.');
         $this->addOption('d|delete', 'If it already exists, automatically delete plugin before installing.');
-        $this->addOption('r|proxy:', 'Proxy URI scheme. Example: tcp://user:pass@host:port. You may also use env var http_proxy.');
+        $this->addOption('proxy:', 'Proxy URI scheme. Example: tcp://user:pass@host:port. You may also use env var http_proxy.');
     }
 
     private function init()

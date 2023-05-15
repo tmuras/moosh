@@ -75,7 +75,7 @@ class ApacheParsePerfLog extends MooshCommand {
 
         $this->addArgument('logfile');
         $this->addOption('t|table:', 'table name', 'perflog');
-        $this->addOption('h|host:', 'host name for INSERT line host = ?', null);
+        $this->addOption('host:', 'host name for INSERT line host = ?', null);
         $this->addOption('j|json', 'json');
 
     }
