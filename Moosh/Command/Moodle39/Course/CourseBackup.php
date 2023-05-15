@@ -19,10 +19,12 @@ class CourseBackup extends MooshCommand
 
         $this->addOption('f|filename:', 'path to filename to save the course backup');
         $this->addOption('p|path:', 'path to save the course backup');
+        $this->addOption('s|section:', 'include only this section in backup');
         $this->addOption('F|fullbackup', 'do full backup instead of general');
         $this->addOption('template', 'do template backup instead of general');
 
         $this->addArgument('id');
+        
     }
 
     public function execute()
@@ -33,10 +35,13 @@ class CourseBackup extends MooshCommand
 
         //check if course id exists
         $course = $DB->get_record('course', array('id' => $this->arguments[0]), '*', MUST_EXIST);
-
         $shortname = str_replace(' ', '_', $course->shortname);
 
         $options = $this->expandedOptions;
+
+        if ($options['section']) {
+            $section = $DB->get_record('course_sections', array('course' => $this->arguments[0], 'section' => $options['section']), '*', MUST_EXIST);
+        }
 
         $cwd=$this->cwd;
         if (trim($options['path'])!="") {
@@ -44,7 +49,14 @@ class CourseBackup extends MooshCommand
         }
 
         if (!$options['filename']) {
-            $options['filename'] = $cwd . '/backup_' . $this->arguments[0] . "_". str_replace('/','_',$shortname) . '_' . date('Y.m.d') . '.mbz';
+            if ($options['section']) {
+                // clean up the section name, remove invalid characters, etc. so we can use it in the filename
+                $sectionfilename = str_replace(' ','-',$section->name);
+                $sectionfilename = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $sectionfilename); $sectionfilename = mb_ereg_replace("([\.]{2,})", '', $sectionfilename);
+                $options['filename'] = $cwd . '/backup_' . $this->arguments[0] . "_". str_replace('/','_',$shortname) . '_' . $section->section . '_' . $sectionfilename . '_' . date('Y.m.d') . '.mbz';
+            } else {
+                $options['filename'] = $cwd . '/backup_' . $this->arguments[0] . "_". str_replace('/','_',$shortname) . '_' . date('Y.m.d') . '.mbz';
+            }
         } elseif ($options['filename'][0] != '/') {
             $options['filename'] = $cwd .'/' .$options['filename'];
         }
@@ -54,8 +66,14 @@ class CourseBackup extends MooshCommand
             cli_error("File '{$options['filename']}' already exists, I will not over-write it.");
         }
 
-        $bc = new backup_controller(\backup::TYPE_1COURSE, $this->arguments[0], backup::FORMAT_MOODLE,
+        if ($options['section']) {
+            $bc = new backup_controller(\backup::TYPE_1SECTION, $section->id, backup::FORMAT_MOODLE,
             backup::INTERACTIVE_YES, backup::MODE_GENERAL, $USER->id);
+        } else {
+            $bc = new backup_controller(\backup::TYPE_1COURSE, $this->arguments[0], backup::FORMAT_MOODLE,
+            backup::INTERACTIVE_YES, backup::MODE_GENERAL, $USER->id);
+        }
+
 
         if ($options['fullbackup']) {
             $tasks = $bc->get_plan()->get_tasks();

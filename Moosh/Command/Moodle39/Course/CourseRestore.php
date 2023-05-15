@@ -102,14 +102,27 @@ class CourseRestore extends MooshCommand {
             $xmlfile = $path . DIRECTORY_SEPARATOR . "moodle.xml";
         }
 
+        // Different XML filename in single-section backup
+        if (!file_exists($xmlfile)) {
+            $xmlfile = $path . DIRECTORY_SEPARATOR . "moodle_backup.xml";
+        }
+
         $xml = simplexml_load_file($xmlfile);
         $fullname = $xml->xpath('/course/fullname');
         if (!$fullname) {
             $fullname = $xml->xpath('/MOODLE_BACKUP/COURSE/HEADER/FULLNAME');
         }
+        // Different XML filename in single-section backup
+        if (!$fullname) {
+            $fullname = $xml->xpath('/moodle_backup/information/original_course_fullname');
+        }
         $shortname = $xml->xpath('/course/shortname');
         if (!$shortname) {
             $shortname = $xml->xpath('/MOODLE_BACKUP/COURSE/HEADER/SHORTNAME');
+        }
+        // Different XML filename in single-section backup
+        if (!$shortname) {
+            $shortname = $xml->xpath('/moodle_backup/information/original_course_shortname');
         }
 
         $fullname = (string)($fullname[0]);
