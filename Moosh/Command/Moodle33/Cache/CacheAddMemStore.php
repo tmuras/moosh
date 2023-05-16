@@ -48,7 +48,7 @@ class CacheAddMemStore extends MooshCommand {
         $this->addOption('p|password:', "The server connection password");
         $this->addOption('k|key-prefix:', "The key prefix");
         $this->addOption('c|compression:', "Use compression for Mem Cache");
-        $this->addOption('h|hash:', "Sets the hash method for the Cache storage");
+        $this->addOption('hash:', "Sets the hash method for the Cache storage");
         $this->addOption('b|bufferwrites:', "Determines whether a buffer is written");
         $this->addOption('z|serialiser:', "Determines whether the cache store is serialised");
         $this->addOption('s|shared:', "Enables the cache to be shared");

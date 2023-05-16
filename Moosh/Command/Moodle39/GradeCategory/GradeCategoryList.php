@@ -15,7 +15,7 @@ class GradeCategoryList extends MooshCommand {
         parent::__construct('list', 'gradecategory');
 
         $this->addOption('i|id', 'display id column only');
-        $this->addOption('h|hidden:', 'show all/yes/no if hidden', 'all');
+        $this->addOption('hidden:', 'show all/yes/no if hidden', 'all');
         $this->addOption('e|empty:', 'show only empty grade categories: all/yes/no if empty', 'all');
         $this->addOption('f|fields:', 'show only those fields in the output (comma separated)');
         $this->addOption('o|output:', 'output format: tab, csv', 'csv');
