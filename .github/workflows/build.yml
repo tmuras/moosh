@@ -40,5 +40,5 @@ jobs:
       - name: Unzip build
         run: ls && unzip vendor.zip -d vendor
       - name: Run code
-        run:  ls && php moosh.php
+        run:  ls vendor && php moosh.php
         
