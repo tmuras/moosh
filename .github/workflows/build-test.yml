@@ -24,9 +24,12 @@ jobs:
           name: moosh-vendor
           path: vendor.zip
             
-  run_8-2:
+  test:
+    strategy:
+      matrix:
+        image: [php:8.2-rc-fpm-alpine3.17, php:7.4-zts-alpine3.16]
     runs-on: ubuntu-latest
-    container: php:8.2-rc-fpm-alpine
+    container: ${{ matrix.image }}
     needs: build
     steps:
       - name: Checkout code
