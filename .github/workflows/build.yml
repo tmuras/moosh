@@ -9,20 +9,32 @@ on:
 jobs:
 
   build:
-  
     runs-on: ubuntu-latest
     container: composer:latest
-      
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-    
       - name: Build
-        run: ls && composer install && ls
-        
+        run: composer install
       - name: Upload Build
         uses: actions/upload-artifact@v3
         with:
           name: moosh-vendor
           path: vendor
-      
+            
+  run_8-2:
+    runs-on: ubuntu-latest
+    container: php:8.2-rc-fpm-alpine
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Remove vendor folder
+        run:  rm -rf vendor
+      - name: Download Build
+        uses: actions/download-artifact@v3
+        with:
+          name: moosh-vendor
+          path: vendor
+      - name: Run code
+        run:  ls && php moosh.php
+        
