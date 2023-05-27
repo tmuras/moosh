@@ -37,9 +37,8 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: moosh-vendor
-          path: vendor.zip
       - name: Unzip build
-        run: unzip vendor.zip
+        run: ls && unzip vendor.zip -d vendor
       - name: Run code
         run:  ls && php moosh.php
         
