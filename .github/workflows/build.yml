@@ -10,9 +10,7 @@ jobs:
 
   build:
 
-    runs-on: ubuntu-latest
-    container:
-      image: 7.4-zts-alpine
+    runs-on: 7.4-zts-alpine
       
     steps:
       - name: Checkout code
