@@ -11,7 +11,7 @@ jobs:
   build:
   
     runs-on: ubuntu-latest
-    container: 7.4-zts-alpine
+    container: php:7.4-zts-alpine
       
     steps:
       - name: Checkout code
