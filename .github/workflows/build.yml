@@ -17,7 +17,7 @@ jobs:
       - name: Build
         run: composer install
       - name: Zip build
-        run: zip -r vendor.zip vendor && ls
+        run: zip -r vendor.zip vendor
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
@@ -27,6 +27,7 @@ jobs:
   run_8-2:
     runs-on: ubuntu-latest
     container: php:8.2-rc-fpm-alpine
+    needs: build
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
