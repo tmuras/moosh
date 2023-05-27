@@ -1,20 +1,21 @@
 name: Build and Test
 
 on:
-  # run it on push to the default repository branch
   push:
-    branches: [main]
-  # run it during pull request
+    branches: [ "master" ]
   pull_request:
+    branches: [ "master" ]
 
 jobs:
 
   build:
+
     runs-on: ubuntu-latest
-    container:
-      image: node:14.16
-      
+
     steps:
       - name: 'Checkout code'
         uses: actions/checkout@v3
     
+      - name: Build
+        run: ls && composer install && ls
+      
