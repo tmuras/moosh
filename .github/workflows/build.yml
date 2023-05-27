@@ -17,7 +17,7 @@ jobs:
       - name: Build
         run: composer install
       - name: Zip build
-        run: zip -r vendor.zip vendor
+        run: zip -r vendor.zip vendor && ls
       - name: Upload build
         uses: actions/upload-artifact@v3
         with:
@@ -38,7 +38,7 @@ jobs:
           name: moosh-vendor
           path: vendor.zip
       - name: Unzip build
-        run: mkdir vendor && cd vendor && unzip vendor.zip
+        run: unzip vendor.zip
       - name: Run code
         run:  ls && php moosh.php
         
