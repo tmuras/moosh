@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Build
+      - name: Build code
         run: composer install
       - name: Zip build
         run: zip -r vendor.zip vendor
@@ -32,13 +32,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Remove vendor folder
-        run:  rm -rf vendor && ls && pwd
-      - name: Download Build
+        run:  rm -rf vendor
+      - name: Download build
         uses: actions/download-artifact@v3
         with:
           name: moosh-vendor
       - name: Unzip build
-        run: ls && unzip vendor.zip
-      - name: Run code
-        run:  ls vendor && php moosh.php
+        run: unzip vendor.zip
+      - name: Run test
+        run: php moosh.php
         
