@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image: ["8.2-rc-fpm-alpine3.17", "7.4-zts-alpine3.16", "5.6.14"]
+        image: ["8.2-rc-zts-alpine3.17", "7.4-zts-alpine3.16", "5.6.40-zts-alpine3.8"]
     runs-on: ubuntu-latest
     container: php:${{ matrix.image }}
     needs: build
