@@ -9,8 +9,9 @@ on:
 jobs:
 
   build:
-
-    runs-on: 7.4-zts-alpine
+  
+    runs-on: ubuntu-latest
+    container: 7.4-zts-alpine
       
     steps:
       - name: Checkout code
