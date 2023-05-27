@@ -1,0 +1,47 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    container: composer:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Build code
+        run: composer install
+      - name: Zip build
+        run: zip -r vendor.zip vendor
+      - name: Upload build
+        uses: actions/upload-artifact@v3
+        with:
+          name: moosh-vendor
+          path: vendor.zip
+            
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        image: ["8.2-rc-zts-alpine3.17", "7.4-zts-alpine3.16", "5.6.40-zts-alpine3.8"]
+    runs-on: ubuntu-latest
+    container: php:${{ matrix.image }}
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Remove vendor folder
+        run:  rm -rf vendor
+      - name: Download build
+        uses: actions/download-artifact@v3
+        with:
+          name: moosh-vendor
+      - name: Unzip build
+        run: unzip vendor.zip
+      - name: Run test
+        run: php moosh.php | grep "moosh version"       
