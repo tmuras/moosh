@@ -28,9 +28,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image: ["8.2-cli-alpine", "8.1-cli-alpine", "8.0-cli-alpine", "7.4-cli-alpine"]
+        image: ["8.2", "8.1", "8.0", "7.4"]
     runs-on: ubuntu-latest
-    container: php:${{ matrix.image }}
+    container: php:${{ matrix.image }}-cli-alpine
     needs: build
     steps:
       - name: Checkout code
