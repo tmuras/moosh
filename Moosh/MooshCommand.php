@@ -177,9 +177,14 @@ class MooshCommand {
      *
      * @param string $name
      */
-    public function addArgument($name, $type = ARG_GENERIC) {
-        $this->minArguments++;
-        $this->maxArguments++;
+    public function addArgument($name, $type = ARG_GENERIC, $required=true) {
+        if ($required) {
+            $this->minArguments++;
+            $this->maxArguments++;
+        } else {
+            $this->maxArguments++;
+        }
+
         $this->argumentNames[] = $name;
 
         if ($type == ARG_EXISTING_FILENAME) {

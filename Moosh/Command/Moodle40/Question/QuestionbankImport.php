@@ -18,7 +18,7 @@ class QuestionbankImport extends MooshCommand
 
         $this->addArgument('questions.xml|questions.gift');
         $this->addArgument('question category ID');
-
+        $this->addArgument('question format', required: false);
     }
 
     public function execute()
@@ -37,12 +37,21 @@ class QuestionbankImport extends MooshCommand
         $fullpath = $this->checkPathArg($this->arguments[0]);
         $file = basename($fullpath);
 
-        if (substr($file, -4) == '.xml') {
-            $format = 'xml';
-        } else if (substr($file, -5) == '.gift') {
-            $format = 'gift';
+        if ($this->arguments[2] ?? false) {
+            $formatpath = $this->checkDirArg($CFG->dirroot . '/question/format/' . (string)$this->arguments[2]);
+            $format = basename($formatpath);
         } else {
-            cli_error("Unknown format. File extension should be .xml or .gift.");
+            $format = null;
+        }
+
+        if (!$format) {
+            if (substr($file, -4) == '.xml') {
+                $format = 'xml';
+            } else if (substr($file, -5) == '.gift') {
+                $format = 'gift';
+            } else {
+                cli_error("Unknown format. File extension should be .xml or .gift.");
+            }
         }
 
         $categoryid = (int)$this->arguments[1];
