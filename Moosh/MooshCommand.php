@@ -251,6 +251,9 @@ class MooshCommand {
             //TODO handle %%
             $current_options = array();
             foreach ($this->expandedOptions as $k => $v) {
+                if ($v === null) {
+                    $v = '';
+                }
                 $expanded = str_replace('%s', $arg, $v);
                 if ($this->verbose && $v != $expanded) {
                     echo "'$k' expanded from '$v' to '$expanded'\n";
@@ -271,6 +274,9 @@ class MooshCommand {
             //process all options
             //TODO handle %%
             foreach ($this->expandedOptions as $k => $v) {
+                if ($v === null) {
+                    $v = '';
+                }
                 $expanded = str_replace('%s', $arg, $v);
                 if ($this->verbose && $v != $expanded) {
                     echo "'$k' manually expanded from '$v' to '$expanded'\n";
