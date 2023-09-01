@@ -1,3 +1,9 @@
+moosh (1.13-1) trusty; urgency=medium
+
+  * Upstream release 1.13 
+
+ -- Tomasz Muras <nexor1984@gmail.com>  Fri, 01 Sep 2023 11:42:13 +0200
+
 moosh (1.12-1) trusty; urgency=medium
 
   * Upstream release 1.12
