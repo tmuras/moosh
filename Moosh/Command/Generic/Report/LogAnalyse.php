@@ -141,7 +141,7 @@ class LogAnalyse extends MooshCommand
 
         $return = array();
         // Get number of actions per course.
-        $sql = "SELECT  CONCAT(courseid,'-', crud) AS 'id',courseid, crud, COUNT(*) AS 'count' 
+        $sql = "SELECT CONCAT(courseid,'-', crud) AS 'id',courseid, crud, COUNT(*) AS 'count' 
                    FROM {logstore_standard_log}
 				  WHERE timecreated >= ? AND timecreated < ?
 				  GROUP BY courseid,crud";
@@ -175,6 +175,43 @@ class LogAnalyse extends MooshCommand
         return $return;
     }
 
+    // SELECT * FROM `mdl_logstore_standard_log` WHERE timecreated >= 1693478040 AND timecreated < 1693478100 ORDER BY id ASC;
+
+    /**
+     * Timestamps with out of order ID in Moodle log table.
+     * @param $from
+     * @param $to
+     * @return array
+     * @throws \dml_exception
+     */
+    private function analyseIdOrdering($from, $to)
+    {
+        global $DB;
+        $sql = "SELECT id, timecreated 
+                   FROM {logstore_standard_log}
+				  WHERE timecreated >= ? AND timecreated < ?
+				  ORDER BY id ASC";
+        $records = $DB->get_records_sql($sql, array($from, $to));
+        $return = array();
+        $previousId = 0;
+        $previousTime = 0;
+        foreach ($records as $record) {
+            if($previousTime < $record->timecreated) {
+                $previousTime = $record->timecreated;
+            }
+            if($previousTime > $record->timecreated + 1) {
+//                echo "Time not increasing: {$record->id} $previousTime > {$record->timecreated}\n";
+                if(!isset($return[$record->timecreated])) {
+                    $return[$record->timecreated] = 0;
+                }
+                $return[$record->timecreated]++;
+            }
+
+        }
+        ksort($return);
+        return $return;
+    }
+
     public function execute()
     {
         global $DB, $CFG;
@@ -194,6 +231,10 @@ class LogAnalyse extends MooshCommand
         if ($to < $from) {
             cli_error('"to date" must be later than "from date".');
         }
+//        $timestamps = $this->analyseIdOrdering($from->getTimestamp(), $to->getTimestamp());
+//        print_r($timestamps);
+//        die();
+
         // Split timestamps into 60-second intervals.
         $range = array();
         $current = $from->getTimestamp();
