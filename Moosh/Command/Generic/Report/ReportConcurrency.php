@@ -168,7 +168,7 @@ class ReportConcurrency extends MooshCommand {
 				COUNT( id ) AS number_actions
 				FROM {logstore_standard_log}
 				WHERE timecreated >= $tsutcfrom AND timecreated < $tsutcto
-				AND origin = 'web'
+				AND origin IN ('web', 'ws')
 				GROUP BY period
 				) AS concurrent_users_report";
         $results = $DB->get_records_sql($sql);
