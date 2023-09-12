@@ -38,7 +38,7 @@ class BadgesRemove
         require_once($CFG->dirroot.'/lib/badgeslib.php');
 
         $sql = 'SELECT * FROM {badge} WHERE ' . $this->sqlcriteria;
-        $badge_records = $DB->get_records_sql($sql);
+        $badge_records = $DB->get_recordset_sql($sql);
 
         if ($keepfirst) {
             $index = min(array_keys($badge_records));
@@ -50,7 +50,7 @@ class BadgesRemove
         }
 
         $count = 0;
-        foreach ($badge_records as &$badge_record){
+        foreach ($badge_records as $badge_record){
             //print_r($badge_record);
 
             $badge = new \badge($badge_record->id);  //if invalid badge then print_error('error:nosuchbadge', 'badges', $badgeid);
