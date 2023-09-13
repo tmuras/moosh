@@ -45,6 +45,9 @@ class CourseInfo extends MooshCommand
 
     private $gradesnumber;
 
+    /** @var int Number of badges related to the course */
+    private $badgesnumber;
+
     private $filesnumber;
     private $filesize;
 
@@ -186,6 +189,10 @@ class CourseInfo extends MooshCommand
         $this->logsnumber = $DB->get_record("logstore_standard_log",array('courseid' =>$courseid),'COUNT(*) c');
         $this->logsnumber = $this->logsnumber->c;
 
+        // Get # of badges.
+        $this->badgesnumber = $DB->get_record("badge",array('courseid' =>$courseid),'COUNT(*) c');
+        $this->badgesnumber = $this->badgesnumber->c;
+
         // Get # and size of files.
 
         $results = $DB->get_records_sql("SELECT * FROM {context} WHERE path LIKE '" . $context->get_course_context()->path . "/%'");
@@ -305,6 +312,7 @@ class CourseInfo extends MooshCommand
         $this->data["Section statistics"]["Avg number of modules in a section"] = $this->sectionsavg;
 
         $this->data["Number of grades"] = $this->gradesnumber;
+        $this->data["Number of badges"] = $this->badgesnumber;
         $this->data["Number of log entries"] = $this->logsnumber;
         $this->data["Number of files"] = $this->filesnumber;
         $this->data["Total file size"] = $this->filesize;
