@@ -1,3 +1,9 @@
+moosh (1.15-2) trusty; urgency=medium
+
+  * Compat fixes
+
+ -- Tomasz Muras <nexor1984@gmail.com>  Thu, 14 Sep 2023 16:14:27 +0200
+
 moosh (1.15-1) trusty; urgency=medium
 
   * Upstream release 1.15 
