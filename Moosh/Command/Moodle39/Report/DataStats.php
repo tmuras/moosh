@@ -69,7 +69,7 @@ class DataStats extends MooshCommand {
         $sortarray = higher_size($filesbycourse);
         $backups = backup_size();
 
-        $data = array('dataroot okok' => $matches[0],
+        $data = array('dataroot' => $matches[0],
                 'filedir' => $dir_matches[0],
                 'files total' => $all_files->total,
                 'distinct files total' => $distinctfilestotal);
