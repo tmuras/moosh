@@ -69,10 +69,13 @@ class DataStats extends MooshCommand {
         $sortarray = higher_size($filesbycourse);
         $backups = backup_size();
 
-        $data = array('dataroot' => $matches[0],
+        $data = array('dataroot okok' => $matches[0],
                 'filedir' => $dir_matches[0],
                 'files total' => $all_files->total,
                 'distinct files total' => $distinctfilestotal);
+
+        $data += $this->getComponentStorageUsage();
+        $data += $this->getFileAreaStorageUsage();
 
         $i = 0;
         foreach ($sortarray as $courseid => $values) {
@@ -92,5 +95,59 @@ class DataStats extends MooshCommand {
         }
 
         $this->display($data, $options['json'], !$options['no-human-readable']);
+    }
+
+    protected function getComponentStorageUsage(): array {
+        global $DB;
+        $query = "
+            SELECT
+                component,
+                CONCAT(CAST(sum(filesize)/1024/1024 AS UNSIGNED), ' MB') AS size
+            FROM
+                (SELECT DISTINCT contenthash, component, filearea, filesize FROM mdl_files WHERE filesize > 0) AS files
+            WHERE
+                filesize > 0
+            GROUP BY component
+            ORDER BY sum(filesize)/1024/1024 DESC
+            LIMIT 15
+        ";
+
+
+        $sql = $DB->get_records_sql($query);
+
+        $data = ['Storage usage by component' => null];
+
+        foreach ($sql as $row) {
+            $data['- ' . $row->component] = $row->size;
+        }
+
+        return $data;
+    }
+
+    protected function getFileAreaStorageUsage(): array {
+        global $DB;
+        $query = "
+             SELECT
+                 filearea,
+                 CONCAT(CAST(sum(filesize)/1024/1024 AS UNSIGNED), ' MB') AS size
+             FROM
+                 (SELECT DISTINCT contenthash, component, filearea, filesize FROM mdl_files WHERE filesize > 0) AS files
+             WHERE
+                 filesize > 0
+             GROUP BY filearea
+             ORDER BY sum(filesize)/1024/1024 DESC
+             LIMIT 15
+         ";
+
+
+        $sql = $DB->get_records_sql($query);
+
+        $data = ['Storage usage by filearea' => null];
+
+        foreach ($sql as $row) {
+            $data['- ' . $row->filearea] = $row->size;
+        }
+
+        return $data;
     }
 }
