@@ -136,7 +136,7 @@ class DataStats extends MooshCommand {
         global $DB;
         $data = ['Storage usage by file area and component' => null];
 
-        $usageRecords = $DB->get_records_sql("SELECT filearea, component, SUM(filesize) AS size FROM (SELECT DISTINCT contenthash, component, filearea, filesize FROM mdl_files WHERE filesize > 0) AS files GROUP BY filearea,component ORDER BY size DESC LIMIT 15");
+        $usageRecords = $DB->get_records_sql("SELECT CONCAT(filearea, component, SUM(filesize)) AS uniquekey, filearea, component, SUM(filesize) AS size FROM (SELECT DISTINCT contenthash, component, filearea, filesize FROM mdl_files WHERE filesize > 0) AS files GROUP BY filearea, component ORDER BY size DESC LIMIT 15");
 
         foreach($usageRecords as $record) {
             $data['- ' . $record->filearea . ', '  . $record->component] = $record->size;
