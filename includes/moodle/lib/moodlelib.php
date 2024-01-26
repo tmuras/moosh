@@ -10279,7 +10279,7 @@ class lang_string {
      *
      * @return string
      */
-    public function __set_state() {
+    public static function __set_state(array $array) {
         return $this->get_string();
     }
 
