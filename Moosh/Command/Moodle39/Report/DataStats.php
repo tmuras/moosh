@@ -74,6 +74,10 @@ class DataStats extends MooshCommand {
                 'files total' => $all_files->total,
                 'distinct files total' => $distinctfilestotal);
 
+        $data += $this->getComponentStorageUsage();
+        $data += $this->getFileAreaStorageUsage();
+        $data += $this->getFileAreaAndComponentStorageUsage();
+
         $i = 0;
         foreach ($sortarray as $courseid => $values) {
             $i++;
@@ -92,5 +96,52 @@ class DataStats extends MooshCommand {
         }
 
         $this->display($data, $options['json'], !$options['no-human-readable']);
+    }
+
+    protected function getComponentStorageUsage(): array {
+        global $DB;
+        $data = ['Storage usage by component' => null];
+
+        $components = $DB->get_records_sql("SELECT component as name FROM mdl_files WHERE filesize > 0 GROUP BY component ORDER BY sum(filesize) DESC LIMIT 15;");
+        foreach($components as $component) {
+            $sum = 0;
+            $files = $DB->get_records_sql("SELECT contenthash, MAX(filesize) AS max_filesize FROM mdl_files WHERE filesize > 0 AND component = :component GROUP BY contenthash", ['component' => $component->name]);
+            foreach($files as $file){
+                $sum += $file->max_filesize;
+            }
+            $data['- ' . $component->name] = $sum;
+        }
+
+        return $data;
+    }
+
+    protected function getFileAreaStorageUsage(): array {
+        global $DB;
+        $data = ['Storage usage by file area' => null];
+
+        $fileAreas = $DB->get_records_sql("SELECT filearea as name FROM mdl_files WHERE filesize > 0 GROUP BY filearea ORDER BY sum(filesize) DESC LIMIT 15;");
+        foreach($fileAreas as $fileArea) {
+            $sum = 0;
+            $files = $DB->get_records_sql("SELECT contenthash, MAX(filesize) AS max_filesize FROM mdl_files WHERE filesize > 0 AND filearea = :filearea GROUP BY contenthash", ['filearea' => $fileArea->name]);
+            foreach($files as $file){
+                $sum += $file->max_filesize;
+            }
+            $data['- ' . $fileArea->name] = $sum;
+        }
+
+        return $data;
+    }
+
+    protected function getFileAreaAndComponentStorageUsage(): array {
+        global $DB;
+        $data = ['Storage usage by file area and component' => null];
+
+        $usageRecords = $DB->get_records_sql("SELECT CONCAT(filearea, component, SUM(filesize)) AS uniquekey, filearea, component, SUM(filesize) AS size FROM (SELECT DISTINCT contenthash, component, filearea, filesize FROM mdl_files WHERE filesize > 0) AS files GROUP BY filearea, component ORDER BY size DESC LIMIT 15");
+
+        foreach($usageRecords as $record) {
+            $data['- ' . $record->filearea . ', '  . $record->component] = $record->size;
+        }
+
+        return $data;
     }
 }

@@ -138,7 +138,7 @@ class ReportConcurrency extends MooshCommand {
             return;
         }
         if ($options['csv']) {
-            $filepath = $this->cwd . '/' . $options['csv'];
+            $filepath = '/' . $options['csv'];
             $csvfile = fopen($filepath, 'w');
             if (!$csvfile) {
                 cli_error("Can't open '$filepath' for writing");

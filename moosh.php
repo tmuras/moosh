@@ -32,7 +32,7 @@ require_once $moosh_dir . '/includes/default_options.php';
 use GetOptionKit\ContinuousOptionParser;
 use GetOptionKit\OptionCollection;
 
-define('MOOSH_VERSION', '1.15');
+define('MOOSH_VERSION', '1.17');
 define('MOODLE_INTERNAL', true);
 
 $appspecs = new OptionCollection;
@@ -204,10 +204,10 @@ if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE ) {
     // Manually retrieve the information from config.php
     // and create $DB object.
     $config = [];
-    if(!is_file('config.php')) {
+    if(!file_exists($top_dir . '/config.php')) {
         cli_error('config.php not found.');
     }
-    exec("php -w config.php", $config);
+    exec("php -w " . $top_dir . "/config.php", $config);
     if (count($config) == 0) {
         cli_error("config.php does not look right to me.");
     }
