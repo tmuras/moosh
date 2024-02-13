@@ -1,3 +1,9 @@
+moosh (1.17-1) trusty; urgency=medium
+
+  * Upstream release 1.17
+
+ -- Tomasz Muras <nexor1984@gmail.com>  Tue, 13 Feb 2024 12:12:47 +0100
+
 moosh (1.16-1) trusty; urgency=medium
 
   * Compat fixes
