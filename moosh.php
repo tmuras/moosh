@@ -32,7 +32,7 @@ require_once $moosh_dir . '/includes/default_options.php';
 use GetOptionKit\ContinuousOptionParser;
 use GetOptionKit\OptionCollection;
 
-define('MOOSH_VERSION', '1.17');
+define('MOOSH_VERSION', '1.18');
 define('MOODLE_INTERNAL', true);
 
 $appspecs = new OptionCollection;
