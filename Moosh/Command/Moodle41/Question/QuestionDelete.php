@@ -16,14 +16,14 @@ class QuestionDelete extends MooshCommand
     {
         parent::__construct('delete', 'question');
         $this->addArgument('questionid');
-        $this->addOption('check-only', null, 'Only check if the question is in use, do not delete');
+        $this->addOption('check-only', 'Only check if the question is in use, do not delete');
     }
 
     public function execute()
     {
         global $DB, $CFG;
         $questionid = $this->arguments[0];
-        $checkOnly = $this->expandedOptions['check-only'];
+        $checkonly = $this->expandedOptions['check-only'];
 
         require_once($CFG->dirroot . '/question/engine/lib.php');
         require_once($CFG->dirroot . '/question/type/questiontypebase.php');
@@ -42,11 +42,11 @@ class QuestionDelete extends MooshCommand
         }
         if (questions_in_use($questionsToCheck)) {
             mtrace("[ID:$questionid] Question in use in activities - can not delete");
-            if ($checkOnly) {
+            if ($checkonly) {
                 return;
             }
         }
-        if (!$checkOnly) {
+        if (!$checkonly) {
             question_delete_question($question->id);
         }
     }
