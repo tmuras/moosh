@@ -19,9 +19,10 @@ class CategoryResortCourses extends MooshCommand {
 
         $this->addOption('r|recursive', 'recursively sort any subcategories');
         $this->addOption('n|nocatsort', 'do not sort categories, only courses');
+        $this->addOption('m|nocoursesort', 'do not sort courses, only categories');
 
         $this->minArguments = 2;
-        $this->maxArguments = 4;
+        $this->maxArguments = 5;
     }
 
     protected function getArgumentsHelp() {
@@ -45,28 +46,32 @@ class CategoryResortCourses extends MooshCommand {
 
         if (!$cattosort && $categoryid != 0) {
             cli_error("No category with id '$categoryid' found");
+        } else if ($options['nocatsort'] && $options['nocoursesort']) {
+            cli_error("Nocatsort and nocoursesort at the sames time makes no sense, please remove on of them");
         } else {
             if ($options['recursive']) {
-                $this->resort_recursive($cattosort, $sort, $options['nocatsort']);
+                $this->resort_recursive($cattosort, $sort, $options['nocatsort'], $options['nocoursesort']);
             } else {
-                $this->resort($cattosort, $sort, $options['nocatsort']);
+                $this->resort($cattosort, $sort, $options['nocatsort'], $options['nocoursesort']);
             }
 
             core_course_category::resort_categories_cleanup(true);
         }
     }
 
-    protected function resort($category, $sort, $nocatsort) {
+    protected function resort($category, $sort, $nocatsort, $nocoursesort) {
         if (!$nocatsort) {
             $category->resort_subcategories($sort, false);
         }
-        $category->resort_courses($sort, false);
+        if (!$nocoursesort) {
+            $category->resort_courses($sort, false);
+        }
     }
 
-    protected function resort_recursive($category, $sort, $nocatsort) {
-        $this->resort($category, $sort, $nocatsort);
+    protected function resort_recursive($category, $sort, $nocatsort, $nocoursesort) {
+        $this->resort($category, $sort, $nocatsort, $nocoursesort);
         foreach ($category->get_children() as $cat) {
-            $this->resort_recursive($cat, $sort, $nocatsort);
+            $this->resort_recursive($cat, $sort, $nocatsort, $nocoursesort);
         }
     }
 }
