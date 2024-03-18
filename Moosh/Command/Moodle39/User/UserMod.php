@@ -24,6 +24,7 @@ class UserMod extends MooshCommand
         $this->addOption('u|username:','username');
 
         $this->addOption('g|global', 'user(s) to be set as global admin.', false);
+        $this->addOption('d|delete-global', 'user(s) to be removed from global admin.', false);
         $this->addOption('n|ignorepolicy', 'ignore password policy.', false);
 
         $this->addArgument('user');
@@ -124,6 +125,21 @@ class UserMod extends MooshCommand
                 purge_all_caches();
             }
 
+            if ($this->parsedOptions->has('delete-global')) {
+                foreach(explode(',', $CFG->siteadmins) as $admin) {
+                    $admin = (int)$admin;
+                    if ($admin) {
+                        $admins[$admin] = $admin;
+                    }
+                }
+
+                if (isset($admins[$user->id])) {
+                    unset($admins[$user->id]);
+                }
+                set_config('siteadmins', implode(',', $admins));
+                purge_all_caches();
+            }
+            
             echo $DB->update_record('user',$user) . "\n";
         }
     }
