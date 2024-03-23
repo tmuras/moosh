@@ -138,10 +138,14 @@ class ReportConcurrency extends MooshCommand {
             return;
         }
         if ($options['csv']) {
-            $filepath = '/' . $options['csv'];
-            $csvfile = fopen($filepath, 'w');
+            if ($options['csv'][0] != '/') {
+                $csvfile = fopen($this->cwd . DIRECTORY_SEPARATOR . $options['csv'], 'w');
+            } else {
+                $csvfile = fopen($options['csv'], 'w');
+            }
+
             if (!$csvfile) {
-                cli_error("Can't open '$filepath' for writing");
+                cli_error("Can't open " . $options['csv'] . " for writing");
             }
         }
 
@@ -213,6 +217,16 @@ class ReportConcurrency extends MooshCommand {
         $maxconcurrent = ['date' => null, 'users' => 0];
         foreach ($fulldata as $k => $row) {
             $weekstats->add($row['date'], $row['users']);
+            foreach (['message_users_from', 'number_messages', 'notification_users_to', 'number_notifications'] as $key)  {
+                if (!isset($row[$key])) {
+                    $row[$key] = 0;
+                }
+            }
+            // fill in blanks in $fulldata
+            if(!isset($row['message_users_from'])) {
+                $row['message_users_from'] = 0;
+                $fulldata[$k]['message_users_from'] = 0;
+            }
             //echo $row['date']->format(self::DATE_FORMAT), " - ", $row['users'], "\n";
 
             if ($options['csv']) {

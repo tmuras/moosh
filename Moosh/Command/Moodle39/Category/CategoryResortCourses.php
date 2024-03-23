@@ -10,8 +10,7 @@ namespace Moosh\Command\Moodle39\Category;
 use Moosh\MooshCommand;
 use core_course_category;
 
-class CategoryResortCourses extends MooshCommand
-{
+class CategoryResortCourses extends MooshCommand {
     public function __construct() {
         parent::__construct('resortcourses', 'category');
 
@@ -20,64 +19,59 @@ class CategoryResortCourses extends MooshCommand
 
         $this->addOption('r|recursive', 'recursively sort any subcategories');
         $this->addOption('n|nocatsort', 'do not sort categories, only courses');
+        $this->addOption('m|nocoursesort', 'do not sort courses, only categories');
 
-        $this->maxArguments = 2;
+        $this->minArguments = 2;
+        $this->maxArguments = 5;
     }
-
 
     protected function getArgumentsHelp() {
         $ret = "\n\nARGUMENTS:";
         $ret .= "\n\t";
         $ret .= implode(' ', $this->argumentNames);
-        $ret .= "\n\n\tsort can be: fullname, shortname or idnumber";
+        $ret .= "\n\n\tTo resort the top category, specify 0 for the category_id";
+        $ret .= "\n\n\tSort can be: fullname, shortname or idnumber";
 
         return $ret;
     }
 
-
     public function execute() {
         global $DB;
 
-        $options = $this->expandedOptions;
-        $nocatsort = $options['nocatsort'];
-
         list($categoryid, $sort) = $this->arguments;
-        if (!$cattosort = $DB->get_record('course_categories', array('id' => $categoryid))) {
+
+        $options = $this->expandedOptions;
+
+        $cattosort = core_course_category::get($categoryid);
+
+        if (!$cattosort && $categoryid != 0) {
             cli_error("No category with id '$categoryid' found");
+        } else if ($options['nocatsort'] && $options['nocoursesort']) {
+            cli_error("Nocatsort and nocoursesort at the sames time makes no sense, please remove on of them");
         } else {
-            if (!$options['recursive']) {
-                $this->resortcourses_category($cattosort, $sort);
+            if ($options['recursive']) {
+                $this->resort_recursive($cattosort, $sort, $options['nocatsort'], $options['nocoursesort']);
             } else {
-                $this->resortcategory_recursive($cattosort, $sort, $nocatsort);
+                $this->resort($cattosort, $sort, $options['nocatsort'], $options['nocoursesort']);
             }
+
+            core_course_category::resort_categories_cleanup(true);
         }
     }
 
-    protected function resortcategory_recursive($category, $sort, $nocatsort) {
-
-        $categorieslist = core_course_category::make_categories_list('moodle/category:manage');
-        $categoryids = array_keys($categorieslist);
-        $categories = core_course_category::get_many($categoryids);
-        unset($categorieslist);
-
-        foreach ($categories as $cat) {
-
-            // Don't sort categories if -n/--nocatsort given.
-            if (!$nocatsort) {
-                // Don't clean up here, we'll do it once we're all done.
-                \core_course\management\helper::action_category_resort_subcategories($cat, 'name', false);
-            }
-
-            // Don't clean up here, we'll do it once we're all done.
-            \core_course\management\helper::action_category_resort_courses($cat, $sort, false);
+    protected function resort($category, $sort, $nocatsort, $nocoursesort) {
+        if (!$nocatsort) {
+            $category->resort_subcategories($sort, false);
         }
-
-        // Cleanup now that we're done.
-        core_course_category::resort_categories_cleanup(true);
+        if (!$nocoursesort) {
+            $category->resort_courses($sort, false);
+        }
     }
 
-    protected function resortcourses_category($category, $sort) {
-        $cat = core_course_category::get($category->id);
-        return $cat->resort_courses($sort, true);
+    protected function resort_recursive($category, $sort, $nocatsort, $nocoursesort) {
+        $this->resort($category, $sort, $nocatsort, $nocoursesort);
+        foreach ($category->get_children() as $cat) {
+            $this->resort_recursive($cat, $sort, $nocatsort, $nocoursesort);
+        }
     }
 }
