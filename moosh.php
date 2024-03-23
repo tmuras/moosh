@@ -40,7 +40,7 @@ $spec_verbose = $appspecs->add('v|verbose', "be verbose");
 $appspecs->add('p|moodle-path:', "Moodle directory.");
 $appspecs->add('u|user:', "Moodle user, by default ADMIN");
 $appspecs->add('n|no-user-check', "Don't check if Moodle data is owned by the user running script");
-$appspecs->add('t|performance', "Show performance infomation including timings");
+$appspecs->add('t|performance', "Show performance information including timings");
 $appspecs->add('h|help', "Show global help.");
 $appspecs->add('list-commands', "Show all possible commands");
 
