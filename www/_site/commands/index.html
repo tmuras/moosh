@@ -990,6 +990,16 @@ This command will also clear course cache, to measure how much time the cache re
 <pre><code>moosh course-info -c 2  
 </code></pre>
 
+<a name="course-last-visited"></a>
+<h2>course-last-visited</h2>
+
+<p>Shows how many hours ago any user has last visited the course.</p>
+
+<p>Example 1: How many hours ago course ID 2 was visited.</p>
+
+<pre><code>moosh course-last-visited 2
+</code></pre>
+
 <a name="course-list"></a>
 <h2>course-list</h2>
 
@@ -1013,6 +1023,21 @@ There are also quite a few options that modify the behaviour - see <code>moosh c
 <p>Example 3: List only empty courses from category 1</p>
 
 <pre><code>moosh course-list -c 1 -e yes
+</code></pre>
+
+<a name="course-move"></a>
+<h2>course-move</h2>
+
+<p>Moves one or more courses into a given category.</p>
+
+<p>Example 1: Move the course with ID 5 into the category with ID 2.</p>
+
+<pre><code>moosh course-move 5 2
+</code></pre>
+
+<p>Example 2: Move courses with IDs 5, 6, 7, and 10 into the category with ID 2.</p>
+
+<pre><code>moosh course-move 5,6,7,10 2
 </code></pre>
 
 <a name="course-reset"></a>
@@ -1993,7 +2018,8 @@ moosh module-reinstall mod_book
 
 <p>Download plugin for a given Moodle version to current directory.
 Requires plugin short name, and optional Moodle version.
-You can obtain avalible plugins names by using `plugin-list -n' command</p>
+You can obtain avalible plugins names by using `plugin-list -n' command.
+You may specify proxy server with command line option or define ENV variable http_proxy.</p>
 
 <p>Example 1: Download block_fastnav for moodle 3.9 into ./block_fastnav.zip</p>
 
@@ -2013,7 +2039,8 @@ You can obtain avalible plugins names by using `plugin-list -n' command</p>
 <a name="plugin-install"></a>
 <h2>plugin-install</h2>
 
-<p>Download and install plugin. Requires plugin short name, and optional version. You can obtain those data by using `plugin-list -v' command.</p>
+<p>Download and install plugin. Requires plugin short name, and optional version. You can obtain those data by using `plugin-list -v' command.
+You may specify proxy server with command line option or define ENV variable http_proxy.</p>
 
 <p>Example 1: install a specific version</p>
 
@@ -2028,7 +2055,8 @@ You can obtain avalible plugins names by using `plugin-list -n' command</p>
 <a name="plugin-list"></a>
 <h2>plugin-list</h2>
 
-<p>List Moodle plugins filtered on given query. Returns plugin full name, short name, available Moodle versions and short description.</p>
+<p>List Moodle plugins filtered on given query. Returns plugin full name, short name, available Moodle versions and short description.
+You may specify proxy server with command line option or define ENV variable http_proxy.</p>
 
 <p>Example 1: list all plugins available on https://moodle.org/plugins</p>
 
@@ -2200,6 +2228,46 @@ Note: If neither an archetype nor the context level is defined, system context w
 
 <pre><code>moosh role-delete -i 10
 </code></pre>
+
+<a name="role-export"></a>
+<h2>role-export</h2>
+
+<p>Export role data, including permissions, role overrides, allow view settings and other related data.</p>
+
+<p>Example 1: Export specific role data to a an output XML file.</p>
+
+<pre><code>moosh role-export -f target_file.xml ROLENAME
+</code></pre>
+
+<p>Example 2: Export specific role data, generate output XML export and print to stdout.</p>
+
+<pre><code>moosh role-export ROLENAME
+</code></pre>
+
+<p>Example 3: Format XML with whitespaces (pretty format) and output XML contents to stdout.</p>
+
+<pre><code>moosh role-export --pretty ROLENAME
+</code></pre>
+
+<a name="role-import"></a>
+<h2>role-import</h2>
+
+<p>Import role data from an XML file that was produced either by role-export command or Moodle permissions UI.</p>
+
+<p>Example 1: Import role from a specific XML file.</p>
+
+<pre><code>moosh role-import -f source_file.xml
+</code></pre>
+
+<p>Example 2: Import role by reading XML data from STDIN.</p>
+
+<pre><code>moosh role-import --stdin &lt; source_file.xml
+</code></pre>
+
+<p>You can either load XML data from a file or from STDIN.
+If XML defines an existing rolename then this command will sync changes to an existing role.
+If role does not exist and archetype is defined this command will create a new role with archetype defaults and xml permissions.
+If neither role nor archetype exist the new role will be created with INHERITED permissions defaults.</p>
 
 <a name="role-list"></a>
 <h2>role-list</h2>
@@ -2387,6 +2455,43 @@ If combined with "watch" command, it will imitate the poor man's "top" utility.<
 <p>Example:</p>
 
 <pre><code>watch moosh top
+</code></pre>
+
+<a name="user-online"></a>
+<h2>user-online</h2>
+
+<p>Display currently online users in a simple table. In a contrast to TOP command this command uses Fetcher API and queries user table instead of standard log store.
+Available options:</p>
+
+<table>
+<thead>
+<tr>
+<th> Option           </th>
+<th> Description                                                   </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> -t, --time       </td>
+<td> Show users online in last N seconds. Default 15 sec.          </td>
+</tr>
+<tr>
+<td> -l, --limit      </td>
+<td> Show maximum number of users. If empty all users are fetched. </td>
+</tr>
+<tr>
+<td> -e, --hideheader </td>
+<td> Print header with table column names.                         </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Use linux "watch" command to refresh screen periodically.</p>
+
+<p>Example: Show online users in last 5 minutes and refresh list every 5 seconds.</p>
+
+<pre><code>watch moosh user-online -t 300
 </code></pre>
 
 <a name="user-assign-system-role"></a>
