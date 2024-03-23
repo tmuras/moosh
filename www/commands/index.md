@@ -816,6 +816,15 @@ Example 2: Show statistics for course ID 2 - display in CSV format.
     moosh course-info -c 2  
 
 
+course-last-visited
+-------------------
+
+Shows how many hours ago any user has last visited the course.
+
+Example 1: How many hours ago course ID 2 was visited.
+
+    moosh course-last-visited 2
+
 course-list
 -----------
 
