@@ -6,7 +6,7 @@ layout: default
 FAQ
 ========
 
-<span class="anchor" id="bulk-restore"></span>
+<span class="anchor" id="default-options-overwrite"></span>
 Over-write default options.
 ------------------------
 
