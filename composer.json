@@ -133,7 +133,8 @@
         "danielneis/moodle-availability_newavailability": "dev-master",
         "danielneis/moodle-local_newlocal": "dev-master",
         "danielneis/moodle-enrol_newenrol": "dev-master",
-        "mudrd8mz/moodle-tool_pluginskel": "dev-main"
+        "mudrd8mz/moodle-tool_pluginskel": "dev-main",
+        "vlucas/phpdotenv": "^5.6"
     },
     "bin": [
         "moosh.php"
