@@ -21,7 +21,14 @@ if (file_exists(__DIR__ . '/Moosh')) {
     die("I can't find my own libraries\n");
 }
 
-$loader = require $moosh_dir . '/vendor/autoload.php';
+$autoLoadPath = $moosh_dir . '/vendor/autoload.php';
+
+// @NOTE make shure dependenciers were installed.
+if (false === file_exists($autoLoadPath)) {
+    exec('cd '.$moosh_dir.' && composer install');
+}
+
+$loader = include_once $autoLoadPath;
 $loader->add('DiffMatchPatch\\', $moosh_dir . '/vendor/yetanotherape/diff-match-patch/src');
 
 $options = array('debug' => true, 'optimizations' => 0);

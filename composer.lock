@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "25f5bd9bc044e69a9914c3cf9246fe96",
+    "content-hash": "efb6c6a5633db23caf1aa3dd1ba23d0a",
     "packages": [
         {
             "name": "blackboard-open-source/moodle-coding-standard",
@@ -41,17 +41,168 @@
             "time": "2016-02-02T21:14:43+00:00"
         },
         {
-            "name": "corneltek/getoptionkit",
-            "version": "dev-master",
+            "name": "composer/installers",
+            "version": "v1.12.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/c9s/GetOptionKit.git",
-                "reference": "e815670d092e9b4993774c3e3ed608225dccf6a9"
+                "url": "https://github.com/composer/installers.git",
+                "reference": "d20a64ed3c94748397ff5973488761b22f6d3f19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/c9s/GetOptionKit/zipball/e815670d092e9b4993774c3e3ed608225dccf6a9",
-                "reference": "e815670d092e9b4993774c3e3ed608225dccf6a9",
+                "url": "https://api.github.com/repos/composer/installers/zipball/d20a64ed3c94748397ff5973488761b22f6d3f19",
+                "reference": "d20a64ed3c94748397ff5973488761b22f6d3f19",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0 || ^2.0"
+            },
+            "replace": {
+                "roundcube/plugin-installer": "*",
+                "shama/baton": "*"
+            },
+            "require-dev": {
+                "composer/composer": "1.6.* || ^2.0",
+                "composer/semver": "^1 || ^3",
+                "phpstan/phpstan": "^0.12.55",
+                "phpstan/phpstan-phpunit": "^0.12.16",
+                "symfony/phpunit-bridge": "^4.2 || ^5",
+                "symfony/process": "^2.3"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Composer\\Installers\\Plugin",
+                "branch-alias": {
+                    "dev-main": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Composer\\Installers\\": "src/Composer/Installers"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kyle Robinson Young",
+                    "email": "kyle@dontkry.com",
+                    "homepage": "https://github.com/shama"
+                }
+            ],
+            "description": "A multi-framework Composer library installer",
+            "homepage": "https://composer.github.io/installers/",
+            "keywords": [
+                "Craft",
+                "Dolibarr",
+                "Eliasis",
+                "Hurad",
+                "ImageCMS",
+                "Kanboard",
+                "Lan Management System",
+                "MODX Evo",
+                "MantisBT",
+                "Mautic",
+                "Maya",
+                "OXID",
+                "Plentymarkets",
+                "Porto",
+                "RadPHP",
+                "SMF",
+                "Starbug",
+                "Thelia",
+                "Whmcs",
+                "WolfCMS",
+                "agl",
+                "aimeos",
+                "annotatecms",
+                "attogram",
+                "bitrix",
+                "cakephp",
+                "chef",
+                "cockpit",
+                "codeigniter",
+                "concrete5",
+                "croogo",
+                "dokuwiki",
+                "drupal",
+                "eZ Platform",
+                "elgg",
+                "expressionengine",
+                "fuelphp",
+                "grav",
+                "installer",
+                "itop",
+                "joomla",
+                "known",
+                "kohana",
+                "laravel",
+                "lavalite",
+                "lithium",
+                "magento",
+                "majima",
+                "mako",
+                "mediawiki",
+                "miaoxing",
+                "modulework",
+                "modx",
+                "moodle",
+                "osclass",
+                "pantheon",
+                "phpbb",
+                "piwik",
+                "ppi",
+                "processwire",
+                "puppet",
+                "pxcms",
+                "reindex",
+                "roundcube",
+                "shopware",
+                "silverstripe",
+                "sydes",
+                "sylius",
+                "symfony",
+                "tastyigniter",
+                "typo3",
+                "wordpress",
+                "yawik",
+                "zend",
+                "zikula"
+            ],
+            "support": {
+                "issues": "https://github.com/composer/installers/issues",
+                "source": "https://github.com/composer/installers/tree/v1.12.0"
+            },
+            "funding": [
+                {
+                    "url": "https://packagist.com",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/composer",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-09-13T08:19:44+00:00"
+        },
+        {
+            "name": "corneltek/getoptionkit",
+            "version": "2.7.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/c9s/GetOptionKit.git",
+                "reference": "aab2728de80175217cab0d7a4d078c3eb907e2c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/c9s/GetOptionKit/zipball/aab2728de80175217cab0d7a4d078c3eb907e2c0",
+                "reference": "aab2728de80175217cab0d7a4d078c3eb907e2c0",
                 "shasum": ""
             },
             "require": {
@@ -60,7 +211,6 @@
             "require-dev": {
                 "phpunit/phpunit": "^8.0 || ^9.0"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -95,15 +245,39 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/danielneis/moodle-availability_newavailability",
-                "reference": "43198d6736931213ad223c8fd05881749baac22c"
+                "url": "https://github.com/danielneis/moodle-availability_newavailability.git",
+                "reference": "dc20734e3d92c0d7d527013f591478a7491e504e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/danielneis/moodle-availability_newavailability/archive/master.zip",
-                "reference": "43198d6736931213ad223c8fd05881749baac22c"
+                "url": "https://api.github.com/repos/danielneis/moodle-availability_newavailability/zipball/dc20734e3d92c0d7d527013f591478a7491e504e",
+                "reference": "dc20734e3d92c0d7d527013f591478a7491e504e",
+                "shasum": ""
             },
-            "type": "library"
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "default-branch": true,
+            "type": "moodle-availability",
+            "extra": {
+                "installer-name": "newavailability"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Neis Araujo",
+                    "email": "danielneis@gmail.com"
+                }
+            ],
+            "description": "A template for Moodle Availability Condition",
+            "support": {
+                "issues": "https://github.com/danielneis/moodle-availability_newavailability/issues",
+                "source": "https://github.com/danielneis/moodle-availability_newavailability/tree/master"
+            },
+            "time": "2017-10-22T22:41:46+00:00"
         },
         {
             "name": "danielneis/moodle-block_newblock",
@@ -111,14 +285,38 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/danielneis/moodle-block_newblock.git",
-                "reference": "1fc89fb0845ad282426140feeb6bc3653efd1d7f"
+                "reference": "c4e99a21e420952a6aca05bba5998e1f77bbe6e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/danielneis/moodle-block_newblock/archive/master.zip",
-                "reference": "1fc89fb0845ad282426140feeb6bc3653efd1d7f"
+                "url": "https://api.github.com/repos/danielneis/moodle-block_newblock/zipball/c4e99a21e420952a6aca05bba5998e1f77bbe6e1",
+                "reference": "c4e99a21e420952a6aca05bba5998e1f77bbe6e1",
+                "shasum": ""
             },
-            "type": "library"
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "default-branch": true,
+            "type": "moodle-block",
+            "extra": {
+                "installer-name": "newblock"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Neis Araujo",
+                    "email": "danielneis@gmail.com"
+                }
+            ],
+            "description": "A block template for Moodle based on http://docs.moodle.org/dev/Blocks",
+            "support": {
+                "issues": "https://github.com/danielneis/moodle-block_newblock/issues",
+                "source": "https://github.com/danielneis/moodle-block_newblock/tree/master"
+            },
+            "time": "2017-10-22T22:33:18+00:00"
         },
         {
             "name": "danielneis/moodle-enrol_newenrol",
@@ -139,60 +337,150 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/danielneis/moodle-gradeexport_newgradeexport",
-                "reference": "4d13e3f6e9f4f53d54d6e8ad348278248968412d"
+                "url": "https://github.com/danielneis/moodle-gradeexport_newgradeexport.git",
+                "reference": "b13915e716a979f38fbc2d353b513043633125de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/danielneis/moodle-gradeexport_newgradeexport/archive/master.zip",
-                "reference": "4d13e3f6e9f4f53d54d6e8ad348278248968412d"
+                "url": "https://api.github.com/repos/danielneis/moodle-gradeexport_newgradeexport/zipball/b13915e716a979f38fbc2d353b513043633125de",
+                "reference": "b13915e716a979f38fbc2d353b513043633125de",
+                "shasum": ""
             },
-            "type": "library"
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "default-branch": true,
+            "type": "moodle-gradeexport",
+            "extra": {
+                "installer-name": "newgradeexport"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Neis Araujo",
+                    "email": "danielneis@gmail.com"
+                }
+            ],
+            "description": "A template for Moodle Grade Export plugin based on txt export from core",
+            "support": {
+                "issues": "https://github.com/danielneis/moodle-gradeexport_newgradeexport/issues",
+                "source": "https://github.com/danielneis/moodle-gradeexport_newgradeexport/tree/master"
+            },
+            "time": "2017-10-22T22:29:26+00:00"
         },
         {
             "name": "danielneis/moodle-gradereport_newgradereport",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/danielneis/moodle-gradereport_newgradereport",
-                "reference": "691f53a15de352c3fe25da03c001a97a76b18358"
+                "url": "https://github.com/danielneis/moodle-gradereport_newgradereport.git",
+                "reference": "3778f85e5f74791fab7761e51adb03b712d99ce9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/danielneis/moodle-gradereport_newgradereport/archive/master.zip",
-                "reference": "691f53a15de352c3fe25da03c001a97a76b18358"
+                "url": "https://api.github.com/repos/danielneis/moodle-gradereport_newgradereport/zipball/3778f85e5f74791fab7761e51adb03b712d99ce9",
+                "reference": "3778f85e5f74791fab7761e51adb03b712d99ce9",
+                "shasum": ""
             },
-            "type": "library"
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "default-branch": true,
+            "type": "moodle-gradereport",
+            "extra": {
+                "installer-name": "newgradereport"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Neis Araujo",
+                    "email": "danielneis@gmail.com"
+                }
+            ],
+            "description": "A grade report template for Moodle based on http://docs.moodle.org/dev/Gradebook_reports",
+            "support": {
+                "issues": "https://github.com/danielneis/moodle-gradereport_newgradereport/issues",
+                "source": "https://github.com/danielneis/moodle-gradereport_newgradereport/tree/master"
+            },
+            "time": "2017-10-22T22:30:15+00:00"
         },
         {
             "name": "danielneis/moodle-local_newlocal",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/danielneis/moodle-local_newlocal",
-                "reference": "b9596bdd37963d312069a048c8d315c7592c1c24"
+                "url": "https://github.com/danielneis/moodle-local_newlocal.git",
+                "reference": "6ca35cf7df71054d47f229e0681bd08518caa3cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/danielneis/moodle-local_newlocal/archive/master.zip",
-                "reference": "b9596bdd37963d312069a048c8d315c7592c1c24"
+                "url": "https://api.github.com/repos/danielneis/moodle-local_newlocal/zipball/6ca35cf7df71054d47f229e0681bd08518caa3cf",
+                "reference": "6ca35cf7df71054d47f229e0681bd08518caa3cf",
+                "shasum": ""
             },
-            "type": "library"
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "default-branch": true,
+            "type": "moodle-local",
+            "extra": {
+                "installer-name": "newlocal"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Neis Araujo",
+                    "email": "danielneis@gmail.com"
+                }
+            ],
+            "description": " This is a template for Moodle local plugins",
+            "support": {
+                "issues": "https://github.com/danielneis/moodle-local_newlocal/issues",
+                "source": "https://github.com/danielneis/moodle-local_newlocal/tree/master"
+            },
+            "time": "2019-08-22T13:20:10+00:00"
         },
         {
             "name": "danielneis/moodle-message_newprocessor",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/danielneis/moodle-message_newprocessor",
-                "reference": "e2b82f0776b13a30a79f4f20de89d597a15f58c5"
+                "url": "https://github.com/danielneis/moodle-message_newprocessor.git",
+                "reference": "4ee24c9983f2e25da7b631007dfa32dac240d29e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/danielneis/moodle-message_newprocessor/archive/master.zip",
-                "reference": "e2b82f0776b13a30a79f4f20de89d597a15f58c5"
+                "url": "https://api.github.com/repos/danielneis/moodle-message_newprocessor/zipball/4ee24c9983f2e25da7b631007dfa32dac240d29e",
+                "reference": "4ee24c9983f2e25da7b631007dfa32dac240d29e",
+                "shasum": ""
             },
-            "type": "library"
+            "require": {
+                "composer/installers": "~1.0"
+            },
+            "default-branch": true,
+            "type": "moodle-message",
+            "extra": {
+                "installer-name": "newprocessor"
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "description": "A template for Moodle message outputs (processors) plugins",
+            "support": {
+                "issues": "https://github.com/danielneis/moodle-message_newprocessor/issues",
+                "source": "https://github.com/danielneis/moodle-message_newprocessor/tree/master"
+            },
+            "time": "2017-10-22T22:31:27+00:00"
         },
         {
             "name": "erickcomp/moodle-local_wstemplate",
@@ -242,12 +530,11 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/moodlehq/moodle-mod_newmodule.git",
-                "reference": "e1f112be8842291259ece87de3000cd5f0e18711"
+                "reference": "master"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/moodlehq/moodle-mod_newmodule/archive/master.zip",
-                "reference": "e1f112be8842291259ece87de3000cd5f0e18711"
+                "url": "https://github.com/moodlehq/moodle-mod_newmodule/archive/master.zip"
             },
             "type": "library"
         },
@@ -628,18 +915,61 @@
         },
         {
             "name": "yetanotherape/diff-match-patch",
-            "version": "dev-master",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/yetanotherape/diff-match-patch",
-                "reference": "0726dbb4e59e68574326821c174013cf6fdfe20e"
+                "url": "https://github.com/yetanotherape/diff-match-patch.git",
+                "reference": "e93beb95bea67d2a9f2a662434ca7fbf90b0b172"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/yetanotherape/diff-match-patch/archive/master.zip",
-                "reference": "0726dbb4e59e68574326821c174013cf6fdfe20e"
+                "url": "https://api.github.com/repos/yetanotherape/diff-match-patch/zipball/e93beb95bea67d2a9f2a662434ca7fbf90b0b172",
+                "reference": "e93beb95bea67d2a9f2a662434ca7fbf90b0b172",
+                "shasum": ""
             },
-            "type": "library"
+            "require": {
+                "ext-iconv": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "php": ">=7.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "9.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "DiffMatchPatch\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Daniil Skrobov",
+                    "email": "yetanotherape@gmail.com"
+                },
+                {
+                    "name": "Neil Fraser",
+                    "email": "fraser@google.com",
+                    "homepage": "http://neil.fraser.name/"
+                }
+            ],
+            "description": "Port of the google-diff-match-patch (https://github.com/google/diff-match-patch) lib to PHP",
+            "homepage": "https://github.com/yetanotherape/diff-match-patch",
+            "keywords": [
+                "Fuzzy search",
+                "Match",
+                "diff",
+                "patch"
+            ],
+            "support": {
+                "issues": "https://github.com/yetanotherape/diff-match-patch/issues",
+                "source": "https://github.com/yetanotherape/diff-match-patch/tree/v1.1.0"
+            },
+            "time": "2020-12-20T17:28:39+00:00"
         }
     ],
     "packages-dev": [
@@ -1711,13 +2041,11 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "mudrd8mz/moodle-tool_pluginskel": 20,
-        "corneltek/getoptionkit": 20,
         "moodlehq/moodle-mod_newmodule": 20,
         "danielneis/moodle-block_newblock": 20,
         "jamiepratt/moodle-qtype_template": 20,
         "danielneis/moodle-gradereport_newgradereport": 20,
         "erickcomp/moodle-local_wstemplate": 20,
-        "yetanotherape/diff-match-patch": 20,
         "danielneis/moodle-gradeexport_newgradeexport": 20,
         "danielneis/moodle-message_newprocessor": 20,
         "danielneis/moodle-availability_newavailability": 20,
@@ -1729,5 +2057,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
