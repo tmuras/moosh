@@ -9,3 +9,4 @@ tests/config26.sh
 tests/out.txt
 tags
 *.tags
+.env
