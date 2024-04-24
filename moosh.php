@@ -10,8 +10,7 @@
 use \Moosh\MooshCommand;
 use \Moosh\Performance;
 
-// @IDEA parse_ini_file for start config.
-$moosh_env = parse_ini_file('.env');
+$moosh_env = @parse_ini_file(__DIR__.DIRECTORY_SEPARATOR.'.env');
 
 if ($moosh_env === false || false === empty($moosh_env['MOOSH_DIR'])) {
     //Try to detect if we are packaged moosh version
@@ -28,9 +27,9 @@ if ($moosh_env === false || false === empty($moosh_env['MOOSH_DIR'])) {
 }
 
 $autoLoadPath = $moosh_dir . '/vendor/autoload.php';
-// @NOTE make shure dependenciers were installed.
-// @QUESTION use update instead?
 // @IDEA run this on git hook pull!
+// @QUESTION use update instead?
+// @NOTE make shure dependenciers were installed.
 if (false === file_exists($autoLoadPath)) {
     exec('cd ' . $moosh_dir . ' && composer install');
 }
