@@ -11,18 +11,26 @@ use \Moosh\MooshCommand;
 use \Moosh\Performance;
 
 // @IDEA parse_ini_file for start config.
-//try to detect if we are packaged moosh version - e.g. dude where are my libraries
-if (file_exists(__DIR__ . '/Moosh')) {
-    $moosh_dir = __DIR__;
-} elseif (file_exists('/usr/share/moosh')) {
-    $moosh_dir = '/usr/share/moosh';
-} else {
-    die("I can't find my own libraries\n");
+$moosh_env = parse_ini_file('.env');
+
+if ($moosh_env === false || false === empty($moosh_env['MOOSH_DIR'])) {
+    //Try to detect if we are packaged moosh version
+    // - e.g. dude where are my libraries.
+    if (file_exists(__DIR__ . '/Moosh')) {
+        $moosh_dir = __DIR__;
+    } elseif (file_exists('/usr/share/moosh')) {
+        $moosh_dir = '/usr/share/moosh';
+    } else {
+        die("I can't find my own libraries\n");
+    }
+
+    putenv('MOOSH_DIR='.$moosh_dir);
 }
 
 $autoLoadPath = $moosh_dir . '/vendor/autoload.php';
-
 // @NOTE make shure dependenciers were installed.
+// @QUESTION use update instead?
+// @IDEA run this on git hook pull!
 if (false === file_exists($autoLoadPath)) {
     exec('cd ' . $moosh_dir . ' && composer install');
 }
@@ -61,9 +69,13 @@ $cwd = getcwd();
 
 if ($app_options->has('moodle-path')) {
     $top_dir = $app_options['moodle-path']->value;
+} else if (isset($_ENV['MOODLE_DIR']) === true) {
+    $top_dir = $_ENV['MOODLE_DIR'];
 } else {
     $top_dir = find_top_moodle_dir($cwd);
 }
+
+putenv('MOODLE_DIR='.$top_dir);
 
 $errors_lib = $moosh_dir . '/includes/moodle/clilib_sub.php';
 
@@ -154,10 +166,6 @@ if ($app_options->has('help') || (!$subcommand && !$possible_matches)) {
     if (!$subcommand || count($possible_matches) > 1) {
         $exitCode = 10;
     }
-
-    echo "<--- @DEBUG \n";
-    echo print_r($_ENV, true);
-    echo "\n--->\n";
 
     exit($exitCode);
 }
