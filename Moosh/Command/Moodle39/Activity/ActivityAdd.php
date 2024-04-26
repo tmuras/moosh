@@ -63,7 +63,8 @@ class ActivityAdd extends MooshCommand
         $options = $this->expandedOptions;
 
         if (!empty($options['options'])) {
-            $course_module_options = preg_split( '/\s+(?=--)/', $options['options']);
+            $course_module_options = preg_split( '/\s+(?=--)/m', $options['options']);
+            var_dump($course_module_options);
             foreach ( $course_module_options as $option ) {
                 $arg = new Argument( $option );
                 $name = $this->getOptionName($arg);

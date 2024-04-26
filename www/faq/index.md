@@ -6,7 +6,33 @@ layout: default
 FAQ
 ========
 
-<span class="anchor" id="bulf-restore"></span>
+<span class="anchor" id="default-options-overwrite"></span>
+Over-write default options.
+------------------------
+
+If a command is run without some option and that option has a default set in [includes/default_options.php](https://github.com/tmuras/moosh/blob/master/includes/default_options.php) - then this default is used.
+
+This makes it not possible (by default) to create a new user without city or country (see [issues/461](https://github.com/tmuras/moosh/issues/461) ).
+
+In order to make it possible, create local ~/mooshrc.php file and set the options you want to over-write to any value - could be an empty one.
+
+For example, since I run my script as www-data user:
+
+    ➜ cat /var/www/.mooshrc.php 
+    <?php
+    $defaultOptions['user']['country'] = '';
+    $defaultOptions['user']['city'] = '';
+
+Then when running with the verbose flag I can see:
+
+    ➜ sudo -u www-data ~/git/moosh/moosh.php -v user-create student12
+    Moodle version detected: 403
+    Using '/var/www/.mooshrc.php' as moosh runtime configuration file
+
+
+
+
+<span class="anchor" id="bulk-restore"></span>
 Course bulk restore with moosh.
 ------------------------
 

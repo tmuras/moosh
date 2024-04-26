@@ -32,7 +32,7 @@ require_once $moosh_dir . '/includes/default_options.php';
 use GetOptionKit\ContinuousOptionParser;
 use GetOptionKit\OptionCollection;
 
-define('MOOSH_VERSION', '1.19');
+define('MOOSH_VERSION', '1.20');
 define('MOODLE_INTERNAL', true);
 
 $appspecs = new OptionCollection;
@@ -40,7 +40,7 @@ $spec_verbose = $appspecs->add('v|verbose', "be verbose");
 $appspecs->add('p|moodle-path:', "Moodle directory.");
 $appspecs->add('u|user:', "Moodle user, by default ADMIN");
 $appspecs->add('n|no-user-check', "Don't check if Moodle data is owned by the user running script");
-$appspecs->add('t|performance', "Show performance infomation including timings");
+$appspecs->add('t|performance', "Show performance information including timings");
 $appspecs->add('h|help', "Show global help.");
 $appspecs->add('list-commands', "Show all possible commands");
 
@@ -68,9 +68,6 @@ if (file_exists($top_dir . '/lib/clilib.php')) {
 }
 
 $moodle_version = moosh_moodle_version($top_dir);
-if (isset($app_options['verbose'])) {
-    echo "Moodle version detected: $moodle_version\n";
-}
 
 $local_dir = home_dir() . DIRECTORY_SEPARATOR . '.moosh';
 $viable_versions = moosh_generate_version_list($moodle_version);
@@ -342,6 +339,8 @@ $subcommand->expandOptions();
 
 // Some more debug if requested.
 if ($app_options->has('verbose')) {
+    echo "Moodle version detected: $moodle_version\n";
+
     $subcommand->status();
 }
 
