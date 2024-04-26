@@ -68,9 +68,6 @@ if (file_exists($top_dir . '/lib/clilib.php')) {
 }
 
 $moodle_version = moosh_moodle_version($top_dir);
-if (isset($app_options['verbose'])) {
-    echo "Moodle version detected: $moodle_version\n";
-}
 
 $local_dir = home_dir() . DIRECTORY_SEPARATOR . '.moosh';
 $viable_versions = moosh_generate_version_list($moodle_version);
@@ -342,6 +339,8 @@ $subcommand->expandOptions();
 
 // Some more debug if requested.
 if ($app_options->has('verbose')) {
+    echo "Moodle version detected: $moodle_version\n";
+
     $subcommand->status();
 }
 
