@@ -64,14 +64,21 @@ class ActivityAdd extends MooshCommand
 
         if (!empty($options['options'])) {
             $course_module_options = preg_split( '/\s+(?=--)/m', $options['options']);
-            var_dump($course_module_options);
             foreach ( $course_module_options as $option ) {
                 $arg = new Argument( $option );
                 $name = $this->getOptionName($arg);
-                $value = $arg->getOptionValue();
+                $value = $this->getOptionValue($arg);
+
                 $moduledata->$name = $value;
                 if ($this->verbose) {
-                    echo "\"$option\" -> $name=" . $value . "\n";
+                    echo "Option:
+$option
+parsed as: \n";
+
+                    echo "Name:
+$name\n";
+                    echo "Value:
+$value\n\n";
                 }
             }
         }
@@ -102,6 +109,18 @@ class ActivityAdd extends MooshCommand
     {
         if (preg_match('/^[-]+([_a-zA-Z0-9-]+)/', $arg->arg, $regs)) {
             return $regs[1];
+        } else {
+            return null;
+        }
+    }
+
+    private function getOptionValue($arg)
+    {
+        $regs = null;
+        if (preg_match('/=(.+)/s', $arg, $regs)) {
+            return $regs[1];
+        } else {
+            return null;
         }
     }
 }
