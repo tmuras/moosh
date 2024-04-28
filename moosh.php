@@ -179,9 +179,6 @@ if (file_exists($home_dir . DIRECTORY_SEPARATOR . ".mooshrc.php")) {
 
 $options = NULL;
 if ($moodlerc) {
-    if (isset($app_options['verbose'])) {
-        echo "Using '$moodlerc' as moosh runtime configuration file\n";
-    }
     $options = array();
     require($moodlerc);
     $options = array_merge_recursive_distinct($defaultOptions, $options);
@@ -340,7 +337,9 @@ $subcommand->expandOptions();
 // Some more debug if requested.
 if ($app_options->has('verbose')) {
     echo "Moodle version detected: $moodle_version\n";
-
+    if ($moodlerc) {
+            echo "Using '$moodlerc' as moosh runtime configuration file\n";
+    }
     $subcommand->status();
 }
 
