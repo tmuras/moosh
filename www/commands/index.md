@@ -12,6 +12,8 @@ activity-add
 Adds an activity instance to the specified course. The activity is specified by it's component name
 without the plugin type prefix, so "forum", "assign" or "data" for example, and the course is specified
 by it's id.
+Usually you will want to use "-n, --name=" option to set the name of the activity.
+
 See [Moodle forum post](https://moodle.org/mod/forum/discuss.php?d=368091) about using the options. 
 
 Example 1. Add new assignment activity to course with id 2.
@@ -41,6 +43,12 @@ Example 6. Add scorm "scorm1" with description "my intro ABC" and forcenewattemp
 Example 7. Add quiz named "moosh test quiz" with intro set to "Here is your quiz", and activity completion options enabled to course 33
 
     moosh activity-add -n 'moosh test quiz' -o="--intro=Here is your quiz.  --completion=2 --completionview=1 --completionusegrade=1 --completionpass=1" quiz 33
+
+Example 8. Add page "my page" to course id 8, with page content that contains newline.
+
+    moosh activity-add -n 'my page' -o '--intro=my introduction --content=fist line
+    second line' page 8
+
 
 activity-delete
 ---------------

@@ -32,7 +32,7 @@ require_once $moosh_dir . '/includes/default_options.php';
 use GetOptionKit\ContinuousOptionParser;
 use GetOptionKit\OptionCollection;
 
-define('MOOSH_VERSION', '1.20');
+define('MOOSH_VERSION', '1.21');
 define('MOODLE_INTERNAL', true);
 
 $appspecs = new OptionCollection;
@@ -130,7 +130,7 @@ if ($app_options->has('list-commands')) {
 
 if ($app_options->has('help') || (!$subcommand && !$possible_matches)) {
     echo "moosh version " . MOOSH_VERSION . "\n";
-    echo "No command provided, possible commands:\n\t";
+    echo "No command provided, possible commands in current context:\n\t";
     echo implode("\n\t", array_keys($subcommands));
     echo "\n";
     echo "Global options:\n";
@@ -179,9 +179,6 @@ if (file_exists($home_dir . DIRECTORY_SEPARATOR . ".mooshrc.php")) {
 
 $options = NULL;
 if ($moodlerc) {
-    if (isset($app_options['verbose'])) {
-        echo "Using '$moodlerc' as moosh runtime configuration file\n";
-    }
     $options = array();
     require($moodlerc);
     $options = array_merge_recursive_distinct($defaultOptions, $options);
@@ -340,7 +337,9 @@ $subcommand->expandOptions();
 // Some more debug if requested.
 if ($app_options->has('verbose')) {
     echo "Moodle version detected: $moodle_version\n";
-
+    if ($moodlerc) {
+            echo "Using '$moodlerc' as moosh runtime configuration file\n";
+    }
     $subcommand->status();
 }
 

@@ -96,7 +96,9 @@
 <p>Adds an activity instance to the specified course. The activity is specified by it's component name
 without the plugin type prefix, so "forum", "assign" or "data" for example, and the course is specified
 by it's id.
-See <a href="https://moodle.org/mod/forum/discuss.php?d=368091">Moodle forum post</a> about using the options.</p>
+Usually you will want to use "-n, --name=" option to set the name of the activity.</p>
+
+<p>See <a href="https://moodle.org/mod/forum/discuss.php?d=368091">Moodle forum post</a> about using the options.</p>
 
 <p>Example 1. Add new assignment activity to course with id 2.</p>
 
@@ -131,6 +133,12 @@ See <a href="https://moodle.org/mod/forum/discuss.php?d=368091">Moodle forum pos
 <p>Example 7. Add quiz named "moosh test quiz" with intro set to "Here is your quiz", and activity completion options enabled to course 33</p>
 
 <pre><code>moosh activity-add -n 'moosh test quiz' -o="--intro=Here is your quiz.  --completion=2 --completionview=1 --completionusegrade=1 --completionpass=1" quiz 33
+</code></pre>
+
+<p>Example 8. Add page "my page" to course id 8, with page content that contains newline.</p>
+
+<pre><code>moosh activity-add -n 'my page' -o '--intro=my introduction --content=fist line
+second line' page 8
 </code></pre>
 
 <a name="activity-delete"></a>

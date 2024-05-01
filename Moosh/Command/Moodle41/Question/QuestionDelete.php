@@ -37,10 +37,7 @@ class QuestionDelete extends MooshCommand
 
         $questionsToCheck = [$question->id];
 
-        if ($question->parent) {
-            $questionsToCheck[] = $question->parent;
-        }
-        if (questions_in_use($questionsToCheck)) {
+        if ($this->questions_in_use($questionsToCheck)) {
             mtrace("[ID:$questionid] Question in use in activities - can not delete");
             if ($checkonly) {
                 return;
@@ -50,4 +47,43 @@ class QuestionDelete extends MooshCommand
             question_delete_question($question->id);
         }
     }
+
+
+    private function questions_in_use($questionids) {
+
+        // Are they used by the core question system?
+        if (\question_engine::questions_in_use($questionids)) {
+            return 'question_engine';
+        }
+
+        // Check if any plugins are using these questions.
+        $callbacksbytype = get_plugins_with_function('questions_in_use');
+        foreach ($callbacksbytype as $callbacks) {
+            foreach ($callbacks as $function) {
+                if ($function($questionids)) {
+                    return true;
+                }
+            }
+        }
+
+        // Finally check legacy callback.
+        $legacycallbacks = get_plugin_list_with_function('mod', 'question_list_instances');
+        foreach ($legacycallbacks as $plugin => $function) {
+            debugging($plugin . ' implements deprecated method ' . $function .
+                '. ' . $plugin . '_questions_in_use should be implemented instead.', DEBUG_DEVELOPER);
+
+            if (isset($callbacksbytype['mod'][substr($plugin, 4)])) {
+                continue; // Already done.
+            }
+
+            foreach ($questionids as $questionid) {
+                if (!empty($function($questionid))) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 }
