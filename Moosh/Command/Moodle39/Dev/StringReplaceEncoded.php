@@ -44,6 +44,7 @@ class StringReplaceEncoded extends MooshCommand
         $dryrun = $this->expandedOptions['dry-run'];
 
         $possiblerecords = $DB->get_records_sql("SELECT id, $column FROM {{$table}} WHERE $column != ''");
+        $recordsupdated = 0;
         foreach ($possiblerecords as $possiblerecord) {
             $decoded = base64_decode($possiblerecord->$column);
             if (strpos($decoded, $from) === false) {
@@ -53,20 +54,36 @@ class StringReplaceEncoded extends MooshCommand
 
             // Iterate over all public properties of the object
             foreach ($unserialized as $key => $value) {
-                if (strpos($value, $from) !== false) {
-                    $unserialized->$key = str_replace($from, $to, $value);
-                    if ($this->verbose) {
-                        echo "Replacing in '$key' from\n$value\nto\n{$unserialized->$key}\n";
+                // Check if $value is a type of string
+                if (is_string($value)) {
+                    if (strpos($value, $from) !== false) {
+                        $unserialized->$key = str_replace($from, $to, $value);
+                        if ($this->verbose) {
+                            echo "Replacing in '$key' from\n$value\nto\n{$unserialized->$key}\n";
+                        }
+                    }
+                } elseif (is_array($value)) {
+                    foreach ($value as $k => $v) {
+                        if (!is_string($v)) {
+                            continue;
+                        }
+                        if (strpos($v, $from) !== false) {
+                            $unserialized->$key[$k] = str_replace($from, $to, $v);
+                            if ($this->verbose) {
+                                echo "Replacing in '$key'[$k] from\n$v\nto\n{$unserialized->$key[$k]}\n";
+                            }
+                        }
+
                     }
                 }
             }
             $encoded = base64_encode(serialize($unserialized));
-            if (!$dryrun) {
+            if (!$dryrun && $possiblerecord->$column != $encoded ) {
+                $recordsupdated++;
                 $DB->set_field($table, $column, $encoded, ['id' => $possiblerecord->id]);
             }
         }
 
+        echo "Records updated: $recordsupdated\n";
     }
 }
-
-
