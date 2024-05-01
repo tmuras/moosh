@@ -130,7 +130,7 @@ if ($app_options->has('list-commands')) {
 
 if ($app_options->has('help') || (!$subcommand && !$possible_matches)) {
     echo "moosh version " . MOOSH_VERSION . "\n";
-    echo "No command provided, possible commands:\n\t";
+    echo "No command provided, possible commands in current context:\n\t";
     echo implode("\n\t", array_keys($subcommands));
     echo "\n";
     echo "Global options:\n";
