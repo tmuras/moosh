@@ -37,10 +37,6 @@ class QuestionDelete extends MooshCommand
 
         $questionsToCheck = [$question->id];
 
-        if ($question->parent) {
-            $questionsToCheck[] = $question->parent;
-        }
-
         if ($this->questions_in_use($questionsToCheck)) {
             mtrace("[ID:$questionid] Question in use in activities - can not delete");
             if ($checkonly) {
