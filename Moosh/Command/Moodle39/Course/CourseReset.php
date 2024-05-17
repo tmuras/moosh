@@ -1,4 +1,5 @@
 <?php
+
 /**
  * moosh - Moodle Shell
  *
@@ -19,7 +20,6 @@ class CourseReset extends MooshCommand
         $this->addArgument('id');
         $this->addOption('n|no-action', 'no action, only show settings');
         $this->addOption('s|settings:', 'course restore settings');
-
     }
 
     public function execute()
@@ -55,6 +55,19 @@ class CourseReset extends MooshCommand
                     }
                 }
                 $defaults->$key = $value;
+
+                /* If the key is equal to "reset_start_date" it means that the user wants to reset the start date of the course.
+                * In this case we must set the "reset_start_date_old" to the current value of the course start date.
+                * If we don't do this, all the activies of the course will have wrong dates.
+                */
+                if ($key == 'reset_start_date') {
+                    $defaults->reset_start_date_old = $this->course->startdate;
+                }
+
+                // We do the same for the end date (reset_end_date) and the old end date (reset_end_date_old).
+                if ($key == 'reset_end_date') {
+                    $defaults->reset_end_date_old = $this->course->enddate;
+                }
             }
         }
 
@@ -100,11 +113,10 @@ class CourseReset extends MooshCommand
     {
         foreach ($settings as $k => $setting) {
             if (is_array($setting)) {
-                echo "$k=" . implode(',', $setting)."\n";
+                echo "$k=" . implode(',', $setting) . "\n";
             } else {
                 echo "$k=$setting\n";
             }
-
         }
     }
 }
