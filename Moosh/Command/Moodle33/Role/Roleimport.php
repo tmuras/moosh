@@ -70,11 +70,13 @@ class Roleimport extends MooshCommand {
         }
 
         $archetype = $importData['archetype'];
-        $archetypes = get_role_archetypes();
-        if (!isset($archetypes[$archetype])) {
-            $this->exitError(sprintf('XML data defines an unknown archetype \'%s\'.', $archetype));
+        if ($archetype) {
+            $archetypes = get_role_archetypes();
+            if (!isset($archetypes[$archetype])) {
+                $this->exitError(sprintf('XML data defines an unknown archetype \'%s\'.', $archetype));
+            }
         }
-
+        
         $options = array(
             'shortname' => 1,
             'name' => 1,
