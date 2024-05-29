@@ -40,7 +40,7 @@ class CourseBackup extends MooshCommand
 
         $options = $this->expandedOptions;
 
-        if ($options['section']) {
+        if (strlen($options['section'])) {
             $section = $DB->get_record('course_sections', array('course' => $this->arguments[0], 'section' => $options['section']), '*', MUST_EXIST);
         }
 
@@ -50,7 +50,7 @@ class CourseBackup extends MooshCommand
         }
 
         if (!$options['filename']) {
-            if ($options['section']) {
+            if (strlen($options['section'])) {
                 // clean up the section name, remove invalid characters, etc. so we can use it in the filename
                 $sectionfilename = str_replace(' ','-',$section->name);
                 $sectionfilename = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '', $sectionfilename); $sectionfilename = mb_ereg_replace("([\.]{2,})", '', $sectionfilename);
@@ -67,7 +67,7 @@ class CourseBackup extends MooshCommand
             cli_error("File '{$options['filename']}' already exists, I will not over-write it.");
         }
 
-        if ($options['section']) {
+        if (strlen($options['section'])) {
             $bc = new backup_controller(\backup::TYPE_1SECTION, $section->id, backup::FORMAT_MOODLE,
             backup::INTERACTIVE_YES, backup::MODE_GENERAL, $USER->id);
         } else {
