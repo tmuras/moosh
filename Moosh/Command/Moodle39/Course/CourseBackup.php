@@ -23,6 +23,7 @@ class CourseBackup extends MooshCommand
         $this->addOption('F|fullbackup', 'do full backup instead of general');
         $this->addOption('template', 'do template backup instead of general');
         $this->addOption('e|exclude:', 'comma-separated list of module names to exclude');
+        $this->addOption('excludecmid:=number', 'comma-separated list of module CMIDs to exclude');
 
         $this->addArgument('id');
         
@@ -82,6 +83,20 @@ class CourseBackup extends MooshCommand
                 if (is_subclass_of($task, 'backup_activity_task')) {
                     $modulename = $task->get_modulename();
                     if (in_array($modulename, $excludemodules)) {
+                        $setting = $task->get_setting('included');
+                        $setting->set_value('0');
+                    }
+                }
+            }
+        }
+
+        if ($options['excludecmid']) {
+            $excludecmids = explode(',', $options['excludecmid']);
+            $tasks = $bc->get_plan()->get_tasks();
+            foreach ($tasks as &$task) {
+                if (is_subclass_of($task, 'backup_activity_task')) {
+                    $cmid = $task->get_moduleid();
+                    if (in_array($cmid, $excludecmids)) {
                         $setting = $task->get_setting('included');
                         $setting->set_value('0');
                     }
