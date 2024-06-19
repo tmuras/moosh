@@ -16,6 +16,7 @@ class CohortEnrol extends MooshCommand
 
         $this->addOption('u|userid:', 'userid');
         $this->addOption('c|courseid:', 'courseid');
+        $this->addOption('idnumber', "Match cohort alphanumeric 'idnumber' field instead of name");
 
         $this->addArgument('name');
 
@@ -35,7 +36,14 @@ class CohortEnrol extends MooshCommand
 
             // Sanity Checks.
             // Check if cohorst exists.
-            if (!$cohorts = $DB->get_records('cohort',array('name'=>$argument))) {
+            $cohort_search_params = [];
+            if ($options['idnumber']) {
+                $cohort_search_params['idnumber'] = $argument;
+            }
+            else {
+                $cohort_search_params['name'] = $argument;
+            }
+            if (!$cohorts = $DB->get_records('cohort', $cohort_search_params)) {
                 echo "Cohort does not exist\n";
                 exit(0);
             }
