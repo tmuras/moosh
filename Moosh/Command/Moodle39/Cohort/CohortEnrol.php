@@ -18,6 +18,12 @@ class CohortEnrol extends MooshCommand
         $this->addOption('c|courseid:', 'courseid');
         $this->addOption('idnumber', "Match cohort alphanumeric 'idnumber' field instead of name");
         $this->addOption('role:', "Defaults to 'student'", 'student');
+        $format_help = "Defaults to '%n_sync'. ";
+        $format_help .= "'%n' is replaced by cohort name, ";
+        $format_help .= "'%i' is replaced by cohort idnumber, ";
+        $format_help .= "'%r' is replaced by role name, ";
+        $format_help .= "'%s' is replaced by role shortname.";
+        $this->addOption('name-pattern:', $format_help, '%n_sync');
 
         $this->addArgument('name');
 
@@ -86,7 +92,7 @@ class CohortEnrol extends MooshCommand
                         $enrol = enrol_get_plugin('cohort');
 
                         $enrol->add_instance($course, array(
-                            'name'=>$argument . '_sync',
+                            'name'=>$this->build_sync_name($options['name-pattern'], $cohort, $role),
                             'status'=>0,
                             'customint1'=>$cohort->id,
                             'roleid'=>$role->id,
@@ -118,5 +124,15 @@ class CohortEnrol extends MooshCommand
         $trace = new \null_progress_trace();
         enrol_cohort_sync($trace, $courseid);
         $trace->finished();
+    }
+
+    protected function build_sync_name($pattern, $cohort, $role)
+    {
+        $pattern = preg_replace('/\%n/', $cohort->name, $pattern);
+        $pattern = preg_replace('/\%i/', $cohort->idnumber, $pattern);
+        $pattern = preg_replace('/\%r/', role_get_name($role), $pattern);
+        $pattern = preg_replace('/\%s/', $role->shortname, $pattern);
+
+        return $pattern;
     }
 }
