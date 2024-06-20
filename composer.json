@@ -228,7 +228,7 @@
   ],
   "require": {
     "mudrd8mz/moodle-tool_pluginskel":"dev-main",
-    "corneltek/getoptionkit": "dev-master#e815670d092e9b4993774c3e3ed608225dccf6a9",
+    "corneltek/getoptionkit": "dev-master#aab2728de80175217cab0d7a4d078c3eb907e2c0",
     "twig/twig": "1.44.7",
     "moodlehq/moodle-mod_newmodule": "dev-master#e1f112be8842291259ece87de3000cd5f0e18711",
     "danielneis/moodle-block_newblock": "dev-master#1fc89fb0845ad282426140feeb6bc3653efd1d7f",
