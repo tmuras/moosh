@@ -11,6 +11,8 @@ use Moosh\MooshCommand;
 
 class ChkDataDir extends MooshCommand
 {
+    var $filelist = '';
+    
     public function __construct() {
         parent::__construct('chkdatadir');
         $this->filelist = '';
