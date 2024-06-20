@@ -46,7 +46,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/c9s/GetOptionKit.git",
-                "reference": "e815670d092e9b4993774c3e3ed608225dccf6a9"
+                "reference": "aab2728de80175217cab0d7a4d078c3eb907e2c0"
             },
             "dist": {
                 "type": "zip",
