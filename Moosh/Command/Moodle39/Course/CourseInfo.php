@@ -51,6 +51,10 @@ class CourseInfo extends MooshCommand
     private $filesnumber;
     private $filesize;
 
+    private $enrolledtotal;
+    private $logsnumber;
+    private $data;
+
     public function __construct()
     {
         global $DB;
