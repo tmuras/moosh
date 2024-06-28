@@ -57,7 +57,7 @@ class CacheSet extends MooshCommand
     protected function getArgumentsHelp() {
         $help = parent::getArgumentsHelp();
         $help .= "\n\n";
-        $help .= "This command enable to attribute cache to specific cache store";
+        $help .= "This command enable to attribute cache to specific cache definition";
         $help .= "\ne.g moosh -n cache-set core/calendar_subscriptions redisstore";
         return $help;
     }
