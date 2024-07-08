@@ -20,10 +20,10 @@ class TaskSchedule extends MooshCommand
         $this->addOption('d|day:', 'day');
         $this->addOption('m|month:', 'month');
         $this->addOption('w|dayofweek:', 'Day of week');
-        $this->addOption('x|disabled:', 'Disbaled');
+        $this->addOption('x|disabled:', 'Disabled');
         $this->addOption('r|resettodefaults:', 'Reset to defaults', 0);
         $this->addArgument('taskname');
-        $this->minArguments = 0;
+        $this->minArguments = 1;
         $this->maxArguments = 1;
 
     }

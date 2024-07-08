@@ -413,6 +413,35 @@ Example 3: Set Application to "store name", Session to "Tests" and Request to "d
 
     moosh cache-edit-mappings -a "store name" -s Tests -r default_request
 
+cache-set
+-------------------
+
+Enable to attribute cache to specific cache definition
+
+Requires cache definition and cache store
+
+Example 1: Set "redisstore" to "core/calendar"_subscriptions definition 
+
+    moosh cache-set core/calendar_subscriptions redisstore
+
+cache-store-clear
+-----------------
+
+Clear a specific cache store or only a definition for the given cache store
+
+Requires cache store name
+
+Option:
+* --definition, -d : cache definition name
+
+Example 1 : Clear redisstore cache store 
+
+    moosh cache-store-clear --defintion=calendar_subscriptions redisstore
+
+Example 2 : Clear cache definition core/calendar_subscriptions for store named redisstore
+
+    moosh cache-store-clear --definition=core/calendar_subscriptions redisstore
+
 category-config-set
 -------------------
 
@@ -505,6 +534,17 @@ Example 2: Make the category with id 3 a top-level category
 
     moosh category-move 3 0
 
+category-move-courses-from-category-to-another
+----------------------------------------------
+
+Move all courses included into a source category into a destination category
+
+Requires Source course category id and Destination course category id
+
+Example 1: Move all courses included into category with id 1 to category with id 2
+
+    moosh category-move-courses-from-category-to-another 1 2
+
 category-resortcourses
 ----------------------
 
@@ -560,6 +600,22 @@ Example 1: Create two system cohorts "mycohort1" and "mycohort2".
 Example 2: Create cohort "my cohort18" with id "cohort18" under category id 2, with description "Long description".
 
     moosh cohort-create -d "Long description" -i cohort18 -c 2 "my cohort18"
+
+cohort-delete
+------------
+
+Delete one or more cohorts
+
+Requires cohort ids to delete separated by ,
+
+Example 1: Delete cohort of id 42
+
+    moosh cohort-cohort-delete 42
+
+Example 2: Delete cohorts of ids 42 and 2012
+
+    moosh cohort-cohort-delete 42,2012
+
 
 cohort-enrol
 ------------
@@ -676,6 +732,22 @@ Example 1: Enable debug.
 Example 2: Set URL to logo for Sky High theme.
 
     moosh config-set logo http://example.com/logo.png theme_sky_high
+
+context-freeze
+--------------
+Freeze or unfreeze a given context
+
+Requires instance id, context level and lock
+
+Lock is 1 if locked, 0 if unlock
+
+Example 1 : Lock course context of id 20
+
+    moosh context-freeze 20 50 1
+
+Example 1 : Unlock course context of id 20
+
+    moosh context-freeze 20 50 0
 
 context-rebuild
 ---------------
@@ -795,6 +867,23 @@ Is similar to course-enrol function. But it can also be used the first- and last
 Example 1: Enroll user with firstname test42 and lastname user42 into the course with shortname T12345 as an editing teacher.
 
     moosh course-enrolbyname -r editingteacher -f test42 -l user42 -c T12345
+
+course-enrol-change-status
+------------------
+
+Requires course id
+
+Options :
+* --instanceid=?, --i=? : enrolment instance id, if not command enter in interactive mode and show all available enrolment instance for the given course, you'll have to choose status from prompt
+* --status=0 or 1, --s=0 or 1 : status of enrolment instance 0 (default value) -> enabled, 1 -> disabled
+
+Example1 : change course enrolment instance status in interactive mode 
+
+    moosh course-enrol-change-status 2
+
+Example1 : change course enrolment instance status to disable for instance 42
+
+    moosh course-enrol-change-status --i=42 --s=1 2
 
 course-enableselfenrol
 ----------------------
@@ -974,6 +1063,14 @@ Unerol user(s) from a course id provided. First argument is a course ID then lis
 Example 1: Unenrol users with id 7, 9, 12 and 16 from course with id 2.
 
     moosh course-unenrol 2 7 9 12 16
+
+dashboard-reset-all
+----------
+Reset all users dashboard
+
+Example 1: Reset all users dashboard
+
+    moosh dashboard-reset-all
 
 
 data-stats
@@ -1743,6 +1840,22 @@ Example:
 
     moosh php-eval 'var_dump(get_object_vars($CFG))'
 
+plugin-hideshow
+---------------
+Hide or show a plugin in all site context
+
+Requires plugin type, plugin name and show option.
+
+Show option is 0 if hide and 1 if show.
+
+This will work for the following plugin types:
+
+block, mod, assignfeedback, assignsubmission, qtype, qbehaviour, enrol, filter, editor, auth, license, repository, courseformat or avaibility
+
+Example 1 : Hide chat module plugin for entire site
+
+    moosh plugin-hideshow mod chat 0
+
 
 plugin-download
 ---------------
@@ -1900,6 +2013,28 @@ Example 1: Get concurrent users between 20-01-2014 and 27-01-2014 with 30 minut 
 Example 2: Create the report for the last week. Could be used in a cronjob.
 
     start=$(date --date="7 days ago" +"%Y-%m-%d");finish=$(date +"%Y-%m-%d");moosh report-concurrency --from $start --to $finish
+
+request-select
+-------
+
+Run any custom SQL Select against bootstrapped Moodle instance DB and return resultset with csv format with ; separator.
+
+Requires a select query as argument.
+
+Usefull to create a csv file to import datas in moodle
+
+Usefull also to retrieve an value to reuse it later in a script composed of moosh commands
+
+Example 1: Select username, firstname, lastname and email 
+
+    moosh request-select "select username,firstname,lastname, email from {user}"
+
+Output:
+
+    egrieg;Edward,Grieg,egrieg@example.com
+
+    hpurcell;Henry;Purcell,hpurcell@example.com
+
 
 restore-settings
 ----------------
@@ -2099,6 +2234,27 @@ Example 1: show list of locked tasks (if any)
 Example 2: show all tasks and their status (locked/unlocked)
 
     moosh task-lock-check -a
+
+task-schedule
+-------------
+
+Schedule Moodle task
+
+Requires task name with namespace
+
+Options:
+* -M, --minute :minute
+* -H, --hour : hour
+* -d, --day : day
+* -m, --month : month
+* -w, --dayofweek : Day of week
+* -x, --disabled : Disabled
+* -r, --resettodefaults : Reset to defaults
+
+
+Example 1 : Schedule cleanup_task to launch every day at 01:01
+
+    moosh -d=* -H=1 -m=1 "\tool_messageinbound\task\cleanup_task"
 
 theme-info
 ----------
@@ -2362,3 +2518,37 @@ Calls
 Example: Get list of all courses enroled for a user
 
     moosh webservice-call --token 4ac42118db3ee8d4b1ae78f2c1232afd --params userid=3 core_enrol_get_users_courses
+
+webservice-install
+------------------
+
+Install a Moodle Webservice
+
+Requires service name and capabilities
+* service name is the services["shortname'] defined in db/services.php file of a plugin
+* Capabilities are separated by commas
+
+Options:
+* -m, --mail : mail, by default noreply user mail
+* -u, --username : username
+  * by default 'user_<servicename> will be used
+  * if not exists user is created
+* -r, --rolename : role shortname
+  * by default role_<servicename> will used
+  * if not exists role will be created
+* i, --iprestriction : ip restriction
+  * empty by default so all ip authorized
+-v, --validuntil : valid until
+  * empty so valid forever
+
+Output:
+* user user_servicename is created
+* role role_servicename are created with definied capabilities
+* user has role role_servicename on system
+* webservice is instanciate with its function for user user_servicename
+* token is genrated and output
+
+Example 1 : Install a service named wsservicename with capabilities 
+
+   moosh webservice-install wsservicename 'plugintype/pluginname:capability1,plugintype/pluginname:capability2'
+
