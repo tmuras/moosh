@@ -75,10 +75,10 @@ class CourseList extends MooshCommand {
             $sql .= " AND ($customwhere)";
         }
         if ($options['empty'] == 'yes') {
-            $sql .= " GROUP BY c.id HAVING modules < 2";
+            $sql .= " GROUP BY c.id HAVING COUNT(c.id) < 2";
         }
         if ($options['empty'] == 'no') {
-            $sql .= " GROUP BY c.id HAVING modules > 1";
+            $sql .= " GROUP BY c.id HAVING COUNT(c.id) > 1";
         }
 
         if($this->verbose) {
