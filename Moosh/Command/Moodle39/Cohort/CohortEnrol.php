@@ -84,8 +84,9 @@ class CohortEnrol extends MooshCommand
 
                 foreach($cohorts as $cohort) {
 
-                    // Check if cohort enrolment already exists
-                    if ($cohortenrolment = $DB->get_record('enrol',array('customint1'=>$cohort->id,'courseid'=>$options['courseid'],'roleid'=>$role->id))) {
+                    // Check if cohort enrolment already exists.
+                    if ($cohortenrolment = $DB->get_record('enrol', ['enrol' => 'cohort', 'customint1' => $cohort->id,
+                        'courseid' => $options['courseid'], 'roleid' => $role->id])) {
                         echo " Notice: Cohort already enrolled into course\n";
                     } else {
 
