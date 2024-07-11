@@ -874,8 +874,8 @@ course-enrol-change-status
 Requires course id
 
 Options :
-* --instanceid=?, --i=? : enrolment instance id, if not command enter in interactive mode and show all available enrolment instance for the given course, you'll have to choose status from prompt
-* --status=0 or 1, --s=0 or 1 : status of enrolment instance 0 (default value) -> enabled, 1 -> disabled
+* --instanceid=?, -i ? : enrolment instance id, if not command enter in interactive mode and show all available enrolment instance for the given course, you'll have to choose status from prompt
+* --status=0 or 1, -s 0 or 1 : status of enrolment instance 0 (default value) -> enabled, 1 -> disabled
 
 Example1 : change course enrolment instance status in interactive mode 
 
@@ -883,7 +883,7 @@ Example1 : change course enrolment instance status in interactive mode
 
 Example1 : change course enrolment instance status to disable for instance 42
 
-    moosh course-enrol-change-status --i=42 --s=1 2
+    moosh course-enrol-change-status -i=42 -s=1 2
 
 course-enableselfenrol
 ----------------------

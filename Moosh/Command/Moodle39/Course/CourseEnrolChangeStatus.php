@@ -15,8 +15,8 @@ class CourseEnrolChangeStatus extends MooshCommand
     {
         parent::__construct('enrol-change-status', 'course');
 
-        $this->addOption('i|instanceid:', 'enrolment instance id', 0);
-        $this->addOption('s|status', 'status to be applied 0 for disable, 1 for enable',0);
+        $this->addOption('i|instanceid:', 'enrolment instance id, if 0 or not entered you\'ll pass in interactive mode' , 0);
+        $this->addOption('s|status:', 'status to be applied 1 for disable, 0 for enable, default value to 0',0);
         $this->addArgument('courseid');
         $this->maxArguments = 255;
     }
