@@ -9,7 +9,7 @@ use \core_h5p\factory;
  * Class manages H5pCore data export
  * @author Michal Chruscielski <michalch775@gmail.com>
  */
-class H5PCoreLibraryExportManager {
+class H5PCoreExportManager {
 
     /**
      * Exports H5p libraries and saves it to csv file with chosen name.
@@ -62,14 +62,15 @@ class H5PCoreLibraryExportManager {
             cli_error("H5p factory class cannot be loaded.");
         }
 
-        // h5p related objects factory
+        // Using factory object instead of fetching from database. It provides actual data fetching,
+        // which is used by moodle anyway.
         $factory = new factory();
 
         $framework = $factory->get_framework();
         $libraries = $framework->loadLibraries();
 
         if($verbose) {
-            mtrace("H5p libraries loaded. Exporting to csv.");
+            mtrace("H5p content loaded. Exporting to csv.");
         }
 
         require_once($CFG->libdir . '/csvlib.class.php');
@@ -159,12 +160,10 @@ class H5PCoreLibraryExportManager {
                 // directly mapping property
                 $row[$object_key] = $object_to_map->$object_key;
             } else if($object_key === "version") {
-                // version property requires additional concat
+                // version field must be formatted
                 $row[$object_key] = $object_to_map->major_version .".". $object_to_map->minor_version .".". $object_to_map->patch_version;
             } else {
-                //skipping
-
-                // adding empty string to preserve csv consistency
+                // skipping field, adding empty string to preserve csv consistency
                 $row[$object_key] = "";
 
                 if($verbose) {

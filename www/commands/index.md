@@ -1686,6 +1686,54 @@ Example:
 
     moosh group-assigngrouping -G groupingid groupid1 [groupid2] ...
 
+
+h5p-core-contenttypes-export
+----
+Exports libraries from H5p core to file in csv format.
+
+Available options:
+
+| Option     | Description               |
+|------------|---------------------------|
+| -n, --name | Defines target file name. |
+
+
+Example 1: Export content types
+
+    moosh h5p-core-contenttypes-export
+
+Example 2: Export content types with custom filename "my-custom-file.csv"
+
+    moosh h5p-core-contenttypes-export -n my-custom-file
+
+Example 3: Export content types to txt file (using csv format)
+
+    moosh h5p-core-contenttypes-export -n my-custom-txt-file.txt 
+
+
+h5p-core-libraries-export
+----
+Exports content types from H5p core to file in csv format. 
+
+Available options:
+
+| Option     | Description               |
+|------------|---------------------------|
+| -n, --name | Defines target file name. |
+
+
+Example 1: Export libraries
+
+    moosh h5p-core-libraries-export
+
+Example 2: Export libraries with custom filename "my-custom-file.csv"
+
+    moosh h5p-core-libraries-export -n my-custom-file
+
+Example 3: Export content types to txt file (using csv format)
+    
+    moosh h5p-core-libraries-export -n my-custom-txt-file.txt 
+
 info
 ----
 

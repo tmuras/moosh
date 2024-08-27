@@ -4,6 +4,7 @@ namespace Moosh\Command\Moodle41\H5pCore;
 
 /**
  * H5pCore utils
+ * @author Michal Chruscielski <michalch775@gmail.com>
  */
 class H5pCoreUtils
 {
