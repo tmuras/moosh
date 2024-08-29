@@ -34,7 +34,7 @@ Example 4. Add assignment with name "Easy assignment" and idnumber "ASD123" to c
     
 Example 5. Add quiz "more emails" with intro set to "polite orders", network address restriction set to 192.168.2.2 to course 33.
 
-    moosh activity-add -n 'more emails' -o="--intro=\"polite orders.\" --subnet=192.168.2.2" quiz 33
+    moosh activity-add -n 'more emails' -o "--intro=polite orders. --subnet=192.168.2.2" quiz 33
     
 Example 6. Add scorm "scorm1" with description "my intro ABC" and forcenewattempt set to yes to course 2.
 
