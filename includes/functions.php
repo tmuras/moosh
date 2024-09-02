@@ -539,3 +539,17 @@ function read_config($filepath) {
 
     return $CFG;
 }
+
+/**
+ * Check if `$haystack` ends with `$needle`. Alternative for php8 `str_ends_with`.
+ * @param $haystack
+ * @param $needle
+ * @return bool
+ */
+function string_ends_with($haystack, $needle) {
+    $length = strlen( $needle );
+    if( !$length ) {
+        return true;
+    }
+    return substr( $haystack, -$length ) === $needle;
+}

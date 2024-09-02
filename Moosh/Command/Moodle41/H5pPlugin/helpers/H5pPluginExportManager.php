@@ -1,15 +1,14 @@
 <?php
 
-namespace Moosh\Command\Moodle41\H5pCore;
+namespace Moosh\Command\Moodle41\H5pPlugin;
 
-use \core_h5p\factory;
-
+use \mod_hvp\framework;
 
 /**
- * Class manages H5pCore data export
+ * Class manages H5pPlugin data export
  * @author Michal Chruscielski <michalch775@gmail.com>
  */
-class H5PCoreExportManager {
+class H5pPluginExportManager {
 
     /**
      * Exports H5p libraries and saves it to csv file with chosen name.
@@ -58,16 +57,15 @@ class H5PCoreExportManager {
             mtrace("Loading H5p data attempt.");
         }
 
-        if(!class_exists(factory::class)) {
+        if(!class_exists(framework::class)) {
             cli_error("H5p factory class cannot be loaded.");
         }
 
         // Using factory object instead of fetching from database. It provides actual data fetching,
         // which is used by moodle anyway.
-        $factory = new factory();
+        $core = framework::instance();
 
-        $framework = $factory->get_framework();
-        $libraries = $framework->loadLibraries();
+        $libraries = $core->h5pF->loadLibraries();
 
         if($verbose) {
             mtrace("H5p content loaded. Exporting to csv.");
@@ -75,10 +73,11 @@ class H5PCoreExportManager {
 
         require_once($CFG->libdir . '/csvlib.class.php');
 
+
         // our csv fields
         $fields = array(
-            "enabled" => "Enable",
-            "title" => "Description",
+            "title" => "Title",
+            "restricted" => "Restricted",
             "version" => "Version",
         );
 
