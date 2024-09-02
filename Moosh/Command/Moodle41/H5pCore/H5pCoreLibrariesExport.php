@@ -10,7 +10,8 @@ namespace Moosh\Command\Moodle41\H5pCore;
 use Moosh\MooshCommand;
 
 /**
- * Exports libraries from H5p to file in csv format.
+ * Exports libraries from H5p to file in csv format. In fact content type in H5p is just
+ *  a runnable library. Be aware that H5p Plugin libraries are stored separately from H5p Core libraries.
  * moosh hp5-core-libraries-export [-n, --name]
  *
  * @example 1: Export libraries with default filename (h5p-core-libraries-export.csv).

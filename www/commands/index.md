@@ -1713,7 +1713,8 @@ Example:
 
 h5p-core-contenttypes-export
 ----
-Exports libraries from H5p core to file in csv format.
+Exports libraries from H5p core to file in csv format. Be aware that H5p Core libraries are stored separately
+from H5p Plugin libraries.
 
 Available options:
 
@@ -1737,7 +1738,8 @@ Example 3: Export content types to txt file (using csv format)
 
 h5p-core-libraries-export
 ----
-Exports content types from H5p core to file in csv format. 
+Exports content types from H5p core to file in csv format. Be aware that H5p Core libraries are stored separately
+from H5p Plugin libraries.
 
 Available options:
 
@@ -1760,8 +1762,9 @@ Example 3: Export content types to txt file (using csv format)
 
 h5p-plugin-libraries-export
 ----
-Exports libraries from H5p plugin to file in csv format. In H5p plugin content types and libraries
-are treated as one data type.
+Exports libraries from H5p plugin to file in csv format. In fact H5p content types
+are just libraries that are marked as runnable. Be aware that H5p Plugin libraries are stored separately
+from H5p Core libraries.
 
 Available options:
 
@@ -1781,6 +1784,31 @@ Example 2: Export libraries with custom filename "my-custom-file.csv"
 Example 3: Export libraries to txt file (using csv format)
 
     moosh h5p-plugin-libraries-export -n my-custom-txt-file.txt 
+
+h5p-plugin-contenttypes-export
+----
+Exports content types from H5p plugin to file in csv format. In fact H5p content types 
+are just libraries that are marked as runnable. Be aware that H5p Plugin libraries are stored separately
+from H5p Core libraries. 
+
+Available options:
+
+| Option     | Description               |
+|------------|---------------------------|
+| -n, --name | Defines target file name. |
+
+
+Example 1: Export content types types
+
+    moosh h5p-plugin-contenttypes-export
+
+Example 2: Export content types with custom filename "my-custom-file.csv"
+
+    moosh h5p-plugin-contenttypes-export -n my-custom-file
+
+Example 3: Export content types to txt file (using csv format)
+
+    moosh h5p-plugin-contenttypes-export -n my-custom-txt-file.txt 
 
 
 info

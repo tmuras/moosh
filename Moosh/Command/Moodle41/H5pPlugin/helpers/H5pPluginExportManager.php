@@ -58,7 +58,7 @@ class H5pPluginExportManager {
         }
 
         if(!class_exists(framework::class)) {
-            cli_error("H5p factory class cannot be loaded.");
+            cli_error("H5p factory class cannot be loaded. Check if H5p plugin is properly installed and configured.");
         }
 
         // Using factory object instead of fetching from database. It provides actual data fetching,
