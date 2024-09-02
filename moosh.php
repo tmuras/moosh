@@ -102,8 +102,8 @@ $arguments = array();
 $subcommand = NULL;
 $possible_matches = array();
 
-if (!$parser->isEnd()) {
-    $subcommand = $parser->advance();
+if (!@$parser->isEnd()) {
+    $subcommand = @$parser->advance();
 }
 
 
@@ -153,16 +153,16 @@ if (!$subcommand && $possible_matches) {
     exit(10);
 }
 
-$parser->setSpecs($subcommand_specs[$subcommand]);
+@$parser->setSpecs($subcommand_specs[$subcommand]);
 try {
-    $subcommand_options[$subcommand] = $parser->continueParse();
+    $subcommand_options[$subcommand] = @$parser->continueParse();
 } catch (Exception $e) {
     echo $e->getMessage() . "\n";
     die("Moosh global options should be passed before command not after it.\n");
 }
 
-while (!$parser->isEnd()) {
-    $arguments[] = $parser->advance();
+while (!@$parser->isEnd()) {
+    $arguments[] = @$parser->advance();
 }
 
 // Read config file if available.

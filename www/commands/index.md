@@ -1657,16 +1657,40 @@ Example 2:
 group-memberadd
 ---------------
 
-Add a member to a group.
+Add member to a specified group. It may be done using member username or id. If course id is specified, addition
+is based on username(s), otherwise on user id(s).
 
-Example 1:
+Available options:
 
-    moosh group-memberadd -c courseid -g groupid membername1 [membername2] ...
+| Option       | Description |
+|--------------|-------------|
+| -g, --group  | Group id.   |
+| -c, --course | Course id.  |
 
-Example 2:
-
+Command syntax (by user id):
+    
     moosh group-memberadd -g groupid memberid1 [memberid2] ...
 
+Command syntax (by user username)
+
+    moosh group-memberadd -g groupid memberid1 [memberid2] ...    
+
+Example 1: Add user with id 111 to the group with id 333.
+
+    moosh group-memberadd -g 333 111
+
+Example 2: Add users with ids 1, 2 and 3 to the group with id 333
+
+    moosh group-memberadd -g 333 1 2 3
+
+Example 3: Add user with username `example_username` enrolled in course with id 5 to the group with id 1
+
+    moosh group-memberadd -g 1 -c 5 example_username
+
+Example 4: Add users with usernames `example_username1`, `example_username2` enrolled in course with id 5 
+to the group with id 1
+    
+    moosh group-memberadd -g 1 -c 5 example_username1, example_username2
 
 grouping-create
 ---------------
