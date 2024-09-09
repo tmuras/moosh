@@ -38,14 +38,25 @@ class CategoryCreate extends MooshCommand
             $category->parent = $options['parent'];
             $category->idnumber = $options['idnumber'];
             $category->visible = $options['visible'];
-            if ($options['reuse'] && $existing = $this->find_category($category)) {
-                $newcategory = $existing;
-            } else {
-                $newcategory = $this->create_category($category);
+
+            if($this->verbose) {
+                $name = $category->name;
+                mtrace("Creating category $name");
             }
 
-            //either use API create_course
-            echo $newcategory->id . "\n";
+            if ($options['reuse'] && $existing = $this->find_category($category)) {
+                $newcategory = $existing;
+
+                $name = $newcategory->name;
+                $id = $newcategory->id;
+                print "Category $name with id: $id exists. Skipping, because --reuse param is present.\n";
+            } else {
+                $newcategory = $this->create_category($category);
+
+                $name = $newcategory->name;
+                $id = $newcategory->id;
+                print "Created category $name with id: $id.\n";
+            }
         }
     }
 
@@ -58,13 +69,25 @@ class CategoryCreate extends MooshCommand
     {
         global $DB;
         $params = array('name' => $category->name);
-        foreach (array('idnumber', 'parent', 'description') as $param) {
-            if ($category->$param) {
+        $select = "name = :name";
+        foreach (array('idnumber', 'parent') as $param) {
+            if ($category->$param !== "") {
                 $params[$param] = $category->$param;
+                $select .= " AND $param = :$param";
             }
         }
-        $categories = $DB->get_records('course_categories', $params);
-        if (count($categories) == 1) {
+
+        // description is of text type, so requires sql_compare_text to be found and do not throw
+        if($category->description !== "") {
+            $params["description"] = $category->description;
+            $select .= "AND " . $DB->sql_compare_text('description') . " = :description";
+        }
+
+
+        $categories = $DB->get_records_select('course_categories', $select, $params);
+
+        // sometimes more than one category might exist
+        if (count($categories) >= 1) {
             return array_pop($categories);
         } else {
             return null;

@@ -33,6 +33,13 @@ class DownloadMoodle extends MooshCommand {
         // 3.4.1:      https://download.moodle.org/download.php/direct/stable34/moodle-3.4.1.tgz
         // 3.4.0:      https://download.moodle.org/download.php/direct/stable34/moodle-3.4.tgz
         // Latest 3.3: https://download.moodle.org/download.php/direct/stable33/moodle-latest-33.tgz
+        //
+        // From version 4 naming convention changed and major and minor versions are separated by additional "0"
+        // e.g. version 404 means 4.4.
+        //
+        // Latest 4.4: https://download.moodle.org/download.php/direct/stable404/moodle-latest-404.tgz
+        // 4.4.1:      https://download.moodle.org/download.php/direct/stable404/moodle-4.4.1.tgz
+
 
         if (!$options['version']) {
             $releasepage = file_get_contents('https://download.moodle.org/releases/latest/');
@@ -50,14 +57,30 @@ class DownloadMoodle extends MooshCommand {
         } else {
             $version = explode('.', $options['version']);
             if (count($version) == 3) {
-                $versioncollapsed  = $version[0]. $version[1];
+                $versioncollapsed  = $version[0];
+
+                // adding 0, v4 naming convention
+                if($version[0] >= 4) {
+                    $versioncollapsed.="0";
+                }
+
+                $versioncollapsed.=$version[1];
+
                 $exactversion = $version[0] . '.' .  $version[1] . '.' . $version[2];
             } else if (count($version) == 2) {
                 // Latest version requested
-                $versioncollapsed  = $version[0]. $version[1];
+                $versioncollapsed  = $version[0];
+
+                // adding 0, v4 naming convention
+                if($version[0] >= 4) {
+                    $versioncollapsed.="0";
+                }
+
+                $versioncollapsed.=$version[1];
+
                 $exactversion = "latest-$versioncollapsed";
             } else {
-                die("Provide version in X.Y or X.Y.Z format");
+                cli_error("Provide version in X.Y or X.Y.Z format");
             }
         }
         // Download example: https://download.moodle.org/download.php/direct/stable310/moodle-latest-310.tgz

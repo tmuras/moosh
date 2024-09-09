@@ -163,7 +163,7 @@ class GenerateFiles extends MooshCommand
 
             // Generate random binary data (different for each file so it
             // doesn't compress unrealistically).
-            $data = random_bytes_emulate($this->filesize);
+            $data = random_bytes($this->filesize);
 
             $fs->create_file_from_string($filerecord, $data);
             $this->dot($i, $count);

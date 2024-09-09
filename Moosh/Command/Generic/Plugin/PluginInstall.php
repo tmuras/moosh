@@ -96,8 +96,22 @@ class PluginInstall extends MooshCommand
             }
         }
 
-        run_external_command("unzip $downloadedfile -d $installpath");
+        $unzipdir = $tempdir . $component;
+        if (!file_exists($unzipdir)) {
+            mkdir($unzipdir);
+        }
+
+        run_external_command("unzip $downloadedfile -d $unzipdir");
         run_external_command("rm $downloadedfile");
+
+        //Get the path of uncompressed plugin dir (in case the .zip decompresses into multiple directories / non standard directory)
+        $uncompresseddir = exec("find $unzipdir -name 'version.php' | rev | cut -d'/' -f 2- | rev");
+        if (file_exists($uncompresseddir)){
+            run_external_command("mv $uncompresseddir $targetpath");
+        } else {
+            die("The zipfile does not seem to be a valid plugin (no version.php found)\n");
+        }
+        run_external_command("rm -rf $unzipdir");
 
         echo "Installing\n";
         echo "\tname:    $pluginname\n";

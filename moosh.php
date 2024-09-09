@@ -32,11 +32,12 @@ require_once $moosh_dir . '/includes/default_options.php';
 use GetOptionKit\ContinuousOptionParser;
 use GetOptionKit\OptionCollection;
 
-define('MOOSH_VERSION', '1.21');
+define('MOOSH_VERSION', '1.22');
 define('MOODLE_INTERNAL', true);
 
-$appspecs = new OptionCollection;
-$spec_verbose = $appspecs->add('v|verbose', "be verbose");
+// suppressing warnings for php > 8
+$appspecs = @new OptionCollection;
+$spec_verbose = @$appspecs->add('v|verbose', "be verbose");
 $appspecs->add('p|moodle-path:', "Moodle directory.");
 $appspecs->add('u|user:', "Moodle user, by default ADMIN");
 $appspecs->add('n|no-user-check', "Don't check if Moodle data is owned by the user running script");
@@ -44,8 +45,8 @@ $appspecs->add('t|performance', "Show performance information including timings"
 $appspecs->add('h|help', "Show global help.");
 $appspecs->add('list-commands', "Show all possible commands");
 
-$parser = new ContinuousOptionParser($appspecs);
-$app_options = $parser->parse($argv);
+$parser = @new ContinuousOptionParser($appspecs);
+$app_options = @$parser->parse($argv);
 
 if ($app_options->has('moodle-path')) {
     $top_dir = $app_options['moodle-path']->value;
@@ -101,8 +102,8 @@ $arguments = array();
 $subcommand = NULL;
 $possible_matches = array();
 
-if (!$parser->isEnd()) {
-    $subcommand = $parser->advance();
+if (!@$parser->isEnd()) {
+    $subcommand = @$parser->advance();
 }
 
 
@@ -152,16 +153,16 @@ if (!$subcommand && $possible_matches) {
     exit(10);
 }
 
-$parser->setSpecs($subcommand_specs[$subcommand]);
+@$parser->setSpecs($subcommand_specs[$subcommand]);
 try {
-    $subcommand_options[$subcommand] = $parser->continueParse();
+    $subcommand_options[$subcommand] = @$parser->continueParse();
 } catch (Exception $e) {
     echo $e->getMessage() . "\n";
     die("Moosh global options should be passed before command not after it.\n");
 }
 
-while (!$parser->isEnd()) {
-    $arguments[] = $parser->advance();
+while (!@$parser->isEnd()) {
+    $arguments[] = @$parser->advance();
 }
 
 // Read config file if available.
@@ -248,6 +249,7 @@ if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE ) {
     if ($subcommand->bootstrapLevel() == MooshCommand::$BOOTSTRAP_CONFIG) {
         define('ABORT_AFTER_CONFIG', true);
     }
+
     if (!$top_dir) {
         echo "Could not find Moodle installation!\n";
         exit(1);

@@ -49,6 +49,7 @@ class CourseEnableselfenrol extends MooshCommand
             foreach($instances as $instance){
                 if($instance->enrol === 'self'){
                     $selfEnrolInstance = $instance;
+                    break;
                 }
             }
             
@@ -64,6 +65,7 @@ class CourseEnableselfenrol extends MooshCommand
                 foreach($instances as $instance){
                     if($instance->enrol === 'self'){
                         $selfEnrolInstance = $instance;
+                        break;
                     }
                 }
                 
