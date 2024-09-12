@@ -46,4 +46,4 @@ jobs:
       - name: Run test
         run: php moosh.php | grep "moosh version"
       - name: Lint files
-        run: find . *.php | xargs -I php -l
+        run: find . *.php | xargs -i php -l
