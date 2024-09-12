@@ -72,7 +72,7 @@ class CourseAssignRole extends MooshCommand {
                     $role->id,
                     $userid,
                     \context_course::instance($course->id)->id,
-                    $component,
+                    $component
                 );
                 $ok = True;
                 break;

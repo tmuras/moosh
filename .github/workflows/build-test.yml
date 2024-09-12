@@ -44,4 +44,6 @@ jobs:
       - name: Unzip build
         run: unzip vendor.zip
       - name: Run test
-        run: php moosh.php | grep "moosh version"       
+        run: php moosh.php | grep "moosh version"
+      - name: Lint files
+        run: find . *.php | xargs -i % php -l
