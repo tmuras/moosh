@@ -47,7 +47,7 @@ class CourseReorder extends MooshCommand
                 'category' => $course->category,
             ],
             'sortorder ASC',
-            'id, sortorder',
+            'id, sortorder'
         );
         # reset index to be consecutive from zero
         $courses = array_values($courses);

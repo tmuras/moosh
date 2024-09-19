@@ -109,13 +109,14 @@ class UserList extends MooshCommand {
             if(!enrol_get_plugin($options['course-enrol-plugin'])){
                 cli_error(sprintf("could not find '%s' enrolment plugin", $options['course-enrol-plugin']));
             }
-            $sql = <<<'SQL'
+            $sql = "
                 select {user_enrolments}.userid
                 from {user_enrolments}
                 inner join {enrol} on {user_enrolments}.enrolid = {enrol}.id and {enrol}.enrol = :plugintype
                 where {enrol}.courseid = :courseid
                 and {user_enrolments}.status = :status
-                SQL;
+                ";
+
             $params = [
                 'plugintype' => $options['course-enrol-plugin'],
                 'courseid' => $options['course'],
@@ -149,3 +150,4 @@ class UserList extends MooshCommand {
         return self::$BOOTSTRAP_FULL_NO_ADMIN_CHECK;
     }
 }
+
