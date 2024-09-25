@@ -1084,8 +1084,10 @@ Outputs data in json format when run using --json option.
 db-stats
 --------
 
-Shows the total size of the Moodle database and the biggest tables.
-With -H or -j options the sizes will be shown in bytes (ie "286720" instead of "280KB").
+Shows the total size of the Moodle database, the top 3 biggest tables and tables: log, grades, grades history.
+With -H, -j or -e options the sizes will be shown in bytes (ie "286720" instead of "280KB").
+
+Using extended option (-e) it shows all tables.
 
 Example 1: Show me basic database statistics, formatted for human consumption. 
 
@@ -1094,6 +1096,10 @@ Example 1: Show me basic database statistics, formatted for human consumption.
 Example 2: Database statistics in JSON format. 
 
     moosh db-stats -j
+
+Example 3: Extended database statistics in json format. It provides statistics for each table
+
+    moosh db-stats -e
     
 debug-off
 ---------
