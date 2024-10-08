@@ -91,46 +91,43 @@ class H5pPluginExportManager {
 
         // appending libraries (or content types)
         $row_count = 0;
-        foreach ($libraries as $library) {
-            if($verbose) {
-                mtrace("Exporting object.");
-            }
-
-            // for default libraries are returned as 1-item arrays
-            if(is_array($library)) {
-                $library = reset($library);
-            }
-
-            // in case of unexpected data structure we don't want any thrown errors
-            if(!is_object($library)) {
-                mtrace("Cannot load one of the objects - skipping.");
-                continue;
-            }
-
-            // check object type
-            // runnable 0 - library, runnable 1 - content type
-            if($library->runnable != (int) $runnable) {
-                if($verbose) {
-                    $expected_runnable = (int) $runnable;
-                    mtrace("Skipping $library->title, cause of runnable: $library->runnable, expected: $expected_runnable.");
+        foreach ($libraries as $librarytype) {
+            foreach($librarytype as $library) {
+                if ($verbose) {
+                    mtrace("Exporting object.");
                 }
 
-                // skipping
-                continue;
-            }
+                // in case of unexpected data structure we don't want any thrown errors
+                if (!is_object($library)) {
+                    mtrace("Cannot load one of the objects - skipping.");
+                    continue;
+                }
 
-            if($verbose) {
-                mtrace("Mapping object $library->title.");
-            }
+                // check object type
+                // runnable 0 - library, runnable 1 - content type
+                if ($library->runnable != (int)$runnable) {
+                    if ($verbose) {
+                        $expected_runnable = (int)$runnable;
+                        mtrace("Skipping $library->title, cause of runnable: $library->runnable, expected: $expected_runnable.");
+                    }
 
-            // mapping to avoid duplicating expected fields values
-            $row = $this->mapCsvRow($library, $expected_fields, $verbose);
+                    // skipping
+                    continue;
+                }
 
-            $csv_writer->add_data($row);
-            $row_count++;
+                if ($verbose) {
+                    mtrace("Mapping object $library->title.");
+                }
 
-            if($verbose) {
-                mtrace("Object $library->title mapped.");
+                // mapping to avoid duplicating expected fields values
+                $row = $this->mapCsvRow($library, $expected_fields, $verbose);
+
+                $csv_writer->add_data($row);
+                $row_count++;
+
+                if ($verbose) {
+                    mtrace("Object $library->title mapped.");
+                }
             }
         }
 
@@ -141,6 +138,7 @@ class H5pPluginExportManager {
         file_put_contents($filename, $csv_writer->print_csv_data(true));
 
         mtrace("Exported file $filename with $row_count elements.");
+
     }
 
     /**
