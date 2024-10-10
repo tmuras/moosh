@@ -15,7 +15,7 @@
  * @author     Jakub Kleban <jakub.kleban2000@gmail.com>
  */
 
-namespace Moosh\Command\Moodle45\Cache;
+namespace Moosh\Command\Moodle405\Cache;
 use Moosh\MooshCommand;
 
 class CacheAddRedisStore extends MooshCommand {

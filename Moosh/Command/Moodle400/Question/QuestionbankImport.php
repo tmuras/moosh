@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle40\Question;
+namespace Moosh\Command\Moodle400\Question;
 
 use Moosh\MooshCommand;
 

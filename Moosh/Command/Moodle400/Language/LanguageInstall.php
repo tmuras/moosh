@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle40\Language;
+namespace Moosh\Command\Moodle400\Language;
 
 use Moosh\MooshCommand;
 use \tool_langimport\controller;

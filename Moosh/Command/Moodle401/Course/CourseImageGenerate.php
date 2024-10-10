@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle41\Course;
+namespace Moosh\Command\Moodle401\Course;
 
 use local_ai_connector\ai\ai;
 use Moosh\MooshCommand;

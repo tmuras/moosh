@@ -1,6 +1,6 @@
 <?php
 
-namespace Moosh\Command\Moodle41\H5pCore;
+namespace Moosh\Command\Moodle401\H5pCore;
 
 use \core_h5p\factory;
 
