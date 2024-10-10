@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle40\Badge;
+namespace Moosh\Command\Moodle400\Badge;
 
 use Moosh\MooshCommand;
 

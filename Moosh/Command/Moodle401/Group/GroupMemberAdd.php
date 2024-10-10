@@ -6,7 +6,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle41\Group;
+namespace Moosh\Command\Moodle401\Group;
 
 use Moosh\MooshCommand;
 
@@ -28,7 +28,7 @@ use Moosh\MooshCommand;
  * to the group with id 1
  * moosh group-memberadd -g 1 -c 5 example_username1, example_username2
  *
- * @package Moosh\Command\Moodle41\Group
+ * @package Moosh\Command\Moodle401\Group
  * @author Michal Chruscielski <michalch775@gmail.com>
  */
 class GroupMemberAdd extends MooshCommand
