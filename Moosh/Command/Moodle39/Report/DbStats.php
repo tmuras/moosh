@@ -88,17 +88,28 @@ class DbStats extends MooshCommand {
 
         // formatting query result, adding row count and calculating size
         $values = array_values($results);
+        $resultsLength = count($values);
+        if(is_null($limit) || $limit > $resultsLength) {
+            $limit = $resultsLength;
+        }
 
         $databaseSize = 0;
         $rowCount = 0;
         $tableData = [];
-        // we have to loop over every table in order to calculate rowCount precisely
         foreach($values as $index => $result) {
             $databaseSize += $result->size;
+            $rowCount += $result->row_count;
+
+            // we only calculate size and skips other actions when limit is reached
+            // we include tables from additionalTableStats
+            if($index >= $limit && !in_array($result->name, $additionalTableStats)) {
+                continue;
+            }
 
             // querying row count
             $tableName = $result->name;
 
+            // calculating precise table row count
             $countResult = $DB->get_records_sql("SELECT COUNT(*) AS 'count' from $tableName");
 
             $firstRow = array_values($countResult)[0];
@@ -106,8 +117,6 @@ class DbStats extends MooshCommand {
             $result->rowCount = strval($firstRow->count);
 
             $tableData[$result->name] = $result;
-
-            $rowCount += $firstRow->count;
         }
 
         return (object) [
