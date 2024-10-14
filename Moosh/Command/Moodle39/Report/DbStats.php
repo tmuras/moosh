@@ -45,6 +45,7 @@ class DbStats extends MooshCommand {
             // returns minimal stats
             $results = $this->fetchStats(3, array_values(TABLE_NAMES));
 
+            $results->rowCount = $results->rowCount . "\u{00A0}";
             // non-breaking space prevents from formatting as size
             foreach($results->tables as $key => $table) {
                 $results->tables[$key]->rowCount = $table->rowCount . "\u{00A0}";
@@ -87,21 +88,13 @@ class DbStats extends MooshCommand {
 
         // formatting query result, adding row count and calculating size
         $values = array_values($results);
-        $resultsLength = count($values);
-        if(is_null($limit) || $limit > $resultsLength) {
-            $limit = $resultsLength;
-        }
 
         $databaseSize = 0;
+        $rowCount = 0;
         $tableData = [];
+        // we have to loop over every table in order to calculate rowCount precisely
         foreach($values as $index => $result) {
             $databaseSize += $result->size;
-
-            // we only calculate size and skips other actions when limit is reached
-            // we include tables from additionalTableStats
-            if($index >= $limit && !in_array($result->name, $additionalTableStats)) {
-                continue;
-            }
 
             // querying row count
             $tableName = $result->name;
@@ -113,10 +106,13 @@ class DbStats extends MooshCommand {
             $result->rowCount = strval($firstRow->count);
 
             $tableData[$result->name] = $result;
+
+            $rowCount += $firstRow->count;
         }
 
         return (object) [
             'size' => $databaseSize,
+            'rowCount' => $rowCount,
             'tables' => $tableData
         ];
     }
@@ -131,6 +127,7 @@ class DbStats extends MooshCommand {
         $tablesIndexed = array_values($tables);
 
         return ['Database size' => $results->size,
+            'Database row count' => $results->rowCount,
             'Biggest table name' => $tablesIndexed[0]->name,
             'Biggest table size' => $tablesIndexed[0]->size,
             'Biggest table number of records' => $tablesIndexed[0]->rowCount,
