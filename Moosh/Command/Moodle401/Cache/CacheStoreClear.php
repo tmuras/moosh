@@ -7,7 +7,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace Moosh\Command\Moodle41\Cache;
+namespace Moosh\Command\Moodle401\Cache;
 use Moosh\MooshCommand;
 
 class CacheStoreClear extends MooshCommand

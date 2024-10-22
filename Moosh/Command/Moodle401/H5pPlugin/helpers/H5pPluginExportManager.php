@@ -1,6 +1,6 @@
 <?php
 
-namespace Moosh\Command\Moodle41\H5pPlugin;
+namespace Moosh\Command\Moodle401\H5pPlugin;
 
 use \mod_hvp\framework;
 
