@@ -2065,6 +2065,27 @@ Example:
 
     moosh plugin-uninstall theme_elegance
 
+question-export
+---------------
+
+Exports all or selected questions.
+
+Parameters
+
+| Option         | Description                                   |
+|----------------|-----------------------------------------------|
+| -C, --category | Questions category id.                        |
+| -c, --course   | Questions course id.                          |
+| -f, --filename | Exported file name or path without extension. |
+
+Example: export all questions
+
+    moosh question-export
+
+Example: export questions with category with id 3 to file my-questions.json
+
+    moosh question-export -C 3 -f my-questions
+
 question-import
 ---------------
 
