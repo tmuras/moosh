@@ -13,38 +13,36 @@ use Moosh\MooshCommand;
 /**
  * Command exports all question. It may filter them by categories or courses.
  */
-class QuestionExport extends MooshCommand
-{
-    public function __construct()
-    {
+class QuestionExport extends MooshCommand {
+    public function __construct() {
         parent::__construct('export', 'question');
 
         $this->addOption('c|course:', 'Specifies questions course id.');
         $this->addOption('f|filename:', 'Specifies exported file name.', 'moosh-questions-export');
         $this->addOption('C|category:', 'Specifies questions category id.');
+        $this->addOption('r|recursive', 'Exports also questions belonging to child categories of --category.');
     }
 
     public function execute() {
-        global $DB, $CFG;
-
         $courseId = $this->expandedOptions['course'];
         $categoryId = $this->expandedOptions['category'];
         $fileName = $this->expandedOptions['filename'];
+        $isRecursive = $this->expandedOptions['recursive'];
 
-        // moodle queries questions using similar requests, it is needed due to complicated structure
-        $sql = "
-            SELECT q.id AS id, q.name AS name, qc.id AS categoryId, q.questiontext as text
-            FROM {question} q
-            JOIN {question_versions} qv ON q.id = qv.questionid
-            JOIN {question_bank_entries} qbe ON qv.questionbankentryid = qbe.id
-            JOIN {question_categories} qc ON qbe.questioncategoryid = qc.id
-            JOIN {context} ctx ON qc.contextid = ctx.id
-            JOIN {course} c ON ctx.instanceid = c.id 
-            WHERE (qc.id = '$categoryId' or '$categoryId' = '') 
-            and (c.id = '$courseId' or '$courseId' = '')  
-        ";
+        // check if we want to export child categories
+        if($isRecursive) {
+            if($categoryId == NULL) {
+                cli_error("Parameter -r|recursive must be used with parameter -C|category.");
+            }
 
-        $questions = $DB->get_records_sql($sql);
+            $categoryIds = $this->getCategoryChildrenIds($categoryId);
+        } else if($categoryId) {
+            $categoryIds = [$categoryId];
+        } else {
+            $categoryIds = [];
+        }
+
+        $questions = $this->loadQuestions($courseId, $categoryIds);
 
         if(!string_ends_with($fileName, ".json")) {
             $fileName = $fileName . ".json";
@@ -55,6 +53,9 @@ class QuestionExport extends MooshCommand
         $json = json_encode($fullQuestions);
 
         file_put_contents($fileName, $json);
+
+        $count = count($fullQuestions);
+        print("Exported $count questions to file $fileName.\n");
     }
 
     /**
@@ -75,6 +76,38 @@ class QuestionExport extends MooshCommand
         }
 
         return $questionsWithAnswers;
+    }
+
+    /**
+     * Loads all questions based on course id or category ids
+     * @param int $courseId
+     * @param int[] $categoryIds
+     * @return array questions
+     */
+    public function loadQuestions($courseId, $categoryIds) {
+        global $DB;
+
+        $skipCategory = empty($categoryIds);
+
+        if($skipCategory) {
+            // IN clause must refer to some value, -1 will never exist so we add it
+            $categoryIds = [-1];
+        }
+
+        $categoryIdsStr = implode(", ", $categoryIds);
+        $sql = "
+            SELECT q.id AS id, q.name AS name, qc.id AS categoryId, q.questiontext as text, qv.version as version
+            FROM {question} q
+            LEFT JOIN {question_versions} qv ON q.id = qv.questionid
+            LEFT JOIN {question_bank_entries} qbe ON qv.questionbankentryid = qbe.id
+            LEFT JOIN {question_categories} qc ON qbe.questioncategoryid = qc.id
+            LEFT JOIN {context} ctx ON qc.contextid = ctx.id
+            LEFT JOIN {course} c ON ctx.instanceid = c.id 
+            WHERE (qc.id in ($categoryIdsStr) or '$skipCategory' = true) 
+            and (c.id = '$courseId' or '$courseId' = '');  
+        ";
+
+        return $DB->get_records_sql($sql);
     }
 
     /**
@@ -102,4 +135,35 @@ class QuestionExport extends MooshCommand
         return $string;
     }
 
+    /**
+     * Returns an array of category children ids.
+     * @param int $id parent id
+     * @return int[]
+     */
+    public function getCategoryChildrenIds($id) {
+        // This function is a little bit messy, please refactor if u have time.
+        global $DB;
+
+        // for safety
+        if(!is_number($id)) {
+            return [];
+        }
+
+        $categoriesIds = [$id];
+
+        $childrenCategoriesResult = $DB->get_records("question_categories", ['parent' => $id]);
+
+        foreach ($childrenCategoriesResult as $child) {
+            if(!is_number($child->id) && $child->id != '0') {
+                continue;
+            }
+
+            $subCategoriesIds = $this->getCategoryChildrenIds($child->id);
+            if(!empty($subCategoriesIds)) {
+                array_push($categoriesIds, ...$subCategoriesIds);
+            }
+        }
+
+        return $categoriesIds;
+    }
 }
