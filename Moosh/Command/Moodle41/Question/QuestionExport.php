@@ -68,9 +68,11 @@ class QuestionExport extends MooshCommand {
 
         $questionsWithAnswers = array();
 
+        $sql = "select * from {question_answers} where question = :question_id and fraction > 0";
+
         foreach ($questions as $question) {
-            $correctAnswer = $DB->get_record('question_answers', array('question' => $question->id, 'fraction' => 1.0));
-            $question->answer = $correctAnswer->answer;
+            $correctAnswers = $DB->get_records_sql($sql, array('question_id' => $question->id));
+            $question->answers = array_column($correctAnswers, 'answer');
 
             $questionsWithAnswers[] = $this->formatQuestion($question);
         }
@@ -95,7 +97,7 @@ class QuestionExport extends MooshCommand {
             $categoryIds = [-1];
         }
 
-        $categoryIdsStr = implode(", ", $categoryIds);
+        $params = array('course_id' => $courseId,'skip_course' => empty($courseId), 'categories_ids' => implode(", ", $categoryIds), 'skip_category' => $skipCategory);
         $sql = "
             SELECT q.id AS id, q.name AS name, qc.id AS categoryId, q.questiontext as text, qv.version as version
             FROM {question} q
@@ -104,11 +106,11 @@ class QuestionExport extends MooshCommand {
             LEFT JOIN {question_categories} qc ON qbe.questioncategoryid = qc.id
             LEFT JOIN {context} ctx ON qc.contextid = ctx.id
             LEFT JOIN {course} c ON ctx.instanceid = c.id
-            WHERE (qc.id in ($categoryIdsStr) or '$skipCategory' = true)
-            and (c.id = '$courseId' or '$courseId' = '');
+            WHERE (qc.id in (:categories_ids) or :skip_category = true)
+            and (c.id = :course_id or :skip_course = true);
         ";
 
-        return $DB->get_records_sql($sql);
+        return $DB->get_records_sql($sql, $params);
     }
 
     /**
@@ -118,7 +120,7 @@ class QuestionExport extends MooshCommand {
      */
     public function formatQuestion($question) {
         $question->text = $this->stripAndTrim($question->text);
-        $question->answer = $this->stripAndTrim($question->answer);
+        $question->answers = array_map([$this, 'stripAndTrim'], $question->answers);
 
         return $question;
     }
