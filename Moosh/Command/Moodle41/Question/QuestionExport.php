@@ -31,12 +31,12 @@ class QuestionExport extends MooshCommand {
 
         // check if we want to export child categories
         if($isRecursive) {
-            if($categoryId == NULL) {
-                cli_error("Parameter -r|recursive must be used with parameter -C|category.");
+            if($categoryId == null) {
+                cli_error("Parameter --recursive must be used with parameter --category.");
             }
 
             $categoryIds = $this->getCategoryChildrenIds($categoryId);
-        } else if($categoryId) {
+        } elseif($categoryId) {
             $categoryIds = [$categoryId];
         } else {
             $categoryIds = [];
@@ -55,7 +55,7 @@ class QuestionExport extends MooshCommand {
         file_put_contents($fileName, $json);
 
         $count = count($fullQuestions);
-        print("Exported $count questions to file $fileName.\n");
+        print "Exported $count questions to file $fileName.\n";
     }
 
     /**
@@ -90,7 +90,8 @@ class QuestionExport extends MooshCommand {
         $skipCategory = empty($categoryIds);
 
         if($skipCategory) {
-            // IN clause must refer to some value, -1 will never exist so we add it
+            // IN clause must refer to some value, -1 will never exist so we add it.
+            // I decided to add -1, because it's imo safer and cleaner than concatenating sql queries
             $categoryIds = [-1];
         }
 
@@ -102,9 +103,9 @@ class QuestionExport extends MooshCommand {
             LEFT JOIN {question_bank_entries} qbe ON qv.questionbankentryid = qbe.id
             LEFT JOIN {question_categories} qc ON qbe.questioncategoryid = qc.id
             LEFT JOIN {context} ctx ON qc.contextid = ctx.id
-            LEFT JOIN {course} c ON ctx.instanceid = c.id 
-            WHERE (qc.id in ($categoryIdsStr) or '$skipCategory' = true) 
-            and (c.id = '$courseId' or '$courseId' = '');  
+            LEFT JOIN {course} c ON ctx.instanceid = c.id
+            WHERE (qc.id in ($categoryIdsStr) or '$skipCategory' = true)
+            and (c.id = '$courseId' or '$courseId' = '');
         ";
 
         return $DB->get_records_sql($sql);
@@ -154,7 +155,7 @@ class QuestionExport extends MooshCommand {
         $childrenCategoriesResult = $DB->get_records("question_categories", ['parent' => $id]);
 
         foreach ($childrenCategoriesResult as $child) {
-            if(!is_number($child->id) && $child->id != '0') {
+            if(!is_number($child->id) || $child->id == '0') {
                 continue;
             }
 
