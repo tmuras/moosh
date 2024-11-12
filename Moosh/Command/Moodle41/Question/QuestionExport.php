@@ -36,6 +36,12 @@ class QuestionExport extends MooshCommand {
             }
 
             $categoryIds = $this->getCategoryChildrenIds($categoryId);
+
+            if($this->verbose) {
+                $children = implode(", ", $categoryIds);
+                mtrace("Loaded recursive categories: [$children].");
+            }
+
         } elseif($categoryId) {
             $categoryIds = [$categoryId];
         } else {
@@ -46,6 +52,10 @@ class QuestionExport extends MooshCommand {
 
         if(!string_ends_with($fileName, ".json")) {
             $fileName = $fileName . ".json";
+        }
+
+        if($this->verbose) {
+            mtrace("Exporting questions to $fileName.");
         }
 
         $fullQuestions = $this->loadAnswers($questions);
@@ -66,15 +76,30 @@ class QuestionExport extends MooshCommand {
     public function loadAnswers($questions) {
         global $DB;
 
+        if($this->verbose) {
+            $count = count($questions);
+            mtrace("Loading answers for $count questions.");
+        }
+
         $questionsWithAnswers = array();
 
         $sql = "select * from {question_answers} where question = :question_id and fraction > 0";
+
+        $answersCount = 0;
 
         foreach ($questions as $question) {
             $correctAnswers = $DB->get_records_sql($sql, array('question_id' => $question->id));
             $question->answers = array_column($correctAnswers, 'answer');
 
             $questionsWithAnswers[] = $this->formatQuestion($question);
+
+            $answersCount += count($correctAnswers);
+        }
+
+        if($this->verbose) {
+            $questionsCount = count($questions);
+            $answersCount -
+            mtrace("Loaded $answersCount answers for $questionsCount questions.");
         }
 
         return $questionsWithAnswers;
@@ -97,20 +122,28 @@ class QuestionExport extends MooshCommand {
             $categoryIds = [-1];
         }
 
-        $params = array('course_id' => $courseId,'skip_course' => empty($courseId), 'categories_ids' => implode(", ", $categoryIds), 'skip_category' => $skipCategory);
+        $categoriesStr = implode(", ", $categoryIds);
+        $params = array('skip_category' => $skipCategory, 'course_id' => $courseId,'skip_course' => empty($courseId));
         $sql = "
-            SELECT q.id AS id, q.name AS name, qc.id AS categoryId, q.questiontext as text, qv.version as version
+            SELECT q.id AS id, q.name AS name, qc.id AS category_id, q.questiontext as text, qv.version as version
             FROM {question} q
             LEFT JOIN {question_versions} qv ON q.id = qv.questionid
             LEFT JOIN {question_bank_entries} qbe ON qv.questionbankentryid = qbe.id
             LEFT JOIN {question_categories} qc ON qbe.questioncategoryid = qc.id
             LEFT JOIN {context} ctx ON qc.contextid = ctx.id
             LEFT JOIN {course} c ON ctx.instanceid = c.id
-            WHERE (qc.id in (:categories_ids) or :skip_category = true)
+            WHERE (qc.id in ($categoriesStr) or :skip_category = true)
             and (c.id = :course_id or :skip_course = true);
         ";
 
-        return $DB->get_records_sql($sql, $params);
+        $result = $DB->get_records_sql($sql, $params);
+
+        if($this->verbose) {
+            $count = count($result);
+            mtrace("Loaded $count question records from DB.");
+        }
+
+        return $result;
     }
 
     /**
