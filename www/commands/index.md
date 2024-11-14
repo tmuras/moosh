@@ -2072,11 +2072,12 @@ Exports all or selected questions.
 
 Parameters
 
-| Option         | Description                                   |
-|----------------|-----------------------------------------------|
-| -C, --category | Questions category id.                        |
-| -c, --course   | Questions course id.                          |
-| -f, --filename | Exported file name or path without extension. |
+| Option          | Description                                         |
+|-----------------|-----------------------------------------------------|
+| -C, --category  | Questions category id.                              |
+| -c, --course    | Questions course id.                                |
+| -f, --filename  | Exported file name or path without extension.       |
+| -r, --recursive | Use only with -C. Exports also children categories. |
 
 Example: export all questions
 
@@ -2085,6 +2086,10 @@ Example: export all questions
 Example: export questions with category with id 3 to file my-questions.json
 
     moosh question-export -C 3 -f my-questions
+
+Example: export questions with category with id 3 and all its child categories to file my-questions.json
+
+    moosh question-export -C 3 -f my-questions -r
 
 question-import
 ---------------
