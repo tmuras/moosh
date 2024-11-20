@@ -296,6 +296,11 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
             }
         }
         if (session_status() !== PHP_SESSION_ACTIVE) {
+            if (method_exists('\core\session\manager', 'destroy_all')) {
+                \core\session\manager::destroy_all();
+            } else {
+                \core\session\manager::kill_all_sessions();
+            }
             session_start();
 	}
 	//Deviceanalytics redirect on login event, we need to avoid that.
