@@ -42,7 +42,6 @@ $appspecs->add('p|moodle-path:', "Moodle directory.");
 $appspecs->add('u|user:', "Moodle user, by default ADMIN");
 $appspecs->add('n|no-user-check', "Don't check if Moodle data is owned by the user running script");
 $appspecs->add('t|performance', "Show performance information including timings");
-$appspecs->add('o|options:', "Change any setting in config.php");
 $appspecs->add('h|help', "Show global help.");
 $appspecs->add('list-commands', "Show all possible commands");
 
@@ -194,34 +193,32 @@ if ($moodlerc) {
  */
 $subcommand = $subcommands[$subcommand];
 $bootstrap_level = $subcommand->bootstrapLevel();
-
-// Manually retrieve the information from config.php
-$config = [];
-if(!file_exists($top_dir . '/config.php')) {
-    cli_error('config.php not found.');
-}
-exec("php -w " . $top_dir . "/config.php", $config);
-if (count($config) == 0) {
-    cli_error("config.php does not look right to me.");
-}
-$config = implode("\n", $config);
-$config = str_ireplace('<?php', '', $config);
-$config = str_replace('require_once', '//require_once', $config);
-
-eval($config);
-if(!isset($CFG)) {
-    cli_error('After evaluating config.php, $CFG is not set');
-}
-if($app_options->has('verbose')) {
-    echo '$CFG - ';
-    print_r($CFG);
-}
-
 if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE ) {
-    // Do nothing really.
+ // Do nothing really.
 } else if($bootstrap_level === MooshCommand::$BOOTSTRAP_DB_ONLY) {
+    // Manually retrieve the information from config.php
+    // and create $DB object.
+    $config = [];
+    if(!file_exists($top_dir . '/config.php')) {
+        cli_error('config.php not found.');
+    }
+    exec("php -w " . $top_dir . "/config.php", $config);
+    if (count($config) == 0) {
+        cli_error("config.php does not look right to me.");
+    }
+    $config = implode("\n", $config);
+    $config = str_ireplace('<?php', '', $config);
+    $config = str_replace('require_once', '//require_once', $config);
 
-    // create $DB object
+    eval($config);
+    if(!isset($CFG)) {
+        cli_error('After evaluating config.php, $CFG is not set');
+    }
+    if($app_options->has('verbose')) {
+        echo '$CFG - ';
+        print_r($CFG);
+    }
+
     $CFG->libdir = $moosh_dir .  "/includes/moodle/lib/";
     $CFG->debugdeveloper = false;
 
@@ -253,25 +250,11 @@ if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE ) {
         define('ABORT_AFTER_CONFIG', true);
     }
 
-    $CFG->dirroot = $top_dir;
-
-    if ($app_options->has('options')) {
-        $option_value = $app_options['options']->value;
-        list($key, $value) = explode('=', $option_value, 2);
-
-        if (isset($CFG->$key)) {
-            if ($value == 'null') {
-                $value = null;
-            }
-            $CFG->$key = $value;
-        }
-    }
-
     if (!$top_dir) {
         echo "Could not find Moodle installation!\n";
         exit(1);
     }
-    require_once($top_dir . "/lib/setup.php");
+    require_once($top_dir . '/config.php');
 
     $shell_user = false;
     if (!$app_options->has('no-user-check')) {
