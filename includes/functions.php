@@ -150,14 +150,26 @@ function moosh_moodle_version($topdir, $default = 23) {
 }
 
 function moosh_generate_version_list($upto, $from = 19) {
+    // This function assumes that moodle main version is below 10 and subversions are below or equal to 20.
+	
     $upto = intval($upto);
     $from = intval($from);
     if (!($from && $upto) || $from > $upto) {
         throw new Exception("Invalid from or upto value; they must both be > 0 and from must be <= upto");
     }
+
+    $frommain = (int)(substr($from, 0, 1));
+    $fromsub = (int)(substr($from, 1));
+    $uptomain = (int)(substr($upto, 0, 1));
+    $uptosub = (int)(substr($upto, 1));
+
     $versions = array();
-    foreach (range($from, $upto) as $no) {
-        $versions[] = 'Moodle' . $no;
+    foreach (range($frommain, $uptomain) as $nom) {
+        $frsub = ($nom == $frommain) ? $fromsub : 0;
+        $tosub = ($nom == $uptomain) ? $uptosub : 20;
+        foreach(range($frsub, $tosub) as $nos) {
+            $versions[] = 'Moodle' . $nom . $nos;
+        }
     }
     return $versions;
 }
