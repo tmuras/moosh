@@ -41,6 +41,7 @@ $spec_verbose = @$appspecs->add('v|verbose', "be verbose");
 $appspecs->add('p|moodle-path:', "Moodle directory.");
 $appspecs->add('u|user:', "Moodle user, by default ADMIN");
 $appspecs->add('n|no-user-check', "Don't check if Moodle data is owned by the user running script");
+$appspecs->add('l|no-login', "Do not log in as admin user");
 $appspecs->add('t|performance', "Show performance information including timings");
 $appspecs->add('h|help', "Show global help.");
 $appspecs->add('list-commands', "Show all possible commands");
@@ -280,6 +281,7 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
 
     if ($subcommand->bootstrapLevel() != MooshCommand::$BOOTSTRAP_CONFIG
         && $subcommand->bootstrapLevel() != MooshCommand::$BOOTSTRAP_FULL_NO_ADMIN_CHECK
+        && !$app_options->has('no-login')
     ) {
         // By default set up $USER to admin user.
         if ($app_options->has('user')) {
