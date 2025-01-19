@@ -42,6 +42,7 @@ $appspecs->add('p|moodle-path:', "Moodle directory.");
 $appspecs->add('u|user:', "Moodle user, by default ADMIN");
 $appspecs->add('n|no-user-check', "Don't check if Moodle data is owned by the user running script");
 $appspecs->add('l|no-login', "Do not log in as admin user");
+$appspecs->add('o|options+', 'Override $CFG settings defined in config.php. Use null to set to null and unset to unset. You can use multiple times. Example: -o dataroot=/var/moodledata -o session_handler_class=unset -o reverseproxy=null');
 $appspecs->add('t|performance', "Show performance information including timings");
 $appspecs->add('h|help', "Show global help.");
 $appspecs->add('list-commands', "Show all possible commands");
@@ -238,8 +239,29 @@ if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE) {
         echo "Could not find Moodle installation!\n";
         exit(1);
     }
-    require_once($top_dir . '/config.php');
+    // Either require the actual file
+    // or over-write some settings and evaluate it
+    if ($app_options->has('options')) {
+        eval_config($top_dir);
 
+        $option_values = $app_options['options']->value;
+        foreach ($option_values as $option_value) {
+            list($key, $value) = explode('=', $option_value, 2);
+            if (isset($CFG->$key)) {
+                if ($value == 'null') {
+                    $value = null;
+                } elseif ($value == 'unset') {
+                    unset($CFG->$key);
+                } else {
+                    $CFG->$key = $value;
+                }
+            }
+        }
+
+        require_once($top_dir . '/lib/setup.php');
+    } else {
+        require_once($top_dir . '/config.php');
+    }
     $shell_user = false;
     if (!$app_options->has('no-user-check')) {
         // make sure the PHP POSIX library is installed before using it
