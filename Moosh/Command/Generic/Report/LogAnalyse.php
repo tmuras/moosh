@@ -39,7 +39,7 @@ class LogAnalyse extends MooshCommand
 
     public function bootstrapLevel()
     {
-        return self::$BOOTSTRAP_DB_ONLY;
+        return self::$BOOTSTRAP_FULL_NO_ADMIN_CHECK;
     }
 
     /**
@@ -187,27 +187,30 @@ class LogAnalyse extends MooshCommand
     private function analyseIdOrdering($from, $to)
     {
         global $DB;
+        // logstore_standard_log
         $sql = "SELECT id, timecreated 
-                   FROM {logstore_standard_log}
+                   FROM log
 				  WHERE timecreated >= ? AND timecreated < ?
 				  ORDER BY id ASC";
-        $records = $DB->get_records_sql($sql, array($from, $to));
+        $records = $DB->get_recordset_sql($sql, array($from, $to), 0, 9000000);
         $return = array();
         $previousId = 0;
         $previousTime = 0;
         foreach ($records as $record) {
-            if($previousTime < $record->timecreated) {
+            if ($previousTime < $record->timecreated) {
                 $previousTime = $record->timecreated;
             }
-            if($previousTime > $record->timecreated + 1) {
-//                echo "Time not increasing: {$record->id} $previousTime > {$record->timecreated}\n";
-                if(!isset($return[$record->timecreated])) {
-                    $return[$record->timecreated] = 0;
+            if ($previousTime > $record->timecreated + 200) {
+                echo "Time decreasing: {$previousId} -> {$record->id}: $previousTime -> {$record->timecreated} (diff ". ($previousTime - $record->timecreated) .")\n";
+                $previousTime = $record->timecreated;
+                if (!isset($return[$record->timecreated])) {
+//                    $return[$record->timecreated] = 0;
                 }
-                $return[$record->timecreated]++;
+//                $return[$record->timecreated]++;
             }
-
+            $previousId = $record->id;
         }
+        $records->close();
         ksort($return);
         return $return;
     }
@@ -221,8 +224,27 @@ class LogAnalyse extends MooshCommand
         $options = $this->expandedOptions;
 
         $timezone = new \DateTimeZone($options['time-zone']);
-        $from = $this->parseDateTime($options['from'], $timezone);
-        $to = $this->parseDateTime($options['to'], $timezone, 59);
+
+        // If from not given then auto-detect the oldest entry in the DB
+        if (!$options['from']) {
+            $fromdb = $DB->get_record_sql('SELECT timecreated FROM {logstore_standard_log} ORDER BY timecreated ASC LIMIT 1');
+            $from = new \DateTime('@' . $fromdb->timecreated, $timezone);
+            if ($this->verbose) {
+                echo "Option --from not provided, the earliest timestamp found in mdl_logstore_standard_log is " . $fromdb->timecreated . "\n";
+            }
+        } else {
+            $from = $this->parseDateTime($options['from'], $timezone);
+        }
+
+        if (!$options['from']) {
+            $todb = $DB->get_record_sql('SELECT timecreated FROM {logstore_standard_log} ORDER BY timecreated DESC LIMIT 1');
+            $to = new \DateTime('@' . $todb->timecreated, $timezone);
+            if ($this->verbose) {
+                echo "Option --to not provided, the latest timestamp found in mdl_logstore_standard_log is " . $todb->timecreated . "\n";
+            }
+        } else {
+            $to = $this->parseDateTime($options['to'], $timezone, 59);
+        }
 
         if ($this->verbose) {
             echo "From " . $from->format(self::DATE_FORMAT) . ' [' . $from->getTimestamp() . "]\n";
@@ -231,11 +253,9 @@ class LogAnalyse extends MooshCommand
         if ($to < $from) {
             cli_error('"to date" must be later than "from date".');
         }
-//        $timestamps = $this->analyseIdOrdering($from->getTimestamp(), $to->getTimestamp());
-//        print_r($timestamps);
-//        die();
-
-        // Split timestamps into 60-second intervals.
+        $timestamps = $this->analyseIdOrdering($from->getTimestamp(), $to->getTimestamp());
+	
+	// Split timestamps into 60-second intervals.
         $range = array();
         $current = $from->getTimestamp();
         $end = $to->getTimestamp();
