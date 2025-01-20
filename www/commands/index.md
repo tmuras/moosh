@@ -784,6 +784,15 @@ Example 3: Backup course id=3 without any user data (excludes users, logs, grade
     moosh course-backup --template 3
 
 
+cours-change-format
+-------------------
+
+This command will change the format of a course to another one, triggering all the necessary changes to course such like image transfert.
+
+Example : For a course of id 3 that is in grid format, it will pass to tiles, migrating image for the new course format
+
+    moosh course-change-format 3 tiles
+
 course-cleanup
 --------------
 

@@ -15,7 +15,7 @@ $cwd = getcwd();
 //try to detect if we are packaged moosh version - e.g. dude where are my libraries
 if (file_exists(__DIR__ . '/Moosh')) {
     $moosh_dir = __DIR__;
-} elseif (file_exists('/usr/share/moosh')) {
+} else if (file_exists('/usr/share/moosh')) {
     $moosh_dir = '/usr/share/moosh';
 } else {
     die("I can't find my own libraries\n");
@@ -32,7 +32,7 @@ require_once $moosh_dir . '/includes/default_options.php';
 use GetOptionKit\ContinuousOptionParser;
 use GetOptionKit\OptionCollection;
 
-define('MOOSH_VERSION', '1.25');
+define('MOOSH_VERSION', '1.26');
 define('MOODLE_INTERNAL', true);
 
 // suppressing warnings for php > 8
@@ -41,6 +41,8 @@ $spec_verbose = @$appspecs->add('v|verbose', "be verbose");
 $appspecs->add('p|moodle-path:', "Moodle directory.");
 $appspecs->add('u|user:', "Moodle user, by default ADMIN");
 $appspecs->add('n|no-user-check', "Don't check if Moodle data is owned by the user running script");
+$appspecs->add('l|no-login', "Do not log in as admin user");
+$appspecs->add('o|options+', 'Override $CFG settings defined in config.php. Use null to set to null and unset to unset. You can use multiple times. Example: -o dataroot=/var/moodledata -o session_handler_class=unset -o reverseproxy=null');
 $appspecs->add('t|performance', "Show performance information including timings");
 $appspecs->add('h|help', "Show global help.");
 $appspecs->add('list-commands', "Show all possible commands");
@@ -55,7 +57,7 @@ if ($app_options->has('moodle-path')) {
 }
 
 if (file_exists($top_dir . '/lib/clilib.php')) {
-    require_once ($top_dir . '/lib/clilib.php');
+    require_once($top_dir . '/lib/clilib.php');
 } else {
     function cli_problem($text) {
         fwrite(STDERR, $text . "\n");
@@ -99,13 +101,12 @@ $subcommand_options = array();
 $arguments = array();
 
 // The first argument must be a subcommand.
-$subcommand = NULL;
+$subcommand = null;
 $possible_matches = array();
 
 if (!@$parser->isEnd()) {
     $subcommand = @$parser->advance();
 }
-
 
 if (($subcommand !== null) and !isset($subcommand_specs[$subcommand])) {
     $possible_matches = array();
@@ -117,7 +118,7 @@ if (($subcommand !== null) and !isset($subcommand_specs[$subcommand])) {
     if (count($possible_matches) == 1) {
         $subcommand = $possible_matches[0];
     } else {
-        $subcommand = NULL;
+        $subcommand = null;
     }
 }
 
@@ -166,19 +167,19 @@ while (!@$parser->isEnd()) {
 }
 
 // Read config file if available.
-$moodlerc = NULL;
+$moodlerc = null;
 
 $home_dir = home_dir();
 
 if (file_exists($home_dir . DIRECTORY_SEPARATOR . ".mooshrc.php")) {
     $moodlerc = $home_dir . DIRECTORY_SEPARATOR . ".mooshrc.php";
-} elseif (file_exists("/etc/moosh/mooshrc.php")) {
+} else if (file_exists("/etc/moosh/mooshrc.php")) {
     $moodlerc = "/etc/moosh/mooshrc.php";
-} elseif (file_exists($home_dir . DIRECTORY_SEPARATOR . "mooshrc.php")) {
+} else if (file_exists($home_dir . DIRECTORY_SEPARATOR . "mooshrc.php")) {
     $moodlerc = $home_dir . DIRECTORY_SEPARATOR . "mooshrc.php";
 }
 
-$options = NULL;
+$options = null;
 if ($moodlerc) {
     $options = array();
     require($moodlerc);
@@ -193,33 +194,17 @@ if ($moodlerc) {
  */
 $subcommand = $subcommands[$subcommand];
 $bootstrap_level = $subcommand->bootstrapLevel();
-if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE ) {
- // Do nothing really.
-} else if($bootstrap_level === MooshCommand::$BOOTSTRAP_DB_ONLY) {
-    // Manually retrieve the information from config.php
-    // and create $DB object.
-    $config = [];
-    if(!file_exists($top_dir . '/config.php')) {
-        cli_error('config.php not found.');
-    }
-    exec("php -w " . $top_dir . "/config.php", $config);
-    if (count($config) == 0) {
-        cli_error("config.php does not look right to me.");
-    }
-    $config = implode("\n", $config);
-    $config = str_ireplace('<?php', '', $config);
-    $config = str_replace('require_once', '//require_once', $config);
 
-    eval($config);
-    if(!isset($CFG)) {
-        cli_error('After evaluating config.php, $CFG is not set');
-    }
-    if($app_options->has('verbose')) {
+if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE) {
+    // Do nothing really.
+} else if ($bootstrap_level === MooshCommand::$BOOTSTRAP_DB_ONLY) {
+    $config = eval_config($top_dir);
+    if ($app_options->has('verbose')) {
         echo '$CFG - ';
         print_r($CFG);
     }
 
-    $CFG->libdir = $moosh_dir .  "/includes/moodle/lib/";
+    $CFG->libdir = $moosh_dir . "/includes/moodle/lib/";
     $CFG->debugdeveloper = false;
 
     require_once($CFG->libdir . "/moodlelib.php");
@@ -227,7 +212,7 @@ if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE ) {
     require_once($CFG->libdir . "/setuplib.php");
     require_once($CFG->libdir . "/dmllib.php");
 
-    if(!class_exists('core_string_manager_standard')) {
+    if (!class_exists('core_string_manager_standard')) {
         class core_string_manager_standard {
             function string_exists() {
                 return false;
@@ -241,7 +226,7 @@ if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE ) {
         $_SERVER['REMOTE_ADDR'] = 'localhost';
         $_SERVER['SERVER_PORT'] = 80;
         $_SERVER['SERVER_PROTOCOL'] = 'HTTP 1.1';
-        $_SERVER['SERVER_SOFTWARE'] = 'PHP /'.phpversion().' Development Server';
+        $_SERVER['SERVER_SOFTWARE'] = 'PHP /' . phpversion() . ' Development Server';
         $_SERVER['REQUEST_URI'] = '/';
     } else {
         define('CLI_SCRIPT', true);
@@ -254,17 +239,38 @@ if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE ) {
         echo "Could not find Moodle installation!\n";
         exit(1);
     }
-    require_once($top_dir . '/config.php');
+    // Either require the actual file
+    // or over-write some settings and evaluate it
+    if ($app_options->has('options')) {
+        eval_config($top_dir);
 
+        $option_values = $app_options['options']->value;
+        foreach ($option_values as $option_value) {
+            list($key, $value) = explode('=', $option_value, 2);
+            if (isset($CFG->$key)) {
+                if ($value == 'null') {
+                    $value = null;
+                } elseif ($value == 'unset') {
+                    unset($CFG->$key);
+                } else {
+                    $CFG->$key = $value;
+                }
+            }
+        }
+
+        require_once($top_dir . '/lib/setup.php');
+    } else {
+        require_once($top_dir . '/config.php');
+    }
     $shell_user = false;
     if (!$app_options->has('no-user-check')) {
-    	// make sure the PHP POSIX library is installed before using it
-    	if(!(function_exists('posix_getpwuid') && function_exists('posix_geteuid'))){
-    		cli_error("The PHP POSIX extension is not installed - see http://php.net/manual/en/book.posix.php (on CentOS/RHEL the package php-process provides this extension)");
-    	}
+        // make sure the PHP POSIX library is installed before using it
+        if (!(function_exists('posix_getpwuid') && function_exists('posix_geteuid'))) {
+            cli_error("The PHP POSIX extension is not installed - see http://php.net/manual/en/book.posix.php (on CentOS/RHEL the package php-process provides this extension)");
+        }
         $shell_user = posix_getpwuid(posix_geteuid());
         $moodledata_owner = detect_moodledata_owner($CFG->dataroot);
-        if($moodledata_owner && $shell_user['name'] != $moodledata_owner['user']['name']) {
+        if ($moodledata_owner && $shell_user['name'] != $moodledata_owner['user']['name']) {
             cli_error("One of your Moodle data directories ({$moodledata_owner['dir']}) is owned by
 different user ({$moodledata_owner['user']['name']}) than the one that runs the script ({$shell_user['name']}).
 If you're sure you know what you're doing, run moosh with -n flag to skip that test.");
@@ -277,9 +283,9 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
     @error_reporting(E_ALL);
     @ini_set('display_errors', '1');
 
-
     if ($subcommand->bootstrapLevel() != MooshCommand::$BOOTSTRAP_CONFIG
-        && $subcommand->bootstrapLevel() != MooshCommand::$BOOTSTRAP_FULL_NO_ADMIN_CHECK
+            && $subcommand->bootstrapLevel() != MooshCommand::$BOOTSTRAP_FULL_NO_ADMIN_CHECK
+            && !$app_options->has('no-login')
     ) {
         // By default set up $USER to admin user.
         if ($app_options->has('user')) {
@@ -297,17 +303,17 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
         }
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
-	}
-	//Deviceanalytics redirect on login event, we need to avoid that.
-        if(!is_dir($top_dir."/report/deviceanalytics")){
-		complete_user_login($user);
-	} else {
-		login_without_event($user);
-	}
+        }
+        //Deviceanalytics redirect on login event, we need to avoid that.
+        if (!is_dir($top_dir . "/report/deviceanalytics")) {
+            complete_user_login($user);
+        } else {
+            login_without_event($user);
+        }
     }
 }
 
-if($top_dir) {
+if ($top_dir) {
     // Gather more info based on the directory where moosh was run
     $relative_dir = substr($cwd, strlen($top_dir));
     $relative_dir = trim($relative_dir, '/');
@@ -340,30 +346,30 @@ $subcommand->expandOptions();
 if ($app_options->has('verbose')) {
     echo "Moodle version detected: $moodle_version\n";
     if ($moodlerc) {
-            echo "Using '$moodlerc' as moosh runtime configuration file\n";
+        echo "Using '$moodlerc' as moosh runtime configuration file\n";
     }
     $subcommand->status();
 }
 
 // Create directory for configuration if one is not there already.
-if($subcommand->requireHomeWriteable() && !file_exists($local_dir)) {
-    if(!mkdir($local_dir)) {
+if ($subcommand->requireHomeWriteable() && !file_exists($local_dir)) {
+    if (!mkdir($local_dir)) {
         cli_error("Could not create moosh directory in '$local_dir' and this command requires it.");
     }
 }
 
 // Check if home dir writable.
-if($subcommand->requireHomeWriteable() && !is_writeable($local_dir)) {
+if ($subcommand->requireHomeWriteable() && !is_writeable($local_dir)) {
     cli_error("Warning: my home directory: '$local_dir' is not writable and the command requires write access there!");
 }
 
 // Execute the actual logic.
-if($app_options->has('performance')) {
+if ($app_options->has('performance')) {
     $perf = new Performance();
     $perf->start();
 }
 $subcommand->execute();
-if($app_options->has('performance')) {
+if ($app_options->has('performance')) {
     $perf->stop();
     echo $perf->summary();
 }
