@@ -43,7 +43,7 @@ Clone Moodle HQ docker repository and Moodle code into  ~/moosh-testing:
 Go into the moodle directory and download the moosh code:
 
     cd ~/moosh-testing/moodle
-    git clone git://github.com/tmuras/moosh.git
+    git clone git@github.com:tmuras/moosh.git
 
 Go into ~/moosh-testing/moodle/moosh and install moosh dependencies:
 
