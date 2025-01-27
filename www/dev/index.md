@@ -89,26 +89,6 @@ To
     $CFG->prefix = 'b_';
 
 
-Get into the web container:
-
-    cd ~/moosh-testing/moodle-docker
-    bin/moodle-docker-compose exec webserver bash
-
-In your console you should be logged in as root (you should see something like this root@b5ba7a659e83:/var/www/html#), run the following commands:
-
-
-    apt-get update
-    apt-get install sudo
-    chown -R www-data /var/www
-    sudo -u www-data -E -H bash
-
-
-Then you should be logged in as www-data (and see something like this www-data@b5ba7a659e83:~/html$)
-
-
-Run then:
-
-    cd /var/www/html
     php admin/tool/behat/cli/init.php
 
 
@@ -118,13 +98,6 @@ At the end of the installation, it should show local_mooshtest being installed:
 
 ++ Success ++
 ______________
-When you get warning like this one:
-
-PHP Warning:  PHP Startup: Unable to load dynamic library '/usr/local/lib/php/extensions/no-debug-non-zts-20160303/oci8.so' - libmql1.so: cannot open shared object file: No such file or directory in Unknown on line 0
-
-Run this command:
-
-    export LD_LIBRARY_PATH=/usr/local/instantclient_12_1/
 
 
 Now you can run any moosh test with command:
@@ -143,9 +116,6 @@ Example:
 
 ####Exit, stop and remove container:
 
-To exit from the interactive container, type:
-
-    exit    
 
 To stop the container:
 
