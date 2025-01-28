@@ -89,7 +89,7 @@ To
     $CFG->prefix = 'b_';
 
 
-    php admin/tool/behat/cli/init.php
+    bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/init.php
 
 
 At the end of the installation, it should show local_mooshtest being installed:
@@ -102,16 +102,17 @@ ______________
 
 Now you can run any moosh test with command:
 
-    php admin/tool/behat/cli/run.php --format pretty --tags=@moosh
+    cd ~/moosh-testing/moodle-docker
+    bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/run.php --format pretty --tags=@moosh
 
 
 Or test any command:
 
-    moosh/moosh.php moosh-command
+    bin/moodle-docker-compose exec webserver moosh/moosh.php moosh-command
 
 Example:
 
-    moosh/moosh.php course-list
+    bin/moodle-docker-compose exec webserver moosh/moosh.php course-list
 
 
 ####Exit, stop and remove container:

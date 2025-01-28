@@ -178,7 +178,7 @@ cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
 <pre><code>$CFG-&gt;prefix = 'b_';
 
 
-php admin/tool/behat/cli/init.php
+bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/init.php
 </code></pre>
 
 <p>At the end of the installation, it should show local_mooshtest being installed:</p>
@@ -191,17 +191,18 @@ php admin/tool/behat/cli/init.php
 
 <p>Now you can run any moosh test with command:</p>
 
-<pre><code>php admin/tool/behat/cli/run.php --format pretty --tags=@moosh
+<pre><code>cd ~/moosh-testing/moodle-docker
+bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/run.php --format pretty --tags=@moosh
 </code></pre>
 
 <p>Or test any command:</p>
 
-<pre><code>moosh/moosh.php moosh-command
+<pre><code>bin/moodle-docker-compose exec webserver moosh/moosh.php moosh-command
 </code></pre>
 
 <p>Example:</p>
 
-<pre><code>moosh/moosh.php course-list
+<pre><code>bin/moodle-docker-compose exec webserver moosh/moosh.php course-list
 </code></pre>
 
 <a name="Exit..stop.and.remove.container:"></a>
