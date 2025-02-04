@@ -894,10 +894,46 @@ Example1 : change course enrolment instance status to disable for instance 42
 
     moosh course-enrol-change-status -i=42 -s=1 2
 
+course-enrol-list
+----------------------
+
+List all enrolment instances for one or more courses given a list of course IDs.
+
+Example 1: List all enrolment instances for course 42
+
+    moosh course-enrol-list 42
+
 course-enableselfenrol
 ----------------------
 
-Enable self enrolment on one or more courses given a list of course IDs. By default self enrolment is enabled without an enrolment key, but one can be passed as an option.
+Enable self enrolment on one or more courses given a list of course IDs. By default self enrolment is enabled without an enrolment key, but one can be passed as an option. In addition, you can customize the self-enrolment instance by specifying a role, a custom instance name, welcome message settings, and a custom welcome message.
+
+Options
+
+* --key, -k &lt;enrolmentkey&gt;
+  Set an enrolment key. If omitted, any pre-existing key will be blanked.
+
+* --roleid, -r &lt;roleid&gt;
+  Specify the numerical ID of the role to assign to newly enrolled users.
+
+* --name, -n &lt;custom name&gt;
+  Provide a custom name for the self-enrolment instance.
+
+* --sendmessage, -s &lt;integer&gt;
+  Control the welcome email for new users. Accepts integer values:
+  - `0` - Do not send the welcome email.
+  - `1` - Send welcome email from course contact.
+  - `2` - Send welcome email from course key holder.
+  - `3` - Send welcome email from no reply.
+  If not provided, the welcome message setting is left unchanged.
+
+* --message, -m &lt;text&gt;
+  Specify the welcome message text to send to new users.
+
+Arguments
+
+- id
+  One or more course IDs for which self enrolment should be enabled.
 
 Example 1: Enable self enrolment on a course without an enrolment key
 
@@ -906,6 +942,11 @@ Example 1: Enable self enrolment on a course without an enrolment key
 Example 2: Enable self enrolment on a course with an enrolment key
 
     moosh course-enableselfenrol --key "an example enrolment key" 3
+
+Example 3: Enable self enrolment with a custom role assignment, custom instance name, welcome email settings, and a custom welcome message
+
+    moosh course-enableselfenrol --roleid 5 --name "Premium Enrolment" --sendmessage 1 --message "Welcome to our Premium Course!" 3
+
 
 course-info
 -----------
