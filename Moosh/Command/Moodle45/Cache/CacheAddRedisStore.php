@@ -11,8 +11,8 @@
  *
  * @copyright  2012 onwards Tomasz Muras
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @introduced 2021-01-29
- * @author     Jakub Kleban <jakub.kleban2000@gmail.com>
+ * @introduced 2025-01-19
+ * @author     Ewa Soroka
  */
 
 namespace Moosh\Command\Moodle45\Cache;
