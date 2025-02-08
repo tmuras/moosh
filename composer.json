@@ -247,8 +247,6 @@
     "symfony/finder": "^2.7",
     "danielneis/moodle-local_newlocal": "dev-master#b9596bdd37963d312069a048c8d315c7592c1c24",
     "danielneis/moodle-enrol_newenrol": "dev-master",
-    "blackboard-open-source/moodle-coding-standard": "^2",
-    "squizlabs/php_codesniffer": "^2.8",
     "nikic/php-parser": "^3.0",
     "moodlehq/moodle-local_amos": "dev-main"
   },
