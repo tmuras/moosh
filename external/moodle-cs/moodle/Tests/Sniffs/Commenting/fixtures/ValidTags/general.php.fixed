@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * A fixture to verify various phpdoc tags in a general location.
+ *
+ * @package   local_moodlecheck
+ * @copyright 2018 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class some_class extends \advanced_testcase {
+    /**
+     * Some valid tags, to verify they are ok.
+     *
+     * @license
+     * @throws
+     * @deprecated
+     * @author
+     * @todo
+     */
+    public function all_valid_tags() {
+        echo "yay!";
+    }
+
+    /**
+     * Some invalid tags, to verify they are detected.
+     *
+     * @codingStandardsIgnoreLine
+     * @covers
+     * @dataProvider
+     * @group
+     * @small
+     * @zzzing
+     * @inheritdoc
+     */
+    public function all_invalid_tags() {
+        echo "yoy!";
+    }
+
+    /**
+     * Incorrect tag which can be removed.
+     *
+     */
+    public function incorrect_tag() {
+        echo "yoy!";
+    }
+
+    /**
+     * Incorrect tag which can be renamed.
+     *
+     * @return string
+     * @version 4.1.0
+     */
+    public function renamable_tag() {
+        echo "yoy!";
+    }
+}

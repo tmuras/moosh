@@ -378,11 +378,22 @@ class MooshCommand {
     /**
      * Does the command require writing to ~/.moosh/ directory?
      *
-     * @return int
+     * @return bool
      */
     public function requireHomeWriteable() {
         return false;
     }
+
+    /**
+     * Should moosh parse the arguments for the command?
+     * Overwrite to return false if you want to parse the arguments yourself.
+     *
+     * @return bool
+     */
+    public function parseArguments() {
+        return true;
+    }
+
 
     /**
      * Loads temporary session information from the temp file.

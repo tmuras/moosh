@@ -1,0 +1,74 @@
+#!/usr/bin/env php
+<?php declare(strict_types=1);
+/*
+ * This file is part of phpunit-coverage-check.
+ *
+ * (c) Thor Juhasz <thor@juhasz.pro>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+$autoloadPaths = [
+        '/../../autoload.php',
+        '/../vendor/autoload.php',
+        '/vendor/autoload.php',
+];
+foreach ($autoloadPaths as $file) {
+    if (file_exists(__DIR__ . $file)) {
+        require_once __DIR__ . $file;
+
+        break;
+    }
+}
+unset($file, $autoloadPaths);
+
+require_once 'config.php';
+
+use PHPUnitCoverageCheck\CoverageChecker;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+
+$appClass = new class extends Application {
+    /**
+     * Overwrite {@see Application::getDefaultInputDefinition()} to
+     * remove unneeded options and clean the output of --help
+     *
+     * {@inheritDoc}
+     */
+    protected function getDefaultInputDefinition(): InputDefinition
+    {
+        return new InputDefinition(
+            [
+                    new InputOption('--help', '-h', InputOption::VALUE_NONE, 'Display this help message'),
+                    new InputOption('--version', '-V', InputOption::VALUE_NONE, 'Display library version'),
+            ]
+        );
+    }
+
+    /**
+     * Overwrite {@see Application::configureIO()} to
+     * remove unneeded options and clean the output of --help
+     *
+     * {@inheritdoc}
+     */
+    protected function configureIO(InputInterface $input, OutputInterface $output): void
+    {
+        $output->setDecorated(true);
+        $input->setInteractive(false);
+    }
+};
+
+$config = new Config();
+$application = (new $appClass($config->name, $config->version));
+
+$command = new CoverageChecker();
+/** @var string $commandName */
+$commandName = $command->getName();
+$application->add($command);
+$application->setDefaultCommand($commandName, true);
+
+$application->run();

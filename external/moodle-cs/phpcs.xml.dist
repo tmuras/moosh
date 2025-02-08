@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset>
+    <description>The coding rules configuration for the moodle-cs project.</description>
+
+    <!-- We don't want to analyse these -->
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/Tests/fixtures/*</exclude-pattern>
+    <exclude-pattern>*/Tests/*/fixtures/*</exclude-pattern>
+
+    <!-- PSR12 with a few exceptions and adjustments -->
+    <rule ref="PSR12">
+        <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+    </rule>
+
+    <!-- Some more chars don't hurt too much -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="132"/>
+            <property name="absoluteLineLimit" value="180"/>
+        </properties>
+    </rule>
+
+    <!-- We want to enforce && and || instead of and and or -->
+    <rule ref="Squiz.Operators.ValidLogicalOperators"/>
+
+    <!-- We want to use always the short array syntax -->
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+
+    <!-- We want better commas managing -->
+    <!-- Space after comma -->
+    <rule ref="moodle.WhiteSpace.SpaceAfterComma"/>
+    <!-- Comma at the end of multi-line arrays -->
+    <rule ref="NormalizedArrays.Arrays.CommaAfterLast">
+        <exclude name="NormalizedArrays.Arrays.CommaAfterLast.MissingMultiLineCloserSameLine" />
+    </rule>
+
+    <!--PHPCompatibility configuration-->
+    <rule ref="./vendor/phpcompatibility/php-compatibility/PHPCompatibility/ruleset.xml"/>
+    <config name="testVersion" value="7.4-"/>
+
+    <!-- These are false positives because CodeSniffer creates them when needed.
+        TODO: Delete this once we raise minimum requirements to PHP 8.0. -->
+    <rule ref="PHPCompatibility.Constants.NewConstants">
+        <exclude name="PHPCompatibility.Constants.NewConstants.newConstants.t_enumFound"/>
+    </rule>
+</ruleset>

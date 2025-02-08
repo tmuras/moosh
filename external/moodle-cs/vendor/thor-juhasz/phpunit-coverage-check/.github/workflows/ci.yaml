@@ -1,0 +1,128 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  static-analysis:
+    name: Psalm Static Analysis
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [ '7.4', '8.0' ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Validate composer
+        run: composer validate --strict
+
+      - name: Cache composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-${{ matrix.php-version }}-
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.10.0
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer:v2
+        env:
+          fail-fast: true
+
+      - name: Install dependencies
+        run: |
+          composer install --no-progress --ansi --ignore-platform-reqs --no-scripts
+      - name: Run Psalm analysis
+        run: php vendor/bin/psalm --output-format=github --no-progress
+
+  security-check:
+    name: Security Check
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [ '7.4', '8.0' ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.10.0
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer:v2
+        env:
+          fail-fast: true
+
+      - name: Check Composer Packages
+        uses: symfonycorp/security-checker-action@v2
+
+  tests:
+    name: Tests
+    needs: static-analysis
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [ '7.4', '8.0' ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Cache composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ matrix.php-version }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-${{ matrix.php-version }}-
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.10.0
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer:v2
+        env:
+          fail-fast: true
+
+      - name: Install dependencies
+        run: composer install --no-progress --ansi --no-scripts
+
+      - name: Run PHPUnit Tests
+        run: ./vendor/bin/phpunit --coverage-clover clover.xml
+
+      - name: Test coverage
+        run: ./phpunit-coverage-check -t 100 clover.xml
+
+      - name: Upload coverage results to Coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.github_token }}
+          COVERALLS_PARALLEL: true
+          COVERALLS_FLAG_NAME: php-${{ matrix.php-version }}
+        run: |
+          mkdir -p build/logs
+          mv clover.xml build/logs/
+          composer global require php-coveralls/php-coveralls
+          php-coveralls --coverage_clover=build/logs/clover.xml -v
+
+  coveralls-finished:
+    needs: tests
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Coveralls finished
+        uses: coverallsapp/github-action@v1.1.2
+        with:
+          github-token: ${{ secrets.github_token }}
+          parallel-finished: true

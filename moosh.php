@@ -32,7 +32,7 @@ require_once $moosh_dir . '/includes/default_options.php';
 use GetOptionKit\ContinuousOptionParser;
 use GetOptionKit\OptionCollection;
 
-define('MOOSH_VERSION', '1.26');
+define('MOOSH_VERSION', '1.27');
 define('MOODLE_INTERNAL', true);
 
 // suppressing warnings for php > 8
@@ -42,7 +42,8 @@ $appspecs->add('p|moodle-path:', "Moodle directory.");
 $appspecs->add('u|user:', "Moodle user, by default ADMIN");
 $appspecs->add('n|no-user-check', "Don't check if Moodle data is owned by the user running script");
 $appspecs->add('l|no-login', "Do not log in as admin user");
-$appspecs->add('o|options+', 'Override $CFG settings defined in config.php. Use null to set to null and unset to unset. You can use multiple times. Example: -o dataroot=/var/moodledata -o session_handler_class=unset -o reverseproxy=null');
+$appspecs->add('o|options+',
+        'Override $CFG settings defined in config.php. Use null to set to null and unset to unset. You can use multiple times. Example: -o dataroot=/var/moodledata -o session_handler_class=unset -o reverseproxy=null');
 $appspecs->add('t|performance', "Show performance information including timings");
 $appspecs->add('h|help', "Show global help.");
 $appspecs->add('list-commands', "Show all possible commands");
@@ -100,25 +101,25 @@ $subcommand_options = array();
 // command arguments
 $arguments = array();
 
-// The first argument must be a subcommand.
-$subcommand = null;
+// The first argument must be a subcommandString.
+$subcommand_string = null;
 $possible_matches = array();
 
 if (!@$parser->isEnd()) {
-    $subcommand = @$parser->advance();
+    $subcommand_string = @$parser->advance();
 }
 
-if (($subcommand !== null) and !isset($subcommand_specs[$subcommand])) {
+if (($subcommand_string !== null) and !isset($subcommand_specs[$subcommand_string])) {
     $possible_matches = array();
     foreach ($subcommands as $k => $v) {
-        if (strpos($k, $subcommand) !== false) {
+        if (strpos($k, $subcommand_string) !== false) {
             $possible_matches[] = $k;
         }
     }
     if (count($possible_matches) == 1) {
-        $subcommand = $possible_matches[0];
+        $subcommand_string = $possible_matches[0];
     } else {
-        $subcommand = null;
+        $subcommand_string = null;
     }
 }
 
@@ -130,7 +131,7 @@ if ($app_options->has('list-commands')) {
     exit(0);
 }
 
-if ($app_options->has('help') || (!$subcommand && !$possible_matches)) {
+if ($app_options->has('help') || (!$subcommand_string && !$possible_matches)) {
     echo "moosh version " . MOOSH_VERSION . "\n";
     echo "No command provided, possible commands in current context:\n\t";
     echo implode("\n\t", array_keys($subcommands));
@@ -140,13 +141,13 @@ if ($app_options->has('help') || (!$subcommand && !$possible_matches)) {
     $printer = new GetOptionKit\OptionPrinter\ConsoleOptionPrinter;
     echo $printer->render($appspecs);
     echo "\n";
-    if (!$subcommand || count($possible_matches) > 1) {
+    if (!$subcommand_string || count($possible_matches) > 1) {
         exit(10);
     }
     exit(0);
 }
 
-if (!$subcommand && $possible_matches) {
+if (!$subcommand_string && $possible_matches) {
     sort($possible_matches);
     foreach ($possible_matches as $match) {
         echo $match . "\n";
@@ -154,16 +155,24 @@ if (!$subcommand && $possible_matches) {
     exit(10);
 }
 
-@$parser->setSpecs($subcommand_specs[$subcommand]);
-try {
-    $subcommand_options[$subcommand] = @$parser->continueParse();
-} catch (Exception $e) {
-    echo $e->getMessage() . "\n";
-    die("Moosh global options should be passed before command not after it.\n");
-}
+/**
+ * @var Moosh\MooshCommand $subcommand
+ *
+ */
+$subcommand = $subcommands[$subcommand_string];
 
-while (!@$parser->isEnd()) {
-    $arguments[] = @$parser->advance();
+if ($subcommand->parseArguments()) {
+    @$parser->setSpecs($subcommand_specs[$subcommand_string]);
+    try {
+        $subcommand_options[$subcommand_string] = @$parser->continueParse();
+    } catch (Exception $e) {
+        echo $e->getMessage() . "\n";
+        die("Moosh global options should be passed before command not after it.\n");
+    }
+
+    while (!@$parser->isEnd()) {
+        $arguments[] = @$parser->advance();
+    }
 }
 
 // Read config file if available.
@@ -188,11 +197,6 @@ if ($moodlerc) {
     $options = $defaultOptions;
 }
 
-/**
- * @var Moosh\MooshCommand $subcommand
- *
- */
-$subcommand = $subcommands[$subcommand];
 $bootstrap_level = $subcommand->bootstrapLevel();
 
 if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE) {
@@ -250,7 +254,7 @@ if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE) {
             if (isset($CFG->$key)) {
                 if ($value == 'null') {
                     $value = null;
-                } elseif ($value == 'unset') {
+                } else if ($value == 'unset') {
                     unset($CFG->$key);
                 } else {
                     $CFG->$key = $value;
@@ -337,11 +341,12 @@ $subcommand->mooshDir = $moosh_dir;
 $subcommand->defaults = $options;
 
 // Process the arguments.
-$subcommand->setParsedOptions($subcommand_options[$subcommand->getName()]);
-$subcommand->setArguments($arguments);
-$subcommand->processOptions($options);
-$subcommand->expandOptions();
-
+if ($subcommand->parseArguments()) {
+    $subcommand->setParsedOptions($subcommand_options[$subcommand->getName()]);
+    $subcommand->setArguments($arguments);
+    $subcommand->processOptions($options);
+    $subcommand->expandOptions();
+}
 // Some more debug if requested.
 if ($app_options->has('verbose')) {
     echo "Moodle version detected: $moodle_version\n";

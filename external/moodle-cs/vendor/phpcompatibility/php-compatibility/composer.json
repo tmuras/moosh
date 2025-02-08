@@ -1,0 +1,95 @@
+{
+  "name": "phpcompatibility/php-compatibility",
+  "description": "A set of sniffs for PHP_CodeSniffer that checks for PHP cross-version compatibility.",
+  "license": "LGPL-3.0-or-later",
+  "type": "phpcodesniffer-standard",
+  "keywords": [ "compatibility", "phpcs", "standards", "static analysis" ],
+  "authors": [
+    {
+      "name": "Wim Godden",
+      "role": "lead",
+      "homepage": "https://github.com/wimg"
+    },
+    {
+      "name": "Juliette Reinders Folmer",
+      "role": "lead",
+      "homepage": "https://github.com/jrfnl"
+    },
+    {
+      "name": "Contributors",
+      "homepage": "https://github.com/PHPCompatibility/PHPCompatibility/graphs/contributors"
+    }
+  ],
+  "homepage": "http://techblog.wimgodden.be/tag/codesniffer/",
+  "support": {
+    "issues": "https://github.com/PHPCompatibility/PHPCompatibility/issues",
+    "source": "https://github.com/PHPCompatibility/PHPCompatibility",
+    "security": "https://github.com/PHPCompatibility/PHPCompatibility/security/policy"
+  },
+  "require": {
+    "php": ">=5.4",
+    "squizlabs/php_codesniffer": "^3.9.0",
+    "phpcsstandards/phpcsutils": "^1.0.9"
+  },
+  "require-dev": {
+    "php-parallel-lint/php-parallel-lint": "^1.3.2",
+    "php-parallel-lint/php-console-highlighter": "^1.0.0",
+    "phpunit/phpunit": "^4.8.36 || ^5.7.21 || ^6.0 || ^7.0 || ^8.0 || ^9.3.4 || ^10.1.0",
+    "phpcsstandards/phpcsdevcs": "^1.1.3",
+    "phpcsstandards/phpcsdevtools": "^1.2.0",
+    "yoast/phpunit-polyfills": "^1.0.5 || ^2.0.0"
+  },
+  "replace": {
+    "wimg/php-compatibility": "*"
+  },
+  "suggest": {
+    "roave/security-advisories": "dev-master || Helps prevent installing dependencies with known security issues."
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    },
+    "lock": false
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "9.x-dev",
+      "dev-develop": "10.x-dev"
+    }
+  },
+  "scripts": {
+    "test": [
+      "@php ./vendor/phpunit/phpunit/phpunit --no-coverage"
+    ],
+    "test10": [
+      "@php ./vendor/phpunit/phpunit/phpunit -c phpunit10.xml.dist --no-coverage"
+    ],
+    "coverage": [
+      "@php ./vendor/phpunit/phpunit/phpunit"
+    ],
+    "coverage10": [
+      "@php ./vendor/phpunit/phpunit/phpunit -c phpunit10.xml.dist"
+    ],
+    "coverage-local": [
+      "@php ./vendor/phpunit/phpunit/phpunit --coverage-html ./build/logs"
+    ],
+    "coverage-local10": [
+      "@php ./vendor/phpunit/phpunit/phpunit -c phpunit10.xml.dist --coverage-html ./build/logs"
+    ],
+    "lint": [
+      "@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . -e php --show-deprecated --exclude vendor --exclude .git"
+    ],
+    "check-complete": [
+      "@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness -q ./PHPCompatibility"
+    ],
+    "check-complete-strict": [
+      "@php ./vendor/phpcsstandards/phpcsdevtools/bin/phpcs-check-feature-completeness ./PHPCompatibility"
+    ],
+    "checkcs": [
+      "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs"
+    ],
+    "fixcs": [
+      "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf"
+    ]
+  }
+}

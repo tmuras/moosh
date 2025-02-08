@@ -130,7 +130,7 @@ git clone -b MOODLE_37_STABLE git://git.moodle.org/moodle.git
 <p>Go into the moodle directory and download the moosh code:</p>
 
 <pre><code>cd ~/moosh-testing/moodle
-git clone git://github.com/tmuras/moosh.git
+git clone git@github.com:tmuras/moosh.git
 </code></pre>
 
 <p>Go into ~/moosh-testing/moodle/moosh and install moosh dependencies:</p>
@@ -176,28 +176,9 @@ cp config.docker-template.php $MOODLE_DOCKER_WWWROOT/config.php
 <p>To</p>
 
 <pre><code>$CFG-&gt;prefix = 'b_';
-</code></pre>
 
-<p>Get into the web container:</p>
 
-<pre><code>cd ~/moosh-testing/moodle-docker
-bin/moodle-docker-compose exec webserver bash
-</code></pre>
-
-<p>In your console you should be logged in as root (you should see something like this root@b5ba7a659e83:/var/www/html#), run the following commands:</p>
-
-<pre><code>apt-get update
-apt-get install sudo
-chown -R www-data /var/www
-sudo -u www-data -E -H bash
-</code></pre>
-
-<p>Then you should be logged in as www-data (and see something like this www-data@b5ba7a659e83:~/html$)</p>
-
-<p>Run then:</p>
-
-<pre><code>cd /var/www/html
-php admin/tool/behat/cli/init.php
+bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/init.php
 </code></pre>
 
 <p>At the end of the installation, it should show local_mooshtest being installed:</p>
@@ -208,37 +189,24 @@ php admin/tool/behat/cli/init.php
 
 <hr />
 
-<p>When you get warning like this one:</p>
-
-<p>PHP Warning:  PHP Startup: Unable to load dynamic library '/usr/local/lib/php/extensions/no-debug-non-zts-20160303/oci8.so' - libmql1.so: cannot open shared object file: No such file or directory in Unknown on line 0</p>
-
-<p>Run this command:</p>
-
-<pre><code>export LD_LIBRARY_PATH=/usr/local/instantclient_12_1/
-</code></pre>
-
 <p>Now you can run any moosh test with command:</p>
 
-<pre><code>php admin/tool/behat/cli/run.php --format pretty --tags=@moosh
+<pre><code>cd ~/moosh-testing/moodle-docker
+bin/moodle-docker-compose exec webserver php admin/tool/behat/cli/run.php --format pretty --tags=@moosh
 </code></pre>
 
 <p>Or test any command:</p>
 
-<pre><code>moosh/moosh.php moosh-command
+<pre><code>bin/moodle-docker-compose exec webserver moosh/moosh.php moosh-command
 </code></pre>
 
 <p>Example:</p>
 
-<pre><code>moosh/moosh.php course-list
+<pre><code>bin/moodle-docker-compose exec webserver moosh/moosh.php course-list
 </code></pre>
 
 <a name="Exit..stop.and.remove.container:"></a>
 <h4>Exit, stop and remove container:</h4>
-
-<p>To exit from the interactive container, type:</p>
-
-<pre><code>exit    
-</code></pre>
 
 <p>To stop the container:</p>
 
