@@ -3,6 +3,7 @@ moosh /usr/bin
 includes /usr/share/moosh
 Moosh /usr/share/moosh
 templates /usr/share/moosh
+external /usr/share/moosh
 vendor /usr/share/moosh
 bash_completion => /etc/bash_completion.d/moosh
 zsh_completion => /usr/share/zsh/functions/Completion/Debian/_moosh
