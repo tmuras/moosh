@@ -3,6 +3,11 @@
   "description": "Moosh stands for MOOdle SHell. It is a command-line tool that will allow you to perform most common Moodle tasks.",
   "license": "GPL-3.0+",
   "homepage": "http://moosh-online.com",
+  "config": {
+    "platform": {
+      "php": "7.2.5"
+    }
+  },
   "keywords": [
     "moodle",
     "shell",
