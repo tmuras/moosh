@@ -1,0 +1,46 @@
+{
+    "name": "sebastian/phpcpd",
+    "description": "Copy/Paste Detector (CPD) for PHP code.",
+    "homepage": "https://github.com/sebastianbergmann/phpcpd",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Sebastian Bergmann",
+            "email": "sebastian@phpunit.de",
+            "role": "lead"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/sebastianbergmann/phpcpd/issues"
+    },
+    "config": {
+        "platform": {
+            "php": "7.3.0"
+        },
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.3",
+        "ext-dom": "*",
+        "sebastian/cli-parser": "^1.0",
+        "sebastian/version": "^3.0",
+        "phpunit/php-file-iterator": "^3.0",
+        "phpunit/php-timer": "^5.0"
+    },
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    },
+    "bin": [
+        "phpcpd"
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "6.0-dev"
+        }
+    }
+}

@@ -1,0 +1,63 @@
+---
+name: Release
+
+on:
+  push:
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-22.04
+        php:
+          - 8.1
+        tools:
+          - box:4.5  # available since https://github.com/shivammathur/setup-php/releases/tag/2.27.0
+
+    steps:
+      -   # https://github.com/actions/checkout
+        name: Checkout
+        uses: actions/checkout@v4
+
+      -   # https://github.com/shivammathur/setup-php
+        name: Setup PHP runtime
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: ${{ matrix.tools }}
+
+      -   # https://github.com/ramsey/composer-install
+        name: Install Composer dependencies
+        uses: ramsey/composer-install@v2
+        with:
+          composer-options: "--prefer-dist"
+
+      -   # https://github.com/box-project/box
+        name: Build Release Artifacts
+        run: |
+          box compile
+          box info ${{ github.workspace }}/bin/phplint.phar
+
+      -   # https://github.com/softprops/action-gh-release
+        name: Create Release from current tag
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v1
+        with:  # https://github.com/softprops/action-gh-release#-customizing
+          prerelease: false
+          draft: true
+          body_path: ${{ github.workspace }}/.changes/${{ github.ref_name }}.md
+          # https://github.com/softprops/action-gh-release#%EF%B8%8F-uploading-release-assets
+          files:
+            ${{ github.workspace }}/bin/phplint.phar
+          fail_on_unmatched_files: true
+          tag_name: ${{ github.ref_name }}
