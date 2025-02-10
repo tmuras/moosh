@@ -1,0 +1,97 @@
+{
+  "name": "overtrue/phplint",
+  "description": "`phplint` is a tool that can speed up linting of php files by running several lint processes at once.",
+  "type": "library",
+  "keywords": [
+    "phplint",
+    "lint",
+    "static analysis",
+    "syntax",
+    "check"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "overtrue",
+      "email": "anzhengchao@gmail.com"
+    },
+    {
+      "name": "Laurent Laville",
+      "homepage": "https://github.com/llaville"
+    }
+  ],
+  "require": {
+    "php": "^8.0",
+    "ext-json": "*",
+    "ext-mbstring": "*",
+    "symfony/cache": "^5.4 || ^6.0 || ^7.0",
+    "symfony/console": "^5.4 || ^6.0 || ^7.0",
+    "symfony/event-dispatcher": "^5.4 || ^6.0 || ^7.0",
+    "symfony/finder": "^5.4 || ^6.0 || ^7.0",
+    "symfony/options-resolver": "^5.4 || ^6.0 || ^7.0",
+    "symfony/process": "^5.4 || ^6.0 || ^7.0",
+    "symfony/yaml": "^5.4 || ^6.0 || ^7.0"
+  },
+  "require-dev": {
+    "php-parallel-lint/php-console-highlighter": "^1.0",
+    "brainmaestro/composer-git-hooks": "^2.8.5 || 3.0.0-alpha.1",
+    "jetbrains/phpstorm-stubs": "^2021.3 || ^2022.3 || ^2023.0",
+    "bamarni/composer-bin-plugin": "^1.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Overtrue\\PHPLint\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Overtrue\\PHPLint\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "hooks": {
+      "pre-commit": [
+        "composer fix-style"
+      ]
+    },
+    "branch-alias": {
+      "dev-main": "9.0.x-dev"
+    }
+  },
+  "scripts": {
+    "bin": "echo 'bin not installed'",
+    "post-update-cmd": [
+      "cghooks update",
+      "@composer bin all update --ansi"
+    ],
+    "post-merge": "composer install",
+    "post-install-cmd": [
+      "cghooks add --ignore-lock",
+      "cghooks update",
+      "@composer bin all install --ansi"
+    ],
+    "cghooks": "vendor/bin/cghooks",
+    "check-style": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --using-cache=no --verbose --ansi --diff --dry-run",
+    "fix-style": "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --using-cache=no --verbose --ansi",
+    "tests:unit": "vendor/bin/phpunit --testsuite=cache,configuration,finder",
+    "tests:e2e": "vendor/bin/phpunit --testsuite=e2e",
+    "tests:all": "vendor/bin/phpunit",
+    "lint:syntax": "./bin/phplint --ansi"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "scripts-descriptions": {
+    "check-style": "Run style checks (only dry run - no fixing!).",
+    "fix-style": "Run style checks and fix violations."
+  },
+  "bin": [
+    "bin/phplint"
+  ],
+  "config": {
+    "sort-packages": true,
+    "optimize-autoloader": true,
+    "allow-plugins": {
+      "bamarni/composer-bin-plugin": true
+    }
+  }
+}

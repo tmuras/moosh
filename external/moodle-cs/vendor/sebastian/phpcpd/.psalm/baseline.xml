@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="3.18.2@19aa905f7c3c7350569999a93c40ae91ae4e1626">
+  <file src="src/CLI/Arguments.php">
+    <MixedPropertyTypeCoercion occurrences="3">
+      <code>$directories</code>
+      <code>$exclude</code>
+      <code>$suffixes</code>
+    </MixedPropertyTypeCoercion>
+  </file>
+  <file src="src/CLI/ArgumentsBuilder.php">
+    <MixedArgument occurrences="2">
+      <code>$directories</code>
+      <code>$pmdCpdXmlLogfile</code>
+    </MixedArgument>
+    <MixedArgumentTypeCoercion occurrences="1">
+      <code>$argv</code>
+    </MixedArgumentTypeCoercion>
+    <MixedArrayAccess occurrences="6">
+      <code>$option[0]</code>
+      <code>$option[1]</code>
+      <code>$option[1]</code>
+      <code>$option[1]</code>
+      <code>$option[1]</code>
+      <code>$option[1]</code>
+    </MixedArrayAccess>
+    <MixedAssignment occurrences="5">
+      <code>$directories</code>
+      <code>$exclude[]</code>
+      <code>$option</code>
+      <code>$pmdCpdXmlLogfile</code>
+      <code>$suffixes[]</code>
+    </MixedAssignment>
+  </file>
+  <file src="src/CodeClone.php">
+    <MissingParamType occurrences="1">
+      <code>$indent</code>
+    </MissingParamType>
+    <MixedOperand occurrences="1">
+      <code>$indent</code>
+    </MixedOperand>
+  </file>
+  <file src="src/Detector/Detector.php">
+    <MixedArgument occurrences="1">
+      <code>$file</code>
+    </MixedArgument>
+    <MixedAssignment occurrences="1">
+      <code>$file</code>
+    </MixedAssignment>
+  </file>
+  <file src="src/Detector/Strategy/DefaultStrategy.php">
+    <MixedArgument occurrences="1">
+      <code>$lastToken + 1 - $firstToken</code>
+    </MixedArgument>
+    <MixedArrayOffset occurrences="1">
+      <code>$this-&gt;hashes[$firstHash]</code>
+    </MixedArrayOffset>
+    <PossiblyUndefinedVariable occurrences="4">
+      <code>$firstHash</code>
+      <code>$firstHash</code>
+      <code>$firstHash</code>
+      <code>$firstToken</code>
+    </PossiblyUndefinedVariable>
+  </file>
+  <file src="src/Log/AbstractXmlLogger.php">
+    <MissingReturnType occurrences="1">
+      <code>processClones</code>
+    </MissingReturnType>
+  </file>
+</files>

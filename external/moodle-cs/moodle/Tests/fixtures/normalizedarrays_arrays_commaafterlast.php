@@ -1,0 +1,98 @@
+<?php
+defined('MOODLE_INTERNAL') || die(); // Make this always the 1st line in all CS fixtures.
+
+// Disabling this error as we do in our ruleset, so tests run the same.
+// phpcs:disable NormalizedArrays.Arrays.CommaAfterLast.MissingMultiLineCloserSameLine
+
+// All these are good / valid code.
+
+$good = [1, 2, 3, 4];
+
+$good = [
+    1, 2, 3, 4,
+];
+
+$good = [1 => 1, 2 => 2, 3 => 3, 4 => 4];
+
+$good = [
+    1 => 1, 2 => 2, 3 => 3, 4 => 4,
+];
+
+$good = [1, 2, // This is good for us, when the closing bracket is on the same line.
+    3, 4];
+
+$good = [ // This is good, though they are no-sense. The Sniff only looks for "found" commas when set to "prevent".
+    1, 2,
+    3, 4,];
+
+$good = [
+    1, 2,
+    3, 4,
+];
+
+$good = [1 => 1, 2 => 2,
+    3 => 3, 4 => 4];
+
+$good = [1 => 1, 2 => 2,
+    3 => 3, 4 => 4,];
+
+$good = [
+    1 => 1, 2 => 2,
+    3 => 3, 4 => 4,
+];
+
+$good = [
+    1 => 1, 2 => 2,
+    3 => 3, 4 => 4,];
+
+$good = [1 => [1 => 1,
+    2 => 2,
+    3 => 3,
+    4 => 4], 5 => 5];
+
+$good = [1 => [1 => 1,
+    2 => 2,
+    3 => 3,
+    4 => 4],
+5 => 5];
+
+$good = [1 => [
+    1 => 1,
+    2 => 2,
+    3 => 3,
+    4 => 4,
+],
+5 => 5];
+
+$good = [
+    1 => [
+        1 => 1,
+        2 => 2,
+        3 => 3,
+        4 => 4,
+    ],
+    5 => 5,
+];
+
+// All these are bad / invalid code.
+
+$found = [ 1, 2, 3, 4, ];
+
+$missing = [
+    1, 2, 3, 4
+];
+
+$missing = [
+    1, 2,
+    3, 4
+];
+
+$missing = [
+    1 => [
+        1 => 1,
+        2 => 2,
+        3 => 3,
+        4 => 4
+    ],
+    5 => 5
+];

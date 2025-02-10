@@ -1,0 +1,41 @@
+<?php
+
+namespace MoodleHQ\MoodleCS\moodle\Tests\Sniffs\PHPUnit;
+
+class type_check {
+    /** @var int An uppercase var */
+    protected int $uppercasevar;
+
+    /** @var string A string */
+    protected string $casestring;
+
+    /** @var float This should be a float */
+    protected float $doublevar;
+
+    /** @var float This should be a float */
+    protected float $realvar;
+
+    /** @var array This should be a array */
+    protected array $anarray;
+
+    /** @var array This should be a array */
+    protected array $anotherarray;
+
+    /** @var string[] This should be a array */
+    protected array $arrayofstrings;
+
+    /** @var bool This should be a bool */
+    protected bool $somebool;
+
+    /** @var bool[] This should be a bool[] */
+    protected array $arrayofbool;
+
+    /** @var bool[] Mapping of ints to bools */
+    protected array $arrayofthings;
+
+    /** @var array List of ints */
+    protected array $arrayofints;
+
+    /** @var int[] List of ints */
+    protected array $notalistarray;
+}

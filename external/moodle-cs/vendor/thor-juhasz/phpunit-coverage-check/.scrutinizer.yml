@@ -1,0 +1,187 @@
+filter:
+  paths:
+    - 'src/*'
+
+before_commands:
+  - 'composer install --no-interaction --no-scripts'
+
+build:
+  nodes:
+    php74:
+      environment:
+        php:
+          version: '7.4'
+          ini:
+            "xdebug.mode": coverage
+      tests:
+        override:
+          - command: vendor/bin/phpunit --coverage-clover=clover.xml
+            coverage:
+              file: clover.xml
+              format: clover
+    php80:
+      environment:
+        php:
+          version: '8.0'
+          ini:
+            "xdebug.mode": coverage
+      tests:
+        override:
+          - command: vendor/bin/phpunit --coverage-clover=clover.xml
+            coverage:
+              file: clover.xml
+              format: clover
+    analysis:
+      project_setup:
+        override:
+          - 'true'
+      tests:
+        override:
+          - php-scrutinizer-run
+          -
+            command: phpcs-run
+            use_website_config: true
+
+checks:
+  php:
+    simplify_boolean_return: true
+    return_doc_comments: true
+    return_doc_comment_if_not_inferrable: true
+    remove_extra_empty_lines: true
+    properties_in_camelcaps: true
+    phpunit_assertions: true
+    parameters_in_camelcaps: true
+    parameter_doc_comments: true
+    param_doc_comment_if_not_inferrable: true
+    overriding_parameter: true
+    no_short_variable_names:
+      minimum: '3'
+    no_short_method_names:
+      minimum: '3'
+    no_long_variable_names:
+      maximum: '20'
+    no_goto: true
+    naming_conventions:
+      local_variable: '^[a-z][a-zA-Z0-9]*$'
+      abstract_class_name: ^Abstract|Factory$
+      utility_class_name: 'Utils?$'
+      constant_name: '^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)*$'
+      property_name: '^[a-z][a-zA-Z0-9]*$'
+      method_name: '^(?:[a-z]|__)[a-zA-Z0-9]*$'
+      parameter_name: '^[a-z][a-zA-Z0-9]*$'
+      interface_name: '^[A-Z][a-zA-Z0-9]*Interface$'
+      type_name: '^[A-Z][a-zA-Z0-9]*$'
+      exception_name: '^[A-Z][a-zA-Z0-9]*Exception$'
+      isser_method_name: '^(?:is|has|should|may|supports)'
+    more_specific_types_in_doc_comments: true
+    fix_line_ending: true
+    check_method_contracts:
+      verify_interface_like_constraints: true
+      verify_documented_constraints: true
+      verify_parent_constraints: true
+    fix_doc_comments: false
+
+coding_style:
+  php:
+    indentation:
+      general:
+        use_tabs: false
+        size: 4
+      switch:
+        indent_case: true
+    spaces:
+      general:
+        linefeed_character: newline
+      before_parentheses:
+        function_declaration: false
+        closure_definition: false
+        function_call: false
+        if: true
+        for: true
+        while: true
+        switch: true
+        catch: true
+        array_initializer: false
+      around_operators:
+        assignment: true
+        logical: true
+        equality: true
+        relational: true
+        bitwise: true
+        additive: true
+        multiplicative: true
+        shift: true
+        unary_additive: false
+        concatenation: true
+        negation: false
+      before_left_brace:
+        class: true
+        function: true
+        if: true
+        else: true
+        for: true
+        while: true
+        do: true
+        switch: true
+        try: true
+        catch: true
+        finally: true
+      before_keywords:
+        else: true
+        while: true
+        catch: true
+        finally: true
+      within:
+        brackets: false
+        array_initializer: false
+        grouping: false
+        function_call: false
+        function_declaration: false
+        if: false
+        for: false
+        while: false
+        switch: false
+        catch: false
+        type_cast: false
+      ternary_operator:
+        before_condition: true
+        after_condition: true
+        before_alternative: true
+        after_alternative: true
+        in_short_version: false
+      other:
+        before_comma: false
+        after_comma: true
+        before_semicolon: false
+        after_semicolon: true
+        after_type_cast: true
+    braces:
+      classes_functions:
+        class: new-line
+        function: new-line
+        closure: end-of-line
+      if:
+        opening: end-of-line
+        always: true
+        else_on_new_line: false
+      for:
+        opening: end-of-line
+        always: true
+      while:
+        opening: end-of-line
+        always: true
+      do_while:
+        opening: end-of-line
+        always: true
+        while_on_new_line: false
+      switch:
+        opening: end-of-line
+      try:
+        opening: end-of-line
+        catch_on_new_line: false
+        finally_on_new_line: false
+    upper_lower_casing:
+      keywords:
+        general: lower
+      constants:
+        true_false_null: lower

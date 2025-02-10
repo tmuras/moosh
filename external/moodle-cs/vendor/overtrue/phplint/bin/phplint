@@ -1,0 +1,61 @@
+#!/usr/bin/env php
+<?php
+
+if (PHP_SAPI !== 'cli' && PHP_MAJOR_VERSION < 8) {
+    echo 'Warning: phplint should be invoked via the CLI minimum version of PHP 8.0, not the '.PHP_SAPI.' SAPI'.PHP_EOL;
+}
+
+$loaded = false;
+
+foreach (array(__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php') as $file) {
+    if (file_exists($file)) {
+        require $file;
+        $loaded = true;
+        break;
+    }
+}
+
+if (!$loaded) {
+    die(
+        'You need to set up the project dependencies using the following commands:' . PHP_EOL .
+        'wget https://getcomposer.org/composer.phar' . PHP_EOL .
+        'php composer.phar install' . PHP_EOL
+    );
+}
+
+use Overtrue\PHPLint\Command\LintCommand;
+use Overtrue\PHPLint\Configuration\OptionDefinition;
+use Overtrue\PHPLint\Console\Application;
+use Overtrue\PHPLint\Event\EventDispatcher;
+use Overtrue\PHPLint\Extension\OutputFormat;
+use Overtrue\PHPLint\Extension\ProgressBar;
+use Overtrue\PHPLint\Extension\ProgressPrinter;
+use Symfony\Component\Console\Input\ArgvInput;
+
+$input = new ArgvInput();
+
+$extensions = [new ProgressPrinter()];
+
+if (true === $input->hasParameterOption(['--no-progress'], true)) {
+    $extensions = [];
+} elseif (true === $input->hasParameterOption(['--progress'], true)) {
+    $progress = $input->getParameterOption('--progress', 'printer');
+    if ('bar' === $progress) {
+        $extensions = [new ProgressBar()];
+    }
+}
+
+$extensions[] = new OutputFormat([
+    OptionDefinition::LOG_JSON,
+    OptionDefinition::LOG_JUNIT,
+]);
+
+$dispatcher = new EventDispatcher($extensions);
+
+$defaultCommand = new LintCommand($dispatcher);
+
+$application = new Application();
+$application->add($defaultCommand);
+$application->setDefaultCommand($defaultCommand->getName());
+$application->setDispatcher($dispatcher);
+$application->run($input);

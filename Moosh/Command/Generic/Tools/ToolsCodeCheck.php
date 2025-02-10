@@ -16,9 +16,6 @@ class ToolsCodeCheck extends MooshCommand
     public function __construct()
     {
         parent::__construct('code-check');
-        $this->addOption('p|path:', 'path to check code');
-        $this->addOption('i|interactive', 'interactive code check');
-        $this->addOption('r|repair', 'repair code before check. Commit changes before, or data might be lost');
     }
 
     public function bootstrapLevel()
@@ -29,69 +26,23 @@ class ToolsCodeCheck extends MooshCommand
     public function execute()
     {
 
-        require_once($this->mooshDir."/includes/codesniffer_cli.php");
-        require_once($this->mooshDir."/includes/coderepair/CodeRepair.php");
+        // Get all cli arguments provided
+        global $argv;
 
-        $moodle_sniffs = $this->mooshDir.'/vendor/blackboard-open-source/moodle-coding-standard/moodle';
+        // Find entry in $argv equal to 'code-check'
+        $index = array_search('code-check', $argv);
 
-        $options = $this->expandedOptions;
-        $interactive = $options['interactive'];
+        // remove all elements before 'code-check' in $argv
+        $arguments = array_slice($argv, $index +1);
 
-        if (isset($options['path'])) {
-            $this->checkPathArg($options['path']);
-            $path = $options['path'];
-        } else {
-            $path = $this->cwd;
-        }
-
-        $files = $this->_get_files($path);
-        if ($options['repair'] === true) {
-            $code_repair = new \CodeRepair($files);
-            $code_repair->drymode = false;
-            $code_repair->start();
-        }
-
-        $phpcscli = new \codesniffer_cli();
-        $phpcs = new \PHP_CodeSniffer(1, 0, 'utf-8', (bool) $interactive);
-        $phpcs->setCli($phpcscli);
-        $phpcs->process($files, $moodle_sniffs);
-
-        $phpcs->reporting->printReport('full', false, $phpcscli->getCommandLineValues(), null);
-
+        // Run vendon/bin/phpcs
+        $command = $this->mooshDir . "/external/moodle-cs/vendor/bin/phpcs";
+        $command .= " " . implode(" ", $arguments);
+        passthru($command,  $return);
     }
 
-    private function _clean_path($path) {
-       return str_replace(array('\\', '/'), DIRECTORY_SEPARATOR, $path);
-    }
-
-    private function _get_files($path) {
-
-        $extensions_to_check = array(
-            "php",
-        );
-
-        $files = array();
-
-        if (is_file($path)) {
-            $files[] = $path;
-        } else {
-            $objects = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
-
-            if ($handle = opendir($path)) {
-
-                foreach($objects as $entry => $object){
-                    if (!$object->isDir()) {
-                        $ext = pathinfo($entry, PATHINFO_EXTENSION);
-                        if (in_array($ext, $extensions_to_check)) {
-                            $files[] = $entry;
-                        }
-                    }
-                }
-                closedir($handle);
-            }
-        }
-
-        return $files;
+    public function parseArguments() {
+        return false;
     }
 }
 

@@ -1,0 +1,34 @@
+{
+    "name": "thor-juhasz/phpunit-coverage-check",
+    "description": "A PHPUnit test coverage checker",
+    "license": "MIT",
+    "type": "library",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+            "name": "Thor Juhasz",
+            "email": "thor@juhasz.pro"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "ext-bcmath": "*",
+        "ext-simplexml": "*",
+        "symfony/console": "4.*|5.*"
+    },
+    "require-dev": {
+        "vimeo/psalm": "^4.8",
+        "phpunit/phpunit": "^9"
+    },
+    "bin": ["phpunit-coverage-check"],
+    "autoload": {
+        "psr-4": {
+            "PHPUnitCoverageCheck\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PHPUnitCoverageCheck\\Tests\\": "tests/"
+        }
+    }
+}

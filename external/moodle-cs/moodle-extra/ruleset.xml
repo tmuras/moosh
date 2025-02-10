@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd"
+    name="moodle-strict"
+    namespace="MoodleHQ\MoodleCS\MoodleExtra">
+
+    <description>Best Practices for Moodle development beyond the core Coding Standards</description>
+
+    <!-- Extend the standard Moodle coding style -->
+    <rule ref="moodle"/>
+
+    <!-- This is an error in moodle-extra. TODO: Remove as part of #58 -->
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax">
+        <type>error</type>
+    </rule>
+
+    <!-- Include the PSR-12 ruleset with relevant Moodle exclusions -->
+    <rule ref="PSR12">
+
+        <!-- Moodle has a header manager and places its copyright on the first line after the opening tag -->
+        <exclude name="PSR12.Files.FileHeader.SpacingAfterBlock"/>
+
+        <!-- Moodle already defines its own line length, so remove this from the PSR-12 standard -->
+        <exclude name="Generic.Files.LineLength.TooLong"/>
+
+        <!-- Moodle doesn't mandate (nor support) namespaces everywhere, so remove this for now -->
+        <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace" />
+
+        <!-- Moodle has its own custom sniff for side effects  -->
+        <exclude name="PSR1.Files.SideEffects.FoundWithSymbols"/>
+
+        <!-- Moodle does not support camel case at all -->
+        <exclude name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps"/>
+
+        <!-- Moodle contains a lot of code which pre-dates PHP 7.1 and did not support constant visibility -->
+        <exclude name="PSR12.Properties.ConstantVisibility.NotFound"/>
+
+        <!-- Moodle does not place the opening brace on a new line -->
+        <exclude name="PSR2.Classes.ClassDeclaration.OpenBraceNewLine"/>
+
+        <!-- Moodle allows use of else if-->
+        <exclude name="PSR2.ControlStructures.ElseIfDeclaration.NotAllowed"/>
+
+        <!-- Moodle casing rules do not allow camel case at all -->
+        <exclude name="Squiz.Classes.ValidClassName.NotCamelCaps"/>
+
+        <!-- Moodle casing currently places the brace in the same line -->
+        <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+    </rule>
+
+    <!-- Detect duplicate array keys -->
+    <rule ref="Universal.Arrays.DuplicateArrayKey"/>
+
+    <!-- Disallow use of list() instead of [] -->
+    <rule ref="Universal.Lists.DisallowLongListSyntax"/>
+
+    <!-- Enusre that ::class is lower-cased -->
+    <rule ref="Universal.Constants.LowercaseClassResolutionKeyword"/>
+
+    <!-- Require a consistent modifier keyword order for OO constant declarations -->
+    <rule ref="Universal.Constants.ModifierKeywordOrder"/>
+
+    <!-- Enforce that the names used in a class/enum "implements" statement or an interface "extends" statement are listed in alphabetic order -->
+    <rule ref="Universal.OOStructures.AlphabeticExtendsImplements"/>
+
+    <!-- Enforce the use of a single space after the use, function, const keywords and both before and after the as keyword in import use statements -->
+    <rule ref="Universal.UseStatements.KeywordSpacing"/>
+
+    <!-- Enforce lowercase function/const -->
+    <rule ref="Universal.UseStatements.LowercaseFunctionConst"/>
+
+    <!-- Detect useless class imports (aliases) -->
+    <rule ref="Universal.UseStatements.NoUselessAliases"/>
+
+    <!-- Enfore comma, spacing, like, this -->
+    <rule ref="Universal.WhiteSpace.CommaSpacing"/>
+
+    <!--
+        TODO
+
+        PER-2.0 support (https://github.com/squizlabs/PHP_CodeSniffer/issues/3793), including:
+        - Trailing commas in function parameters https://github.com/squizlabs/PHP_CodeSniffer/issues/2030
+        - Multi-line implements/extends changes
+
+    -->
+
+    <!--
+        Detect issues with Unit Test dataProviders:
+        - private providers
+        - providers which do not exist
+        - providers whose name is prefixed with _test
+        - incorrect casing of dataProvider
+        - dataProviders which do not return an array or Iterable
+        - dataProviders which can be converted to a static method (PHPUnit 10 compatibility)
+    -->
+    <rule ref="moodle.PHPUnit.TestCaseProvider">
+        <properties>
+            <property name="autofixStaticProviders" value="true"/>
+        </properties>
+    </rule>
+
+</ruleset>
