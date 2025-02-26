@@ -352,7 +352,7 @@ function get_distinct_files($contextid) {
 
 function file_is_unique($contenthash, $contextid) {
     global $DB;
-
+    return true;
     $unique = true;
     $sql_like = $DB->sql_like('f.contenthash', ':hash');
     $not_like = $DB->sql_like('f.component', ':component', true, true, true);
