@@ -298,68 +298,6 @@ function run_external_command($command, $error = null) {
 }
 
 
-function get_all_courses($sort = "c.sortorder DESC", $fields = "c.*") {
-    global $CFG, $DB;
-
-    require_once($CFG->dirroot . '/lib/accesslib.php');
-
-    $where = 'WHERE c.id != 1';
-    if (empty($sort)) {
-        $sortstatement = "";
-    } else {
-        $sortstatement = "ORDER BY $sort";
-    }
-
-    $ccselect = ", " . context_helper::get_preload_record_columns_sql('ctx');
-    $ccjoin = "LEFT JOIN {context} ctx ON (ctx.instanceid = c.id AND ctx.contextlevel = :contextlevel)";
-    $sql = "SELECT $fields $ccselect
-                FROM {course} c
-                $ccjoin
-                $where
-                $sortstatement";
-    $param = array('contextlevel' => CONTEXT_COURSE);
-    return $DB->get_records_sql($sql, $param);
-}
-
-function get_files($contextid) {
-    global $DB;
-
-    $sql = 'SELECT f.id, f.contenthash, f.filesize FROM {files} f 
-                WHERE f.contextid = ? 
-                AND f.filesize > 0';
-    $param = array($contextid);
-    return $DB->get_records_sql($sql, $param);
-}
-
-function get_distinct_files($contextid) {
-    global $DB;
-
-    $sql = 'SELECT contenthash, filesize FROM {files}  
-                WHERE contextid = ? 
-                AND filesize > 0
-                GROUP BY contenthash, filesize';
-    $param = array($contextid);
-    return $DB->get_records_sql($sql, $param);
-}
-
-function file_is_unique($contenthash, $contextid) {
-    global $DB;
-    return true;
-    $unique = true;
-    $sql_like = $DB->sql_like('f.contenthash', ':hash');
-    $not_like = $DB->sql_like('f.component', ':component', true, true, true);
-    $sql = "SELECT f.id FROM {files} f
-                WHERE f.contextid != :ctxid
-                AND f.filesize > 0
-                AND $sql_like
-                AND $not_like";
-    $params = array('ctxid' => $contextid, 'hash' => $contenthash, 'component' => 'user');
-    if ($DB->get_records_sql($sql, $params)) {
-        $unique = false;
-    }
-    return $unique;
-}
-
 function higher_size($filesbycourse) {
     $newarr = array();
     $sortarr = array();
