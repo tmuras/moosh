@@ -19,6 +19,9 @@ class CourseRestore extends MooshCommand {
 
         $this->addArgument('backup_file');
         $this->addArgument('category_id');
+        $this->addArgument('preprocess', );
+        // preprocessing is optional
+        $this->minArguments--;
 
         $this->addOption('d|directory', 'restore from extracted directory (1st param) under tempdir/backup');
         $this->addOption('e|existing', 'restore into existing course, id provided instead of category_id');
@@ -96,6 +99,18 @@ class CourseRestore extends MooshCommand {
             $fp->extract_to_pathname($arguments[0], $path);
         } else {
             $backupdir = $arguments[0];
+        }
+
+        if(!empty($arguments[2])) {
+            if(!file_exists($arguments[2])) {
+                echo "Preprocessing script '" . $arguments[2] . "' does not exist" . PHP_EOL;
+                exit(1);
+            }
+            if($this->verbose) {
+                echo "Using preprocessing script '" . $arguments[2] . "'" . PHP_EOL;
+            }
+            require $arguments[2];
+            moosh_preprocess_mbz($path, $this->verbose);
         }
 
         //extract original full & short names
