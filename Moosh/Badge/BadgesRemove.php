@@ -51,8 +51,6 @@ class BadgesRemove
 
         $count = 0;
         foreach ($badge_records as $badge_record){
-            //print_r($badge_record);
-
             $badge = new \badge($badge_record->id);  //if invalid badge then print_error('error:nosuchbadge', 'badges', $badgeid);
 
             $message = $this->getMessage($badge_record);
