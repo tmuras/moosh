@@ -298,43 +298,8 @@ function run_external_command($command, $error = null) {
 }
 
 
-function higher_size($filesbycourse) {
-    $newarr = array();
-    $sortarr = array();
-    foreach ($filesbycourse as $courseid => $value) {
-        $newarr[$courseid] = $value['all'];
-    }
-    arsort($newarr);
-    $i = 0;
-    foreach ($newarr as $key => $value) {
-        if ($i == 10) {
-            break;
-        } else {
-            $sortarr[$key] = $filesbycourse[$key];
-        }
-        $i++;
-    }
-    return $sortarr;
-}
 
-function backup_size() {
-    global $DB;
 
-    if (is_a($DB, 'pgsql_native_moodle_database')) {
-        $groupby = "f.id, u.username";
-    } else {
-        $groupby = "f.userid";
-    }
-
-    $sql = "SELECT f.id, SUM(f.filesize) AS backupsize, f.userid, u.username
-                FROM {files} f
-                LEFT JOIN {user} u ON f.userid = u.id
-                WHERE f.filearea = :filearea OR f.component = :component
-                GROUP BY " . $groupby . "
-                ORDER BY backupsize DESC";
-
-    return $DB->get_records_sql($sql, array('filearea' => 'backup', 'component' => 'backup'));
-}
 
 function get_user_by_name($username) {
     global $DB;
