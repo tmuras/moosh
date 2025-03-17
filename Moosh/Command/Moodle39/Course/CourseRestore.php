@@ -19,14 +19,12 @@ class CourseRestore extends MooshCommand {
 
         $this->addArgument('backup_file');
         $this->addArgument('category_id');
-        $this->addArgument('preprocess', );
-        // preprocessing is optional
-        $this->minArguments--;
 
         $this->addOption('d|directory', 'restore from extracted directory (1st param) under tempdir/backup');
         $this->addOption('e|existing', 'restore into existing course, id provided instead of category_id');
         $this->addOption('o|overwrite', 'restore into existing course, overwrite current content, id provided instead of category_id');
         $this->addOption('i|ignore-warnings', 'continue with restore if there are pre-check warnings');
+        $this->addOption('p|preprocess:', 'provide a path to a backup preprocessing script', '');
     }
 
     public function execute() {
@@ -101,15 +99,15 @@ class CourseRestore extends MooshCommand {
             $backupdir = $arguments[0];
         }
 
-        if(!empty($arguments[2])) {
-            if(!file_exists($arguments[2])) {
-                echo "Preprocessing script '" . $arguments[2] . "' does not exist" . PHP_EOL;
+        if (!empty($options['preprocess'])) {
+            if(!file_exists($options['preprocess'])) {
+                echo "Preprocessing script '" . $options['preprocess'] . "' does not exist" . PHP_EOL;
                 exit(1);
             }
             if($this->verbose) {
-                echo "Using preprocessing script '" . $arguments[2] . "'" . PHP_EOL;
+                echo "Using preprocessing script '" . $options['preprocess'] . "'" . PHP_EOL;
             }
-            require $arguments[2];
+            require $options['preprocess'];
             moosh_preprocess_mbz($path, $this->verbose);
         }
 
