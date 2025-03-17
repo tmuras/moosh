@@ -1104,6 +1104,10 @@ Example 4: Restore backup.mbz into existing course with id=3, overwrite course c
 
     moosh course-restore --overwrite backup.mbz 3
 
+Example 5: Restore backup.mbz into category with id=1 and apply a preprocessing script. The script should define a function `moosh_preprocess_mbz($path: string, $verbose: bool): void`, where `$path` is a path to the unarchived backup and `$verbose` is a verbosity flag.
+
+    moosh course-restore --preprocess preprocessing-script.php backup.mbz 1
+
 course-unenrol
 --------------
 
