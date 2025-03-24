@@ -61,8 +61,13 @@ class CategoryResortCourses extends MooshCommand {
 
     protected function resort($category, $sort, $nocatsort, $nocoursesort) {
         if (!$nocatsort) {
-            $category->resort_subcategories($sort, false);
+            $catsort = 'name';
+            if ($sort == 'idnumber') {
+                $catsort = $sort;
+            }
+            $category->resort_subcategories($catsort, false);
         }
+
         if (!$nocoursesort) {
             $category->resort_courses($sort, false);
         }
