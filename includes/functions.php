@@ -297,18 +297,10 @@ function run_external_command($command, $error = null) {
     return $output;
 }
 
-function get_sub_context_ids($path) {
-    global $DB;
 
-    $sql = "SELECT ctx.id FROM {context} ctx WHERE ";
-    $sql_like = $DB->sql_like('ctx.path', ':path');
-    $contextids = $DB->get_records_sql($sql . $sql_like, array('path' => $path . '%'));
-    return $contextids;
-}
 
-function get_all_courses($sort = "c.sortorder DESC", $fields = "c.*") {
-    global $CFG, $DB;
 
+<<<<<<< HEAD
     require_once($CFG->dirroot . '/lib/accesslib.php');
 
     $where = 'WHERE c.id != 1';
@@ -405,6 +397,8 @@ function backup_size() {
 
     return $DB->get_records_sql($sql, array('filearea' => 'backup', 'component' => 'backup'));
 }
+=======
+>>>>>>> master
 
 function get_user_by_name($username) {
     global $DB;

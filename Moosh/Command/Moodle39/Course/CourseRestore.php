@@ -24,6 +24,7 @@ class CourseRestore extends MooshCommand {
         $this->addOption('e|existing', 'restore into existing course, id provided instead of category_id');
         $this->addOption('o|overwrite', 'restore into existing course, overwrite current content, id provided instead of category_id');
         $this->addOption('i|ignore-warnings', 'continue with restore if there are pre-check warnings');
+        $this->addOption('p|preprocess:', 'provide a path to a backup preprocessing script', '');
     }
 
     public function execute() {
@@ -96,6 +97,18 @@ class CourseRestore extends MooshCommand {
             $fp->extract_to_pathname($arguments[0], $path);
         } else {
             $backupdir = $arguments[0];
+        }
+
+        if (!empty($options['preprocess'])) {
+            if(!file_exists($options['preprocess'])) {
+                echo "Preprocessing script '" . $options['preprocess'] . "' does not exist" . PHP_EOL;
+                exit(1);
+            }
+            if($this->verbose) {
+                echo "Using preprocessing script '" . $options['preprocess'] . "'" . PHP_EOL;
+            }
+            require $options['preprocess'];
+            moosh_preprocess_mbz($path, $this->verbose);
         }
 
         //extract original full & short names
