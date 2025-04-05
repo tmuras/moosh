@@ -34,9 +34,11 @@ class DataStats extends MooshCommand
         $filedir = run_external_command("du -bs $CFG->dataroot/filedir", "Couldn't find filedir directory");
         preg_match($pattern, $filedir[0], $dir_matches);
 
-        // CREATE TEMPORARY TABLE tmpfiles AS ( SELECT DISTINCT contenthash, component, filearea, filesize, contextid FROM mdl_files WHERE filesize >= 1024);
         $DB->execute("CREATE TEMPORARY TABLE tmpfiles AS (SELECT COUNT(*) AS repeats, contenthash, filesize FROM {files} WHERE filesize >= 1024 GROUP BY contenthash, filesize)");
         $DB->execute("ALTER TABLE `tmpfiles` ADD INDEX(`contenthash`)");
+
+        $DB->execute("CREATE TEMPORARY TABLE tmpfiles_context AS (SELECT DISTINCT contenthash, contextid, filesize FROM {files} WHERE filesize >= 1024)");
+        $DB->execute("ALTER TABLE `tmpfiles_context` ADD INDEX(`contextid`)");
 
         $sql = "SELECT SUM(filesize) AS  total FROM tmpfiles";
         $distinctfilestotal = $DB->get_record_sql($sql)->total;
@@ -50,11 +52,34 @@ class DataStats extends MooshCommand
 
         $filesbycourse = array();
         $courses = $this->getAllCourses();
-        foreach ($courses as $course) {
-            $subcontexts = $this->get_sub_context_ids($course->ctxpath);
-            $subcontextssql = '(' . implode(',', $subcontexts) . ')';
 
-            $filesbycourse[$course->id] = array('non_unique' => 0, 'unique' => 0, 'shared_outside_course' => 0, 'all' => 0, 'free_on_deletion' => 0);
+        // SELECT 10 biggest courses
+        foreach ($courses as $k => $course) {
+            $subcontexts = $this->get_sub_context_ids($course->ctxpath);
+            array_unshift($subcontexts, $course->ctxid);
+            $course->subcontexts = $subcontexts;
+            $course->subcontextssql = '(' . implode(',', $subcontexts) . ')';
+            $filesbycourse[$course->id] = array('by_context'=>0,'non_unique' => 0, 'unique' => 0, 'shared_outside_course' => 0, 'all' => 0, 'free_on_deletion' => 0);
+            $sql = "SELECT SUM(t.filesize) AS size FROM tmpfiles_context t WHERE t.contextid IN " . $course->subcontextssql . "";
+            $filesbycourse[$course->id]['by_context'] = (int)$DB->get_record_sql($sql)->size;
+
+        }
+        //print_r($filesbycourse);
+        usort($filesbycourse, function ($item1, $item2) {
+            return $item2['by_context'] <=> $item1['by_context'];
+        });
+
+        $filesbycourse = array_slice($filesbycourse, 0, 10, true);
+        foreach ($filesbycourse as $k => $record) {
+                $course = $courses[$k];
+            echo "course: " . $course->id . "\n";
+
+        }
+
+        foreach ($courses as $course) {
+            echo "course: " . $course->id . "\n";
+            echo "subcontextssql: " . $course->subcontextssql . "\n";
+            continue;
 
             $sql = "SELECT SUM(t.filesize) AS size FROM tmpfiles t JOIN {files} f ON t.contenthash = f.contenthash WHERE f.contextid IN (" . implode(',', $subcontexts) . ") AND t.repeats = 1";
             $filesbycourse[$course->id]['unique'] = (int)$DB->get_record_sql($sql)->size;
@@ -93,7 +118,6 @@ class DataStats extends MooshCommand
                 unset($filesbycourse[$course->id]);
             }
         }
-
         // Order  array descending using ['all'] index by custom function
         usort($filesbycourse, function ($item1, $item2) {
             return $item2['all'] <=> $item1['all'];
@@ -168,7 +192,8 @@ class DataStats extends MooshCommand
     protected function getAllCourses()
     {
         global $DB;
-        return $DB->get_records_sql('SELECT c.id, ctx.path AS ctxpath FROM {course} c LEFT JOIN {context} ctx ON (ctx.instanceid = c.id AND ctx.contextlevel = ' . CONTEXT_COURSE . ') WHERE c.id != 1');
+        return $DB->get_records_sql('SELECT ctx.instanceid AS id, ctx.path AS ctxpath, ctx.id AS ctxid FROM {context} ctx WHERE ctx.contextlevel = ' .
+                CONTEXT_COURSE . ' AND ctx.instanceid != 1');
     }
 
     protected function get_sub_context_ids($path)
@@ -177,7 +202,7 @@ class DataStats extends MooshCommand
 
         $sql = "SELECT ctx.id, ctx.id AS id2 FROM {context} ctx WHERE ";
         $sql_like = $DB->sql_like('ctx.path', ':path');
-        $contextids = $DB->get_records_sql_menu($sql . $sql_like, array('path' => $path . '%'));
+        $contextids = $DB->get_records_sql_menu($sql . $sql_like, array('path' => $path . '/%'));
         return $contextids;
     }
 }
