@@ -10,10 +10,8 @@ namespace Moosh\Command\Moodle39\Report;
 
 use Moosh\MooshCommand;
 
-class DataStats extends MooshCommand
-{
-    public function __construct()
-    {
+class DataStats extends MooshCommand {
+    public function __construct() {
         parent::__construct('stats', 'data');
 
         $this->addOption('j|json', 'generate output using json format');
@@ -21,8 +19,7 @@ class DataStats extends MooshCommand
         $this->addOption('O|output:', 'output only the values for the selected fields. Values separated by a comma. ');
     }
 
-    public function execute()
-    {
+    public function execute() {
         global $CFG, $DB;
 
         $options = $this->expandedOptions;
@@ -46,9 +43,9 @@ class DataStats extends MooshCommand
         $sql = "SELECT SUM(filesize) AS total FROM {files}";
         $filestotalsize = $DB->get_record_sql($sql)->total;
         $data = array('dataroot' => $matches[0],
-            'filedir' => $dir_matches[0],
-            'files total' => $filestotalsize,
-            'distinct files total' => $distinctfilestotal);
+                'filedir' => $dir_matches[0],
+                'files total' => $filestotalsize,
+                'distinct files total' => $distinctfilestotal);
 
         $filesbycourse = array();
         $courses = $this->getAllCourses();
@@ -59,69 +56,69 @@ class DataStats extends MooshCommand
             array_unshift($subcontexts, $course->ctxid);
             $course->subcontexts = $subcontexts;
             $course->subcontextssql = '(' . implode(',', $subcontexts) . ')';
-            $filesbycourse[$course->id] = array('by_context'=>0,'non_unique' => 0, 'unique' => 0, 'shared_outside_course' => 0, 'all' => 0, 'free_on_deletion' => 0);
+            $filesbycourse[$course->id] =
+                    array('by_context' => 0, 'non_unique' => 0, 'unique' => 0, 'shared_outside_course' => 0, 'all' => 0,
+                            'free_on_deletion' => 0);
             $sql = "SELECT SUM(t.filesize) AS size FROM tmpfiles_context t WHERE t.contextid IN " . $course->subcontextssql . "";
-            $filesbycourse[$course->id]['by_context'] = (int)$DB->get_record_sql($sql)->size;
+            $filesbycourse[$course->id]['by_context'] = (int) $DB->get_record_sql($sql)->size;
 
         }
-        //print_r($filesbycourse);
-        usort($filesbycourse, function ($item1, $item2) {
-            return $item2['by_context'] <=> $item1['by_context'];
+        uksort($filesbycourse, function($item1, $item2) use ($filesbycourse) {
+            return $filesbycourse[$item2]['by_context'] <=> $filesbycourse[$item1]['by_context'];
         });
 
         $filesbycourse = array_slice($filesbycourse, 0, 10, true);
+
         foreach ($filesbycourse as $k => $record) {
-                $course = $courses[$k];
-            echo "course: " . $course->id . "\n";
+            $course = $courses[$k];
 
-        }
+            $sql =
+                    "SELECT SUM(t.filesize) AS size FROM tmpfiles t JOIN {files} f ON t.contenthash = f.contenthash WHERE f.contextid IN " .
+                    $course->subcontextssql . " AND t.repeats = 1";
+            $filesbycourse[$course->id]['unique'] = (int) $DB->get_record_sql($sql)->size;
 
-        foreach ($courses as $course) {
-            echo "course: " . $course->id . "\n";
-            echo "subcontextssql: " . $course->subcontextssql . "\n";
-            continue;
-
-            $sql = "SELECT SUM(t.filesize) AS size FROM tmpfiles t JOIN {files} f ON t.contenthash = f.contenthash WHERE f.contextid IN (" . implode(',', $subcontexts) . ") AND t.repeats = 1";
-            $filesbycourse[$course->id]['unique'] = (int)$DB->get_record_sql($sql)->size;
-
-            $sql = "SELECT SUM(t.filesize) AS size FROM tmpfiles t JOIN {files} f ON t.contenthash = f.contenthash WHERE f.contextid IN (" . implode(',', $subcontexts) . ") AND t.repeats > 1";
-            $filesbycourse[$course->id]['non_unique'] = (int)$DB->get_record_sql($sql)->size;
+            $sql =
+                    "SELECT SUM(t.filesize) AS size FROM tmpfiles t JOIN {files} f ON t.contenthash = f.contenthash WHERE f.contextid IN " .
+                    $course->subcontextssql . " AND t.repeats > 1";
+            $filesbycourse[$course->id]['non_unique'] = (int) $DB->get_record_sql($sql)->size;
 
             // How many files are linked to mdl_files.ctxid outside of this course.
-            $sql = "CREATE TEMPORARY TABLE tmpcoursefiles (contenthash VARCHAR(40), repeats INT, drafts INT) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+            $sql =
+                    "CREATE TEMPORARY TABLE tmpcoursefiles (contenthash VARCHAR(40), repeats INT, drafts INT) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
             $DB->execute($sql);
-            $DB->execute("INSERT INTO tmpcoursefiles (contenthash, repeats) SELECT t.contenthash, t.repeats FROM tmpfiles t JOIN mdl_files f ON t.contenthash = f.contenthash WHERE f.contextid IN $subcontextssql AND t.repeats > 1 ");
+            $DB->execute("INSERT INTO tmpcoursefiles (contenthash, repeats) SELECT t.contenthash, t.repeats FROM tmpfiles t JOIN mdl_files f ON t.contenthash = f.contenthash WHERE f.contextid IN $course->subcontextssql AND t.repeats > 1 ");
 
             // How many times each contenthash is in mdl_files with component = user AND filearea=draft.
-            $sql = "UPDATE tmpcoursefiles t SET t.drafts = (SELECT COUNT(*) FROM mdl_files f WHERE f.contenthash = t.contenthash AND f.component = 'user' AND f.filearea = 'draft')";
+            $sql =
+                    "UPDATE tmpcoursefiles t SET t.drafts = (SELECT COUNT(*) FROM mdl_files f WHERE f.contenthash = t.contenthash AND f.component = 'user' AND f.filearea = 'draft')";
             $DB->execute($sql);
 
             // How many bytes of course files are shared outside the course context.
             $subsql = "SELECT contenthash FROM tmpcoursefiles";
-            $subsql2 = "SELECT f.contenthash FROM mdl_files f WHERE f.contextid NOT IN $subcontextssql AND f.contenthash IN ($subsql)";
+            $subsql2 =
+                    "SELECT f.contenthash FROM mdl_files f WHERE f.contextid NOT IN $course->subcontextssql AND f.contenthash IN ($subsql)";
             $sql = "SELECT SUM(t.filesize) AS size FROM tmpfiles t WHERE t.contenthash IN ($subsql2)";
-            $filesbycourse[$course->id]['shared_outside_course'] = (int)$DB->get_record_sql($sql)->size;
+            $filesbycourse[$course->id]['shared_outside_course'] = (int) $DB->get_record_sql($sql)->size;
 
             // How many bytes of course files are shared only between course and drafts (component = user AND filearea=draft)
             $subsql = "SELECT contenthash FROM tmpcoursefiles WHERE repeats - drafts > 1";
-            $subsql2 = "SELECT f.contenthash FROM mdl_files f WHERE f.contextid NOT IN $subcontextssql AND f.contenthash IN ($subsql)";
+            $subsql2 =
+                    "SELECT f.contenthash FROM mdl_files f WHERE f.contextid NOT IN $course->subcontextssql AND f.contenthash IN ($subsql)";
             $sql = "SELECT SUM(t.filesize) AS size FROM tmpfiles t WHERE t.contenthash IN ($subsql2)";
-            $filesbycourse[$course->id]['shared_outside_course_minus_drafts'] = (int)$DB->get_record_sql($sql)->size;
+            $filesbycourse[$course->id]['shared_outside_course_minus_drafts'] = (int) $DB->get_record_sql($sql)->size;
 
             $DB->execute("DROP TABLE tmpcoursefiles");
 
             $filesbycourse[$course->id]['all'] = $filesbycourse[$course->id]['non_unique'] + $filesbycourse[$course->id]['unique'];
-            $filesbycourse[$course->id]['free_on_deletion'] = $filesbycourse[$course->id]['all'] - $filesbycourse[$course->id]['shared_outside_course'];
-            $filesbycourse[$course->id]['free_after_drafts_removal_and_course_deletion'] = $filesbycourse[$course->id]['all'] - $filesbycourse[$course->id]['shared_outside_course_minus_drafts'];
+            $filesbycourse[$course->id]['free_on_deletion'] =
+                    $filesbycourse[$course->id]['all'] - $filesbycourse[$course->id]['shared_outside_course'];
+            $filesbycourse[$course->id]['free_after_drafts_removal_and_course_deletion'] =
+                    $filesbycourse[$course->id]['all'] - $filesbycourse[$course->id]['shared_outside_course_minus_drafts'];
 
-            if($filesbycourse[$course->id]['all'] == 0) {
+            if ($filesbycourse[$course->id]['all'] == 0) {
                 unset($filesbycourse[$course->id]);
             }
         }
-        // Order  array descending using ['all'] index by custom function
-        usort($filesbycourse, function ($item1, $item2) {
-            return $item2['all'] <=> $item1['all'];
-        });
 
         $i = 0;
         foreach ($filesbycourse as $courseid => $values) {
@@ -133,7 +130,8 @@ class DataStats extends MooshCommand
             $data["Course $i files shared outside course"] = strval($values['shared_outside_course']);
             $data["Course $i files shared outside course minus drafts"] = strval($values['shared_outside_course_minus_drafts']);
             $data["Course $i storage freed when deleted"] = strval($values['free_on_deletion']);
-            $data["Course $i storage freed when deleted and user drafts removed"] = strval($values['free_after_drafts_removal_and_course_deletion']);
+            $data["Course $i storage freed when deleted and user drafts removed"] =
+                    strval($values['free_after_drafts_removal_and_course_deletion']);
         }
 
         $sql = "SELECT f.userid, SUM(f.filesize) AS backupsize 
@@ -142,7 +140,7 @@ class DataStats extends MooshCommand
                 GROUP BY f.userid
                 ORDER BY backupsize DESC LIMIT 10";
 
-        $backups =  $DB->get_records_sql($sql);
+        $backups = $DB->get_records_sql($sql);
         $i = 0;
         foreach ($backups as $key => $values) {
             $i++;
@@ -150,37 +148,35 @@ class DataStats extends MooshCommand
             $data["Backup $i size"] = strval($values->backupsize);
         }
 
-
         // SELECT top components and components / fileareas
         $data += $this->getComponentStorageUsage();
         $data += $this->getFileAreaAndComponentStorageUsage();
 
-
         $this->display($data, $options['json'], !$options['no-human-readable']);
     }
 
-    protected function getComponentStorageUsage(): array
-    {
+    protected function getComponentStorageUsage(): array {
         global $DB;
         $data = ['Storage usage by component' => null];
 
-        $components = $DB->get_records_sql("SELECT component AS name FROM {files} GROUP BY component ORDER BY sum(filesize) DESC LIMIT 5;");
+        $components =
+                $DB->get_records_sql("SELECT component AS name FROM {files} GROUP BY component ORDER BY sum(filesize) DESC LIMIT 5;");
         foreach ($components as $component) {
-            $sum = $DB->get_record_sql("SELECT SUM(f.max_filesize) AS total FROM (SELECT MAX(filesize) AS max_filesize FROM {files} WHERE component = :component GROUP BY contenthash) f",
-                ['component' => $component->name]);
+            $sum =
+                    $DB->get_record_sql("SELECT SUM(f.max_filesize) AS total FROM (SELECT MAX(filesize) AS max_filesize FROM {files} WHERE component = :component GROUP BY contenthash) f",
+                            ['component' => $component->name]);
             $data['- ' . $component->name] = $sum->total;
         }
 
         return $data;
     }
 
-
-    protected function getFileAreaAndComponentStorageUsage(): array
-    {
+    protected function getFileAreaAndComponentStorageUsage(): array {
         global $DB;
         $data = ['Storage usage by component and file area' => null];
 
-        $usageRecords = $DB->get_records_sql("SELECT CONCAT(component, filearea) AS uniquekey, filearea, component, SUM(filesize) AS size FROM (SELECT DISTINCT contenthash, component, filearea, filesize FROM {files}) AS files GROUP BY filearea, component ORDER BY size DESC LIMIT 10");
+        $usageRecords =
+                $DB->get_records_sql("SELECT CONCAT(component, filearea) AS uniquekey, filearea, component, SUM(filesize) AS size FROM (SELECT DISTINCT contenthash, component, filearea, filesize FROM {files}) AS files GROUP BY filearea, component ORDER BY size DESC LIMIT 10");
 
         foreach ($usageRecords as $record) {
             $data['- ' . $record->component . ', ' . $record->filearea] = $record->size;
@@ -189,15 +185,13 @@ class DataStats extends MooshCommand
         return $data;
     }
 
-    protected function getAllCourses()
-    {
+    protected function getAllCourses() {
         global $DB;
         return $DB->get_records_sql('SELECT ctx.instanceid AS id, ctx.path AS ctxpath, ctx.id AS ctxid FROM {context} ctx WHERE ctx.contextlevel = ' .
                 CONTEXT_COURSE . ' AND ctx.instanceid != 1');
     }
 
-    protected function get_sub_context_ids($path)
-    {
+    protected function get_sub_context_ids($path) {
         global $DB;
 
         $sql = "SELECT ctx.id, ctx.id AS id2 FROM {context} ctx WHERE ";
