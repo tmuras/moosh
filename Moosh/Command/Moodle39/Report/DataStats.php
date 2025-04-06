@@ -194,9 +194,9 @@ class DataStats extends MooshCommand {
     protected function get_sub_context_ids($path) {
         global $DB;
 
-        $sql = "SELECT ctx.id, ctx.id AS id2 FROM {context} ctx WHERE ";
-        $sql_like = $DB->sql_like('ctx.path', ':path');
-        $contextids = $DB->get_records_sql_menu($sql . $sql_like, array('path' => $path . '/%'));
+        $sql = "SELECT ctx.id, ctx.id AS id2 FROM {context} ctx WHERE ctx.path LIKE '$path/%'";
+//        $sql_like = $DB->sql_like('ctx.path', ':path');
+        $contextids = $DB->get_records_sql_menu($sql);
         return $contextids;
     }
 }
