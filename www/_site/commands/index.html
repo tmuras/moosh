@@ -1076,10 +1076,53 @@ Use -i for providing username IDs.  Optionally add -S and -E to define start and
 <pre><code>moosh course-enrol-change-status -i=42 -s=1 2
 </code></pre>
 
+<a name="course-enrol-list"></a>
+<h2>course-enrol-list</h2>
+
+<p>List all enrolment instances for one or more courses given a list of course IDs.</p>
+
+<p>Example 1: List all enrolment instances for course 42</p>
+
+<pre><code>moosh course-enrol-list 42
+</code></pre>
+
 <a name="course-enableselfenrol"></a>
 <h2>course-enableselfenrol</h2>
 
-<p>Enable self enrolment on one or more courses given a list of course IDs. By default self enrolment is enabled without an enrolment key, but one can be passed as an option.</p>
+<p>Enable self enrolment on one or more courses given a list of course IDs. By default self enrolment is enabled without an enrolment key, but one can be passed as an option. In addition, you can customize the self-enrolment instance by specifying a role, a custom instance name, welcome message settings, and a custom welcome message.</p>
+
+<p>Options</p>
+
+<ul>
+<li><p>--key, -k &lt;enrolmentkey&gt;
+Set an enrolment key. If omitted, any pre-existing key will be blanked.</p></li>
+<li><p>--roleid, -r &lt;roleid&gt;
+Specify the numerical ID of the role to assign to newly enrolled users.</p></li>
+<li><p>--name, -n &lt;custom name&gt;
+Provide a custom name for the self-enrolment instance.</p></li>
+<li><p>--sendmessage, -s &lt;integer&gt;
+Control the welcome email for new users. Accepts integer values:</p>
+
+<ul>
+<li><code>0</code> - Do not send the welcome email.</li>
+<li><code>1</code> - Send welcome email from course contact.</li>
+<li><code>2</code> - Send welcome email from course key holder.</li>
+<li><code>3</code> - Send welcome email from no reply.
+If not provided, the welcome message setting is left unchanged.</li>
+</ul>
+</li>
+<li><p>--message, -m &lt;text&gt;
+Specify the welcome message text to send to new users.</p></li>
+</ul>
+
+
+<p>Arguments</p>
+
+<ul>
+<li>id
+One or more course IDs for which self enrolment should be enabled.</li>
+</ul>
+
 
 <p>Example 1: Enable self enrolment on a course without an enrolment key</p>
 
@@ -1089,6 +1132,11 @@ Use -i for providing username IDs.  Optionally add -S and -E to define start and
 <p>Example 2: Enable self enrolment on a course with an enrolment key</p>
 
 <pre><code>moosh course-enableselfenrol --key "an example enrolment key" 3
+</code></pre>
+
+<p>Example 3: Enable self enrolment with a custom role assignment, custom instance name, welcome email settings, and a custom welcome message</p>
+
+<pre><code>moosh course-enableselfenrol --roleid 5 --name "Premium Enrolment" --sendmessage 1 --message "Welcome to our Premium Course!" 3
 </code></pre>
 
 <a name="course-info"></a>
@@ -1242,14 +1290,14 @@ There are also quite a few options that modify the behaviour - see <code>moosh c
 <a name="course-restore"></a>
 <h2>course-restore</h2>
 
-<p>Restore course from path/to/backup.mbz to category or existig course.</p>
+<p>Restore course from path/to/backup.mbz to category or existing course.</p>
 
 <p>Example 1: Restore backup.mbz into category with id=1</p>
 
 <pre><code>moosh course-restore backup.mbz 1
 </code></pre>
 
-<p>Example 2: Restore backup.mbz into existing course with id=3</p>
+<p>Example 2: Restore backup.mbz into existing course with id=3. The backup content will be added into existing course - this is a merge operation. It means that if you back up a course and then restore it into the same course this way, all the activities and resources will be duplicated.</p>
 
 <pre><code>moosh course-restore -e backup.mbz 3
 </code></pre>
@@ -1259,9 +1307,14 @@ There are also quite a few options that modify the behaviour - see <code>moosh c
 <pre><code>moosh course-restore --ignore-warnings backup.mbz 1
 </code></pre>
 
-<p>Example 4: Restore backup.mbz into existing course with id=3, overwrite course content.</p>
+<p>Example 4: Restore backup.mbz into existing course with id=3, overwriting course content. The result will be course with the content as in the backup file and course id will stay the same (3).</p>
 
 <pre><code>moosh course-restore --overwrite backup.mbz 3
+</code></pre>
+
+<p>Example 5: Restore backup.mbz into category with id=1 and apply a preprocessing script. The script should define a function <code>moosh_preprocess_mbz($path: string, $verbose: bool): void</code>, where <code>$path</code> is a path to the unarchived backup and <code>$verbose</code> is a verbosity flag.</p>
+
+<pre><code>moosh course-restore --preprocess preprocessing-script.php backup.mbz 1
 </code></pre>
 
 <a name="course-unenrol"></a>
