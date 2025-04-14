@@ -1086,13 +1086,13 @@ Example 3: Set unenrolment of participants with role id 5 and 6, and reset cours
 course-restore
 --------------
 
-Restore course from path/to/backup.mbz to category or existig course.
+Restore course from path/to/backup.mbz to category or existing course.
 
 Example 1: Restore backup.mbz into category with id=1
 
     moosh course-restore backup.mbz 1
 
-Example 2: Restore backup.mbz into existing course with id=3
+Example 2: Restore backup.mbz into existing course with id=3. The backup content will be added into existing course - this is a merge operation. It means that if you back up a course and then restore it into the same course this way, all the activities and resources will be duplicated.
 
     moosh course-restore -e backup.mbz 3
 
@@ -1100,7 +1100,7 @@ Example 3: Ignore pre-check warnings, like restoring backup from higher Moodle v
 
     moosh course-restore --ignore-warnings backup.mbz 1
 
-Example 4: Restore backup.mbz into existing course with id=3, overwrite course content.
+Example 4: Restore backup.mbz into existing course with id=3, overwriting course content. The result will be course with the content as in the backup file and course id will stay the same (3).
 
     moosh course-restore --overwrite backup.mbz 3
 
