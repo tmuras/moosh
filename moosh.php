@@ -32,7 +32,7 @@ require_once $moosh_dir . '/includes/default_options.php';
 use GetOptionKit\ContinuousOptionParser;
 use GetOptionKit\OptionCollection;
 
-define('MOOSH_VERSION', '1.27');
+define('MOOSH_VERSION', '1.29');
 define('MOODLE_INTERNAL', true);
 
 // suppressing warnings for php > 8
