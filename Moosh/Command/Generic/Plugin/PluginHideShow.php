@@ -34,7 +34,7 @@ class PluginHideShow extends MooshCommand
         $pluginname = $this->arguments[1];
         switch($plugintype){
             case 'block':
-                self::hideshow_values_check($pluginname,array(0,1));
+                self::hideshow_values_check($show,array(0,1));
                 if (!$block = $DB->get_record('block', array('name'=>$pluginname))) {
                     echo "$plugintype $pluginname not exists";
                     break;
@@ -275,7 +275,7 @@ class PluginHideShow extends MooshCommand
     }
     private static function hideshow_values_check($hideshow,$possiblevalues){
         if(!in_array($hideshow, $possiblevalues)){
-            cli_error(get_string('hideshow_plugin_cli_parametervalues','tool_cmdlinetools',implode(',', $possiblevalues)));
+            cli_error("possible show/hide values are ".implode(',', $possiblevalues));
         }
     }
 
