@@ -479,7 +479,11 @@ class MooshCommand {
             if ($humanreadable && is_numeric($v)) {
                 echo display_size($v);
             } else {
-                echo $v;
+                if(is_array($v)) {
+                    echo implode(',',$v);
+                } else {
+                    echo $v;
+                }
             }
             echo "\n";
         }
