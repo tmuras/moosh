@@ -8,9 +8,9 @@
 
 namespace Moosh\Command\Moodle39\Dev;
 use Moosh\MooshCommand;
-use Twig_Loader_Filesystem;
-use Twig_Environment;
-use Twig_Extension_Debug;
+use \Twig\Loader\Filesystem;
+use \Twig\Environment;
+use \Twig\Extension\Debug;
 
 class FormAdd extends MooshCommand
 {
@@ -26,9 +26,9 @@ class FormAdd extends MooshCommand
     public function execute()
     {
 
-        $loader = new Twig_Loader_Filesystem($this->mooshDir.'/templates');
-        $twig = new Twig_Environment($loader,array('debug' => true));
-        $twig->addExtension(new Twig_Extension_Debug());
+        $loader = new \Twig\Loader\Filesystem($this->mooshDir.'/templates');
+        $twig = new \Twig\Environment($loader,array('debug' => true));
+        $twig->addExtension(new \Twig\Extension\Debug());
 
         $template = 'form/form-element-' . $this->arguments[0] . '.twig';
         if (!$loader->exists($template)) {

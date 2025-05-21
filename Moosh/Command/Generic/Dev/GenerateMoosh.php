@@ -8,9 +8,9 @@
 
 namespace Moosh\Command\Generic\Dev;
 use Moosh\MooshCommand;
-use Twig_Loader_Filesystem;
-use Twig_Environment;
-use Twig_Extension_Debug;
+use \Twig\Loader\FilesystemLoader;
+use \Twig\Environment;
+use \Twig\Extension\Debug;
 
 class GenerateMoosh extends MooshCommand
 {
@@ -28,8 +28,8 @@ class GenerateMoosh extends MooshCommand
 
     public function execute()
     {
-        $loader = new Twig_Loader_Filesystem($this->mooshDir . '/templates');
-        $twig = new Twig_Environment($loader);
+        $loader = new \Twig\Loader\FilesystemLoader($this->mooshDir . '/templates');
+        $twig = new \Twig\Environment($loader);
 
         $command = explode('-', $this->arguments[0], 2);
         if (count($command) != 2) {

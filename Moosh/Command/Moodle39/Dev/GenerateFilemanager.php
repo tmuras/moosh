@@ -8,9 +8,9 @@
 
 namespace Moosh\Command\Moodle39\Dev;
 use Moosh\MooshCommand;
-use Twig_Loader_Filesystem;
-use Twig_Environment;
-use Twig_Extension_Debug;
+use \Twig\Loader\Filesystem;
+use \Twig\Environment;
+use \Twig\Extension\Debug;
 
 class GenerateFilemanager extends MooshCommand
 {
@@ -22,9 +22,9 @@ class GenerateFilemanager extends MooshCommand
 
     public function execute()
     {
-        $loader = new Twig_Loader_Filesystem($this->mooshDir.'/templates');
-        $twig = new Twig_Environment($loader,array('debug' => true));
-        $twig->addExtension(new Twig_Extension_Debug());
+        $loader = new \Twig\Loader\Filesystem($this->mooshDir.'/templates');
+        $twig = new \Twig\Environment($loader,array('debug' => true));
+        $twig->addExtension(new \Twig\Extension\Debug());
 
         foreach(array('filemanager/form-handler.twig','filemanager/display.twig','filemanager/lib.twig') as $template) {
             echo $twig->render($template, array('id' =>  $this->pluginInfo['type'] .'_'. $this->pluginInfo['name']));
