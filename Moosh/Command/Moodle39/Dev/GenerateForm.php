@@ -8,8 +8,8 @@
 
 namespace Moosh\Command\Moodle39\Dev;
 use Moosh\MooshCommand;
-use Twig_Loader_Filesystem;
-use Twig_Environment;
+use \Twig\Loader\Filesystem;
+use \Twig\Environment;
 
 class GenerateForm extends MooshCommand
 {
@@ -25,8 +25,8 @@ class GenerateForm extends MooshCommand
         //command may need to store some information in-between runs
         $this->loadSession();
 
-        $loader = new Twig_Loader_Filesystem($this->mooshDir.'/templates');
-        $twig = new Twig_Environment($loader);
+        $loader = new \Twig\Loader\Filesystem($this->mooshDir.'/templates');
+        $twig = new \Twig\Environment($loader);
 
         $formName = '';
         if ($this->pluginInfo['type'] != 'unknown') {
