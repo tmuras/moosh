@@ -48,10 +48,6 @@ class RoleExport extends MooshCommand {
         }
 
         $filepath = $this->expandedOptions['file'];
-        if (!$filepath) {
-            printf("Invalid output path value '%s'\n", $filepath);
-            exit(1);
-        }
 
         require_once($CFG->libdir . '/filelib.php');
         $xml = core_role_preset::get_export_xml($role->id);
