@@ -194,28 +194,30 @@ class PluginDownload extends MooshCommand
      * @return resource|null
      */
     public static function createProxyContext(array $expandedOptions) {
+        $httpConfig = [
+            'method' => 'GET',
+            'header' => "User-Agent: moosh\r\n" .
+                        "Accept: application/json\r\n" .
+                        "Connection: close\r\n",
+            'request_fulluri' => true,
+        ];
+
         $proxyUrl = !empty($expandedOptions['proxy'])
             ? $expandedOptions['proxy']
             : (getenv('http_proxy') ? getenv('http_proxy') : (getenv('HTTP_PROXY') ?: null));
-
-        if (!$proxyUrl) {
-            return null;
-        }
-
-        $uriParts = parse_url($proxyUrl);
-        $httpConfig = [
-            'proxy' => sprintf(
+        if ($proxyUrl) {
+            $uriParts = parse_url($proxyUrl);
+            $httpConfig['proxy'] = sprintf(
                 '%s://%s%s',
                 $uriParts['scheme'] ?? 'tcp',
                 $uriParts['host'],
                 empty($uriParts['port']) ? '443' : ':' . $uriParts['port']
-            ),
-            'request_fulluri' => true,
-        ];
+            );
 
-        if (!empty($uriParts['user']) && !empty($uriParts['pass'])) {
-            $authEncoded = base64_encode($uriParts['user'] . ':' . $uriParts['pass']);
-            $httpConfig['header'] = 'Proxy-Authorization: Basic ' . $authEncoded;
+            if (!empty($uriParts['user']) && !empty($uriParts['pass'])) {
+                $authEncoded = base64_encode($uriParts['user'] . ':' . $uriParts['pass']);
+                $httpConfig['header'] .= 'Proxy-Authorization: Basic ' . $authEncoded;
+            }
         }
 
         return stream_context_create(['http' => $httpConfig]);
