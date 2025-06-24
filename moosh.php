@@ -232,6 +232,7 @@ if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE) {
         $_SERVER['SERVER_PROTOCOL'] = 'HTTP 1.1';
         $_SERVER['SERVER_SOFTWARE'] = 'PHP /' . phpversion() . ' Development Server';
         $_SERVER['REQUEST_URI'] = '/';
+        $_SERVER['HTTP_X_FORWARDED_PROTO'] = 'https';
     } else {
         define('CLI_SCRIPT', true);
     }
