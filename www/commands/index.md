@@ -1401,6 +1401,41 @@ Example 1: Disable multimedia filter completely.
 
     moosh filter-set mediaplugin -9999 
 
+file-orphaned
+---------
+
+This command is useful for maintaining the integrity of the Moodle database and file system.
+
+ This command helps administrators identify discrepancies between the Moodle
+ database (`mdl_files` table) and the physical file storage (`moodledata/filedir`).
+ It operates in two primary modes:
+
+ 1.  **`db` mode (default):** Scans the `mdl_files` table and verifies that each
+     file record corresponds to an existing physical file in the `filedir`. It
+     reports database entries for which the physical file is missing.
+
+ 2.  **`fs` mode:** Scans the `moodledata/filedir` directory and verifies that
+     each physical file has a corresponding record in the `mdl_files` table.
+     It reports physical files that are not referenced in the database.
+
+ The output can be formatted as plain text, JSON, XML, or CSV, making it
+ easy to parse or use in other scripts. A summary of the total number and
+ size of orphaned files can also be displayed.
+
+ If file option is given all output will be redirected to the specified file.
+
+Example 1: Check for DB entries missing from the filesystem (default mode).
+
+    mooshp file-orphaned
+
+Example 2: Check for filesystem entries missing from the DB.
+
+    moosh file-orphaned --mode=fs
+
+Example 3: Output the results in JSON format to a file1 and show a summary.
+
+    moosh file-orphaned --output-format=json --file=file1.json --summary
+
 form-add
 --------
 
