@@ -2467,6 +2467,12 @@ CSV:
 If the `--summary` option is given, a summary of the total number of matches
 and records processed will be displayed at the end of the output.
 
+The `--include-expression` option allows you to specify a regular expression; only matches that satisfy this 
+expression will be processed.
+
+The `--exclude-expression` option allows you to specify a regular expression; matches that satisfy this expression 
+will be excluded from processing.
+
 Example 1: Detect all occurrences of XSS code in the database (default mode).
 
     $ php moosh.php script-xss-cleanup
@@ -2494,6 +2500,12 @@ Example 6: Defuse records from a CSV input file.
 Example 7: Detect XSS in records from a JSON input file and output as plain text.
 
     $ php moosh.php script-xss-cleanup --input-file=matches.json --input-format=json --output-format=plain
+
+Example 8: Detect XSS in records from a JSON input file and output as plain text and exclude any matches for 
+           youtube.com and h5p.org
+
+    $ php moosh.php script-xss-cleanup --input-file=matches.json --input-format=json --output-format=plain \
+            --exclude-expression='youtube\.com|h5p\.org'
 
 section-config-set
 -------------------

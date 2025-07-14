@@ -63,6 +63,12 @@
  *  If the `--summary` option is given, a summary of the total number of matches
  *  and records processed will be displayed at the end of the output.
  *
+ *  The `--include-expression` option allows you to specify a regular expression; only matches that satisfy this
+ *  expression will be processed.
+ *
+ *  The `--exclude-expression` option allows you to specify a regular expression; matches that satisfy this expression
+ *  will be excluded from processing.
+ *
  * @package    Moosh\Command\Moodle40\Security
  * @author     Andrej Vitez <contact@andrejvitez.com>
  * @copyright  2012 onwards Tomasz Muras
@@ -161,6 +167,8 @@ class XssCleanup extends MooshCommand {
     private string $mode;
     private int $totalrecords = 0;
     private int $totalmatches = 0;
+    private string $include_expression = '';
+    private string $exclude_expression = '';
 
     public function __construct() {
         parent::__construct('xss-cleanup', 'security');
@@ -210,6 +218,16 @@ class XssCleanup extends MooshCommand {
             ),
             self::DEFAULT_INPUT_FORMAT
         );
+        $this->addOption(
+            'l|include-expression:',
+            'Only process matches that match this regex expression. "~" char is used as regex delimiter and it must be escaped.',
+            ''
+        );
+        $this->addOption(
+            'c|exclude-expression:',
+            'Exclude matches that match this regex expression. "~" char is used as regex delimiter and it must be escaped.',
+            ''
+        );
 
     }
 
@@ -222,6 +240,8 @@ class XssCleanup extends MooshCommand {
         $outputfile = $this->expandedOptions['output-file'];
         $inputfile = $this->expandedOptions['input-file'];
         $input_format = $this->expandedOptions['input-format'];
+        $this->include_expression = $this->expandedOptions['include-expression'];
+        $this->exclude_expression = $this->expandedOptions['exclude-expression'];
         $this->totalmatches = 0;
         $this->totalrecords = 0;
 
@@ -443,7 +463,6 @@ class XssCleanup extends MooshCommand {
                 continue;
             }
 
-            $this->totalrecords++;
             $this->process_matched_record($record, $item->table, $column->name);
         }
     }
@@ -493,28 +512,39 @@ class XssCleanup extends MooshCommand {
     }
 
     public function process_matched_record(object $record, string $table, string $column_name): void {
+        $this->totalrecords++;
+
         if ($this->mode === self::MODE_DEFUSE || $this->mode === self::MODE_CLEAN) {
+            $matches = [];
             $cleaned_value = preg_replace_callback(
                 self::MATCH_PATTERN,
-                function($match) {
+                function($match) use (&$matches) {
+                    if (!$this->should_process_match($match[1])) {
+                        return $match[1];
+                    }
+                    $matches[] = $match[1];
                     $this->totalmatches++;
                     return $this->mode === self::MODE_CLEAN ? '' : htmlentities($match[1]);
                 },
                 $record->{$column_name}
             );
 
-            $this->db->execute(
-                "UPDATE {" . $table . "} SET {$column_name} = ?" . " WHERE id = ?", [$cleaned_value, $record->id]
-            );
-
-            if ($this->verbose) {
-                $this->print_item(
-                    $record->id,
-                    $table,
-                    $column_name,
-                    $record->{$column_name}
+            if ($matches) {
+                $this->db->execute(
+                    "UPDATE {" . $table . "} SET {$column_name} = ?" . " WHERE id = ?", [$cleaned_value, $record->id]
                 );
+
+                if ($this->verbose) {
+                    $this->print_item(
+                        $record->id,
+                        $table,
+                        $column_name,
+                        $matches
+                    );
+                }
             }
+
+            return;
         }
 
         if (preg_match_all(
@@ -522,14 +552,34 @@ class XssCleanup extends MooshCommand {
             $record->{$column_name},
             $matches
         )) {
-            $this->totalmatches += count($matches[1]);
-            $this->print_item(
-                $record->id,
-                $table,
-                $column_name,
-                $matches[1]
-            );
+            $matches_filtered = array_filter($matches[1], [$this, 'should_process_match']);
+            if ($matches_filtered) {
+                $this->totalmatches += count($matches_filtered);
+                $this->print_item(
+                    $record->id,
+                    $table,
+                    $column_name,
+                    $matches_filtered
+                );
+            }
         }
+    }
+
+    /**
+     * Filter matches based on regex.
+     *
+     * @return bool Return true if the match should be ignored.
+     */
+    private function should_process_match(string $match): bool {
+        if ($this->include_expression && !preg_match("~$this->include_expression~i", $match)) {
+            return false;
+        }
+
+        if ($this->exclude_expression && preg_match("~$this->exclude_expression~i", $match)) {
+            return false;
+        }
+
+        return true;
     }
 
     private function print_item(string $identifier, string $table, string $column, array $matches): void {
@@ -641,16 +691,13 @@ class XssCleanup extends MooshCommand {
 
     public function scan_column(string $table, database_column_info $column): void {
         $columnname = $this->db->get_manager()->generator->getEncQuoted($column->name);
-        $searchterm = '<script';
-        $searchexpr = '%' . $this->db->sql_like_escape($searchterm) . '%';
 
         $records = $this->db->get_recordset_sql(
-            "SELECT id, $columnname FROM {" . $table . "} WHERE $columnname LIKE '$searchexpr'"
+            "SELECT id, $columnname FROM {" . $table . "} WHERE $columnname LIKE '%<script%' OR $columnname LIKE '%<iframe%'"
         );
 
         try {
             foreach ($records as $record) {
-                $this->totalrecords++;
                 $this->process_matched_record($record, $table, $column->name);
             }
         } finally {
