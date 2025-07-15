@@ -118,10 +118,10 @@ use function is_readable;
  */
 class XssCleanup extends MooshCommand {
 
-    private const string MODE_DEFUSE = 'defuse';
-    private const string MODE_CLEAN = 'clean';
-    private const string MODE_DETECT = 'detect';
-    private const string DEFAULT_MODE = self::MODE_DETECT;
+    private const MODE_DEFUSE = 'defuse';
+    private const MODE_CLEAN = 'clean';
+    private const MODE_DETECT = 'detect';
+    private const DEFAULT_MODE = self::MODE_DETECT;
 
     /**
      * @var string[] Valid modes for file comparison.
@@ -133,10 +133,10 @@ class XssCleanup extends MooshCommand {
     ];
     private const VALID_OUTPUT_FORMATS = ['xml', 'json', 'csv', self::DEFAULT_OUTPUT_FORMAT];
     private const VALID_INPUT_FORMATS = [self::DEFAULT_INPUT_FORMAT, 'json', 'csv'];
-    private const int MATCH_CHAR_LIMIT = 50;
-    private const string MATCH_PATTERN = '~(\s*<(script|iframe)[^>]*>.*?</\2>\s*)~ius';
-    private const string DEFAULT_OUTPUT_FORMAT = 'plain';
-    private const string DEFAULT_INPUT_FORMAT = 'xml';
+    private const MATCH_CHAR_LIMIT = 50;
+    private const MATCH_PATTERN = '~(\s*<(script|iframe)[^>]*>.*?</\2>\s*)~ius';
+    private const DEFAULT_OUTPUT_FORMAT = 'plain';
+    private const DEFAULT_INPUT_FORMAT = 'xml';
 
     private string $output_format;
 
