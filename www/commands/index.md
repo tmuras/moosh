@@ -2383,6 +2383,130 @@ Example 2: Prevent "manager" role to be set on course level
 
     moosh role-update-contextlevel manager -course-off
 
+security-xss-cleanup
+------------------------
+
+Moosh command to clean up XSS code from the database that can be used to attack users.
+
+This command helps administrators find and clean up XSS code from the Moodle
+database. It operates in three primary modes:
+
+1.  **`detect` mode (default):** Finds and reports all occurrences of XSS
+    code in the database.
+
+2.  **`defuse` mode:** Finds and replaces all occurrences of XSS code in the
+    database with their HTML encoded equivalents.
+
+3.  **`clean` mode:** Finds and removes all occurrences of XSS code from the
+    database.
+
+The output can be formatted as plain text, JSON, XML, or CSV, making it
+easy to parse or use in other scripts.
+
+If the `--output-file` option is given, all output will be redirected to the specified file.
+
+Example output files for each format:
+
+JSON:
+```json
+[
+  {"id": "123", "table": "my_table", "column": "my_column", "occurrences": ["<script>alert(1)</script>"]}
+]
+```
+
+XML:
+```xml
+<scan_matches>
+  <match>
+    <id>123</id>
+    <table>my_table</table>
+    <column>my_column</column>
+    <occurrences>
+        <value>&lt;script&gt;alert(1)&lt;/script&gt;</value>
+        <value>&lt;script&gt;alert(1)&lt;/script&gt;</value>
+    </occurrences>
+  </match>
+</scan_matches>
+```
+
+CSV:
+```csv
+123,my_table,my_column,"<script>alert(1)</script>; <script>alert(1)</script>"
+```
+
+You can also use the `--input-file` and `--input-format` options to process a list of records
+from a file (in XML, JSON, or CSV format) instead of scanning the database.
+For an example you can first output the results of a scan to a file and then edit it manually
+to filter out false positives and load that file as input for this command.
+
+Example input files:
+
+XML:
+```xml
+<scan_matches>
+  <match>
+    <id>123</id>
+    <table>my_table</table>
+    <column>my_column</column>
+  </match>
+</scan_matches>
+```
+
+JSON:
+```json
+[
+  {"id": "123", "table": "my_table", "column": "my_column"}
+]
+```
+    
+CSV:
+```csv
+123,my_table,my_column
+```
+
+If the `--summary` option is given, a summary of the total number of matches
+and records processed will be displayed at the end of the output.
+
+The `--include-expression` option allows you to specify a regular expression; only matches that satisfy this 
+expression will be processed.
+
+The `--exclude-expression` option allows you to specify a regular expression; matches that satisfy this expression 
+will be excluded from processing.
+
+Example 1: Detect all occurrences of XSS code in the database (default mode).
+
+    $ php moosh.php script-xss-cleanup
+
+Example 2: Defuse all occurrences of XSS code in the database by replacing  them with their HTML encoded equivalents.
+
+    $ php moosh.php script-xss-cleanup --mode=defuse
+
+Example 3: Clean all occurrences of XSS code from the database.
+
+    $ php moosh.php script-xss-cleanup --mode=clean
+
+Example 4: Output the results in JSON format to a file and show a summary.
+
+    $ php moosh.php script-xss-cleanup --output-format=json --output-file=file1.json --summary
+
+Example 5: Clean only records listed in an input file (XML format).
+
+    $ php moosh.php script-xss-cleanup --mode=clean --input-file=matches.xml --input-format=xml
+
+Example 6: Defuse records from a CSV input file.
+
+    $ php moosh.php script-xss-cleanup --mode=defuse --input-file=matches.csv --input-format=csv
+
+Example 7: Detect XSS in records from a JSON input file and output as plain text.
+
+    $ php moosh.php script-xss-cleanup --input-file=matches.json --input-format=json --output-format=plain
+
+Example 8: Detect XSS in records from a JSON input file and output as plain text and exclude any matches for 
+           youtube.com and h5p.org
+
+    $ php moosh.php script-xss-cleanup --input-file=matches.json --input-format=json --output-format=plain \
+            --exclude-expression='youtube\.com|h5p\.org'
+
 section-config-set
 -------------------
 

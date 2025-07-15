@@ -32,7 +32,7 @@ require_once $moosh_dir . '/includes/default_options.php';
 use GetOptionKit\ContinuousOptionParser;
 use GetOptionKit\OptionCollection;
 
-define('MOOSH_VERSION', '1.31');
+define('MOOSH_VERSION', '1.33');
 define('MOODLE_INTERNAL', true);
 
 // suppressing warnings for php > 8
@@ -232,6 +232,7 @@ if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE) {
         $_SERVER['SERVER_PROTOCOL'] = 'HTTP 1.1';
         $_SERVER['SERVER_SOFTWARE'] = 'PHP /' . phpversion() . ' Development Server';
         $_SERVER['REQUEST_URI'] = '/';
+        $_SERVER['HTTP_X_FORWARDED_PROTO'] = 'https';
     } else {
         define('CLI_SCRIPT', true);
     }
