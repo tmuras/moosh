@@ -47,7 +47,7 @@ jobs:
         run: php moosh.php | grep "moosh version"
       - name: Lint files
         run: |
-          ls
+          ls    
           rm includes/config*class.php
           rm -rf vendor external
-          find . '*.php' | xargs php -l
+          find . -name '*.php' | xargs php -l
