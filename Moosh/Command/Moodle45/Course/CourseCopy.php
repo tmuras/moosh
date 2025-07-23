@@ -93,7 +93,7 @@ class CourseCopy extends MooshCommand {
         }
 
         if ($options['startdate']) {
-            if (is_int($options['startdate'])) {
+            if (is_numeric($options['startdate'])) {
                 // Ensure startdate is a valid timestamp.
                 $formdata->startdate = $options['startdate'];
             }
@@ -104,7 +104,7 @@ class CourseCopy extends MooshCommand {
         }
 
         if ($options['enddate']) {
-            if (is_int($options['enddate']) && $options['enddate'] > $formdata->startdate) {
+            if (is_numeric($options['enddate']) && $options['enddate'] > $formdata->startdate) {
                 // Ensure enddate is a valid timestamp.
                 $formdata->enddate = $options['enddate'];
             }
@@ -129,6 +129,10 @@ class CourseCopy extends MooshCommand {
                 }
             }
         }
+
+        echo '<pre>';
+        var_dump($formdata); // Debugging output to check form data.
+        die;
 
         $copydata = \copy_helper::process_formdata($formdata);
         \copy_helper::create_copy($copydata);
