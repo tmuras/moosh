@@ -1,3 +1,9 @@
+moosh (1.35-1) xenial; urgency=medium
+
+  * Upstream release 1.35
+
+ -- Tomasz Muras <nexor1984@gmail.com>  Fri, 25 Jul 2025 19:42:59 +0200
+
 moosh (1.33-1) xenial; urgency=medium
 
   * Upstream release 1.33 
