@@ -42,8 +42,36 @@ class TimestampSearch extends MooshCommand
 
     public function execute()
     {
-        // Get Moodle database manager.
         global $DB;
+        $timefrom = false;
+        $timeto = false;
+        $timeexact = false;
+
+        if (isset($this->expandedOptions['from'])) {
+            $timefrom = $this->expandedOptions['from'];
+        }
+        if (isset($this->expandedOptions['to'])) {
+            $timeto = $this->expandedOptions['to'];
+        }
+        if (isset($this->arguments[0])) {
+            $timeexact = $this->arguments[0];
+        }
+        if (!$timeexact && !$timefrom && !$timeto) {
+            echo "You must provide either --from and --to or timestamp argument.\n";
+            return 1;
+        }
+        if ($timeexact && ($timefrom || $timeto)) {
+            echo "You cannot provide both timestamp argument and --from/--to options.\n";
+            return 1;
+        }
+        if ($timefrom && !$timeto) {
+            echo "You must provide --to option when using --from option.\n";
+            return 1;
+        }
+        if ($timeto && !$timefrom) {
+            echo "You must provide --from option when using --to option.\n";
+            return 1;
+        }
 
         $manager = $DB->get_manager();
         $schema = $manager->get_install_xml_schema();
@@ -79,15 +107,34 @@ class TimestampSearch extends MooshCommand
             $sql = "SELECT id," . implode(',', $columns) . " FROM {{$table}} WHERE";
             $values = [];
             foreach ($columns as $column) {
-                $sql .= " $column = ? OR";
-                $values[] = $this->arguments[0];
+                if ($timeexact) {
+                    $sql .= " $column = ? OR";
+                    $values[] = $timeexact;
+                } else {
+                    $sql .= " ($column >= ? AND $column <= ?) OR";
+                    $values[] = $timefrom;
+                    $values[] = $timeto;
+                }
             }
+
             $sql = rtrim($sql, 'OR');
 //            $DB->set_debug(true);
-            $records = $DB->get_records_sql($sql, $values);
-            if ($records) {
-                echo "$sql\n";
-                print_r($records);
+            $rs = $DB->get_recordset_sql($sql, $values);
+            if ($rs->valid()) {
+                $helpersql = "SELECT * FROM mdl_$table WHERE id IN (";
+                echo "Table: $table\n";
+                echo "Columns: id, " . implode(', ', $columns) . "\n";
+                echo "Records:\n";
+                foreach ($rs as $record) {
+                    echo $record->id . ",";
+                    $helpersql .= $record->id . ',';
+                    foreach ($columns as $column) {
+                        echo "{$record->$column},";
+                    }
+                    echo "\n";
+                }
+                $helpersql = rtrim($helpersql, ',') . ")";
+                echo "SQL: $helpersql\n";
             }
 
         }
