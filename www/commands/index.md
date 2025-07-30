@@ -733,6 +733,75 @@ Example 2: Set URL to logo for Sky High theme.
 
     moosh config-set logo http://example.com/logo.png theme_sky_high
 
+config-export
+-------------
+
+Exports all Moodle configuration settings from the `mdl_config` table to a JSON file.
+
+This command allows administrators to back up all site configuration values for migration, backup, or review. The output is a JSON file mapping config names to their values.
+
+Available options:
+
+| Option              | Description                                      |
+|---------------------|--------------------------------------------------|
+| -o, --output-file   | Output file for export (default: stdout).        |
+
+Example 1: Export all config values to a file named `config.json`.
+```
+moosh config-export --output-file=config.json
+```
+
+Example 2: Export all config values to stdout.
+```
+moosh config-export
+```
+
+The output file will contain a JSON object, for example:
+```json
+{
+  "sitefullname": "My Moodle Site",
+  "siteshortname": "moodle"
+}
+```
+
+---
+
+config-import
+-------------
+
+Imports Moodle configuration settings from a JSON file into the `mdl_config` table and purges all caches.
+
+This command allows administrators to restore or update site configuration from a previously exported JSON file. By default, existing config values are overwritten. Use the `--skip-existing` option to only insert new config values.
+
+⚠️ **WARNING:** This command modifies the database directly. Always back up your database before running.
+
+Available options:
+
+| Option              | Description                                             |
+|---------------------|---------------------------------------------------------|
+| -i, --input-file    | Input JSON file for import. (required)                  |
+| -s, --skip-existing | Skip existing config values during import. (optional)   |
+
+Example 1: Import config values from `config.json`, overwriting existing values.
+```
+moosh config-import --input-file=config.json
+```
+
+Example 2: Import config values from `config.json`, skipping existing values.
+```
+moosh config-import --input-file=config.json --skip-existing
+```
+
+After import, all Moodle caches are purged automatically.
+
+The input file must be a JSON object mapping config names to values, for example:
+```json
+{
+  "sitefullname": "My Moodle Site",
+  "siteshortname": "moodle"
+}
+```
+
 context-freeze
 --------------
 Freeze or unfreeze a given context
