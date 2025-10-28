@@ -130,10 +130,6 @@ class CourseCopy extends MooshCommand {
             }
         }
 
-        echo '<pre>';
-        var_dump($formdata); // Debugging output to check form data.
-        die;
-
         $copydata = \copy_helper::process_formdata($formdata);
         \copy_helper::create_copy($copydata);
 

@@ -95,6 +95,10 @@ class FileCheck extends MooshCommand
             $line = array();
             /** @var \stored_file $fileobject */
             $fileobject = $filestorage->get_file_by_id($file->id);
+            if (!$fileobject) {
+                // The file may have been deleted since we started.
+                continue;
+            }
             $fileexists = $filesystem->is_file_readable_locally_by_hash($file->contenthash);
 
             if (!$fileexists) {

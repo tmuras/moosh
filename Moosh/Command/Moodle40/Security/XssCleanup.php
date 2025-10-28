@@ -325,7 +325,7 @@ class XssCleanup extends MooshCommand {
             $this->close_output();
 
         } catch (Throwable $exception) {
-            $this->error('Error while scanning %s entries: %s', $this->mode, $exception->getMessage());
+            $this->error('Error while scanning %s mode entries: %s', $this->mode, $exception->getMessage());
             if ($this->verbose) {
                 $this->error(PHP_EOL . 'Exception details: ' . $exception);
             }
@@ -431,43 +431,46 @@ class XssCleanup extends MooshCommand {
 
         /** @var object{id: string, table: string, column: string} $item */
         foreach ($itemiterator as $item) {
-            if (!$this->should_scan($item->table)) {
+            $tablename = (string) $item->table;
+            if (!$this->should_scan($tablename)) {
                 continue;
             }
 
-            $columns = $table_columns[$item->table] ?? $table_columns[$item->table] = $this->db->get_columns($item->table);
-            $column = $columns[$item->column] ?? null;
+            $columns = $table_columns[$tablename] ?? $table_columns[$tablename] = $this->db->get_columns($tablename);
+            $itemcolumn = (string) $item->column;
+            $column = $columns[$itemcolumn] ?? null;
 
             if (!$columns) {
-                $this->error('Table "%s" does not exist. Skipping.', $item->table);
+                $this->error('Table "%s" does not exist. Skipping.', $tablename);
                 continue;
             }
 
             if (!$column) {
-                $this->error('Table "%s" does not have a "%s" column. Skipping.', $item->table, $item->column);
+                $this->error('Table "%s" does not have a "%s" column. Skipping.', $tablename, $itemcolumn);
                 continue;
             }
 
-            if (!$this->should_scan($item->table, $column)) {
+            if (!$this->should_scan($tablename, $column)) {
                 continue;
             }
 
             $columnname = $this->db->get_manager()->generator->getEncQuoted($column->name);
 
+            $itemid = (string)$item->id;
             $record = $this->db->get_record_sql(
-                "SELECT id, $columnname FROM {" . $item->table . "} WHERE id = ?", [$item->id]
+                "SELECT id, $columnname FROM {" . $tablename . "} WHERE id = ?", [$itemid]
             );
 
             if (!$record) {
-                $this->error('Record "%s=%s" does not exist in table "%s". Skipping.', $item->column, $item->id, $item->table);
+                $this->error('Record "%s=%s" does not exist in table "%s". Skipping.', $itemcolumn, $itemid, $tablename);
                 continue;
             }
 
-            $this->process_matched_record($record, $item->table, $column->name);
+            $this->process_matched_record($record, $tablename, $column->name);
         }
     }
 
-    private function should_scan($table, database_column_info $column = null): bool {
+    private function should_scan(string $table, database_column_info $column = null): bool {
         // Don't touch anything that looks like a hash.
         // Ignore column types differing from char or text based.
         if ($column) {
