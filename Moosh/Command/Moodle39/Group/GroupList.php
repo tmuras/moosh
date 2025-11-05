@@ -76,7 +76,7 @@ class GroupList extends MooshCommand {
                             echo "No grouping\n";
                     }
                     foreach ($free_groups as $group) {
-                        if (!empty($options["id"])) { echo $id . "\n"; }
+                        if (!empty($options["id"])) { echo $group->id . "\n"; }
                         else {
                             echo "\tgroup " . $group->id . " \"" . $group->name . "\" " . $group->description . "\n";
                         }
