@@ -43,7 +43,7 @@ class GroupMemberadd extends MooshCommand
             $coursecontext = \context_course::instance($membership->id);
             $enrolledusers = get_enrolled_users($coursecontext);
             foreach ($enrolledusers as $user) {
-                $useridlist[$user->firstname] = $user->id;
+                $useridlist[$user->username] = $user->id;
             }
             $enrolledusers->close();
         }
@@ -54,14 +54,14 @@ class GroupMemberadd extends MooshCommand
             $options = $this->expandedOptions;
 
             if (!empty($membership->courseid)) {
-                $userfirstname = $argument;
-                $userid = $useridlist[$userfirstname];
+                $username = $argument;
+                $userid = $useridlist[$username];
                 $groupupdate = groups_add_member($membership->groupid, $userid);
                 if ( $groupupdate ) {
-                    $names .= "\t$userfirstname";
+                    $names .= "\t$username";
                 }
                 else {
-                    echo $membership->groupid . ": " . $userfirstname . " not added.\n";
+                    echo $membership->groupid . ": " . $username . " not added.\n";
                 }
             }
             else {
@@ -69,10 +69,10 @@ class GroupMemberadd extends MooshCommand
                 $user = $DB->get_record('user',
                         array('id'=>$argument), '*', MUST_EXIST);
                 if ( $groupupdate ) {
-                    $names .= "\t$user->firstname";
+                    $names .= "\t$user->username";
                 }
                 else {
-                    echo $membership->groupid . ": " . $user->firstname . " not added.\n";
+                    echo $membership->groupid . ": " . $user->username . " not added.\n";
                 }
             }
         }
