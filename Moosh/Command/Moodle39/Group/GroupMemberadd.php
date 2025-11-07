@@ -40,8 +40,8 @@ class GroupMemberadd extends MooshCommand
 
         $useridlist = array();
         if (!empty($membership->courseid)) {
-            $enrolledusers = user_get_participants( $membership->courseid, 0, 0, 0, '',
-                0, '');
+            $coursecontext = \context_course::instance($membership->id);
+            $enrolledusers = get_enrolled_users($coursecontext);
             foreach ($enrolledusers as $user) {
                 $useridlist[$user->firstname] = $user->id;
             }
