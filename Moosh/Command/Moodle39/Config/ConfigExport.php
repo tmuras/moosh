@@ -26,7 +26,7 @@ use Throwable;
  * @package Moosh\Command\Moodle39\Config
  */
 class ConfigExport extends MooshCommand {
-    private ?moodle_database $db = null;
+    private $db = null;
 
     public function __construct() {
         parent::__construct('export', 'config');
