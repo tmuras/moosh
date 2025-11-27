@@ -91,17 +91,55 @@ class H5pExportCleanup extends MooshCommand
             return;
         }
 
-        // Count files and total size in bytes.
-        $numfiles  = count($records);
+        // Extra PHP-level validation:
+        // - We only keep records whose filename clearly matches "...<id>.h5p"
+        // - and where that <id> really does NOT exist in {h5p}.
+        $orphans = [];
         $totalbytes = 0;
+        $skipped = 0;
+
         foreach ($records as $record) {
+            $filename = $record->filename;
+
+            //Verify filename follows the expected pattern "...<id>.h5p".
+            //as it originally is: $filename = "{$slug}{$content['id']}.h5p";
+            if (!preg_match('/(\d+)\.h5p$/', $filename, $matches)) {
+                $skipped++;
+                cli_writeln("Skipping file id={$record->id} with unexpected filename pattern: {$filename}");
+                continue;
+            }
+
+            $h5pid = (int)$matches[1];
+            cli_writeln("{$filename} - {$h5pid}");
+
+            //Double-check in DB that this id really does NOT exist in {h5p}.
+            if ($DB->record_exists('h5p', ['id' => $h5pid])) {
+                $skipped++;
+                cli_writeln("Skipping file id={$record->id} – filename maps to existing h5p.id={$h5pid}.");
+                continue;
+            }
+
+            $orphans[] = $record;
             $totalbytes += $record->filesize;
         }
+
+        if (empty($orphans)) {
+            cli_writeln('No orphaned H5P export files left after PHP-level validation.');
+            if ($skipped > 0) {
+                cli_writeln("Note: {$skipped} file(s) were skipped due to unexpected filename pattern or existing h5p.id.");
+            }
+            return;
+        }
+
+        $numfiles = count($orphans);
 
         list($mb, $gb) = $this->format_sizes($totalbytes);
 
         cli_writeln("Found {$numfiles} orphaned H5P export file(s) in core_h5p/export.");
         cli_writeln("Total size: {$mb} MiB ({$gb} GiB) that can potentially be reclaimed.");
+        if ($skipped > 0) {
+            cli_writeln("Note: {$skipped} file(s) were skipped and will not be deleted.");
+        }
 
         // Dry-run mode: only report, do not delete anything.
         if (!$doexecute) {
@@ -122,7 +160,7 @@ class H5pExportCleanup extends MooshCommand
         $deleted   = 0;
         $freedbytes = 0;
 
-        foreach ($records as $record) {
+        foreach ($orphans as $record) {
             $file = $fs->get_file_by_id($record->id);
 
             if (!$file) {
