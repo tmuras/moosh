@@ -66,19 +66,9 @@ class H5pExportCleanup extends MooshCommand
             WHERE f.filearea = 'export'
               AND f.component = 'core_h5p'
               AND f.filename <> '.'
-              AND REVERSE(
-                    SUBSTR(
-                      SUBSTR(REVERSE(f.filename),
-                             LOCATE('.h5p', REVERSE(f.filename)) + 5),
-                      1,
-                      LOCATE(
-                        '-',
-                        SUBSTR(REVERSE(f.filename),
-                               LOCATE('.h5p', REVERSE(f.filename)) + 5)
-                      ) - 1
-                    )
-                  ) NOT IN (SELECT id FROM {h5p})
-        ";
+              AND CAST(
+                REGEXP_SUBSTR(f.filename, '[0-9]+\\.h5p$', 1, 1, '') AS UNSIGNED) NOT IN (SELECT id FROM {h5p})
+                ";
 
         try {
             $records = $DB->get_records_sql($sql);
@@ -101,16 +91,15 @@ class H5pExportCleanup extends MooshCommand
         foreach ($records as $record) {
             $filename = $record->filename;
 
-            //Verify filename follows the expected pattern "...<id>.h5p".
+            //Verify filename follows the expected pattern "...-<id>.h5p".
             //as it originally is: $filename = "{$slug}{$content['id']}.h5p";
-            if (!preg_match('/(\d+)\.h5p$/', $filename, $matches)) {
+            if (!preg_match('/-(\d+)\.h5p$/', $filename, $matches)) {
                 $skipped++;
                 cli_writeln("Skipping file id={$record->id} with unexpected filename pattern: {$filename}");
                 continue;
             }
 
             $h5pid = (int)$matches[1];
-            cli_writeln("{$filename} - {$h5pid}");
 
             //Double-check in DB that this id really does NOT exist in {h5p}.
             if ($DB->record_exists('h5p', ['id' => $h5pid])) {
