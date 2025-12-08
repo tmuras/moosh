@@ -79,6 +79,15 @@ class UpdateCertificatesIssueDate extends MooshCommand {
         $ids = $DB->get_records_select('tool_certificate_issues', '1=1 '. $courseinsql2 . $userinsql2, $params);
         foreach($ids as $issue) {
             $template = \tool_certificate\template::instance($issue->templateid);
+            // Update the custom field with course complation date.
+
+            $customfields = \tool_certificate\customfield\issue_handler::create()->get_instance_data($issue->id, true);
+            foreach ($customfields as $data) {
+                if ($data->get_field()->get('shortname') === 'coursecompletiondate') {
+                    $data->set($data->datafield(), userdate($issue->timecreated, get_string('strftimedatefullshort')));
+                    $data->save();
+                }
+            }
             $template->create_issue_file($issue, true);
         }
 
