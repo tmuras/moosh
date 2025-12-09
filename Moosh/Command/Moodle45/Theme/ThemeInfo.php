@@ -88,16 +88,11 @@ class ThemeInfo extends MooshCommand
 
 
         //site themes
-        $devices = \core_useragent::$devicetypes;
-        echo "\nSite themes:\n";
-        foreach ($devices as $device) {
-            echo "$device: ";
-            $themename = \core_useragent::get_device_type_cfg_var_name($device);
-            if (isset($CFG->$themename)) {
-                echo $CFG->$themename . "\n";
-            } else {
-                echo "<not set>\n";
-            }
+        echo "\nSite theme:\n";
+        if (isset($CFG->theme)) {
+            echo "default: " . $CFG->theme . "\n";
+        } else {
+            echo "default: <not set>\n";
         }
 
     }
