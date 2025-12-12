@@ -49,7 +49,6 @@ class ImportUserPictures extends MooshCommand
             $this->userField = $this->getMapFieldName();
             $inputDir = $this->arguments[0];
 
-            require_once($CFG->libdir . '/uploadlib.php');
             require_once($CFG->libdir . '/adminlib.php');
             require_once($CFG->libdir . '/gdlib.php');
 
