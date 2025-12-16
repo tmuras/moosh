@@ -71,7 +71,7 @@ class ThemeInfo extends MooshCommand
         echo "\n";
 
         //get user themes
-        if ($CFG->allowcategorythemes) {
+        if ($CFG->allowuserthemes) {
             echo "User theme overrides enabled\n";
         } else {
             echo "User theme overrides disabled\n";
