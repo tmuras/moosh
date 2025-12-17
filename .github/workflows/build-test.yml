@@ -50,4 +50,4 @@ jobs:
           ls    
           rm includes/config*class.php
           rm -rf vendor external
-          find . -name '*.php' | xargs php -l
+          find . -name '*.php' -print0 | xargs -0 -n1 php -l
