@@ -82,78 +82,72 @@ class QuestionDeleteOrphaned extends MooshCommand
     FROM_UNIXTIME(q.timemodified) as modified,
     CASE
         WHEN q.qtype = 'ddimageortext' THEN
-            CASE WHEN EXISTS(SELECT 1 FROM {{qtype_ddimageortext}} WHERE questionid = q.id)
+            CASE WHEN EXISTS(SELECT 1 FROM {qtype_ddimageortext} WHERE questionid = q.id)
                  THEN 'EXISTS' ELSE 'MISSING' END
         WHEN q.qtype = 'gapselect' THEN
-            CASE WHEN EXISTS(SELECT 1 FROM {{question_gapselect}} WHERE questionid = q.id)
+            CASE WHEN EXISTS(SELECT 1 FROM {question_gapselect} WHERE questionid = q.id)
                  THEN 'EXISTS' ELSE 'MISSING' END
         WHEN q.qtype = 'ddmarker' THEN
-            CASE WHEN EXISTS(SELECT 1 FROM {{qtype_ddmarker}} WHERE questionid = q.id)
+            CASE WHEN EXISTS(SELECT 1 FROM {qtype_ddmarker} WHERE questionid = q.id)
                  THEN 'EXISTS' ELSE 'MISSING' END
         WHEN q.qtype = 'ddwtos' THEN
-            CASE WHEN EXISTS(SELECT 1 FROM {{question_ddwtos}} WHERE questionid = q.id)
+            CASE WHEN EXISTS(SELECT 1 FROM {question_ddwtos} WHERE questionid = q.id)
                  THEN 'EXISTS' ELSE 'MISSING' END
         WHEN q.qtype = 'essay' THEN
-            CASE WHEN EXISTS(SELECT 1 FROM {{qtype_essay_options}} WHERE questionid = q.id)
+            CASE WHEN EXISTS(SELECT 1 FROM {qtype_essay_options} WHERE questionid = q.id)
                  THEN 'EXISTS' ELSE 'MISSING' END
         ELSE 'UNKNOWN_TYPE'
     END as qtype_record_status,
 
-    -- 1. Question Bank Usage: Questions referenced in quiz slots
     (SELECT COUNT(DISTINCT qz.id)
-     FROM {{quiz_slots}} slot
-     JOIN {{quiz}} qz ON qz.id = slot.quizid
-     JOIN {{question_references}} qr ON qr.itemid = slot.id
-     JOIN {{question_bank_entries}} qbe2 ON qbe2.id = qr.questionbankentryid
-     JOIN {{question_versions}} qv2 ON qv2.questionbankentryid = qbe2.id
+     FROM {quiz_slots} slot
+     JOIN {quiz} qz ON qz.id = slot.quizid
+     JOIN {question_references} qr ON qr.itemid = slot.id
+     JOIN {question_bank_entries} qbe2 ON qbe2.id = qr.questionbankentryid
+     JOIN {question_versions} qv2 ON qv2.questionbankentryid = qbe2.id
      WHERE qv2.questionbankentryid = qbe.id
        AND qr.component = 'mod_quiz'
        AND qr.questionarea = 'slot') as usage_quiz_slots,
 
-    -- 2. Question Attempt Usage: Questions that have been attempted (even if not in current quiz)
     (SELECT COUNT(DISTINCT qz.id)
-     FROM {{quiz}} qz
-     JOIN {{quiz_attempts}} qa ON qa.quiz = qz.id
-     JOIN {{question_usages}} qu ON qu.id = qa.uniqueid
-     JOIN {{question_attempts}} qatt ON qatt.questionusageid = qu.id
-     JOIN {{question_versions}} qv2 ON qv2.questionid = qatt.questionid
-     JOIN {{question_versions}} qv3 ON qv2.questionbankentryid = qv3.questionbankentryid
+     FROM {quiz} qz
+     JOIN {quiz_attempts} qa ON qa.quiz = qz.id
+     JOIN {question_usages} qu ON qu.id = qa.uniqueid
+     JOIN {question_attempts} qatt ON qatt.questionusageid = qu.id
+     JOIN {question_versions} qv2 ON qv2.questionid = qatt.questionid
+     JOIN {question_versions} qv3 ON qv2.questionbankentryid = qv3.questionbankentryid
      WHERE qa.preview = 0
        AND qv3.questionbankentryid = qbe.id) as usage_quiz_attempts,
 
-    -- Combined usage count (matches Moodle's Usage column - unique quizzes)
     (SELECT COUNT(DISTINCT quizid) FROM (
-        -- Question Bank Usage
         SELECT qz.id as quizid
-        FROM {{quiz_slots}} slot
-        JOIN {{quiz}} qz ON qz.id = slot.quizid
-        JOIN {{question_references}} qr ON qr.itemid = slot.id
-        JOIN {{question_bank_entries}} qbe2 ON qbe2.id = qr.questionbankentryid
-        JOIN {{question_versions}} qv2 ON qv2.questionbankentryid = qbe2.id
+        FROM {quiz_slots} slot
+        JOIN {quiz} qz ON qz.id = slot.quizid
+        JOIN {question_references} qr ON qr.itemid = slot.id
+        JOIN {question_bank_entries} qbe2 ON qbe2.id = qr.questionbankentryid
+        JOIN {question_versions} qv2 ON qv2.questionbankentryid = qbe2.id
         WHERE qv2.questionbankentryid = qbe.id
           AND qr.component = 'mod_quiz'
           AND qr.questionarea = 'slot'
 
         UNION
 
-        -- Question Attempt Usage
         SELECT qz.id as quizid
-        FROM {{quiz}} qz
-        JOIN {{quiz_attempts}} qa ON qa.quiz = qz.id
-        JOIN {{question_usages}} qu ON qu.id = qa.uniqueid
-        JOIN {{question_attempts}} qatt ON qatt.questionusageid = qu.id
-        JOIN {{question_versions}} qv2 ON qv2.questionid = qatt.questionid
-        JOIN {{question_versions}} qv3 ON qv2.questionbankentryid = qv3.questionbankentryid
+        FROM {quiz} qz
+        JOIN {quiz_attempts} qa ON qa.quiz = qz.id
+        JOIN {question_usages} qu ON qu.id = qa.uniqueid
+        JOIN {question_attempts} qatt ON qatt.questionusageid = qu.id
+        JOIN {question_versions} qv2 ON qv2.questionid = qatt.questionid
+        JOIN {question_versions} qv3 ON qv2.questionbankentryid = qv3.questionbankentryid
         WHERE qa.preview = 0
           AND qv3.questionbankentryid = qbe.id
     ) as usage_combined) as usage_count,
 
-    -- Category and course info
     qc.id as categoryid,
     qc.name as categoryname,
     CASE ctx.contextlevel
-        WHEN 50 THEN CONCAT('Course: ', (SELECT shortname FROM {{course}} WHERE id = ctx.instanceid))
-        WHEN 40 THEN CONCAT('Category: ', (SELECT name FROM {{course_categories}} WHERE id = ctx.instanceid))
+        WHEN 50 THEN CONCAT('Course: ', (SELECT shortname FROM {course} WHERE id = ctx.instanceid))
+        WHEN 40 THEN CONCAT('Category: ', (SELECT name FROM {course_categories} WHERE id = ctx.instanceid))
         WHEN 10 THEN 'System'
         ELSE 'Other'
     END as location,
@@ -162,32 +156,67 @@ class QuestionDeleteOrphaned extends MooshCommand
         ELSE NULL
     END as courseid,
 
-    -- Summary: Is it safe to delete? (Usage count = 0 means not used anywhere)
     CASE
-        WHEN usage_count = 0 OR usage_count IS NULL THEN 'SAFE_TO_DELETE'
+        WHEN (SELECT COUNT(DISTINCT quizid) FROM (
+            SELECT qz.id as quizid
+            FROM {quiz_slots} slot
+            JOIN {quiz} qz ON qz.id = slot.quizid
+            JOIN {question_references} qr ON qr.itemid = slot.id
+            JOIN {question_bank_entries} qbe2 ON qbe2.id = qr.questionbankentryid
+            JOIN {question_versions} qv2 ON qv2.questionbankentryid = qbe2.id
+            WHERE qv2.questionbankentryid = qbe.id
+              AND qr.component = 'mod_quiz'
+              AND qr.questionarea = 'slot'
+            UNION
+            SELECT qz.id as quizid
+            FROM {quiz} qz
+            JOIN {quiz_attempts} qa ON qa.quiz = qz.id
+            JOIN {question_usages} qu ON qu.id = qa.uniqueid
+            JOIN {question_attempts} qatt ON qatt.questionusageid = qu.id
+            JOIN {question_versions} qv2 ON qv2.questionid = qatt.questionid
+            JOIN {question_versions} qv3 ON qv2.questionbankentryid = qv3.questionbankentryid
+            WHERE qa.preview = 0
+              AND qv3.questionbankentryid = qbe.id
+        ) as usage_combined) = 0 THEN 'SAFE_TO_DELETE'
         ELSE 'IN_USE'
     END as deletion_status
 
-FROM {{question}} q
-JOIN {{question_versions}} qv ON qv.questionid = q.id
-JOIN {{question_bank_entries}} qbe ON qbe.id = qv.questionbankentryid
-JOIN {{question_categories}} qc ON qc.id = qbe.questioncategoryid
-JOIN {{context}} ctx ON ctx.id = qc.contextid
+FROM {question} q
+JOIN {question_versions} qv ON qv.questionid = q.id
+JOIN {question_bank_entries} qbe ON qbe.id = qv.questionbankentryid
+JOIN {question_categories} qc ON qc.id = qbe.questioncategoryid
+JOIN {context} ctx ON ctx.id = qc.contextid
 WHERE
-    -- Only question types that use MUST_EXIST and will throw error
     q.qtype IN ('ddimageortext', 'gapselect', 'ddmarker', 'ddwtos', 'essay')
-    -- Missing qtype record (orphaned)
     AND (
-        (q.qtype = 'ddimageortext' AND NOT EXISTS(SELECT 1 FROM {{qtype_ddimageortext}} WHERE questionid = q.id))
-        OR (q.qtype = 'gapselect' AND NOT EXISTS(SELECT 1 FROM {{question_gapselect}} WHERE questionid = q.id))
-        OR (q.qtype = 'ddmarker' AND NOT EXISTS(SELECT 1 FROM {{qtype_ddmarker}} WHERE questionid = q.id))
-        OR (q.qtype = 'ddwtos' AND NOT EXISTS(SELECT 1 FROM {{question_ddwtos}} WHERE questionid = q.id))
-        OR (q.qtype = 'essay' AND NOT EXISTS(SELECT 1 FROM {{qtype_essay_options}} WHERE questionid = q.id))
+        (q.qtype = 'ddimageortext' AND NOT EXISTS(SELECT 1 FROM {qtype_ddimageortext} WHERE questionid = q.id))
+        OR (q.qtype = 'gapselect' AND NOT EXISTS(SELECT 1 FROM {question_gapselect} WHERE questionid = q.id))
+        OR (q.qtype = 'ddmarker' AND NOT EXISTS(SELECT 1 FROM {qtype_ddmarker} WHERE questionid = q.id))
+        OR (q.qtype = 'ddwtos' AND NOT EXISTS(SELECT 1 FROM {question_ddwtos} WHERE questionid = q.id))
+        OR (q.qtype = 'essay' AND NOT EXISTS(SELECT 1 FROM {qtype_essay_options} WHERE questionid = q.id))
     )
-) as subquery
-WHERE usage_count = 0 OR usage_count IS NULL
-ORDER BY qtype, questionid;
-";
+    AND (SELECT COUNT(DISTINCT quizid) FROM (
+        SELECT qz.id as quizid
+        FROM {quiz_slots} slot
+        JOIN {quiz} qz ON qz.id = slot.quizid
+        JOIN {question_references} qr ON qr.itemid = slot.id
+        JOIN {question_bank_entries} qbe2 ON qbe2.id = qr.questionbankentryid
+        JOIN {question_versions} qv2 ON qv2.questionbankentryid = qbe2.id
+        WHERE qv2.questionbankentryid = qbe.id
+          AND qr.component = 'mod_quiz'
+          AND qr.questionarea = 'slot'
+        UNION
+        SELECT qz.id as quizid
+        FROM {quiz} qz
+        JOIN {quiz_attempts} qa ON qa.quiz = qz.id
+        JOIN {question_usages} qu ON qu.id = qa.uniqueid
+        JOIN {question_attempts} qatt ON qatt.questionusageid = qu.id
+        JOIN {question_versions} qv2 ON qv2.questionid = qatt.questionid
+        JOIN {question_versions} qv3 ON qv2.questionbankentryid = qv3.questionbankentryid
+        WHERE qa.preview = 0
+          AND qv3.questionbankentryid = qbe.id
+    ) as usage_combined) = 0
+ORDER BY q.qtype, q.id;";
 
         try {
             $questions = $DB->get_records_sql($sql);

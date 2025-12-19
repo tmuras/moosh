@@ -28,13 +28,13 @@ class CategoryMove extends MooshCommand
         list($categoryid, $destcategoryid) = $this->arguments;
 	try {
 	    $cattomove = core_course_category::get($categoryid);
-	} catch (\moodle_exception){
+	} catch (\moodle_exception $e){
             cli_error("No category with id '$categoryid' found");
         }
         if ($cattomove->parent != $destcategoryid) {
 	    try {
 	        $newparent = core_course_category::get($destcategoryid);
-	    } catch (\moodle_exception){
+	    } catch (\moodle_exception $e){
                 cli_error("No category with id '$destcategoryid' found");
             }
             $cattomove->change_parent($destcategoryid);
