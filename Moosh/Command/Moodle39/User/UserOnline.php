@@ -36,7 +36,7 @@ class UserOnline extends MooshCommand {
 
         if (!$this->expandedOptions['hideheader']) {
             printf(sprintf("Maximum number of users in last %d sec: %d\n", $timetoshowusers, $usercount));
-            printf(sprintf("Last check: %s\n\n", date('Y-m-h H:i:s', $now)));
+            printf(sprintf("Last check: %s\n\n", date('Y-m-d H:i:s', $now)));
 
             printf(" %-7s | %-15s | %-25s | %-30s | %-20s\n",
                 'ID',
@@ -53,7 +53,7 @@ class UserOnline extends MooshCommand {
                 $user->username,
                 $user->lastname . ' ' . $user->firstname,
                 $user->email,
-                isset($user->lastaccess) ? date('Y-m-s H:i:s', $user->lastaccess) : '-'
+                isset($user->lastaccess) ? date('Y-m-d H:i:s', $user->lastaccess) : '-'
             );
         }
 
