@@ -78,7 +78,10 @@ class CategoryList extends MooshCommand
             if ($options['output'] == 'min-width-15') {
 
                 foreach ($line as $k => $l) {
-                    $line[$k] = str_pad ($l, 15);
+                    // Text could be null.
+                    $text = ($l === null) ? '' : $l;
+
+                    $line[$k] = str_pad ($text, 15);
                 }
                 echo implode('', $line) . "\n";
 
