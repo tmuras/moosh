@@ -36,11 +36,11 @@ class ConfigImport extends MooshCommand {
         parent::__construct('import', 'config');
         $this->addOption(
             'i|input-file:',
-            'Input JSON file for import.',
+            'Input JSON file for import.'
         );
         $this->addOption(
             's|skip-existing:',
-            'Skip existing config values during import.',
+            'Skip existing config values during import.'
         );
     }
 

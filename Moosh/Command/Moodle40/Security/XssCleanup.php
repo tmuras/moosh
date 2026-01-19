@@ -138,21 +138,21 @@ class XssCleanup extends MooshCommand {
     private const DEFAULT_OUTPUT_FORMAT = 'plain';
     private const DEFAULT_INPUT_FORMAT = 'xml';
 
-    private string $output_format;
+    private $output_format;
 
     /**
      * @var bool Flag for JSON output to handle commas correctly.
      */
-    private bool $is_first_json_item = true;
+    private $is_first_json_item = true;
 
-    private ?moodle_database $db = null;
+    private $db = null;
 
     /**
      * @var false|resource
      */
     private $output;
 
-    private array $excludetables = [
+    private $excludetables = [
         'config',
         'config_plugins',
         'filter_config',
@@ -162,13 +162,13 @@ class XssCleanup extends MooshCommand {
         'block_instances',
         'files',
     ];
-    private array $includetables = [];
+    private $includetables = [];
 
-    private string $mode;
-    private int $totalrecords = 0;
-    private int $totalmatches = 0;
-    private string $include_expression = '';
-    private string $exclude_expression = '';
+    private $mode;
+    private $totalrecords = 0;
+    private $totalmatches = 0;
+    private $include_expression = '';
+    private $exclude_expression = '';
 
     public function __construct() {
         parent::__construct('xss-cleanup', 'security');
