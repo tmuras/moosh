@@ -75,6 +75,7 @@ class QuestionDeleteOrphaned extends MooshCommand
         global $DB;
 
         $sql = "SELECT
+    NULL AS subid,
     q.id as questionid,
     q.name as questionname,
     q.qtype,
@@ -216,7 +217,30 @@ WHERE
         WHERE qa.preview = 0
           AND qv3.questionbankentryid = qbe.id
     ) as usage_combined) = 0
-ORDER BY q.qtype, q.id;";
+
+UNION ALL
+
+SELECT
+    ms.id as subid,
+    NULL AS questionid,
+    NULL AS questionname,
+    'match' AS qtype,
+    FROM_UNIXTIME(q.timecreated) as created,
+    FROM_UNIXTIME(q.timemodified) as modified,
+    NULL AS qtype_record_status,
+    0 AS usage_quiz_slots,
+    0 AS usage_quiz_attempts,
+    0 AS usage_count,
+    NULL AS categoryid,
+    NULL AS categoryname,
+    NULL AS location,
+    NULL AS courseid,
+    'SAFE_TO_DELETE' AS deletion_status
+FROM {qtype_match_subquestions} ms
+LEFT JOIN {question} q ON q.id = ms.questionid
+WHERE q.id IS NULL
+ORDER BY qtype, questionid;        
+";
 
         try {
             $questions = $DB->get_records_sql($sql);
@@ -283,7 +307,7 @@ ORDER BY q.qtype, q.id;";
      * @throws \Throwable
      */
     private function delete_questions(array $questions): void {
-        global $CFG;
+        global $CFG, $DB;
         require_once($CFG->dirroot . '/lib/questionlib.php');
         $notDeletedQuestionIds = array();
         $skippedQuestionIds = array();
@@ -291,8 +315,13 @@ ORDER BY q.qtype, q.id;";
         foreach ($questions as $question) {
             try {
                 if ($question->deletion_status == 'SAFE_TO_DELETE') {
-                    question_delete_question($question->questionid);
-                    mtrace('Question with ID ' . $question->questionid . ' deleted successfully.');
+                    if($question->questionid != NULL) {
+                        question_delete_question($question->questionid);
+                        mtrace('Question with ID ' . $question->questionid . ' deleted successfully.');
+                    } else if($question->subid) {
+                        $DB->delete_records('qtype_match_subquestions', ['id' => $question->subid]);
+                        mtrace('match Sub-Question with ID ' . $question->questionid . ' deleted successfully.');
+                    }
                 } else {
                     mtrace('Question with ID ' . $question->questionid . ' is not safe to delete. Skipping.');
                     $skippedQuestionIds[] = $question->questionid;
