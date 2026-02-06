@@ -25,6 +25,7 @@ class CourseRestore extends MooshCommand {
         $this->addOption('o|overwrite', 'restore into existing course, overwrite current content, id provided instead of category_id');
         $this->addOption('i|ignore-warnings', 'continue with restore if there are pre-check warnings');
         $this->addOption('p|preprocess:', 'provide a path to a backup preprocessing script', '');
+        $this->addOption('m|enrolment-methods:', 'include enrolment methods: 0=never, 1=only with users (default), 2=always', '');
     }
 
     public function execute() {
@@ -195,6 +196,23 @@ class CourseRestore extends MooshCommand {
             $rc->convert();
         }
         $plan = $rc->get_plan();
+
+        // Apply enrolment methods setting if specified.
+        if ($options['enrolment-methods'] !== '') {
+            $enrolvalue = (int)$options['enrolment-methods'];
+            if ($enrolvalue < 0 || $enrolvalue > 2) {
+                cli_error("Invalid enrolment-methods value '$enrolvalue'. Must be 0, 1, or 2.");
+            }
+            $tasks = $plan->get_tasks();
+            foreach ($tasks as $task) {
+                if ($task instanceof \restore_root_task) {
+                    $setting = $task->get_setting('enrolments');
+                    $setting->set_value($enrolvalue);
+                    break;
+                }
+            }
+        }
+
         if (!$rc->execute_precheck()){
             $check = $rc->get_precheck_results();
             cli_problem("Restore pre-check failed!");
