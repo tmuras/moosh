@@ -80,7 +80,7 @@ Installation from git
 
 Install composer - see [http://getcomposer.org/download](http://getcomposer.org/download).
 
-    git clone git://github.com/tmuras/moosh.git
+    git clone https://github.com/tmuras/moosh.git
     cd moosh
     composer install
 

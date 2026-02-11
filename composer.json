@@ -252,8 +252,5 @@
   },
   "bin": [
     "moosh.php"
-  ],
-  "require-dev": {
-    "phpunit/phpunit": "^4"
-  }
+  ]
 }

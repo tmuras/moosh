@@ -464,6 +464,38 @@ class MooshCommand {
         return $filepath;
     }
 
+    /**
+     * @return array
+     */
+    public function setupTimeFromToOptions($defaultTimeFrom = false)
+    {
+        $timefrom = false;
+        $timeto = false;
+
+        if (isset($this->expandedOptions['from'])) {
+            $timefrom = $this->expandedOptions['from'];
+        }
+        if (isset($this->expandedOptions['to'])) {
+            $timeto = $this->expandedOptions['to'];
+        }
+        if (isset($this->arguments[0])) {
+            $timeexact = $this->arguments[0];
+        }
+        if (!$timefrom && !$timeto) {
+            echo "You must provide at least one --from or --to options.\n";
+            return 1;
+        }
+         if ($timefrom && !$timeto) {
+            // $timeto will default to now
+        }
+        if ($timeto && !$timefrom) {
+            echo "You must provide --from option when using --to option.\n";
+            return 1;
+        }
+        if (!$timefrom) {
+            // Defaults configured by $defaultTimeFrom
+        }
+    }
     protected function display($data, $json = false, $humanreadable=true) {
         if ($json) {
             echo json_encode($data);
