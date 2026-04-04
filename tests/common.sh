@@ -8,7 +8,28 @@
 set -uo pipefail
 
 MOOSH="$(cd "$(dirname "$0")/.." && pwd)/moosh.php"
-MOODLE_DIR="${MOODLE_DIR:-/var/www/html/moodle51}"
+
+if [ -z "${MOODLE_DIR:-}" ]; then
+    echo "ERROR: MOODLE_DIR environment variable is not set."
+    exit 1
+fi
+
+if [ ! -d "$MOODLE_DIR" ]; then
+    echo "ERROR: Directory $MOODLE_DIR does not exist."
+    exit 1
+fi
+
+
+if [ ! -d "$MOODLE_DIR/public" ]; then
+    echo "ERROR: Directory $MOODLE_DIR/public does not exist."
+    exit 1
+fi
+
+if [ ! -f "$MOODLE_DIR/public/config.php" ]; then
+    echo "ERROR: File $MOODLE_DIR/public/config.php not found."
+    exit 1
+fi
+
 MOODLE_PATH="$MOODLE_DIR/public"
 PHP="${PHP:-/usr/bin/php}"
 PASS=0

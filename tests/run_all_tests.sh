@@ -2,7 +2,7 @@
 #
 # Run all test_*.sh test files and display summary
 #
-# Usage: bash tests/run_all_tests.sh
+# Usage: MOODLE_DIR=/path/to/test/moodle/ bash tests/run_all_tests.sh
 #
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"

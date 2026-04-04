@@ -16,7 +16,7 @@ echo ""
 # Step 1: Reset Moodle to known state
 echo "--- Resetting Moodle to known state ---"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-bash "$SCRIPT_DIR/clear.sh"
+bash "$SCRIPT_DIR/clear.sh" || exit 1
 echo ""
 
 # Test data: Course 2 (Algebra Fundamentals) has 1 resource activity (cmid=1), 4 sections
@@ -48,7 +48,7 @@ assert_output_contains "Course is 2" ",2," "$OUT"
 FORUM_CMID=$(echo "$OUT" | tail -1 | cut -d, -f1)
 echo "  Created forum cmid=$FORUM_CMID"
 echo ""
-
+exit 1
 # ── Add assignment ────────────────────────────────────────────────
 
 echo "--- Test: Add assignment to section 2 ---"
