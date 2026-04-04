@@ -3,7 +3,7 @@
 # Integration tests for moosh2 grade commands:
 #   gradecategory:create, gradecategory:list, gradecategory:mod
 #   gradeitem:create, gradeitem:list, gradeitem:mod
-# Requires a working Moodle 5.1 installation at /var/www/html/moodle51
+# Requires a working Moodle 5.2 installation at /var/www/html/moodle52
 #
 # Usage: bash tests/test_grade.sh
 #

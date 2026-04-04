@@ -50,6 +50,6 @@ class FileStatsCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new FileStats51Handler();
+        return new FileStats52Handler();
     }
 }

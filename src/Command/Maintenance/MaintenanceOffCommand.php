@@ -15,7 +15,7 @@ class MaintenanceOffCommand extends BaseCommand
 
     public function __construct(?MoodleVersion $moodleVersion)
     {
-        $this->handler = new MaintenanceOff51Handler();
+        $this->handler = new MaintenanceOff52Handler();
         parent::__construct();
     }
 

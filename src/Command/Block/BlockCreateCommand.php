@@ -73,6 +73,6 @@ class BlockCreateCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new BlockCreate51Handler();
+        return new BlockCreate52Handler();
     }
 }

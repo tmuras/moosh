@@ -45,6 +45,6 @@ class CourseCopyCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2')) ? new CourseCopy52Handler() : new CourseCopy51Handler();
+        return new CourseCopy52Handler();
     }
 }

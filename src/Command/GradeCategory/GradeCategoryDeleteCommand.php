@@ -57,6 +57,6 @@ class GradeCategoryDeleteCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new GradeCategoryDelete51Handler();
+        return new GradeCategoryDelete52Handler();
     }
 }

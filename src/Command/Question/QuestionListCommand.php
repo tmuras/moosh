@@ -52,6 +52,6 @@ class QuestionListCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new QuestionList51Handler();
+        return new QuestionList52Handler();
     }
 }

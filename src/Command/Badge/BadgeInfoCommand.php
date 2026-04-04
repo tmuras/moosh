@@ -57,6 +57,6 @@ class BadgeInfoCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new BadgeInfo51Handler();
+        return new BadgeInfo52Handler();
     }
 }

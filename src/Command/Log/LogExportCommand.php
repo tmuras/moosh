@@ -68,10 +68,6 @@ class LogExportCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new LogExport52Handler();
-        }
-
-        return new LogExport51Handler();
+        return new LogExport52Handler();
     }
 }

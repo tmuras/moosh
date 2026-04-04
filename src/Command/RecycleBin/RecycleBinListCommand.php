@@ -15,7 +15,7 @@ class RecycleBinListCommand extends BaseCommand
 
     public function __construct(?MoodleVersion $moodleVersion)
     {
-        $this->handler = new RecycleBinList51Handler();
+        $this->handler = new RecycleBinList52Handler();
         parent::__construct();
     }
 

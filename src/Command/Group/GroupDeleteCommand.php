@@ -57,6 +57,6 @@ class GroupDeleteCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new GroupDelete51Handler();
+        return new GroupDelete52Handler();
     }
 }

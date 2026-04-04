@@ -57,6 +57,6 @@ class AuthInfoCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new AuthInfo51Handler();
+        return new AuthInfo52Handler();
     }
 }

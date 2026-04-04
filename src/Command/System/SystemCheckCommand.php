@@ -15,7 +15,7 @@ class SystemCheckCommand extends BaseCommand
 
     public function __construct(?MoodleVersion $moodleVersion)
     {
-        $this->handler = new SystemCheck51Handler();
+        $this->handler = new SystemCheck52Handler();
         parent::__construct();
     }
 

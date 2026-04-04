@@ -45,6 +45,6 @@ class UserDeleteCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2')) ? new UserDelete52Handler() : new UserDelete51Handler();
+        return new UserDelete52Handler();
     }
 }

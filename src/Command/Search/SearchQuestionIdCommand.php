@@ -61,9 +61,6 @@ class SearchQuestionIdCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new SearchQuestionId52Handler();
-        }
-        return new SearchQuestionId51Handler();
+        return new SearchQuestionId52Handler();
     }
 }

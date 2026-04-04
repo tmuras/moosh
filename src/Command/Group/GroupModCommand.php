@@ -53,6 +53,6 @@ class GroupModCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new GroupMod51Handler();
+        return new GroupMod52Handler();
     }
 }

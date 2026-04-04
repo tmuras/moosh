@@ -50,6 +50,6 @@ class FileDeleteCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new FileDelete51Handler();
+        return new FileDelete52Handler();
     }
 }

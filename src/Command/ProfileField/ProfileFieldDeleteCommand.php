@@ -52,9 +52,6 @@ class ProfileFieldDeleteCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new ProfileFieldDelete52Handler();
-        }
-        return new ProfileFieldDelete51Handler();
+        return new ProfileFieldDelete52Handler();
     }
 }

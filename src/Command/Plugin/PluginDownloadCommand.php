@@ -45,8 +45,6 @@ class PluginDownloadCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2'))
-            ? new PluginDownload52Handler($v)
-            : new PluginDownload51Handler($v);
+        return new PluginDownload52Handler($v);
     }
 }

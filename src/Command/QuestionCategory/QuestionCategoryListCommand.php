@@ -50,6 +50,6 @@ class QuestionCategoryListCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new QuestionCategoryList51Handler();
+        return new QuestionCategoryList52Handler();
     }
 }

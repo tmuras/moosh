@@ -45,6 +45,6 @@ class ThemeSettingsExportCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2')) ? new ThemeSettingsExport52Handler() : new ThemeSettingsExport51Handler();
+        return new ThemeSettingsExport52Handler();
     }
 }

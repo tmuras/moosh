@@ -52,6 +52,6 @@ class GroupCreateCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new GroupCreate51Handler();
+        return new GroupCreate52Handler();
     }
 }

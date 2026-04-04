@@ -58,9 +58,6 @@ class FontawesomeRefreshCacheCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new FontawesomeRefreshCache52Handler();
-        }
-        return new FontawesomeRefreshCache51Handler();
+        return new FontawesomeRefreshCache52Handler();
     }
 }

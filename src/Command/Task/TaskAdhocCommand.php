@@ -53,6 +53,6 @@ class TaskAdhocCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new TaskAdhoc51Handler();
+        return new TaskAdhoc52Handler();
     }
 }

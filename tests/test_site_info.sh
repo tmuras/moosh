@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Integration test for moosh2 site:info
-# Requires a working Moodle 5.1 installation
+# Requires a working Moodle 5.2 installation
 #
 # Usage: bash tests/test_site_info.sh
 #

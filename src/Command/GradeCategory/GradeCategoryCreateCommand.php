@@ -63,6 +63,6 @@ class GradeCategoryCreateCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new GradeCategoryCreate51Handler();
+        return new GradeCategoryCreate52Handler();
     }
 }

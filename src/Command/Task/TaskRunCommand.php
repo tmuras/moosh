@@ -49,6 +49,6 @@ class TaskRunCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new TaskRun51Handler();
+        return new TaskRun52Handler();
     }
 }

@@ -15,7 +15,7 @@ class DatabaseCheckCommand extends BaseCommand
 
     public function __construct(?MoodleVersion $moodleVersion)
     {
-        $this->handler = new DatabaseCheck51Handler();
+        $this->handler = new DatabaseCheck52Handler();
         parent::__construct();
     }
 

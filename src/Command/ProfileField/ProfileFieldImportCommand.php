@@ -52,9 +52,6 @@ class ProfileFieldImportCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new ProfileFieldImport52Handler();
-        }
-        return new ProfileFieldImport51Handler();
+        return new ProfileFieldImport52Handler();
     }
 }

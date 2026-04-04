@@ -68,6 +68,6 @@ class SqlRunCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new SqlRun51Handler();
+        return new SqlRun52Handler();
     }
 }

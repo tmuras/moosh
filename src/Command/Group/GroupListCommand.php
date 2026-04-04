@@ -51,6 +51,6 @@ class GroupListCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new GroupList51Handler();
+        return new GroupList52Handler();
     }
 }

@@ -65,10 +65,6 @@ class DataCheckCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new DataCheck52Handler();
-        }
-
-        return new DataCheck51Handler();
+        return new DataCheck52Handler();
     }
 }

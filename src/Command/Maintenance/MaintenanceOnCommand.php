@@ -22,7 +22,7 @@ class MaintenanceOnCommand extends BaseCommand
 
     public function __construct(?MoodleVersion $moodleVersion)
     {
-        $this->handler = new MaintenanceOn51Handler();
+        $this->handler = new MaintenanceOn52Handler();
         parent::__construct();
     }
 

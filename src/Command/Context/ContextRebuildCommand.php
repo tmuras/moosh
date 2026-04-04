@@ -62,6 +62,6 @@ class ContextRebuildCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new ContextRebuild51Handler();
+        return new ContextRebuild52Handler();
     }
 }

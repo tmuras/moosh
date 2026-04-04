@@ -58,10 +58,6 @@ class AdminLoginCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new AdminLogin52Handler();
-        }
-
-        return new AdminLogin51Handler();
+        return new AdminLogin52Handler();
     }
 }

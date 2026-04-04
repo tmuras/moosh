@@ -65,6 +65,6 @@ class GradebookExportCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new GradebookExport51Handler();
+        return new GradebookExport52Handler();
     }
 }

@@ -46,6 +46,6 @@ class CourseFindBigImagesCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2')) ? new CourseFindBigImages52Handler() : new CourseFindBigImages51Handler();
+        return new CourseFindBigImages52Handler();
     }
 }

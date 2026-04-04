@@ -58,10 +58,6 @@ class ActivityAddCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new ActivityAdd52Handler();
-        }
-
-        return new ActivityAdd51Handler();
+        return new ActivityAdd52Handler();
     }
 }

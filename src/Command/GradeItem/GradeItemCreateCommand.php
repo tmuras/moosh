@@ -64,6 +64,6 @@ class GradeItemCreateCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new GradeItemCreate51Handler();
+        return new GradeItemCreate52Handler();
     }
 }

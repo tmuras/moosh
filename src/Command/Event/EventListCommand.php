@@ -52,6 +52,6 @@ class EventListCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new EventList51Handler();
+        return new EventList52Handler();
     }
 }

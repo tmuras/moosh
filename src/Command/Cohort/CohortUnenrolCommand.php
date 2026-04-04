@@ -51,6 +51,6 @@ class CohortUnenrolCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new CohortUnenrol51Handler();
+        return new CohortUnenrol52Handler();
     }
 }

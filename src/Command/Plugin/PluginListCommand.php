@@ -45,6 +45,6 @@ class PluginListCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2')) ? new PluginList52Handler() : new PluginList51Handler();
+        return new PluginList52Handler();
     }
 }

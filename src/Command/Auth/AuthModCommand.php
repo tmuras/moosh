@@ -58,10 +58,6 @@ class AuthModCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new AuthMod52Handler();
-        }
-
-        return new AuthMod51Handler();
+        return new AuthMod52Handler();
     }
 }

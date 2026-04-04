@@ -62,10 +62,6 @@ class ReportConcurrencyCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new ReportConcurrency52Handler();
-        }
-
-        return new ReportConcurrency51Handler();
+        return new ReportConcurrency52Handler();
     }
 }

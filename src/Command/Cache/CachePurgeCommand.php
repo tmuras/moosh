@@ -64,6 +64,6 @@ class CachePurgeCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new CachePurge51Handler();
+        return new CachePurge52Handler();
     }
 }

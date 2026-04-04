@@ -45,6 +45,6 @@ class CourseDeleteCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2')) ? new CourseDelete52Handler() : new CourseDelete51Handler();
+        return new CourseDelete52Handler();
     }
 }

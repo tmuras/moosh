@@ -50,6 +50,6 @@ class ConfigSetCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2')) ? new ConfigSet52Handler() : new ConfigSet51Handler();
+        return new ConfigSet52Handler();
     }
 }

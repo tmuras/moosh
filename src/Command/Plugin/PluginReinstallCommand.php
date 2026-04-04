@@ -53,6 +53,6 @@ class PluginReinstallCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return new PluginReinstall51Handler();
+        return new PluginReinstall52Handler();
     }
 }

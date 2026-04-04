@@ -64,6 +64,6 @@ class EnrolListCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new EnrolList51Handler();
+        return new EnrolList52Handler();
     }
 }

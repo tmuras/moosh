@@ -52,6 +52,6 @@ class EventLogCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new EventLog51Handler();
+        return new EventLog52Handler();
     }
 }

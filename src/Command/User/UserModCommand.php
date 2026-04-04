@@ -75,6 +75,6 @@ class UserModCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new UserMod51Handler();
+        return new UserMod52Handler();
     }
 }

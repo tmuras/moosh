@@ -45,6 +45,6 @@ class ThemeInfoCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2')) ? new ThemeInfo52Handler() : new ThemeInfo51Handler();
+        return new ThemeInfo52Handler();
     }
 }

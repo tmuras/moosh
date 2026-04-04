@@ -53,6 +53,6 @@ class UserOnlineCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return new UserOnline51Handler();
+        return new UserOnline52Handler();
     }
 }

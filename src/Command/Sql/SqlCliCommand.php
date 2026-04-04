@@ -60,6 +60,6 @@ class SqlCliCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new SqlCli51Handler();
+        return new SqlCli52Handler();
     }
 }

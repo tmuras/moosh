@@ -58,10 +58,6 @@ class CourseCreateCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new CourseCreate52Handler();
-        }
-
-        return new CourseCreate51Handler();
+        return new CourseCreate52Handler();
     }
 }

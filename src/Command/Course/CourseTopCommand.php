@@ -46,6 +46,6 @@ class CourseTopCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2')) ? new CourseTop52Handler() : new CourseTop51Handler();
+        return new CourseTop52Handler();
     }
 }

@@ -1,11 +1,10 @@
 #!/bin/bash
 #
 # Clears the Moodle database and dataroot, then restores from dump files.
-# Supports both Moodle 5.1 and 5.2 via MOODLE_DIR environment variable.
+# Supports Moodle 5.2+ via MOODLE_DIR environment variable.
 # Expects dump.sql.gz and data.tar.gz in the test_data_setup directory.
 #
 # Usage:
-#   MOODLE_DIR=/var/www/html/moodle51 bash clear.sh
 #   MOODLE_DIR=/var/www/html/moodle52 bash clear.sh
 #
 
@@ -51,12 +50,7 @@ DB_HOST=$(grep -oP "\\\$CFG->dbhost\s*=\s*'\K[^']+" "$CONFIG_FILE")
 DATAROOT="/opt/data/$MOODLE_VERSION"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-# Use test_data_setup/ for moodle51 (legacy), test_data_setup_moodle52/ for others.
-if [[ "$MOODLE_VERSION" == "moodle51" ]]; then
-    SETUP_DIR="$SCRIPT_DIR/test_data_setup"
-else
-    SETUP_DIR="$SCRIPT_DIR/test_data_setup_${MOODLE_VERSION}"
-fi
+SETUP_DIR="$SCRIPT_DIR/test_data_setup_${MOODLE_VERSION}"
 DUMP_FILE="$SETUP_DIR/dump.sql.gz"
 DATA_FILE="$SETUP_DIR/data.tar.gz"
 

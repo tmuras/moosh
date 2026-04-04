@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Integration test for moosh2 fontawesome:list
-# Requires a working Moodle 5.1 installation at /var/www/html/moodle51
+# Requires a working Moodle 5.2 installation at /var/www/html/moodle52
 #
 # Usage: bash tests/test_fontawesome_list.sh
 #

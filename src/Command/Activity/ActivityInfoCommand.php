@@ -45,6 +45,6 @@ class ActivityInfoCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2')) ? new ActivityInfo52Handler() : new ActivityInfo51Handler();
+        return new ActivityInfo52Handler();
     }
 }

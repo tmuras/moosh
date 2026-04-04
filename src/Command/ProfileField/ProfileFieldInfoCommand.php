@@ -52,6 +52,6 @@ class ProfileFieldInfoCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new ProfileFieldInfo51Handler();
+        return new ProfileFieldInfo52Handler();
     }
 }

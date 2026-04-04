@@ -57,6 +57,6 @@ class GroupingDeleteCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new GroupingDelete51Handler();
+        return new GroupingDelete52Handler();
     }
 }

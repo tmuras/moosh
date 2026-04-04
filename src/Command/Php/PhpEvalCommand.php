@@ -15,7 +15,7 @@ class PhpEvalCommand extends BaseCommand
 
     public function __construct(?MoodleVersion $moodleVersion)
     {
-        $this->handler = new PhpEval51Handler();
+        $this->handler = new PhpEval52Handler();
         parent::__construct();
     }
 

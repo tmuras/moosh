@@ -65,6 +65,6 @@ class CacheModCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new CacheMod51Handler();
+        return new CacheMod52Handler();
     }
 }

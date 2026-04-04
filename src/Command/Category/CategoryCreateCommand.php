@@ -58,10 +58,6 @@ class CategoryCreateCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new CategoryCreate52Handler();
-        }
-
-        return new CategoryCreate51Handler();
+        return new CategoryCreate52Handler();
     }
 }

@@ -12,7 +12,7 @@ DB_PASS="a"
 DB_HOST="localhost"
 DATAROOT="/opt/data/moodle51"
 
-echo "=== Moodle 5.1 backup ==="
+echo "=== Moodle 5.2 backup ==="
 
 echo "Dumping database '$DB_NAME'..."
 mysqldump -u"$DB_USER" -p"$DB_PASS" -h"$DB_HOST" "$DB_NAME" | gzip > dump.sql.gz

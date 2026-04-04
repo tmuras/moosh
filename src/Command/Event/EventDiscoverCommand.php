@@ -64,10 +64,6 @@ class EventDiscoverCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new EventDiscover52Handler();
-        }
-
-        return new EventDiscover51Handler();
+        return new EventDiscover52Handler();
     }
 }

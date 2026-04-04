@@ -57,6 +57,6 @@ class CohortDeleteCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new CohortDelete51Handler();
+        return new CohortDelete52Handler();
     }
 }

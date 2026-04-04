@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Integration test for moosh2 log:unpack command
-# Requires a working Moodle 5.1 installation
+# Requires a working Moodle 5.2 installation
 #
 # Usage: bash tests/test_log_unpack.sh
 #

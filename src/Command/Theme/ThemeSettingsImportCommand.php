@@ -45,6 +45,6 @@ class ThemeSettingsImportCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2')) ? new ThemeSettingsImport52Handler() : new ThemeSettingsImport51Handler();
+        return new ThemeSettingsImport52Handler();
     }
 }

@@ -53,6 +53,6 @@ class ConfigImportCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return new ConfigImport51Handler();
+        return new ConfigImport52Handler();
     }
 }

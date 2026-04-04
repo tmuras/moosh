@@ -58,10 +58,6 @@ class BadgeDeleteCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new BadgeDelete52Handler();
-        }
-
-        return new BadgeDelete51Handler();
+        return new BadgeDelete52Handler();
     }
 }

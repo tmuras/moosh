@@ -50,6 +50,6 @@ class FileInfoCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new FileInfo51Handler();
+        return new FileInfo52Handler();
     }
 }

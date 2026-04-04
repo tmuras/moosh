@@ -52,6 +52,6 @@ class CohortListCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new CohortList51Handler();
+        return new CohortList52Handler();
     }
 }

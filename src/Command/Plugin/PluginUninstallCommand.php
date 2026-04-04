@@ -45,6 +45,6 @@ class PluginUninstallCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2')) ? new PluginUninstall52Handler() : new PluginUninstall51Handler();
+        return new PluginUninstall52Handler();
     }
 }

@@ -68,6 +68,6 @@ class AuditBruteforceCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new AuditBruteforce51Handler();
+        return new AuditBruteforce52Handler();
     }
 }

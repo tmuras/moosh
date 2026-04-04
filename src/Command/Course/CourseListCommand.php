@@ -63,10 +63,6 @@ class CourseListCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion, ClockInterface $clock): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new CourseList52Handler($clock);
-        }
-
-        return new CourseList51Handler($clock);
+        return new CourseList52Handler($clock);
     }
 }

@@ -53,6 +53,6 @@ class SiteInfoCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return new SiteInfo51Handler();
+        return new SiteInfo52Handler();
     }
 }

@@ -50,6 +50,6 @@ class QuestionImportCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new QuestionImport51Handler();
+        return new QuestionImport52Handler();
     }
 }

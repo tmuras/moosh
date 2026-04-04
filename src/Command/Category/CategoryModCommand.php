@@ -57,6 +57,6 @@ class CategoryModCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new CategoryMod51Handler();
+        return new CategoryMod52Handler();
     }
 }

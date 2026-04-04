@@ -77,6 +77,6 @@ class RoleModCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new RoleMod51Handler();
+        return new RoleMod52Handler();
     }
 }

@@ -45,6 +45,6 @@ class CourseUnenrolCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2')) ? new CourseUnenrol52Handler() : new CourseUnenrol51Handler();
+        return new CourseUnenrol52Handler();
     }
 }

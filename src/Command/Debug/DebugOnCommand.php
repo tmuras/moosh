@@ -15,7 +15,7 @@ class DebugOnCommand extends BaseCommand
 
     public function __construct(?MoodleVersion $moodleVersion)
     {
-        $this->handler = new DebugOn51Handler();
+        $this->handler = new DebugOn52Handler();
         parent::__construct();
     }
 

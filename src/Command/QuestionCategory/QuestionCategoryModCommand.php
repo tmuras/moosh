@@ -49,6 +49,6 @@ class QuestionCategoryModCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new QuestionCategoryMod51Handler();
+        return new QuestionCategoryMod52Handler();
     }
 }

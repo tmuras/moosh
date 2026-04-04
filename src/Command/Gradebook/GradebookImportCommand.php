@@ -67,6 +67,6 @@ class GradebookImportCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new GradebookImport51Handler();
+        return new GradebookImport52Handler();
     }
 }

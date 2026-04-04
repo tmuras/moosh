@@ -4,7 +4,8 @@
 
 **moosh2** is a rewrite of [Moosh (Moodle Shell)](https://github.com/tmuras/moosh) using Symfony Console 7.x. It provides CLI commands for managing Moodle installations. Licensed under GNU GPL v3+.
 
-- **PHP**: >= 8.2
+- **PHP**: >= 8.3
+- **Moodle**: >= 5.2
 - **Main dependency**: symfony/console ^7.0
 - **Entry points**: `php moosh.php` or `php bin/moosh`
 
@@ -25,7 +26,6 @@ src/
 │   ├── BaseHandler.php          # Abstract base for version-specific handlers
 │   └── Course/
 │       ├── CourseListCommand.php     # course:list command
-│       ├── CourseList51Handler.php   # Moodle 5.1 implementation
 │       ├── CourseList52Handler.php   # Moodle 5.2 implementation
 │       └── CourseListHelperTrait.php # Shared course query helpers
 └── Output/
@@ -63,8 +63,8 @@ Every command follows this structure:
 ### Version-Specific Dispatch
 
 - `Application` detects Moodle version early (constructor, before command registration)
-- Commands select a handler based on `MoodleVersion::isAtLeast()`
 - Handler naming: `{CommandName}{MajorMinor}Handler.php` (e.g., `CourseList52Handler.php`)
+- Currently all handlers target Moodle 5.2; when 5.3 arrives, add `{Name}53Handler.php` and version dispatch in `resolveHandler()`
 
 ### Bootstrap Levels
 
@@ -96,7 +96,7 @@ Handlers can override the command's bootstrap level by implementing `getBootstra
 
 ## Coding Style
 
-- PHP 8.2+ features: enums, readonly properties, named arguments, match expressions, attributes
+- PHP 8.3+ features: enums, readonly properties, named arguments, match expressions, attributes
 - Type hints on all parameters and return types
 - One class per file, PSR-4 autoloading (`Moosh2\` namespace)
 - PascalCase classes, camelCase methods, colon-separated command names (`course:list`)
@@ -108,7 +108,7 @@ Handlers can override the command's bootstrap level by implementing `getBootstra
 
 1. Create a directory under `src/Command/` for the command group (e.g., `User/`)
 2. Create `{Name}Command.php` extending `BaseCommand` — set bootstrap level, name, description
-3. Create version-specific handlers `{Name}{Version}Handler.php` extending `BaseHandler`
+3. Create handler `{Name}52Handler.php` extending `BaseHandler`
 4. Optionally create a helper trait for shared logic
 5. Register the command in `Application::registerCommands()`
 6. Add integration tests in `tests/`

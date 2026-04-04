@@ -9,10 +9,13 @@
 namespace Moosh2\Command\Activity;
 
 use core_courseformat\formatactions;
+use Moosh2\Command\BaseHandler;
 use Moosh2\Output\ResultFormatter;
 use Moosh2\Output\VerboseLogger;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -20,8 +23,19 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * Uses core_courseformat\formatactions API instead of deprecated moveto_module().
  */
-class ActivityMod52Handler extends ActivityMod51Handler
+class ActivityMod52Handler extends BaseHandler
 {
+    public function configureCommand(Command $command): void
+    {
+        $command
+            ->addArgument('cmid', InputArgument::REQUIRED, 'Course module ID to modify')
+            ->addOption('name', null, InputOption::VALUE_REQUIRED, 'Set activity name')
+            ->addOption('visible', null, InputOption::VALUE_REQUIRED, 'Set visibility (1 or 0)')
+            ->addOption('idnumber', null, InputOption::VALUE_REQUIRED, 'Set ID number')
+            ->addOption('section', 's', InputOption::VALUE_REQUIRED, 'Move to section number')
+            ->addOption('before', null, InputOption::VALUE_REQUIRED, 'Move before this course module ID (use with --section)');
+    }
+
     public function handle(InputInterface $input, OutputInterface $output): int
     {
         global $CFG, $DB;

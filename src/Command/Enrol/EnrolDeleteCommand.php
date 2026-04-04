@@ -57,6 +57,6 @@ class EnrolDeleteCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new EnrolDelete51Handler();
+        return new EnrolDelete52Handler();
     }
 }

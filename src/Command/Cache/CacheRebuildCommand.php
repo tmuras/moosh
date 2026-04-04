@@ -63,6 +63,6 @@ class CacheRebuildCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new CacheRebuild51Handler();
+        return new CacheRebuild52Handler();
     }
 }

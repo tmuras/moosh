@@ -54,6 +54,6 @@ class UserExportCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return new UserExport51Handler();
+        return new UserExport52Handler();
     }
 }

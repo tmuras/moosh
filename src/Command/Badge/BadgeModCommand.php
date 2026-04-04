@@ -57,10 +57,6 @@ class BadgeModCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new BadgeMod52Handler();
-        }
-
-        return new BadgeMod51Handler();
+        return new BadgeMod52Handler();
     }
 }

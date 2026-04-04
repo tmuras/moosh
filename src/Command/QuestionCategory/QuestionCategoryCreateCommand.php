@@ -50,6 +50,6 @@ class QuestionCategoryCreateCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new QuestionCategoryCreate51Handler();
+        return new QuestionCategoryCreate52Handler();
     }
 }

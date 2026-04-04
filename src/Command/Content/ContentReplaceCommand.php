@@ -15,7 +15,7 @@ class ContentReplaceCommand extends BaseCommand
 
     public function __construct(?MoodleVersion $moodleVersion)
     {
-        $this->handler = new ContentReplace51Handler();
+        $this->handler = new ContentReplace52Handler();
         parent::__construct();
     }
 

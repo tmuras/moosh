@@ -15,7 +15,7 @@ class CompletionResetCommand extends BaseCommand
 
     public function __construct(?MoodleVersion $moodleVersion)
     {
-        $this->handler = new CompletionReset51Handler();
+        $this->handler = new CompletionReset52Handler();
         parent::__construct();
     }
 

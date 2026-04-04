@@ -60,10 +60,6 @@ class CategoryListCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new CategoryList52Handler();
-        }
-
-        return new CategoryList51Handler();
+        return new CategoryList52Handler();
     }
 }

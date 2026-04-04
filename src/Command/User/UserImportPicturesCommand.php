@@ -71,6 +71,6 @@ class UserImportPicturesCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new UserImportPictures51Handler();
+        return new UserImportPictures52Handler();
     }
 }

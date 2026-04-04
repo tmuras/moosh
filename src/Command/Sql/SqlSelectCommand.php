@@ -64,10 +64,6 @@ class SqlSelectCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new SqlSelect52Handler();
-        }
-
-        return new SqlSelect51Handler();
+        return new SqlSelect52Handler();
     }
 }

@@ -64,6 +64,6 @@ class RoleCreateCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new RoleCreate51Handler();
+        return new RoleCreate52Handler();
     }
 }

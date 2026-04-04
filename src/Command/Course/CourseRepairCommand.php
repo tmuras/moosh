@@ -15,7 +15,7 @@ class CourseRepairCommand extends BaseCommand
 
     public function __construct(?MoodleVersion $moodleVersion)
     {
-        $this->handler = new CourseRepair51Handler();
+        $this->handler = new CourseRepair52Handler();
         parent::__construct();
     }
 

@@ -58,10 +58,6 @@ class ActivityDeleteCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new ActivityDelete52Handler();
-        }
-
-        return new ActivityDelete51Handler();
+        return new ActivityDelete52Handler();
     }
 }

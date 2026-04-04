@@ -64,6 +64,6 @@ class RoleImportCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new RoleImport51Handler();
+        return new RoleImport52Handler();
     }
 }

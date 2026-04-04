@@ -58,10 +58,6 @@ class PluginUsageCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new PluginUsage52Handler();
-        }
-
-        return new PluginUsage51Handler();
+        return new PluginUsage52Handler();
     }
 }

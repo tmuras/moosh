@@ -51,6 +51,6 @@ class ConfigGetCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2')) ? new ConfigGet52Handler() : new ConfigGet51Handler();
+        return new ConfigGet52Handler();
     }
 }

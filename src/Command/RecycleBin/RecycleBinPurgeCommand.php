@@ -15,7 +15,7 @@ class RecycleBinPurgeCommand extends BaseCommand
 
     public function __construct(?MoodleVersion $moodleVersion)
     {
-        $this->handler = new RecycleBinPurge51Handler();
+        $this->handler = new RecycleBinPurge52Handler();
         parent::__construct();
     }
 

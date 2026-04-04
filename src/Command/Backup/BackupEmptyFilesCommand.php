@@ -57,6 +57,6 @@ class BackupEmptyFilesCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new BackupEmptyFiles51Handler();
+        return new BackupEmptyFiles52Handler();
     }
 }

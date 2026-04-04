@@ -52,9 +52,6 @@ class ProfileFieldAddCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new ProfileFieldAdd52Handler();
-        }
-        return new ProfileFieldAdd51Handler();
+        return new ProfileFieldAdd52Handler();
     }
 }

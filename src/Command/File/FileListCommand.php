@@ -50,6 +50,6 @@ class FileListCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new FileList51Handler();
+        return new FileList52Handler();
     }
 }

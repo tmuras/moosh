@@ -63,10 +63,6 @@ class UserListCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion, ClockInterface $clock): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new UserList52Handler($clock);
-        }
-
-        return new UserList51Handler($clock);
+        return new UserList52Handler($clock);
     }
 }

@@ -64,6 +64,6 @@ class RoleDeleteCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new RoleDelete51Handler();
+        return new RoleDelete52Handler();
     }
 }

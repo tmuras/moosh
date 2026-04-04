@@ -56,6 +56,6 @@ class ContentReplaceEncodedCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return new ContentReplaceEncoded51Handler();
+        return new ContentReplaceEncoded52Handler();
     }
 }

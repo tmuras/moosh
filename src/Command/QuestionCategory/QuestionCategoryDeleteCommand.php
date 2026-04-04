@@ -57,6 +57,6 @@ class QuestionCategoryDeleteCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new QuestionCategoryDelete51Handler();
+        return new QuestionCategoryDelete52Handler();
     }
 }

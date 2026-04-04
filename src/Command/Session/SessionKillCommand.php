@@ -15,7 +15,7 @@ class SessionKillCommand extends BaseCommand
 
     public function __construct(?MoodleVersion $moodleVersion)
     {
-        $this->handler = new SessionKill51Handler();
+        $this->handler = new SessionKill52Handler();
         parent::__construct();
     }
 

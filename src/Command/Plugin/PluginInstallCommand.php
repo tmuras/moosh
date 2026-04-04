@@ -45,6 +45,6 @@ class PluginInstallCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2')) ? new PluginInstall52Handler() : new PluginInstall51Handler();
+        return new PluginInstall52Handler();
     }
 }

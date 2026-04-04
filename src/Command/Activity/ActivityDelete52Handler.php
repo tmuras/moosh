@@ -9,8 +9,10 @@
 namespace Moosh2\Command\Activity;
 
 use core_courseformat\formatactions;
+use Moosh2\Command\BaseHandler;
 use Moosh2\Output\VerboseLogger;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -19,8 +21,17 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * Uses core_courseformat\formatactions API instead of deprecated course_delete_module().
  */
-class ActivityDelete52Handler extends ActivityDelete51Handler
+class ActivityDelete52Handler extends BaseHandler
 {
+    public function configureCommand(Command $command): void
+    {
+        $command->addArgument(
+            'cmid',
+            InputArgument::REQUIRED | InputArgument::IS_ARRAY,
+            'Course module ID(s) to delete',
+        );
+    }
+
     public function handle(InputInterface $input, OutputInterface $output): int
     {
         global $DB;

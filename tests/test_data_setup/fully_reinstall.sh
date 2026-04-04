@@ -11,17 +11,17 @@ DB_USER="root"
 DB_PASS="a"
 DB_HOST="localhost"
 DATAROOT="/opt/data/moodle51"
-MOODLE_DIR="/var/www/html/moodle51"
+MOODLE_DIR="/var/www/html/moodle52"
 WWWROOT="http://localhost/moodle51/public"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ADMIN_USER="admin"
 ADMIN_PASS="a"
 ADMIN_EMAIL="admin@example.com"
-SITE_FULLNAME="Moodle 5.1 Dev"
+SITE_FULLNAME="Moodle 5.2 Dev"
 SITE_SHORTNAME="moodle51"
 PHP=/usr/bin/php
 
-echo "=== Moodle 5.1 full reinstall ==="
+echo "=== Moodle 5.2 full reinstall ==="
 
 # 1. Drop and recreate database.
 echo "Dropping and recreating database '$DB_NAME'..."

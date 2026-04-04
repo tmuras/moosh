@@ -51,6 +51,6 @@ class QuestionExportCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new QuestionExport51Handler();
+        return new QuestionExport52Handler();
     }
 }

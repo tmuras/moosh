@@ -54,6 +54,6 @@ class ConfigExportCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return new ConfigExport51Handler();
+        return new ConfigExport52Handler();
     }
 }

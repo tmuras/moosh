@@ -64,6 +64,6 @@ class QuizDeleteAttemptCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new QuizDeleteAttempt51Handler();
+        return new QuizDeleteAttempt52Handler();
     }
 }

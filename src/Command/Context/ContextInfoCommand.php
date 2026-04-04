@@ -58,6 +58,6 @@ class ContextInfoCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new ContextInfo51Handler();
+        return new ContextInfo52Handler();
     }
 }

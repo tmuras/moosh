@@ -58,6 +58,6 @@ class CourseInfoCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new CourseInfo51Handler();
+        return new CourseInfo52Handler();
     }
 }

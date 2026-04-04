@@ -45,6 +45,6 @@ class CourseResetCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2')) ? new CourseReset52Handler() : new CourseReset51Handler();
+        return new CourseReset52Handler();
     }
 }

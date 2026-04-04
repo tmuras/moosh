@@ -15,7 +15,7 @@ class CompletionStatusCommand extends BaseCommand
 
     public function __construct(?MoodleVersion $moodleVersion)
     {
-        $this->handler = new CompletionStatus51Handler();
+        $this->handler = new CompletionStatus52Handler();
         parent::__construct();
     }
 

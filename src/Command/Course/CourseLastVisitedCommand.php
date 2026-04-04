@@ -46,6 +46,6 @@ class CourseLastVisitedCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2')) ? new CourseLastVisited52Handler() : new CourseLastVisited51Handler();
+        return new CourseLastVisited52Handler();
     }
 }

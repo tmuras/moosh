@@ -65,6 +65,6 @@ class RoleExportCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new RoleExport51Handler();
+        return new RoleExport52Handler();
     }
 }

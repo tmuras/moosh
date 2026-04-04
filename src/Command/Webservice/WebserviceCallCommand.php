@@ -70,6 +70,6 @@ class WebserviceCallCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new WebserviceCall51Handler();
+        return new WebserviceCall52Handler();
     }
 }

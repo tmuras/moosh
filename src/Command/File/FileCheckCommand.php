@@ -50,6 +50,6 @@ class FileCheckCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new FileCheck51Handler();
+        return new FileCheck52Handler();
     }
 }

@@ -64,9 +64,6 @@ class FontawesomeMaplistCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new FontawesomeMaplist52Handler();
-        }
-        return new FontawesomeMaplist51Handler();
+        return new FontawesomeMaplist52Handler();
     }
 }

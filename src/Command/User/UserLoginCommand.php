@@ -53,6 +53,6 @@ class UserLoginCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return new UserLogin51Handler();
+        return new UserLogin52Handler();
     }
 }

@@ -50,6 +50,6 @@ class EventFireCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new EventFire51Handler();
+        return new EventFire52Handler();
     }
 }

@@ -52,6 +52,6 @@ class TaskModCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new TaskMod51Handler();
+        return new TaskMod52Handler();
     }
 }

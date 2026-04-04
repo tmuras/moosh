@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Integration test for moosh2 user:online, user:export, user:login
-# Requires a working Moodle 5.1 installation
+# Requires a working Moodle 5.2 installation
 #
 # Usage: bash tests/test_user_online_export_login.sh
 #

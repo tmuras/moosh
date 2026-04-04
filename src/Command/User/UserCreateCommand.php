@@ -58,10 +58,6 @@ class UserCreateCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new UserCreate52Handler();
-        }
-
-        return new UserCreate51Handler();
+        return new UserCreate52Handler();
     }
 }

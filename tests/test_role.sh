@@ -2,7 +2,7 @@
 #
 # Integration tests for moosh2 role commands:
 #   role:list, role:create, role:delete, role:export, role:import, role:reset, role:mod
-# Requires a working Moodle 5.1 installation at /var/www/html/moodle51
+# Requires a working Moodle 5.2 installation at /var/www/html/moodle52
 #
 # Usage: bash tests/test_role.sh
 #

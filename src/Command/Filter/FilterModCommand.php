@@ -56,6 +56,6 @@ class FilterModCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new FilterMod51Handler();
+        return new FilterMod52Handler();
     }
 }

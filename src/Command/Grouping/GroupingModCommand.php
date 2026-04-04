@@ -51,6 +51,6 @@ class GroupingModCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new GroupingMod51Handler();
+        return new GroupingMod52Handler();
     }
 }

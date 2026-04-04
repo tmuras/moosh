@@ -66,6 +66,6 @@ class BlockModCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new BlockMod51Handler();
+        return new BlockMod52Handler();
     }
 }

@@ -45,6 +45,6 @@ class CategoryDeleteCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2')) ? new CategoryDelete52Handler() : new CategoryDelete51Handler();
+        return new CategoryDelete52Handler();
     }
 }

@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 #
 # Integration test for moosh2 data:check command
-# Requires a working Moodle 5.1 installation at /var/www/html/moodle51
+# Requires a working Moodle 5.2 installation at /var/www/html/moodle52
 #
 # Usage: bash tests/test_data_check.sh
 #
 
 source "$(dirname "$0")/common.sh"
 
-MOODLE_BASENAME="$(basename "${MOODLE_DIR:-/var/www/html/moodle51}")"
+MOODLE_BASENAME="$(basename "${MOODLE_DIR:-/var/www/html/moodle52}")"
 DATAROOT="/opt/data/$MOODLE_BASENAME"
 
 echo "=== moosh2 data:check integration tests ==="

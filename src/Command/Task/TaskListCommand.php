@@ -53,6 +53,6 @@ class TaskListCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new TaskList51Handler();
+        return new TaskList52Handler();
     }
 }

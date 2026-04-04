@@ -58,8 +58,6 @@ class FontawesomeListCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2'))
-            ? new FontawesomeList52Handler()
-            : new FontawesomeList51Handler();
+        return new FontawesomeList52Handler();
     }
 }

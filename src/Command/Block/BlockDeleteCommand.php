@@ -57,6 +57,6 @@ class BlockDeleteCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new BlockDelete51Handler();
+        return new BlockDelete52Handler();
     }
 }

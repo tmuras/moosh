@@ -52,6 +52,6 @@ class CategoryExportCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new CategoryExport51Handler();
+        return new CategoryExport52Handler();
     }
 }

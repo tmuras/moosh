@@ -68,6 +68,6 @@ class ContextFreezeCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new ContextFreeze51Handler();
+        return new ContextFreeze52Handler();
     }
 }

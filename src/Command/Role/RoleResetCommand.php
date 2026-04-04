@@ -63,6 +63,6 @@ class RoleResetCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new RoleReset51Handler();
+        return new RoleReset52Handler();
     }
 }

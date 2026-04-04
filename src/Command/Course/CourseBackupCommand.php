@@ -45,6 +45,6 @@ class CourseBackupCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $v): BaseHandler
     {
-        return ($v !== null && $v->isAtLeast('5.2')) ? new CourseBackup52Handler() : new CourseBackup51Handler();
+        return new CourseBackup52Handler();
     }
 }

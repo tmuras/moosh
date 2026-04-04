@@ -64,6 +64,6 @@ class GradeCategoryListCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new GradeCategoryList51Handler();
+        return new GradeCategoryList52Handler();
     }
 }

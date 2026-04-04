@@ -15,7 +15,7 @@ class DashboardResetCommand extends BaseCommand
 
     public function __construct(?MoodleVersion $moodleVersion)
     {
-        $this->handler = new DashboardReset51Handler();
+        $this->handler = new DashboardReset52Handler();
         parent::__construct();
     }
 

@@ -15,7 +15,7 @@ class CompletionMarkCommand extends BaseCommand
 
     public function __construct(?MoodleVersion $moodleVersion)
     {
-        $this->handler = new CompletionMark51Handler();
+        $this->handler = new CompletionMark52Handler();
         parent::__construct();
     }
 

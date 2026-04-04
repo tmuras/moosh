@@ -58,10 +58,6 @@ class AuditPasswordCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        if ($moodleVersion !== null && $moodleVersion->isAtLeast('5.2')) {
-            return new AuditPassword52Handler();
-        }
-
-        return new AuditPassword51Handler();
+        return new AuditPassword52Handler();
     }
 }

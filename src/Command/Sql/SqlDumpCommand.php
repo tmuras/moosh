@@ -66,6 +66,6 @@ class SqlDumpCommand extends BaseCommand
 
     private function resolveHandler(?MoodleVersion $moodleVersion): BaseHandler
     {
-        return new SqlDump51Handler();
+        return new SqlDump52Handler();
     }
 }

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Integration test for moosh2 backup:info command
-# Requires a working Moodle 5.1 installation at /var/www/html/moodle51
+# Requires a working Moodle 5.2 installation at /var/www/html/moodle52
 #
 # Usage: bash tests/test_backup_info.sh
 #
@@ -49,7 +49,7 @@ echo "$OUT"
 assert_output_contains "Shows File" "test_backup_algebra.mbz" "$OUT"
 assert_output_contains "Shows Archive type gzip" "gzip" "$OUT"
 assert_output_contains "Shows Moodle version" "Moodle version" "$OUT"
-MOODLE_BASENAME="$(basename "${MOODLE_DIR:-/var/www/html/moodle51}")"
+MOODLE_BASENAME="$(basename "${MOODLE_DIR:-/var/www/html/moodle52}")"
 MOODLE_VER="${MOODLE_BASENAME#moodle}"
 MOODLE_VER_DOT="${MOODLE_VER:0:1}.${MOODLE_VER:1}"
 assert_output_contains "Shows Moodle release" "$MOODLE_VER_DOT" "$OUT"
