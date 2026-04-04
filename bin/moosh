@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+<?php
+/**
+ * moosh2 — Moodle Shell (Composer bin wrapper)
+ *
+ * @copyright  2012 onwards Tomasz Muras
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+use Moosh2\Application;
+
+$app = new Application();
+$app->run();

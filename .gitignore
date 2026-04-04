@@ -1,11 +1,2 @@
-/vendor
-composer.phar
+/vendor/
 .idea
-.DS_Store
-config.sh
-*.sw*
-tests/config25.sh
-tests/config26.sh
-tests/out.txt
-tags
-*.tags
