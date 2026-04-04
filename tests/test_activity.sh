@@ -48,7 +48,7 @@ assert_output_contains "Course is 2" ",2," "$OUT"
 FORUM_CMID=$(echo "$OUT" | tail -1 | cut -d, -f1)
 echo "  Created forum cmid=$FORUM_CMID"
 echo ""
-exit 1
+
 # ── Add assignment ────────────────────────────────────────────────
 
 echo "--- Test: Add assignment to section 2 ---"
@@ -79,6 +79,151 @@ assert_output_contains "JSON has cmid" '"cmid"' "$OUT"
 assert_output_contains "JSON has module" '"module"' "$OUT"
 URL_CMID=$(echo "$OUT" | grep -o '"cmid": [0-9]*' | head -1 | grep -o '[0-9]*')
 echo "  Created url cmid=$URL_CMID"
+echo ""
+
+# ── Add choice ────────────────────────────────────────────────────
+
+echo "--- Test: Add choice ---"
+OUT=$($PHP $MOOSH activity:create -p "$MOODLE_PATH" --run --name "Pick One" choice 2 -o csv)
+echo "$OUT"
+assert_output_contains "Module is choice" ",choice," "$OUT"
+CHOICE_CMID=$(echo "$OUT" | tail -1 | cut -d, -f1)
+echo "  Created choice cmid=$CHOICE_CMID"
+echo ""
+
+# ── Add feedback ─────────────────────────────────────────────────
+
+echo "--- Test: Add feedback ---"
+OUT=$($PHP $MOOSH activity:create -p "$MOODLE_PATH" --run --name "Course Feedback" feedback 2 -o csv)
+echo "$OUT"
+assert_output_contains "Module is feedback" ",feedback," "$OUT"
+FEEDBACK_CMID=$(echo "$OUT" | tail -1 | cut -d, -f1)
+echo "  Created feedback cmid=$FEEDBACK_CMID"
+echo ""
+
+# ── Add folder ───────────────────────────────────────────────────
+
+echo "--- Test: Add folder ---"
+OUT=$($PHP $MOOSH activity:create -p "$MOODLE_PATH" --run --name "Resources Folder" folder 2 -o csv)
+echo "$OUT"
+assert_output_contains "Module is folder" ",folder," "$OUT"
+FOLDER_CMID=$(echo "$OUT" | tail -1 | cut -d, -f1)
+echo "  Created folder cmid=$FOLDER_CMID"
+echo ""
+
+# ── Add glossary ─────────────────────────────────────────────────
+
+echo "--- Test: Add glossary ---"
+OUT=$($PHP $MOOSH activity:create -p "$MOODLE_PATH" --run --name "Key Terms" glossary 2 -o csv)
+echo "$OUT"
+assert_output_contains "Module is glossary" ",glossary," "$OUT"
+GLOSSARY_CMID=$(echo "$OUT" | tail -1 | cut -d, -f1)
+echo "  Created glossary cmid=$GLOSSARY_CMID"
+echo ""
+
+# ── Add label ────────────────────────────────────────────────────
+
+echo "--- Test: Add label ---"
+OUT=$($PHP $MOOSH activity:create -p "$MOODLE_PATH" --run --name "Section Header" label 2 -o csv)
+echo "$OUT"
+assert_output_contains "Module is label" ",label," "$OUT"
+LABEL_CMID=$(echo "$OUT" | tail -1 | cut -d, -f1)
+echo "  Created label cmid=$LABEL_CMID"
+echo ""
+
+# ── Add lesson ───────────────────────────────────────────────────
+
+echo "--- Test: Add lesson ---"
+OUT=$($PHP $MOOSH activity:create -p "$MOODLE_PATH" --run --name "Intro Lesson" lesson 2 -o csv)
+echo "$OUT"
+assert_output_contains "Module is lesson" ",lesson," "$OUT"
+LESSON_CMID=$(echo "$OUT" | tail -1 | cut -d, -f1)
+echo "  Created lesson cmid=$LESSON_CMID"
+echo ""
+
+# ── Add quiz ─────────────────────────────────────────────────────
+
+echo "--- Test: Add quiz ---"
+OUT=$($PHP $MOOSH activity:create -p "$MOODLE_PATH" --run --name "Chapter Quiz" quiz 2 -o csv)
+echo "$OUT"
+assert_output_contains "Module is quiz" ",quiz," "$OUT"
+QUIZ_CMID=$(echo "$OUT" | tail -1 | cut -d, -f1)
+echo "  Created quiz cmid=$QUIZ_CMID"
+echo ""
+
+# ── Add wiki ─────────────────────────────────────────────────────
+
+echo "--- Test: Add wiki ---"
+OUT=$($PHP $MOOSH activity:create -p "$MOODLE_PATH" --run --name "Class Wiki" wiki 2 -o csv)
+echo "$OUT"
+assert_output_contains "Module is wiki" ",wiki," "$OUT"
+WIKI_CMID=$(echo "$OUT" | tail -1 | cut -d, -f1)
+echo "  Created wiki cmid=$WIKI_CMID"
+echo ""
+
+# ── Add workshop ─────────────────────────────────────────────────
+
+echo "--- Test: Add workshop ---"
+OUT=$($PHP $MOOSH activity:create -p "$MOODLE_PATH" --run --name "Peer Review" workshop 2 -o csv)
+echo "$OUT"
+assert_output_contains "Module is workshop" ",workshop," "$OUT"
+WORKSHOP_CMID=$(echo "$OUT" | tail -1 | cut -d, -f1)
+echo "  Created workshop cmid=$WORKSHOP_CMID"
+echo ""
+
+# ── Add book ─────────────────────────────────────────────────────
+
+echo "--- Test: Add book ---"
+OUT=$($PHP $MOOSH activity:create -p "$MOODLE_PATH" --run --name "Course Handbook" book 2 -o csv)
+echo "$OUT"
+assert_output_contains "Module is book" ",book," "$OUT"
+BOOK_CMID=$(echo "$OUT" | tail -1 | cut -d, -f1)
+echo "  Created book cmid=$BOOK_CMID"
+echo ""
+
+# ── Add data ─────────────────────────────────────────────────────
+
+echo "--- Test: Add database ---"
+OUT=$($PHP $MOOSH activity:create -p "$MOODLE_PATH" --run --name "Student Records" data 2 -o csv)
+echo "$OUT"
+assert_output_contains "Module is data" ",data," "$OUT"
+DATA_CMID=$(echo "$OUT" | tail -1 | cut -d, -f1)
+echo "  Created data cmid=$DATA_CMID"
+echo ""
+
+# ── Add h5pactivity ──────────────────────────────────────────────
+
+echo "--- Test: Add h5pactivity ---"
+OUT=$($PHP $MOOSH activity:create -p "$MOODLE_PATH" --run --name "Interactive Content" h5pactivity 2 -o csv)
+echo "$OUT"
+assert_output_contains "Module is h5pactivity" ",h5pactivity," "$OUT"
+H5P_CMID=$(echo "$OUT" | tail -1 | cut -d, -f1)
+echo "  Created h5pactivity cmid=$H5P_CMID"
+echo ""
+
+# ── --set option: override module defaults ───────────────────────
+
+echo "--- Test: --set override wiki mode ---"
+OUT=$($PHP $MOOSH activity:create -p "$MOODLE_PATH" --run --name "Individual Wiki" --set wikimode=individual wiki 2 -o csv)
+echo "$OUT"
+assert_output_contains "Module is wiki (--set)" ",wiki," "$OUT"
+WIKI2_CMID=$(echo "$OUT" | tail -1 | cut -d, -f1)
+echo "  Created wiki cmid=$WIKI2_CMID"
+echo ""
+
+echo "--- Test: --set multiple values ---"
+OUT=$($PHP $MOOSH activity:create -p "$MOODLE_PATH" --run --name "Custom Forum" -S type=single -S assessed=1 forum 2 -o csv)
+echo "$OUT"
+assert_output_contains "Module is forum (--set multi)" ",forum," "$OUT"
+FORUM2_CMID=$(echo "$OUT" | tail -1 | cut -d, -f1)
+echo "  Created forum cmid=$FORUM2_CMID"
+echo ""
+
+echo "--- Test: --set invalid format ---"
+OUT=$($PHP $MOOSH activity:create -p "$MOODLE_PATH" --run -S badformat label 2 2>&1)
+EXIT_CODE=$?
+assert_exit_code "Exit code 1 for bad --set" 1 "$EXIT_CODE"
+assert_output_contains "Error for bad --set" "Invalid --set format" "$OUT"
 echo ""
 
 # ── Invalid module type ───────────────────────────────────────────

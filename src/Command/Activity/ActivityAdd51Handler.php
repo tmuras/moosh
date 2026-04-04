@@ -29,7 +29,8 @@ class ActivityAdd51Handler extends BaseHandler
             ->addArgument('courseid', InputArgument::REQUIRED, 'Course ID')
             ->addOption('name', null, InputOption::VALUE_REQUIRED, 'Activity name')
             ->addOption('section', 's', InputOption::VALUE_REQUIRED, 'Section number', '1')
-            ->addOption('idnumber', null, InputOption::VALUE_REQUIRED, 'Activity ID number');
+            ->addOption('idnumber', null, InputOption::VALUE_REQUIRED, 'Activity ID number')
+            ->addOption('set', 'S', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Set module property: key=value (repeatable)');
     }
 
     public function handle(InputInterface $input, OutputInterface $output): int
@@ -92,6 +93,11 @@ class ActivityAdd51Handler extends BaseHandler
             'itemid' => 0,
         ];
 
+        $result = $this->applySetOptions($input, $output, $moduleInfo);
+        if ($result !== null) {
+            return $result;
+        }
+
         $instance = add_moduleinfo($moduleInfo, $course);
 
         $verbose->done("Created $type with course module ID {$instance->coursemodule}");
@@ -103,5 +109,25 @@ class ActivityAdd51Handler extends BaseHandler
         $formatter->display($headers, $rows);
 
         return Command::SUCCESS;
+    }
+
+    protected function applySetOptions(InputInterface $input, OutputInterface $output, \stdClass $moduleInfo): ?int
+    {
+        $setOptions = $input->getOption('set');
+
+        foreach ($setOptions as $spec) {
+            $parts = explode('=', $spec, 2);
+            if (count($parts) !== 2) {
+                $output->writeln("<error>Invalid --set format: '$spec'. Expected: key=value</error>");
+                return Command::FAILURE;
+            }
+            [$key, $value] = $parts;
+            if (is_numeric($value)) {
+                $value = str_contains($value, '.') ? (float) $value : (int) $value;
+            }
+            $moduleInfo->$key = $value;
+        }
+
+        return null;
     }
 }
