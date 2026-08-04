@@ -71,6 +71,9 @@ function find_top_moodle_dir($dir) {
         if (is_top_moodle_dir($dir)) {
             return $dir;
         }
+        if (is_top_moodle_dir($dir . '/public')) {
+            return $dir . '/public';
+        }
         if (++$up > $max || $dir == '/') {
             break;
         }
@@ -470,19 +473,28 @@ function eval_config(string $top_dir) {
 
     // Manually retrieve the information from config.php
     // and create $DB object.
-    $config = [];
-    if (!file_exists($top_dir . '/config.php')) {
+    $config_file = $top_dir . '/config.php';
+    if (!file_exists($config_file)) {
         cli_error('config.php not found.');
     }
-    exec("php -w " . $top_dir . "/config.php", $config);
-    if (count($config) == 0) {
+    $config = php_strip_whitespace($config_file);
+    if ($config === '') {
         cli_error("config.php does not look right to me.");
     }
-    $config = implode("\n", $config);
     $config = str_ireplace('<?php', '', $config);
     $config = str_replace('require_once', '//require_once', $config);
 
+    $CFG = null;
     eval($config);
+    // Since Moodle 5.1, public/config.php only loads the real config.php
+    // stored one level above the public directory.
+    $root_config_file = dirname($top_dir) . '/config.php';
+    if (!isset($CFG) && basename($top_dir) === 'public' && file_exists($root_config_file)) {
+        $config = php_strip_whitespace($root_config_file);
+        $config = str_ireplace('<?php', '', $config);
+        $config = str_replace('require_once', '//require_once', $config);
+        eval($config);
+    }
     if (!isset($CFG)) {
         cli_error('After evaluating config.php, $CFG is not set');
     }

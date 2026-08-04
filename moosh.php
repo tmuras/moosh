@@ -32,7 +32,7 @@ require_once $moosh_dir . '/includes/default_options.php';
 use GetOptionKit\ContinuousOptionParser;
 use GetOptionKit\OptionCollection;
 
-define('MOOSH_VERSION', '1.48');
+define('MOOSH_VERSION', '1.49');
 define('MOODLE_INTERNAL', true);
 
 // suppressing warnings for php > 8
@@ -52,7 +52,7 @@ $parser = @new ContinuousOptionParser($appspecs);
 $app_options = @$parser->parse($argv);
 
 if ($app_options->has('moodle-path')) {
-    $top_dir = $app_options['moodle-path']->value;
+    $top_dir = find_top_moodle_dir($app_options['moodle-path']->value);
 } else {
     $top_dir = find_top_moodle_dir($cwd);
 }
@@ -204,8 +204,7 @@ if ($bootstrap_level === MooshCommand::$BOOTSTRAP_NONE) {
 } else if ($bootstrap_level === MooshCommand::$BOOTSTRAP_DB_ONLY) {
     $config = eval_config($top_dir);
     if ($app_options->has('verbose')) {
-        echo '$CFG - ';
-        print_r($CFG);
+        echo "\$CFG loaded (values hidden)\n";
     }
 
     $CFG->libdir = $moosh_dir . "/includes/moodle/lib/";
@@ -320,7 +319,10 @@ If you're sure you know what you're doing, run moosh with -n flag to skip that t
 
 if ($top_dir) {
     // Gather more info based on the directory where moosh was run
-    $relative_dir = substr($cwd, strlen($top_dir));
+    $relative_dir = '';
+    if ($cwd === $top_dir || strpos($cwd, $top_dir . DIRECTORY_SEPARATOR) === 0) {
+        $relative_dir = substr($cwd, strlen($top_dir));
+    }
     $relative_dir = trim($relative_dir, '/');
     if ($app_options->has('verbose')) {
         echo "Top Moodle dir: $top_dir\n";
