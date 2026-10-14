@@ -133,11 +133,11 @@ class pgsql_native_moodle_recordset extends moodle_recordset {
         return $row;
     }
 
-    public function current() {
+    public function current(): mixed {
         return (object)$this->current;
     }
 
-    public function key() {
+    public function key(): mixed {
         // return first column value as key
         if (!$this->current) {
             return false;
@@ -146,11 +146,11 @@ class pgsql_native_moodle_recordset extends moodle_recordset {
         return $key;
     }
 
-    public function next() {
+    public function next(): void {
         $this->current = $this->fetch_next();
     }
 
-    public function valid() {
+    public function valid(): bool {
         return !empty($this->current);
     }
 
