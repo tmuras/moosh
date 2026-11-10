@@ -15,8 +15,9 @@ class UserDelete extends MooshCommand
     public function __construct()
     {
         parent::__construct('delete', 'user');
-      
-        $this->addArgument('username');
+
+        $this->addOption('i|id', 'use numerical id instead of username');
+        $this->addArgument('user');
         $this->maxArguments = 255;
 
     }
@@ -25,11 +26,17 @@ class UserDelete extends MooshCommand
     {
         global $CFG, $DB;
         require_once $CFG->dirroot . '/user/lib.php';
+
+        $options = $this->expandedOptions;
       
-         foreach ($this->arguments as $argument) {
+        foreach ($this->arguments as $argument) {
             
             try {
-                 $user = $DB->get_record('user', array('username' => $argument));
+                if ($options['id']) {
+                    $user = $DB->get_record('user', array('id' => $argument));
+                } else {
+                    $user = $DB->get_record('user', array('username' => $argument));
+                }
             } catch (Exception $e) {
                 print get_class($e)." thrown within the exception handler. Message: ".$e->getMessage()." on line ".$e->getLine();
             }
@@ -39,7 +46,7 @@ class UserDelete extends MooshCommand
             } else {
                 print "User not found\n";
             }
-         }
+        }
     }
 
     public function bootstrapLevel()

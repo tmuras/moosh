@@ -3275,7 +3275,22 @@ Available options:</p>
 <a name="user-delete"></a>
 <h2>user-delete</h2>
 
-<p>Delete user(s) from Moodle. Provide one ore more usernames as arguments.</p>
+<p>Delete user(s) from Moodle. Provide one ore more usernames as arguments, or, if option -i is used, one or more user's id. Available options:</p>
+
+<table>
+  <thead>
+  <tr>
+      <th> Option           </th>
+      <th> Description                                                   </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+      <td> -i, --id       </td>
+      <td> Users are specified with numerical id instead of username         </td>
+  </tr>
+  </tbody>
+</table>
 
 <p>Example 1: delete user testuser</p>
 
@@ -3285,6 +3300,11 @@ Available options:</p>
 <p>Example 2: delete user testuser1 and user testuser2</p>
 
 <pre><code>moosh user-delete testuser1 testuser2
+</code></pre>
+
+<p>Example 3: delete user with id 1020 and 1021</p>
+
+<pre><code>moosh user-delete -i 1020 1021
 </code></pre>
 
 <a name="user-export"></a>
