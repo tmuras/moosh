@@ -44,6 +44,26 @@ class UserDelete52Handler extends BaseHandler
 
         require_once $CFG->dirroot . '/user/lib.php';
 
+        if (!$byId) {
+            // Make sure no username is ambiguous before touching anything (single query).
+            $verbose->step('Checking usernames are unique');
+            [$insql, $params] = $DB->get_in_or_equal($users, SQL_PARAMS_NAMED);
+            $ambiguous = $DB->get_records_sql(
+                "SELECT username, COUNT(*) AS cnt FROM {user} WHERE deleted = 0 AND username $insql GROUP BY username HAVING COUNT(*) > 1",
+                $params
+            );
+            if ($ambiguous) {
+                $list = [];
+                foreach ($ambiguous as $row) {
+                    $list[] = "'{$row->username}' ({$row->cnt} records)";
+                }
+                $output->writeln('<error>Ambiguous username(s): ' . implode(', ', $list)
+                    . '. The same username exists for multiple users (e.g. different authentication/mnet hosts). '
+                    . 'Nothing was deleted. Use the --id option with numerical user ids instead.</error>');
+                return Command::FAILURE;
+            }
+        }
+
         // Validate all users first
         $verbose->step('Validating users');
         $userRecords = [];
