@@ -29,18 +29,32 @@ class UserDelete extends MooshCommand
 
         $options = $this->expandedOptions;
       
+        if (!$options['id']) {
+            // Check all usernames in a single query before deleting anything.
+            list($insql, $params) = $DB->get_in_or_equal($this->arguments, SQL_PARAMS_NAMED);
+            $ambiguous = $DB->get_records_sql(
+                "SELECT username, COUNT(*) AS cnt FROM {user} WHERE username $insql GROUP BY username HAVING COUNT(*) > 1",
+                $params
+            );
+            if ($ambiguous) {
+                $list = array();
+                foreach ($ambiguous as $row) {
+                    $list[] = "'{$row->username}' ({$row->cnt} records)";
+                }
+                cli_error("Ambiguous username(s): " . implode(', ', $list)
+                    . ". The same username exists for multiple users (e.g. different authentication/mnet hosts). "
+                    . "Nothing was deleted. Use the --id option with numerical user ids instead.");
+            }
+        }
+
         foreach ($this->arguments as $argument) {
             
-            try {
-                if ($options['id']) {
-                    $user = $DB->get_record('user', array('id' => $argument));
-                } else {
-                    $user = $DB->get_record('user', array('username' => $argument));
-                }
-            } catch (Exception $e) {
-                print get_class($e)." thrown within the exception handler. Message: ".$e->getMessage()." on line ".$e->getLine();
+            if ($options['id']) {
+                $user = $DB->get_record('user', array('id' => $argument));
+            } else {
+                $user = $DB->get_record('user', array('username' => $argument));
             }
-           
+
             if ($user instanceof \stdClass) {
                 user_delete_user($user);
             } else {
